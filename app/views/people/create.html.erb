@@ -1,0 +1,638 @@
+<%= form_tag('/person') do %>
+  <table class="create" cellpadding="0" cellspacing="0" role="form">
+    <tbody>
+      <tr class="columns">
+  <%#*Personの入力フォーム%>
+        <td>
+          <table class="person column" cellpadding="0" cellspacing="0">
+            <tr>
+              <td>
+                <h2>
+                  この人を特定できる情報を入力してください
+                </h2>
+                <table class="person input" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td class="name section">
+                      <h3 class="mandatory">
+                        名前（必須）
+                      </h3>
+                      <div class="hint">
+                        この人の名前を入力してください。
+                      </div>
+                      <table class="fields">
+
+                        <tr>
+                          <td class="label">
+                            <label for="family_name" class="mandatory">
+                              姓:
+                            </label>
+                          </td>
+                          <td>
+                            <%= text_field :person, :family_name %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="label">
+                            <label for="given_name" class="mandatory">
+                              名:
+                            </label>
+                          </td>
+                          <td>
+                            <%= text_field :person, :given_name %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="label">
+                            <label for="alternate_family_names">
+                              姓（カナ）:
+                            </label>
+                          </td>
+                          <td>
+                            <input name="alternate_family_names" id="alternate_family_names" size="20" value="" autocomplete="off" />
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td class="label">
+                            <label for="alternate_given_names">
+                              名（カナ）:
+                            </label>
+                          </td>
+                          <td>
+                            <input name="alternate_given_names" id="alternate_given_names" size="20" value="" autocomplete="off" />
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="physical section">
+                      <h3>
+                        身体の特徴
+                      </h3>
+                      <div class="hint">
+                        この人の身体の特徴を入力してください。
+                      </div>
+                      <table class="fields">
+                        <tr>
+                          <td class="label">
+                            <label for="sex">性別:</label>
+                          </td>
+                          <td>
+                            <%= select :person, :sex,
+                              [["女性",1], ["男性",2], ["その他",3]],
+                              :include_blank => true
+                          %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="label">
+                            <label for="age">年齢:</label>
+                            <div class="hint">半角英数字。ハイフンで範囲指定も可（例：20-30）</div>
+                          </td>
+                          <td>
+                            <%= text_field :person, :age, :size => "10" %>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="address section">
+                      <h3>
+                        自宅住所
+                      </h3>
+                      <div class="hint">
+                        この人の住所を入力してください。
+                      </div>
+                      <table class="fields">
+                        <tr>
+                          <td class="label">
+                            <label for="home_street">
+                              町名:
+                            </label>
+                            <div class="hint">町名のみ（番地は入力しない）</div>
+                          </td>
+                          <td>
+                            <%= text_field :person, :home_street, :size => "20" %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="label">
+
+                            <label for="home_neighborhood">近隣の場所:</label>
+                          </td>
+                          <td>
+                            <input name="home_neighborhood" id="home_neighborhood" value="" size="20" autocomplete="off" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="label">
+                            <label for="home_city">市:</label>
+                          </td>
+                          <td>
+                            <input name="home_city" id="home_city" value="" size="20" autocomplete="off" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="label">
+                            <label for="home_state">
+                              都道府県:
+                            </label>
+                          </td>
+                          <td>
+                            <input name="home_state" id="home_state" size="10" value="" autocomplete="off" />
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td class="label">
+                            <label for="home_postal_code">
+                              郵便番号:
+                            </label>
+                          </td>
+                          <td>
+                            <input name="home_postal_code" id="home_postal_code" value="" size="10" autocomplete="off" />
+                          </td>
+                        </tr>
+
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="description section">
+                      <h3><label for="description">
+                          説明
+                        </label></h3>
+                      <div class="hint">
+                        この人のその他の特徴を入力してください。
+                      </div>
+                      <table class="fields">
+                        <tbody><tr>
+                            <td>
+                              <textarea name="description" id="description" cols="40" rows="5"></textarea>
+                            </td>
+                          </tr>
+                        </tbody></table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="photo section">
+                      <h3><label for="photo_url">
+                          写真
+                        </label></h3>
+                      <div class="hint">
+                        この人の写真がある場合は、写真をアップロードするか、写真のURLを指定してください。
+                      </div>
+                      <table class="fields">
+                        <tbody><tr onclick="$('photo_url_radio').checked=true; update_image_input(false);">
+                            <td class="radio">
+                              <input id="photo_url_radio" type="radio" checked="checked" name="photo_input" />
+                            </td>
+                            <td class="label">
+                              URL:
+                            </td>
+                            <td>
+                              <input name="photo_url" id="photo_url" size="30" value="" />
+                            </td>
+                          </tr>
+                          <tr onclick="$('photo_upload_radio').checked=true; update_image_input(false);">
+
+                            <td class="radio">
+                              <input id="photo_upload_radio" type="radio" name="photo_input" />
+                            </td>
+                            <td class="label">
+                              アップロード:
+                            </td>
+                            <td>
+                              <input id="photo_upload" type="file" name="photo" size="20" disabled="disabled" />
+                            </td>
+
+                          </tr>
+                        </tbody></table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="expiry section">
+                      <h3><label for="expiry_date">
+                          記録の期限
+                        </label></h3>
+                      <div class="hint">
+                        <div>
+                          この記録を自動的に削除するよう設定できます。いつに設定しますか？
+                        </div>
+
+                        <div class="warning">
+                        </div>
+
+                      </div>
+                      <table class="fields">
+                        <tbody><tr>
+                            <td>
+                              <select id="expiry_option" name="expiry_option" value="">
+
+                                <option value="30">
+                                  約 1 か月（ 30 日）後</option>
+
+                                <option value="60">
+                                  約 2 か月（ 60 日）後
+                                </option>
+
+                                <option value="90">
+                                  約 3 か月（ 90 日）後
+                                </option>
+
+                                <option value="180">
+                                  約 6 か月（ 180 日）後</option>
+
+                                <option value="360">
+                                  約 1 年（ 360 日）後
+                                </option>
+
+                              </select>
+                            </td>
+                          </tr>
+                        </tbody></table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="source section">
+                      <h3 class="mandatory">
+                        この記録の情報源（必須）
+                      </h3>
+                      <div class="hint">
+                        この記録の情報源を指定してください。
+                      </div>
+                      <table class="fields">
+                        <tbody><tr>
+                            <td class="instructions" colspan="2">
+                              <div>
+                                <input type="radio" name="clone" value="no" id="clone_no" checked="checked" onclick="update_clone()" onchange="update_clone()" />
+                                <label class="option" for="clone_no">
+                                  これは新しい記録です。
+                                </label>
+                              </div>
+                              <div>
+                                <input type="radio" name="clone" value="yes" id="clone_yes" onchange="update_clone()" onclick="update_clone()" />
+                                <label class="option" for="clone_yes">
+                                  この記録は別の情報源からコピーしたものです。
+                                </label>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="label">
+                              <label for="author_name" class="mandatory" id="author_name_original">
+                                あなたの名前:
+                              </label>
+                              <label for="author_name" class="mandatory" id="author_name_clone" style="display: none">
+
+                              </label>
+                            </td>
+                            <td>
+                              <input name="author_name" id="author_name" size="20" value="" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="label">
+                              <label for="author_phone" id="author_phone_original">
+                                あなたの電話番号:
+                              </label>
+                              <label for="author_phone" id="author_phone_clone" style="display: none">
+
+                              </label>
+                            </td>
+                            <td>
+                              <input name="author_phone" id="author_phone" size="20" value="" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="label">
+                              <label for="author_email" id="author_email_original">
+                                あなたのメールアドレス:
+                              </label>
+                              <label for="author_email" id="author_email_clone" style="display: none">
+
+                              </label>
+                            </td>
+                            <td>
+                              <input name="author_email" id="author_email" size="20" value="" />
+                            </td>
+                          </tr>
+                          <tr id="source_url_row" style="display: none">
+                            <td class="label">
+                              <label for="source_url">
+                                情報源の URL:
+                              </label>
+                            </td>
+                            <td>
+                              <input name="source_url" id="source_url" value="" />
+                            </td>
+                          </tr>
+                          <tr id="source_date_row" style="display: none">
+                            <td class="label">
+                              <label for="source_date">
+                                情報源の投稿日:</label>
+                              <div class="hint"></div>
+                            </td>
+                            <td>
+                              <input name="source_date" id="source_date" value="" />
+                            </td>
+                          </tr>
+                          <tr id="source_name_row" style="display: none">
+                            <td class="label">
+                              <label for="source_name">
+                                情報源のサイト名:</label>
+                            </td>
+                            <td>
+                              <input name="source_name" id="source_name" value="" />
+                            </td>
+                          </tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                          <tr>
+                            <td class="label">
+                              <label for="subscribe-checkbox">
+                                この方の新着情報をメールで受け取る:
+                              </label>
+                            </td>
+                            <td>
+                              <input id="subscribe-checkbox" type="checkbox" name="subscribe" />
+                            </td>
+                          </tr>
+
+                        </tbody></table>
+                    </td>
+                  </tr>
+
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+
+  <%#*Noteの入力フォーム%>
+        <td>
+          <%= hidden_field_tag 'add_note', "yes" %>
+          <%= hidden_field_tag 'id', "" %>
+          <table class="create note column" cellpadding="0" cellspacing="0" role="complementary">
+            <tbody>
+              <tr>
+                <td>
+                  <h2>
+                    この人の状況について教えてください
+                  </h2>
+                  <table class="note input" cellpadding="0" cellspacing="0">
+                    <tbody>
+                      <tr>
+                        <td class="status section">
+                          <h3>
+                            この人の状況
+                          </h3>
+                          <table class="fields">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <%= select :note, :status, [[1,2]] %>
+                                  <select id="status" name="status" value="">
+                                    <option value="" selected="selected">
+                                      指定なし
+                                    </option>
+                                    <option value="information_sought">
+                                      情報を探している
+                                    </option>
+                                    <option value="is_note_author">
+                                      私が本人である
+                                    </option>
+                                    <option value="believed_alive">
+                                      この人が生きているという情報を入手した
+                                    </option>
+                                    <option value="believed_missing">
+                                      この人を行方不明と判断した理由がある
+                                    </option>
+                                  </select>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td class="mandatory text section">
+                          <h3>メッセージ（必須）</h3>
+                          <div class="hint">
+                            この人やこの人を探している人へのメッセージ
+                          </div>
+                          <table class="fields">
+                            <tbody><tr>
+                                <td>
+                                  <%= text_area :note, :text, {:cols => 40, :rows => 5} %>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td class="location section">
+                          <h3>
+                            最後に見かけた場所
+                          </h3>
+                          <div class="hint">
+                            住所を入力するか、下のリンクから地図を開きピンを動かして場所を指定してください。
+                          </div>
+                          <table class="fields">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <input name="last_known_location" id="last_known_location" size="40" value="" />
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+
+                          <table class="map-container">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <div id="map_canvas_show_link" style="display: block; ">
+                                    <a href="#" onclick="toggle('map_canvas', $('last_known_location').value); return false;">
+                                      地図を表示</a>
+                                  </div>
+                                  <div id="map_canvas_hide_link" style="display: none; ">
+                                    <a href="#" onclick="toggle('map_canvas', $('last_known_location').value); return false;">
+                                      地図を隠す
+                                    </a>
+                                  </div>
+                                  <script type="text/javascript">
+                                    ToggleMapLink('map_canvas');
+                                  </script>
+                                  <div id="map_canvas" class="hidden map">
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td class="photo section">
+                          <h3><label for="note_photo_url">
+                              写真
+                            </label></h3>
+                          <div class="hint">
+                            メモに写真を添付するには、アップロードするか、写真のURLを入力してください。
+                          </div>
+                          <table class="fields">
+                            <tbody><tr onclick="$('note_photo_url_radio').checked=true; update_image_input(true);">
+                                <td class="radio">
+                                  <input id="note_photo_url_radio" type="radio" checked="checked" name="note_photo_input" />
+                                </td>
+                                <td class="label">
+                                  URL:
+                                </td>
+                                <td>
+                                  <input name="note_photo_url" id="note_photo_url" size="30" value="" />
+                                </td>
+                              </tr>
+                              <tr onclick="$('note_photo_upload_radio').checked=true; update_image_input(true);">
+
+                                <td class="radio">
+                                  <input id="note_photo_upload_radio" type="radio" name="note_photo_input" />
+                                </td>
+                                <td class="label">
+                                  アップロード:
+                                </td>
+                                <td>
+                                  <input id="note_photo_upload" type="file" name="note_photo" size="20" disabled="disabled" />
+                                </td>
+
+                              </tr>
+                            </tbody></table>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td class="author_made_contact section">
+                          <h3 class="mandatory">
+                            この人と災害発生後に連絡が取れましたか？（必須）
+                          </h3>
+                          <table class="fields">
+                            <tbody><tr>
+                                <td class="instructions" colspan="2">
+                                  <div>
+                                    <input type="radio" name="author_made_contact" value="yes" id="author_made_contact_yes" onchange="update_contact()" onclick="update_contact()" />
+                                    <label class="option" for="author_made_contact_yes">
+                                      はい
+                                    </label>
+                                  </div>
+                                  <div>
+                                    <input type="radio" name="author_made_contact" value="no" id="author_made_contact_no" onchange="update_contact()" onclick="update_contact()" checked="checked" />
+                                    <label class="option" for="author_made_contact_no">
+                                      いいえ
+                                    </label>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody></table>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td class="author_made_contact section">
+                          <h3>
+                            この人の情報を石巻パーソンファインダーの外部に公開しますか？
+                          </h3>
+                          <table class="fields">
+                            <tbody><tr>
+                                <td colspan="2" class="instructions">
+                                  <div>
+                                    <input type="radio" name="out_open" value="yes" id="out_open_yes" onchange="update_contact()" onclick="update_contact()" />
+                                    <label class="option" for="out_open_yes">
+                                      はい</label>
+                                  </div><div>
+                                    <input type="radio" name="out_open" value="no" id="out_open_no" onchange="update_contact()" onclick="update_contact()" checked="checked" />
+                                    <label class="option" for="out_open_no">
+                                      いいえ</label>
+                                  </div>
+                                </td></tr></tbody></table>
+                        </td>
+                      </tr>
+
+                      <tr style="display: none" id="contact_row">
+                        <td class="contact section">
+                          <h3>
+                            è¡æ¹ä¸æèã®ç¾å¨ã®é£çµ¡åæå ±
+                          </h3>
+                          <div class="hint">
+                            ç¾å¨ãã®äººã¨é£çµ¡ãåããã¨ãã§ããææ®µãæå®ãã¦ãã ããã
+                          </div>
+                          <table class="fields">
+                            <tbody><tr>
+                                <td class="label">
+                                  <label for="phone_of_found_person">
+                                    é»è©±çªå·:
+                                  </label>
+                                </td>
+                                <td>
+                                  <input name="phone_of_found_person" id="phone_of_found_person" size="20" value="" />
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class="label">
+                                  <label for="email_of_found_person">
+                                    ã¡ã¼ã« ã¢ãã¬ã¹:
+                                  </label>
+                                </td>
+                                <td>
+                                  <input name="email_of_found_person" id="email_of_found_person" size="20" value="" />
+                                </td>
+                              </tr>
+                            </tbody></table>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td align="left" class="submit">
+                          <%= submit_tag "この記録を保存" %>
+                          <div id="mandatory_field_missing" class="mandatory" style="display: none">
+                            ãã¹ã¦ã®å¿é ãã£ã¼ã«ãã«å¥åãã¦ãã ããã
+                          </div>
+                          <div id="status_inconsistent_with_author_made_contact" class="mandatory" style="display: none">
+                            ãã®äººãããªãæ¬äººã§ããå ´åã¯ã[ãã®äººã¨ç½å®³çºçå¾ã«ã³ã³ã¿ã¯ãåãã¾ãããï¼] ã§ [ã¯ã] ãé¸æãã¦ãã ããã
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody></table>
+                </td>
+              </tr>
+            </tbody></table>
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+<% end %>
+
+<div class="backlink">
+  <a href="/people/index/">
+		« 最初のページに戻る
+  </a>
+</div>

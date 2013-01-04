@@ -1,0 +1,531 @@
+<div class="fields-table person">
+  <% if @person.family_name.present? %>
+    <h2>この人を特定できる情報を入力してください</h2>
+  <% else %>
+    <h2>探している人を特定できる情報を入力してください</h2>
+  <% end %>
+  <div class="name section">
+    <h3 class="mandatory">名前（必須）</h3>
+    <div class="hint">この人の名前を入力してください。</div>
+    <div class="field">
+      <div class="label">
+        <label for="family_name" class="mandatory">姓:</label>
+      </div>
+      <div class="value">
+        <%= text_field :person, :family_name,
+          :value => @person.family_name, :class => "medium-text-input" %>
+      </div>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="given_name" class="mandatory">名:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :given_name,
+          :value => @person.given_name, :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="alternate_family_names">姓（よみがな）:</label>
+      </span>
+      <span class="value">
+        <%= text_field :kana, :family_name,
+          :value => @kana[:family_name], :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="alternate_given_names">名（よみがな）:</label>
+      </span>
+      <span class="value">
+        <%= text_field :kana, :given_name,
+          :value => @kana[:given_name], :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="physical section">
+    <h3>身体の特徴</h3>
+    <div class="hint">この人の身体の特徴を入力してください。</div>
+    <div class="field">
+      <span class="label">
+        <label for="sex">性別:</label>
+      </span>
+      <span class="value">
+        <%= select(:person, :sex,
+          options_for_select(@person_const["sex"].invert, @person.sex),
+          { :include_blank => true }) %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="age">年齢:</label>
+        <div class="hint">半角数字。ハイフンで範囲指定も可（例: 20-30）</div>
+      </span>
+      <span class="value">
+        <%= text_field :person, :age, :value => @person.age,
+          :class => "short-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="date_of_birth">生年月日:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :date_of_birth, :value => @person.date_of_birth,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="injury_flag">負傷:</label>
+      </span>
+      <span class="value">
+        <%= select(:person, :injury_flag,
+          options_for_select(@person_const["injury_flag"].invert, @person.injury_flag),
+          { :include_blank => true }) %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="injury_condition">負傷内容:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :injury_condition, :value => @person.injury_condition,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="allergy_flag">アレルギー:</label>
+      </span>
+      <span class="value">
+        <%= select(:person, :allergy_flag,
+          options_for_select(@person_const["allergy_flag"].invert, @person.allergy_flag),
+          { :include_blank => true }) %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="allergy_cause">アレルギー物質:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :allergy_cause, :value => @person.allergy_cause,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="pregnancy">妊娠:</label>
+      </span>
+      <span class="value">
+        <%= select(:person, :pregnancy,
+          options_for_select(@person_const["pregnancy"].invert, @person.pregnancy),
+          { :include_blank => true }) %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="baby">乳幼児:</label>
+      </span>
+      <span class="value">
+        <%= select(:person, :baby,
+          options_for_select(@person_const["baby"].invert, @person.baby),
+          { :include_blank => true }) %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="upper_care_level_three">要介護度３以上:</label>
+      </span>
+      <span class="value">
+        <%= select(:person, :upper_care_level_three,
+          options_for_select(@person_const["upper_care_level_three"].invert, @person.upper_care_level_three),
+          { :include_blank => true }) %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="elderly_alone">一人暮らし高齢者（６５歳以上）:</label>
+      </span>
+      <span class="value">
+        <%= select(:person, :elderly_alone,
+          options_for_select(@person_const["elderly_alone"].invert, @person.elderly_alone),
+          { :include_blank => true }) %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="elderly_couple">高齢者世帯（夫婦共に６５歳以上）:</label>
+      </span>
+      <span class="value">
+        <%= select(:person, :elderly_couple,
+          options_for_select(@person_const["elderly_couple"].invert, @person.elderly_couple),
+          { :include_blank => true }) %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="bedridden_elderly">寝たきり高齢者:</label>
+      </span>
+      <span class="value">
+        <%= select(:person, :bedridden_elderly,
+          options_for_select(@person_const["bedridden_elderly"].invert, @person.bedridden_elderly),
+          { :include_blank => true }) %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="elderly_dementia">認知症高齢者:</label>
+      </span>
+      <span class="value">
+        <%= select(:person, :elderly_dementia,
+          options_for_select(@person_const["elderly_dementia"].invert, @person.elderly_dementia),
+          { :include_blank => true }) %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="rehabilitation_certificate">療育手帳保持者:</label>
+      </span>
+      <span class="value">
+        <%= select(:person, :rehabilitation_certificate,
+          options_for_select(@person_const["rehabilitation_certificate"].invert, @person.rehabilitation_certificate),
+          { :include_blank => true }) %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="physical_disability_certificate">身体障害者手帳保持者:</label>
+      </span>
+      <span class="value">
+        <%= select(:person, :physical_disability_certificate,
+          options_for_select(@person_const["physical_disability_certificate"].invert, @person.physical_disability_certificate),
+          { :include_blank => true }) %>
+      </span>
+    </div>
+
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="address section">
+    <h3>自宅住所</h3>
+    <div class="hint">この人の住所を入力してください。</div>
+    <div class="field">
+      <span class="label">
+        <label for="home_street">町名:</label>
+        <div class="hint">町名のみ（番地は入力しない）</div>
+      </span>
+      <span class="value">
+        <%= text_field :person, :home_street, :value => @person.home_street,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="home_neighborhood">近隣の場所:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :home_neighborhood, :value => @person.home_neighborhood,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="home_city">市:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :home_city, :value => @person.home_city,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="home_state">都道府県:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :home_state, :value => @person.home_state,
+          :class => "short-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="home_postal_code">郵便番号:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :home_postal_code, :value => @person.home_postal_code,
+          :class => "short-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="in_city_flag">市内・市外区分:</label>
+      </span>
+      <span class="value">
+        <%= select(:person, :in_city_flag,
+          options_for_select(@person_const["in_city_flag"].invert, @person.in_city_flag),
+          { :include_blank => true }) %>
+      </span>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="section">
+    <h3>避難所</h3>
+    <div class="hint">避難所に関する情報を入力してください。</div>
+
+    <div class="field">
+      <span class="label">
+        <label for="shelter_name">避難所:</label>
+      </span>
+      <span class="value">
+        <%= select(:person, :shelter_name,
+          options_for_select(@person_const["shelter_name"].invert, @person.shelter_name),
+          { :include_blank => true }) %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="refuge_status">避難状況:</label>
+      </span>
+      <span class="value">
+        <%= select(:person, :refuge_status,
+          options_for_select(@person_const["refuge_status"].invert, @person.refuge_status),
+          { :include_blank => true }) %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="refuge_reason">避難理由:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :refuge_reason, :value => @person.refuge_reason,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="shelter_entry_date">入所年月日:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :shelter_entry_date, :value => @person.shelter_entry_date,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="shelter_leave_date">退所年月日:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :shelter_leave_date, :value => @person.shelter_leave_date,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="next_place">退所先:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :next_place, :value => @person.next_place,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="next_place_phone">退所先電話番号:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :next_place_phone, :value => @person.next_place_phone,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+
+    <div class="end-multi-columns"></div>
+
+  </div>
+
+
+  <div class="description section">
+    <h3><label for="description">説明</label></h3>
+    <div class="hint">この人のその他の特徴を入力してください。</div>
+    <div class="field">
+      <%= text_area :person, :description,
+        { :rows => "5", :class => "long-text-input" } %>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="photo section">
+    <h3><label for="photo_url">写真</label></h3>
+    <div class="hint">
+      この人の写真がある場合は、写真をアップロードするか、写真の URL を指定してください。
+    </div>
+    <div class="field" onclick="$('#photo_input_url').attr('checked',true); update_image_input(false);">
+      <span class="radio">
+        <%= radio_button_tag "person_photo_input","url", true %>
+      </span>
+      <span class="label">URL:</span>
+      <span class="value">
+        <%= text_field :person, :remote_photo_url_url, :value => @person.photo_url,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field" onclick="$('#photo_input_upload').attr('checked',true); update_image_input(false);">
+      <span class="radio">
+        <%= radio_button_tag "person_photo_input", "upload", false %>
+      </span>
+      <span class="label">アップロード:</span>
+      <span class="value">
+        <%= file_field :person, :photo_url, :value => @person.photo_url,
+          :class => "medium-text-input", :disabled => true %>
+      </span>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="expiry section">
+    <h3><label for="expiry_date">記録の期限</label></h3>
+    <div class="hint">
+      <div>
+        この記録を自動的に削除するよう設定できます。いつに指定しますか？
+      </div>
+    </div>
+    <div class="field">
+      <%= select(:person, :expiry_date,
+        options_for_select(@person_const["expiry_date"].invert,
+          @person.expiry_date)) %>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="section">
+    <h3 class="mandatory">この人の情報をローカルパーソンファインダーの外部に公開しますか？（必須）</h3>
+    <div class="field">
+      <%= radio_button :person, :public_flag, true, {} %>
+      <label class="option" for="person_public_flag_true">はい</label>
+    </div>
+    <div class="field">
+      <%= radio_button :person, :public_flag, false, {:checked => true} %>
+      <label class="option" for="person_public_flag_false">いいえ</label>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+
+  <div class="source section">
+    <h3 class="mandatory">この記録の情報源（必須）</h3>
+    <div class="hint">この記録の情報源を指定してください。</div>
+    <div class="field">
+      <div class="instructions">
+        <div>
+          <%= radio_button "clone", "clone_input", "no",
+            {:checked => true,
+            :onclick => "update_clone()",
+            :onchange => "update_clone()"} %>
+          <label class="option" for="clone_clone_input_no">
+            これは新しい記録です。
+          </label>
+        </div>
+        <div>
+          <%= radio_button "clone", "clone_input", "yes",
+            {:onclick => "update_clone()", :onchange => "update_clone()"}%>
+          <label class="option" for="clone_clone_input_yes">
+            この記録は別の情報源からコピーしたものです。
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="author_name" class="mandatory" id="author_name_original">
+          あなたの名前:
+        </label>
+        <label for="author_name" class="mandatory" id="author_name_clone" style="display: none">
+          元の情報提供者の名前:
+        </label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :author_name, :value => @person.author_name,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="author_phone" id="author_phone_original">
+          あなたの電話番号:
+        </label>
+        <label for="author_phone"
+               id="author_phone_clone" style="display: none">
+          情報提供者の電話番号:
+        </label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :author_phone, :value => @person.author_phone,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="author_email" id="author_email_original">
+          あなたのメール アドレス:
+        </label>
+        <label for="author_email"
+               id="author_email_clone" style="display: none">
+          情報提供者のメールアドレス:
+        </label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :author_email, :value => @person.author_email,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field" id="source_url_row" style="display: none">
+      <span class="label">
+        <label for="source_url">元の記録の URL:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :source_url, :value => @person.source_url,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field" id="source_date_row" style="display: none">
+      <span class="label">
+        <label for="source_date">
+          情報元の投稿日:
+        </label>
+        <div class="hint">YYYY-MM-DD の形式で入力してください</div>
+      </span>
+      <span class="value">
+        <%= text_field :person, :source_date, :value => @person.source_date,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field" id="source_name_row" style="display: none">
+      <span class="label">
+        <label for="source_name">
+          情報元のサイト名:
+        </label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :source_name, :value => @person.source_name,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="subscribe-checkbox">
+          この方の新着情報をメールで受け取る:
+        </label>
+      </span>
+      <span class="value">
+        <%= check_box "subscribe", "checkbox", {:checked => @subscribe}, true, false %>
+      </span>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+  <% if @from_seek %>
+    <div class="submit"><%= submit_tag "この記録を保存" %></div>
+  <% end %>
+</div>

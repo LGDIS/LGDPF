@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="content" role="main">
+
+    <div>
+      <%= form_tag :action => :complete, :id => @person do %>
+        <h2>
+          「一郎 山田」さんの記録に関するメモを無効にします。よろしいですか？
+        </h2>
+        記録は引き続きこのサイトに表示されますが、この記録に関するメモは誰も投稿できなくなります。
+
+        メモを無効にする理由:
+        <select name="reason_for_disabling_notes">
+          <option value="do_not_want_anymore">
+            この記録に関する最新情報は不要です。</option>
+          <option value="spam_received">
+            この記録が原因でスパムを受信したから</option>
+          <option value="record_is_spam">
+            この記録がスパム情報だから</option>
+          <option value="served_its_purpose">
+            この記録が目的を果たしたから</option>
+        </select>
+        <br/><br/>
+
+        <br/>
+        <%= hidden_field :complete, :key, :value => "extend_days" %>
+        <%= submit_tag "はい、この記録のメモを無効にします。" %>
+        <input type="button" value="キャンセル" onclick="history.go(-1);" />
+
+      <% end %>
+    </div>
+    <br/><br/>
+
+  </div>
+</div>
+
+<p><%= link_to "<< 最初のページに戻る ", :action => :index %></p>

@@ -1,0 +1,529 @@
+<div class="container">
+  <div class="content" role="main">
+    <%= form_tag :action => :view, :id => @person do %>
+
+      <table class="view multiview" cellpadding="0" cellspacing="0">
+        <tr class="columns">
+          <td>
+            <table class="person column" cellpadding="0" cellspacing="0">
+              <tr>
+                <td colspan="4">
+                  <h2>記録の比較</h2>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="4" class="name sectiontop">
+                  <h3>名前</h3>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="label">姓:</td>
+                <td class="field"><%= @person.family_name %></td>
+                <td class="field"><%= @person2.family_name %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person3.family_name %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">名:</td>
+                <td class="field"><%= @person.given_name %></td>
+                <td class="field"><%= @person2.given_name %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person3.given_name %></td>
+                <% end %>
+              </tr>
+
+              <tr class="sectionbottom">
+                <td class="label">名前（よみがな）:</td>
+                <td class="field"><%= @person.alternate_names %></td>
+                <td class="field"><%= @person2.alternate_names %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person3.alternate_names %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td colspan="4" class="physical sectiontop">
+                  <h3>身体の特徴</h3>
+                </td>
+              </tr>
+              <tr>
+                <td class="label">性別:</td>
+                <td class="field"><%= @person_const["sex"]["#{@person.sex}"] %></td>
+                <td class="field"><%= @person_const["sex"]["#{@person2.sex}"] %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person_const["sex"]["#{@person3.sex}"] %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">年齢:</td>
+                <td class="field"><%= @person.age %></td>
+                <td class="field"><%= @person2.age %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person3.age %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">生年月日:</td>
+                <td class="field"><%= @person.date_of_birth %></td>
+                <td class="field"><%= @person2.date_of_birth %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person3.date_of_birth %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">負傷:</td>
+                <td class="field"><%= @person_const["injury_flag"]["#{@person.injury_flag}"] %></td>
+                <td class="field"><%= @person_const["injury_flag"]["#{@person2.injury_flag}"] %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person_const["injury_flag"]["#{@person3.injury_flag}"] %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">負傷内容:</td>
+                <td class="field"><%= @person.injury_condition %></td>
+                <td class="field"><%= @person2.injury_condition %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person3.injury_condition %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">アレルギー:</td>
+                <td class="field"><%= @person_const["allergy_flag"]["#{@person.allergy_flag}"] %></td>
+                <td class="field"><%= @person_const["allergy_flag"]["#{@person2.allergy_flag}"] %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person_const["allergy_flag"]["#{@person3.allergy_flag}"] %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">アレルギー物質:</td>
+                <td class="field"><%= @person.allergy_cause %></td>
+                <td class="field"><%= @person2.allergy_cause %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person3.allergy_cause %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">妊娠:</td>
+                <td class="field"><%= @person_const["pregnancy"]["#{@person.pregnancy}"] %></td>
+                <td class="field"><%= @person_const["pregnancy"]["#{@person2.pregnancy}"] %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person_const["pregnancy"]["#{@person3.pregnancy}"] %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">乳幼児:</td>
+                <td class="field"><%= @person_const["baby"]["#{@person.baby}"] %></td>
+                <td class="field"><%= @person_const["baby"]["#{@person2.baby}"] %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person_const["baby"]["#{@person3.baby}"] %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">要介護度３以上:</td>
+                <td class="field">
+                  <%= @person_const["upper_care_level_three"]["#{@person.upper_care_level_three}"] %>
+                </td>
+                <td class="field">
+                  <%= @person_const["upper_care_level_three"]["#{@person2.upper_care_level_three}"] %>
+                </td>
+                <% if @person3.present? %>
+                  <td class="field">
+                    <%= @person_const["upper_care_level_three"]["#{@person3.upper_care_level_three}"] %>
+                  </td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">一人暮らし高齢者（６５歳以上）:</td>
+                <td class="field"><%= @person_const["elderly_alone"]["#{@person.elderly_alone}"] %></td>
+                <td class="field"><%= @person_const["elderly_alone"]["#{@person2.elderly_alone}"] %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person_const["elderly_alone"]["#{@person3.elderly_alone}"] %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">高齢者世帯（夫婦共に６５歳以上）:</td>
+                <td class="field"><%= @person_const["elderly_couple"]["#{@person.elderly_couple}"] %></td>
+                <td class="field"><%= @person_const["elderly_couple"]["#{@person2.elderly_couple}"] %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person_const["elderly_couple"]["#{@person3.elderly_couple}"] %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">寝たきり高齢者:</td>
+                <td class="field"><%= @person_const["bedridden_elderly"]["#{@person.bedridden_elderly}"] %></td>
+                <td class="field"><%= @person_const["bedridden_elderly"]["#{@person2.bedridden_elderly}"] %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person_const["bedridden_elderly"]["#{@person3.bedridden_elderly}"] %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">認知症高齢者:</td>
+                <td class="field"><%= @person_const["elderly_dementia"]["#{@person.elderly_dementia}"] %></td>
+                <td class="field"><%= @person_const["elderly_dementia"]["#{@person2.elderly_dementia}"] %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person_const["elderly_dementia"]["#{@person3.elderly_dementia}"] %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">療育手帳保持者:</td>
+                <td class="field"><%= @person_const["rehabilitation_certificate"]["#{@person.rehabilitation_certificate}"] %></td>
+                <td class="field"><%= @person_const["rehabilitation_certificate"]["#{@person2.rehabilitation_certificate}"] %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person_const["rehabilitation_certificate"]["#{@person3.rehabilitation_certificate}"] %></td>
+                <% end %>
+              </tr>
+
+              <tr class="sectionbottom">
+                <td class="label">身体障害者手帳保持者:</td>
+                <td class="field"><%= @person_const["physical_disability_certificate"]["#{@person.physical_disability_certificate}"] %></td>
+                <td class="field"><%= @person_const["physical_disability_certificate"]["#{@person2.physical_disability_certificate}"] %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person_const["physical_disability_certificate"]["#{@person3.physical_disability_certificate}"] %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td colspan="4" class="address sectiontop">
+                  <h3>自宅住所</h3>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="label">町名:</td>
+                <td class="field"><%= @person.home_street %></td>
+                <td class="field"><%= @person2.home_street %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person3.home_street %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">近隣の場所:</td>
+                <td class="field"><%= @person.home_neighborhood %></td>
+                <td class="field"><%= @person2.home_neighborhood %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person3.home_neighborhood %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">市:</td>
+                <td class="field"><%= @person.home_city %></td>
+                <td class="field"><%= @person2.home_city %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person3.home_city %></td>
+                <% end %>
+              </tr>
+
+              <tr class="">
+                <td class="label">都道府県:</td>
+                <td class="field"><%= @person.home_state %></td>
+                <td class="field"><%= @person2.home_state %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person3.home_state %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">郵便番号:</td>
+                <td class="field"><%= @person.home_postal_code %></td>
+                <td class="field"><%= @person2.home_postal_code %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person3.home_postal_code %></td>
+                <% end %>
+              </tr>
+
+              <tr class="sectionbottom">
+                <td class="label">市内・市外区分:</td>
+                <td class="field"><%= @person_const["in_city_flag"]["#{@person.in_city_flag}"] %></td>
+                <td class="field"><%= @person_const["in_city_flag"]["#{@person.in_city_flag}"] %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person_const["in_city_flag"]["#{@person.in_city_flag}"] %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td colspan="4" class="description sectiontop">
+                  <h3>説明</h3>
+                </td>
+              </tr>
+              <tr class="sectionbottom">
+                <td class="label">&nbsp;</td>
+
+                <td class="field">
+                  <%= text_area :person, :description,
+                    :cols => "30", :rows => "5", :readonly => true %>
+                </td>
+
+                <td class="field">
+                  <%= text_area :person2, :description,
+                    :cols => "30", :rows => "5", :readonly => true %>
+                </td>
+
+                <td class="field">
+                  <%= text_area :person3, :description,
+                    :cols => "30", :rows => "5", :readonly => true %>
+                </td>
+              </tr>
+
+              <tr>
+                <td colspan="4" class="photo sectiontop">
+                  <h3>写真</h3>
+                </td>
+              </tr>
+              <tr class="sectionbottom">
+                <td class="label">&nbsp;</td>
+                <td class="field">
+                  <%= image_tag("no-photo.gif", :class => "photo") %>
+                </td>
+                <td class="field">
+                  <%= image_tag("no-photo.gif", :class => "photo") %>
+                </td>
+                <td class="field">
+                  <%= image_tag("no-photo.gif", :class => "photo") %>
+                </td>
+              </tr>
+
+              <tr>
+                <td colspan="4" class="source sectiontop">
+                  <h3>この記録の情報源</h3>
+                </td>
+              </tr>
+              
+              <tr>
+                <td class="label">情報提供者の名前:</td>
+                <td class="field"><%= @person.author_name %></td>
+                <td class="field"><%= @person2.author_name %></td>
+                <td class="field"><%= @person3.author_name %></td>
+              </tr>
+
+              <tr>
+                <td class="label">情報提供者の電話番号:</td>
+                <td class="field">
+                  <a href="http://google.org/personfinder/japan/reveal?content_id=multiview%3Ajapan.personfinder.google.org%2Fperson.16418792%2Cjapan.personfinder.google.org%2Fperson.16428046%2Cjapan.personfinder.google.org%2Fperson.16422663&amp;target=http%3A%2F%2Fgoogle.org%2Fpersonfinder%2Fjapan%2Fmultiview%3Fid1%3Djapan.personfinder.google.org%252Fperson.16418792%26id2%3Djapan.personfinder.google.org%252Fperson.16428046%26id3%3Djapan.personfinder.google.org%252Fperson.16422663">
+                    （クリックして表示）
+                  </a>
+                </td>
+                <td class="field">
+                  <a href="http://google.org/personfinder/japan/reveal?content_id=multiview%3Ajapan.personfinder.google.org%2Fperson.16418792%2Cjapan.personfinder.google.org%2Fperson.16428046%2Cjapan.personfinder.google.org%2Fperson.16422663&amp;target=http%3A%2F%2Fgoogle.org%2Fpersonfinder%2Fjapan%2Fmultiview%3Fid1%3Djapan.personfinder.google.org%252Fperson.16418792%26id2%3Djapan.personfinder.google.org%252Fperson.16428046%26id3%3Djapan.personfinder.google.org%252Fperson.16422663">
+                    （クリックして表示）
+                  </a>
+                </td>
+                <td class="field">
+                  <a href="http://google.org/personfinder/japan/reveal?content_id=multiview%3Ajapan.personfinder.google.org%2Fperson.16418792%2Cjapan.personfinder.google.org%2Fperson.16428046%2Cjapan.personfinder.google.org%2Fperson.16422663&amp;target=http%3A%2F%2Fgoogle.org%2Fpersonfinder%2Fjapan%2Fmultiview%3Fid1%3Djapan.personfinder.google.org%252Fperson.16418792%26id2%3Djapan.personfinder.google.org%252Fperson.16428046%26id3%3Djapan.personfinder.google.org%252Fperson.16422663">
+                    （クリックして表示）
+                  </a>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="label">情報提供者のメールアドレス:</td>
+                <td class="field">
+                  <a href="http://google.org/personfinder/japan/reveal?content_id=multiview%3Ajapan.personfinder.google.org%2Fperson.16418792%2Cjapan.personfinder.google.org%2Fperson.16428046%2Cjapan.personfinder.google.org%2Fperson.16422663&amp;target=http%3A%2F%2Fgoogle.org%2Fpersonfinder%2Fjapan%2Fmultiview%3Fid1%3Djapan.personfinder.google.org%252Fperson.16418792%26id2%3Djapan.personfinder.google.org%252Fperson.16428046%26id3%3Djapan.personfinder.google.org%252Fperson.16422663">
+                    （クリックして表示）
+                  </a>
+                </td>
+                <td class="field">
+                  <a href="http://google.org/personfinder/japan/reveal?content_id=multiview%3Ajapan.personfinder.google.org%2Fperson.16418792%2Cjapan.personfinder.google.org%2Fperson.16428046%2Cjapan.personfinder.google.org%2Fperson.16422663&amp;target=http%3A%2F%2Fgoogle.org%2Fpersonfinder%2Fjapan%2Fmultiview%3Fid1%3Djapan.personfinder.google.org%252Fperson.16418792%26id2%3Djapan.personfinder.google.org%252Fperson.16428046%26id3%3Djapan.personfinder.google.org%252Fperson.16422663">
+                    （クリックして表示）
+                  </a>
+                </td>
+                <td class="field">
+                  <a href="http://google.org/personfinder/japan/reveal?content_id=multiview%3Ajapan.personfinder.google.org%2Fperson.16418792%2Cjapan.personfinder.google.org%2Fperson.16428046%2Cjapan.personfinder.google.org%2Fperson.16422663&amp;target=http%3A%2F%2Fgoogle.org%2Fpersonfinder%2Fjapan%2Fmultiview%3Fid1%3Djapan.personfinder.google.org%252Fperson.16418792%26id2%3Djapan.personfinder.google.org%252Fperson.16428046%26id3%3Djapan.personfinder.google.org%252Fperson.16422663">
+                    （クリックして表示）
+                  </a>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="label">情報元の URL:</td>
+                <td class="field">
+                  <a href="http://google.org/personfinder/japan/view?id=japan.personfinder.google.org%2Fperson.16418792"
+                     >リンク</a>
+                </td>
+                <td class="field">
+                  <a href="http://google.org/personfinder/japan/view?id=japan.personfinder.google.org%2Fperson.16428046"
+                     >リンク</a>
+                </td>
+                <td class="field">
+                  <a href="http://google.org/personfinder/japan/view?id=japan.personfinder.google.org%2Fperson.16422663"
+                     >リンク</a>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="label">情報元の投稿日:</td>
+                <td class="field">
+                  <%= @person.source_date.strftime("%Y-%m-%d %H:%M %Z") if @person.source_date.present?  %>
+                </td>
+                <td class="field">
+                  <%= @person2.source_date.strftime("%Y-%m-%d %H:%M %Z") if @person2.source_date.present?  %>
+                </td>
+                <td class="field">
+                  <%= @person3.source_date.strftime("%Y-%m-%d %H:%M %Z") if @person3.source_date.present?  %>
+                </td>
+              </tr>
+              
+              <tr class="sectionbottom">
+                <td class="label">情報元のサイト名:</td>
+                <td class="field"><%= @person.source_name %></td>
+                <td class="field"><%= @person2.source_name %></td>
+                <td class="field"><%= @person3.source_name %></td>
+              </tr>
+
+            </table>
+          </td>
+        </tr>
+      </table>
+      &nbsp;
+
+      <div class="fields-table note" role="complementary">
+        <h2>重複している記録としてマークする</h2>
+        <div class="mandatory text section">
+          <h3>メッセージ（必須）</h3>
+          <div class="hint">
+            同一人物だと考える理由を入力してください
+          </div>
+          <div class="field">
+            <textarea name="text" id="text"
+                      class="long-text-input"
+                      rows=5></textarea>
+          </div>
+          <div class="end-multi-columns"></div>
+        </div>
+
+
+        <div class="source section">
+          <h3 class="mandatory">
+            あなたについて（必須）
+          </h3>
+          <div class="hint">
+            この人を探している人があなたと連絡を取る手段を指定してください
+          </div>
+          <div class="field">
+            <span class="label">
+              <label for="author_name" class="mandatory"
+                     id="author_name_original">
+                あなたの名前:
+              </label>
+            </span>
+            <span class="value">
+              <input name="author_name" id="author_name"
+                     class="medium-text-input"
+                     value="" />
+            </span>
+          </div>
+          <div class="field">
+            <span class="label">
+              <label for="author_phone" id="author_phone_original">
+                あなたの電話番号:
+              </label>
+            </span>
+            <span class="value">
+              <input name="author_phone" id="author_phone"
+                     class="medium-text-input"
+                     value="" />
+            </span>
+          </div>
+          <div class="field">
+            <span class="label">
+              <label for="author_email" id="author_email_original">
+                あなたのメール アドレス:
+              </label>
+            </span>
+            <span class="value">
+              <input name="author_email" id="author_email"
+                     class="medium-text-input"
+                     value="" />
+            </span>
+          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <div class="field">
+            <span class="label">
+              <label for="subscribe-checkbox">
+                この方の新着情報をメールで受け取る:
+              </label>
+            </span>
+            <span class="value">
+              <input id="subscribe-checkbox" type="checkbox" name="subscribe" />
+            </span>
+          </div>
+
+
+          <div class="end-multi-columns"></div>
+        </div>
+
+        <div class="submit">
+          <input type="submit"
+
+                 value="はい、同一人物です。"
+                 onclick="return validate_fields()" />
+
+          <input type="button" value="キャンセル" onclick="history.go(-1)" />
+
+
+
+
+          <div id="mandatory_field_missing"
+               class="mandatory" style="display: none">
+            すべての必須フィールドに入力してください。
+          </div>
+          <div id="status_inconsistent_with_author_made_contact"
+               class="mandatory" style="display: none">
+            この人があなた本人である場合は、[この人と災害発生後にコンタクト取れましたか？] で [はい] を選択してください。
+          </div>
+
+
+
+        </div>
+      </div>
+
+    <% end %>
+
+  </div>
+</div>
+
+
+
+
+
+
+<div class="backlink"><a href="http://google.org/personfinder/japan/">
+    &lt;&lt; 最初のページに戻る
+  </a></div>
+
+
+

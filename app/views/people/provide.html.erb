@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="content" role="main">
+    <%= form_tag :action => :provide do %>
+    <%= hidden_field_tag "first_step", "first_step" %>
+      <div class="fields-table query provide" role="form">
+        <div class="instructions">
+          <h3 class="sub_title">安否情報を提供する</h3>
+          <div class="">その人の姓名を入力してください。</div>
+          <div class="field">
+            <span class="label">
+              <label for="family_name">姓:</label>
+            </span>
+            <span class="value">
+              <%= text_field_tag :family_name, params[:family_name],
+                :class => "medium-text-input" %>
+            </span>
+          </div>
+          <div class="field">
+            <span class="label">
+              <label for="given_name">名:</label>
+            </span>
+            <span class="value">
+              <%= text_field_tag :given_name, params[:given_name],
+                :class => "medium-text-input" %>
+            </span>
+          </div>
+          <div class="end-multi-columns"></div>       
+          <div class="submit">
+            <%= submit_tag "この人に関する情報を提供する" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<% if params[:family_name].present? && params[:given_name].present? %>
+  <% if @person.present? %>
+    <%= render :partial => "person_exist", 
+      :locals => {:name => "#{params[:family_name]} #{params[:given_name]}",
+      :family_name => params[:family_name], :given_name => params[:given_name],
+      :person => @person, :role => "provide"} %>
+  <% end %>
+<% end %>
+
+<p></p>
+
+<div class="backlink">
+  <%= link_to "<< 最初のページに戻る", :action => :index %>
+</div>

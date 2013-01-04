@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="content-language" content="ja" />
+    <title> 石巻パーソンファインダー </title>
+    <%= stylesheet_link_tag    "style", :media => "all" %>
+<%#　API KEY はテスト用に個人のkeyを使用してます %>
+    <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyBytXHtE1zbJnUHb-Qvsr5pYgrgX5XXiGY&language=ja&sensor=false"></script>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body class="normal">
+    <div class="header" role="banner">
+      <table style="border-collapse:collapse;background: url(<%= asset_path 'bg_sub.jpg' %>) left top; width:100%">
+        <tbody>
+          <tr>
+            <td style="padding:0">
+              <%= link_to (image_tag 'sub_banner.jpg',:size => '265x75',:alt => 'banner'),
+                :action => :index %>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h1> 石巻パーソンファインダー </h1>
+
+
+
+
+
+    <% if flash[:error].present? %>
+      <div class="error"> <%= flash[:error] %> </div>
+    <% end %>
+    <%= yield %>
+  </body>
+</html>

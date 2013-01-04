@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="content" role="main">
+    <div>
+      <%= form_tag :action => :complete, :id => @person do %>
+        <h2>
+          「<%= @person.full_name %>」さんに関する記録の保存期間を延長します。よろしいですか？
+        </h2>
+
+       <%= render :partial =>'recaptcha', :locals => {:captcha => true} %>
+      
+        <br/>
+        <%= hidden_field :complete, :key, :value => "extend_days" %>
+        <%= submit_tag "はい、延長します" %>
+        <input type="button" value="キャンセル" onclick="history.go(-1);" />
+      <% end %>
+    </div>
+    <br/><br/>
+
+  </div>
+</div>
+
+<p><%= link_to "<< 最初のページに戻る ", :action => :index %></p>

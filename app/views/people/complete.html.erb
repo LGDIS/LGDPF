@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="content" role="main">
+
+    <%= form_tag :action => :complete, :id => @person do %>
+      <div class="info">
+        <% if @key == "extend_days" %>
+          保存期間が <%= @person.expiry_date %>まで延長されました。&nbsp;
+          <%= link_to "記録を見る", :action => :view, :id => @person %>
+
+        <% elsif @key == "subscribe_email" %>
+          アップデートを受け取るように設定されました。
+          <%= link_to "#{@person.full_name} さんの記録の表示に戻る", :action => :view, :id => @person %>
+
+        <% elsif @key == "delete" %>
+          レコードが削除されました。
+
+        <% elsif @key == "note_invalid_apply" %>
+          このメモの作成者である場合は、この記録に関するメモを無効にする確認リンクが掲載されたメールをご覧ください。
+          作成者ではない場合は、記録の作成者がこのリクエストを確認するまでお待ちください。
+
+        <% elsif @key == "note_valid_apply" %>
+          このメモの作成者である場合は、この記録に関するメモを有効にする確認リンクが掲載されたメールをご覧ください。
+          作成者ではない場合は、記録の作成者がこのリクエストを確認するまでお待ちください。
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<p><%= link_to "<< 最初のページに戻る ", :action => :index %></p>

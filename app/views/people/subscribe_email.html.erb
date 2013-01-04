@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="content" role="main">
+    <div>
+      <%= form_tag :action => :complete, :id => @person do %>
+        <h2><%= @person.full_name %>さんについての新着情報を受け取る</h2>
+
+        <p>新着情報を受け取るにはメールアドレスを入力してください</p>
+
+        <span id="subscribe_label">
+          あなたのメールアドレス
+        </span>
+
+        <input type="text" name="subscribe_email" value="" />
+        <div class="subscribe_email_error">
+
+        </div>
+        <br/><br/>
+
+        <script>
+          var RecaptchaOptions = {"lang": "ja", "theme": "white", "custom_translations": {"incorrect_try_again": "\u6b63\u3057\u304f\u3042\u308a\u307e\u305b\u3093\u3002\u3082\u3046\u4e00\u5ea6\u3084\u308a\u76f4\u3057\u3066\u304f\u3060\u3055\u3044\u3002", "help_btn": "\u30d8\u30eb\u30d7", "instructions_audio": "\u805e\u3053\u3048\u305f\u3053\u3068\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044\uff1a", "cant_hear_this": "MP3 \u3068\u3057\u3066\u97f3\u58f0\u3092\u30c0\u30a6\u30f3\u30ed\u30fc\u30c9", "audio_challenge": "\u97f3\u58f0\u306b\u3088\u308b\u30ad\u30e3\u30d7\u30c1\u30e3\u30c1\u30e3\u30ec\u30f3\u30b8", "instructions_visual": "\u4e8c\u3064\u306e\u5358\u8a9e\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044\uff1a", "play_again": "\u518d\u5ea6\u97f3\u58f0\u3092\u518d\u751f", "visual_challenge": "\u753b\u50cf\u306b\u3088\u308b\u30ad\u30e3\u30d7\u30c1\u30e3\u30c1\u30e3\u30ec\u30f3\u30b8", "refresh_btn": "\u65b0\u3057\u3044\u30ad\u30e3\u30d7\u30c1\u30e3\u30c1\u30e3\u30ec\u30f3\u30b8"}};
+        </script>
+        <script src="//www.google.com/recaptcha/api/challenge?k=6LfiSswSAAAAAOAVICRoD7WJfPS05Bb_Nx9JR6g9"></script>
+
+        <br/><br/>
+        <div>
+          <%= hidden_field :complete, :key, :value => "subscribe_email" %>
+          <%= submit_tag "アップデートを受け取る" %>
+          <a href="http://google.org/personfinder/japan/view?id=japan.personfinder.google.org%2Fperson.15863325">
+            <input type="button" value="キャンセル">
+          </a>
+        </div>
+      <% end %>
+    </div>
+    <br/><br/>
+
+  </div>
+</div>
+
+<p><%= link_to "<< 最初のページに戻る ", :action => :index %></p>
+
+

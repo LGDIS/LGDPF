@@ -1,0 +1,79 @@
+
+<% if role == "seek" %>
+  <h1> 検索結果: <%= name %> </h1>
+<% else %>
+  <h1> 類似する記録: <%= name %> </h1>
+  <p></p>
+  類似する名前の記録が <%= @person.size %> 件あります。 報告しようとした人と一致しているかどうかを確認してください。
+<% end %>
+
+<p></p>
+情報を表示または追加するには、下に表示されている名前を選択してください。
+
+<a href="#" id="dup_on_link" onclick="return set_dup_mode(true);">重複マーク モードに切り替える</a>
+<a href="#" id="dup_off_link" style="display:none" onclick="return set_dup_mode(false);">通常の表示モードに切り替える</a>
+
+<br />
+
+<div class='searchResults'>
+  <% @person.each do |person| %>
+    <a class="result-link" href="<%= people_view_path(person) %>">
+      <div class="resultItem">
+        <span class="resultImageContainer">
+          <% if person.photo_url.present? %>
+            <%= image_tag(person.photo_url, :class => "resultImage") %>
+          <% else %>
+            <%= image_tag("no-photo.gif", :class => "resultImage") %>
+          <% end %>
+        </span>
+        <span class='resultData'>
+          <%= check_box_tag "dup", person.id, false, {:style => "display:none; float:left;",
+            :class => 'duplicate-checkbox', :onclick => 'check_dup(this);'} %>
+          <span class='resultDataTitle'><%= create_result_data_title(person) %></span>
+          <div><%= create_address(person) %></div>
+          <div>状況:
+            <span class='resultDataPersonFound'>
+              <% note = Note.find(:first,
+                :conditions => ["person_record_id=?", person.id],
+                :order => "entry_date DESC") %>
+              <%= @person_const["status"]["#{note.try(:status)}"] %>
+            </span>
+          </div>
+        </span>
+      </div>
+    </a>
+  <% end %>
+</div>
+
+<div id='dup_form' style='display:none'>
+  重複している記録を 3 つまで選択できます:
+  <%= hidden_field_tag "dup_state" %>
+  <%= form_tag :action => :multiviews do %>
+    <%= submit_tag "重複している記録としてマークする", :id => "dup_go" %>
+    <span id='dup_count'></span> 件の記録が選択されています
+    <%= hidden_field_tag "id1" %>
+    <%= hidden_field_tag "id2" %>
+    <%= hidden_field_tag "id3" %>
+  <% end %>
+</div>
+<script type='text/javascript'>
+  init_dup_state();
+</script>
+
+<p></p>
+
+探している人の情報が見つからない場合は、下のボタンをクリックして新しい記録を作成できます。
+
+<p></p>
+
+<% if role == "seek" %>
+  <%= button_to "行方不明者の新しい記録を作成する", {:action => :new}, :method => :get %>
+<% else %>
+  <%= form_tag({:action => "new"}, {:method => :get}) do %>
+    <%= hidden_field_tag "family_name", family_name %>
+    <%= hidden_field_tag "given_name",  given_name %>
+    <%= submit_tag "次の人の新しいレコードを作成する: #{name}" %>
+  <% end %>
+<% end %>
+
+<p></p>

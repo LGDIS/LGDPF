@@ -1,0 +1,175 @@
+<div class="fields-table note">
+  <h2>この人の状況について教えてください</h2>
+  <div class="status section">
+    <h3>この人の状況</h3>
+    <div class="field">
+      <%= select(:note, :status,
+        options_for_select(@note_const["status"].invert, @note.status)) %>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+  <div class="mandatory text section">
+    <h3>メッセージ（必須）</h3>
+    <div class="hint">この人やこの人を探している人へのメッセージ</div>
+    <div class="field">
+      <%= text_area :note, :text, { :rows => 5, :class => "long-text-input" } %>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="location section">
+    <h3>最後に見かけた場所</h3>
+    <div class="hint">
+      Type an address or open the map below and indicate the location by clicking on the map.
+    </div>
+    <div class="field">
+      <%= text_area :clickable_map, :location_field,
+        { :rows => 2, :class => "long-text-input", :value => @note.last_known_location} %>
+    </div>
+    <div class="end-multi-columns"></div>
+    <div class="field map-container">
+      <div id="clickable_map_show_link">
+        <a href='#' onclick="toggleClickableMap('clickable_map'); return false;">
+          地図を表示</a>
+      </div>
+      <div id="clickable_map_hide_link" style="display: none">
+        <a href='#' onclick="toggleClickableMap('clickable_map'); return false;">
+          地図を隠す</a>
+        &nbsp;&nbsp;
+        <a href='#' id="switch_to_latlng_link"
+           onclick="toggleLatLngAndAddress('clickable_map'); return false;">
+          Switch to lat/long</a>
+        <a href='#' id="switch_to_address_link" style="display: none"
+           onclick="toggleLatLngAndAddress('clickable_map'); return false;">
+          Switch to address</a>
+      </div>
+      <div id="clickable_map" class="map" style="display: none"></div>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="photo section">
+    <h3><label for="note_photo_url">写真</label></h3>
+    <div class="hint">
+      メモに写真を添付するには、アップロードするか、写真の URL を入力してください。
+    </div>
+    <div class="field" onclick="$('#note_photo_input_url').attr('checked',true); update_image_input(true);">
+      <span class="radio">
+        <%= radio_button_tag "note_photo_input", "url", true %>
+      </span>
+      <span class="label">URL:</span>
+      <span class="value">
+        <%= text_field :note, :remote_photo_url_url, :value => @note.photo_url,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field" onclick="$('#note_photo_input_upload').attr('checked',true); update_image_input(true);">
+      <span class="radio">
+        <%= radio_button_tag "note_photo_input", "upload", false %>
+      </span>
+      <span class="label">
+        アップロード:
+      </span>
+      <span class="value">
+        <%= file_field :note, :photo_url, :value => @note.photo_url,
+          :class => "medium-text-input", :disabled => true %>
+      </span>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="author_made_contact section">
+    <h3 class="mandatory">この人と災害発生後に連絡が取れましたか？（必須）</h3>
+    <div class="field">
+      <%= radio_button "note", "author_made_contact", true,
+        {:onclick => "update_contact()", :onchange => "update_contact()"} %>
+      <label class="option" for="note_author_made_contact_true">はい</label>
+    </div>
+    <div class="field">
+      <%= radio_button "note", "author_made_contact", false,
+        {:checked => true, :onclick => "update_contact()", :onchange => "update_contact()"}%>
+      <label class="option" for="note_author_made_contact_false">いいえ</label>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+
+  <div id="contact_row" class="contact section" style="display: none;">
+    <h3> 行方不明者の現在の連絡先情報 </h3>
+    <div class="hint"> 現在この人と連絡を取ることができる手段を指定してください。 </div>
+    <div class="field">
+      <span class="label">
+        <label for="phone_of_found_person"> 電話番号: </label>
+      </span>
+      <span class="value">
+        <%= text_field :note, :phone_of_found_person, :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="email_of_found_person"> メール アドレス: </label>
+      </span>
+      <span class="value">
+        <%= text_field :note, :email_of_found_person, :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <% unless @person.new_record? %>
+    <div class="source section">
+      <h3 class="mandatory">あなたについて（必須）</h3>
+      <div class="hint">
+        この人を探している人があなたと連絡を取る手段を指定してください
+      </div>
+      <div class="field">
+        <span class="label">
+          <label for="author_name" class="mandatory"
+                 id="author_name_original">
+            あなたの名前:
+          </label>
+        </span>
+        <span class="value">
+          <%= text_field :note, :author_name, :value => @note.author_name,
+            :class => "medium-text-input" %>
+        </span>
+      </div>
+      <div class="field">
+        <span class="label">
+          <label for="author_phone" id="author_phone_original">
+            あなたの電話番号:
+          </label>
+        </span>
+        <span class="value">
+          <%= text_field :note, :author_phone, :value => @note.author_phone,
+            :class => "medium-text-input" %>
+        </span>
+      </div>
+      <div class="field">
+        <span class="label">
+          <label for="author_email" id="author_email_original">
+            あなたのメール アドレス:
+          </label>
+        </span>
+        <span class="value">
+          <%= text_field :note, :author_email, :value => @note.author_email,
+            :class => "medium-text-input" %>
+        </span>
+      </div>
+
+      <div class="field">
+        <span class="label">
+          <label for="subscribe-checkbox">
+            この方の新着情報をメールで受け取る:
+          </label>
+        </span>
+        <span class="value">
+          <%= check_box "subscribe", "checkbox", {}, true, false %>
+        </span>
+      </div>
+      <div class="end-multi-columns"></div>
+    </div>
+  <% end %>
+
+  <div class="submit"><%= submit_tag "この記録を保存" %></div>
+</div>

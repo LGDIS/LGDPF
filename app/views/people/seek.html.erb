@@ -1,0 +1,37 @@
+<div class="container">
+  <div class="content" role="main">
+    <%= form_tag :action => :seek do %>
+    <%= hidden_field_tag "first_step", "first_step" %>
+      <div class="fields-table query seek" role="form">
+        <div class="instructions">
+          <h3 class="sub_title">人を探している</h3>
+          <div class="">その人の名前、または名前の一部を入力してください。</div>
+          <div class="field">
+            <%= text_field_tag :name, params[:name],
+              :class => "long-text-input", :size => '40' %>
+          </div>
+          <div class="end-multi-columns"></div>
+          <div class="submit">
+            <%= submit_tag "この人を探す" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<% if params[:name].present? %>
+  <% if @person.present? %>
+    <%= render :partial => "person_exist", 
+      :locals => {:name => params[:name], :person => @person, :role => "seek"} %>
+  <% else %>
+    <%= render :partial => "person_not_exist", 
+      :locals => {:name => params[:name]} %>
+  <% end %>
+<% end %>
+
+<p></p>
+
+<div class="backlink">
+  <%= link_to "<< 最初のページに戻る", :action => :index %>
+</div>

@@ -1,0 +1,81 @@
+# -*- coding:utf-8 -*-
+# This file should contain all the record creation needed to seed the database with its default values.
+# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
+#
+# Examples:
+#
+#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
+#   Mayor.create(name: 'Emanuel', city: cities.first)
+
+# 性別
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'sex', text: '女性',  value: '1', _order: '1')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'sex', text: '男性',  value: '2', _order: '2')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'sex', text: 'その他', value: '3', _order: '3')
+# レコード保持期間
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'expiry_date', text: '約 1 か月（30 日）後', value: '30', _order: '1')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'expiry_date', text: '約 2 か月（60 日）後', value: '60', _order: '2')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'expiry_date', text: '約 3 か月（90 日）後', value: '90', _order: '3')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'expiry_date', text: '約 6 か月（180 日）後', value: '180', _order: '4')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'expiry_date', text: '約 1 年（360 日）後', value: '360', _order: '5')
+# 安否状況
+Constant.create(kind1: 'TD', kind2: 'notes', kind3: 'status', text: '指定なし', value: '1', _order: '1')
+Constant.create(kind1: 'TD', kind2: 'notes', kind3: 'status', text: '情報を探している', value: '2', _order: '2')
+Constant.create(kind1: 'TD', kind2: 'notes', kind3: 'status', text: '私が本人である', value: '3', _order: '3')
+Constant.create(kind1: 'TD', kind2: 'notes', kind3: 'status', text: 'この人が生きているという情報を入手した', value: '4', _order: '4')
+Constant.create(kind1: 'TD', kind2: 'notes', kind3: 'status', text: 'この人を行方不明と判断した理由がある', value: '5', _order: '5')
+#
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'status', text: '指定なし', value: "", _order: '1')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'status', text: '指定なし', value: '1', _order: '2')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'status', text: '誰かがこの人物についての情報を求めています', value: '2', _order: '3')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'status', text: 'この人からの投稿メッセージがあります', value: '3', _order: '4')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'status', text: 'この人が生きているという情報を入手した人がいます', value: '4', _order: '5')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'status', text: 'この人を行方不明者として報告した人がいます', value: '5', _order: '6')
+# 市内・市外区分
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'in_city_flag', text: '市内', value: "1", _order: '1')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'in_city_flag', text: '市外', value: '2', _order: '2')
+# 避難所
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'shelter_name', text: '石巻小学校', value: '1', _order: '1')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'shelter_name', text: '石巻中学校', value: '2', _order: '2')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'shelter_name', text: '市立体育館', value: '3', _order: '3')
+# 避難状況
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'refuge_status', text: '避難済', value: '1', _order: '1')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'refuge_status', text: '未避難', value: '2', _order: '2')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'refuge_status', text: '避難所を既に退去済', value: '3', _order: '3')
+# 負傷
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'injury_flag', text: '有', value: '1', _order: '1')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'injury_flag', text: '無', value: '2', _order: '2')
+# アレルギー
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'allergy_flag', text: '有', value: '1', _order: '1')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'allergy_flag', text: '無', value: '2', _order: '2')
+# 妊娠
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'pregnancy', text: '妊娠中', value: '1', _order: '1')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'pregnancy', text: '該当しない', value: '2', _order: '2')
+# 乳幼児
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'baby', text: '1歳に満たない子供', value: '1', _order: '1')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'baby', text: '該当しない', value: '2', _order: '2')
+# 要介護度3以上
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'upper_care_level_three', text: '要介護3', value: '1', _order: '1')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'upper_care_level_three', text: '該当しない', value: '2', _order: '2')
+# 一人暮らし高齢者（65歳以上）
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'elderly_alone', text: '該当する', value: '1', _order: '1')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'elderly_alone', text: '該当しない', value: '2', _order: '2')
+# 高齢者世帯（夫婦共に65歳以上）
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'elderly_couple', text: '該当する', value: '1', _order: '1')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'elderly_couple', text: '該当しない', value: '2', _order: '2')
+# 寝たきり高齢者
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'bedridden_elderly', text: '該当する', value: '1', _order: '1')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'bedridden_elderly', text: '該当しない', value: '2', _order: '2')
+# 認知症高齢者
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'elderly_dementia', text: '該当する', value: '1', _order: '1')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'elderly_dementia', text: '該当しない', value: '2', _order: '2')
+# 療育手帳所持者
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'rehabilitation_certificate', text: '最重度', value: '1', _order: '1')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'rehabilitation_certificate', text: '該当しない', value: '2', _order: '2')
+# 身体障害者手帳所持者
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'physical_disability_certificate', text: '最重度', value: '1', _order: '1')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'physical_disability_certificate', text: '該当しない', value: '2', _order: '2')
+
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'invalid_reason', text: 'この記録に関する最新情報は不要です。', value: 'do_not_want_anymore', _order: '1')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'invalid_reason', text: 'この記録が原因でスパムを受信したから', value: 'spam_received', _order: '2')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'invalid_reason', text: 'この記録がスパム情報だから', value: 'record_is_spam', _order: '3')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'invalid_reason', text: 'この記録が目的を果たしたから', value: 'served_its_purpose', _order: '4')

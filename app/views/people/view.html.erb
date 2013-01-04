@@ -1,0 +1,455 @@
+<div class="container">
+  <div class="content" role="main">
+    <%= form_tag({:action => :update, :id => @person},{:multipart => true,}) do %>
+
+      <div class="view">
+        <div class="column left">
+          <div class="fields-table person">
+            <div>
+              <h2>識別情報</h2>
+
+              <div class="name section">
+                <h3>名前</h3>
+                <div class="field">
+                  <span class="label">姓:</span>
+                  <span class="value"><%= @person.family_name %></span>
+                </div>
+                <div class="field">
+                  <span class="label">名:</span>
+                  <span class="value"><%= @person.given_name %></span>
+                </div>
+                <div class="field">
+                  <span class="label">名前（よみがな）:</span>
+                  <span class="value"><%= @person.alternate_names %></span>
+                </div>
+                <div class="end-multi-columns"></div>
+              </div>
+
+              <div class="physical section">
+                <h3>身体の特徴</h3>
+                <div class="field">
+                  <span class="label">性別:</span>
+                  <span class="value"><%= @person_const["sex"]["#{@person.sex}"] %></span>
+                </div>
+                <div class="field">
+                  <span class="label">年齢:</span>
+                  <span class="value"><%= @person.age %></span>
+                </div>
+                <div class="field">
+                  <span class="label">生年月日:</span>
+                  <span class="value"><%= @person.date_of_birth %></span>
+                </div>
+
+                <div class="field">
+                  <span class="label">負傷</span>
+                  <span class="value">
+                    <%= @person_const["injury_flag"]["#{@person.injury_flag}"] %>
+                  </span>
+                </div>
+
+                <div class="field">
+                  <span class="label">負傷内容:</span>
+                  <span class="value"><%= @person.injury_condition %></span>
+                </div>
+
+                <div class="field">
+                  <span class="label">アレルギー:</span>
+                  <span class="value">
+                    <%= @person_const["allergy_flag"]["#{@person.allergy_flag}"] %>
+                  </span>
+                </div>
+
+                <div class="field">
+                  <span class="label">アレルギー物質:</span>
+                  <span class="value"><%= @person.allergy_cause %></span>
+                </div>
+
+                <div class="field">
+                  <span class="label">妊娠:</span>
+                  <span class="value">
+                    <%= @person_const["pregnancy"]["#{@person.pregnancy}"] %>
+                  </span>
+                </div>
+
+                <div class="field">
+                  <span class="label">乳幼児:</span>
+                  <span class="value">
+                    <%= @person_const["baby"]["#{@person.baby}"] %>
+                  </span>
+                </div>
+
+                <div class="field">
+                  <span class="label">要介護度３以上:</span>
+                  <span class="value">
+                    <%= @person_const["upper_care_level_three"]["#{@person.upper_care_level_three}"] %>
+                  </span>
+                </div>
+
+                <div class="field">
+                  <span class="label">一人暮らし高齢者（６５歳以上）:</span>
+                  <span class="value">
+                    <%= @person_const["elderly_alone"]["#{@person.elderly_alone}"] %>
+                  </span>
+                </div>
+
+                <div class="field">
+                  <span class="label">高齢者世帯（夫婦共に６５歳以上）:</span>
+                  <span class="value">
+                    <%= @person_const["elderly_couple"]["#{@person.elderly_couple}"] %>
+                  </span>
+                </div>
+
+                <div class="field">
+                  <span class="label">寝たきり高齢者:</span>
+                  <span class="value">
+                    <%= @person_const["bedridden_elderly"]["#{@person.bedridden_elderly}"] %>
+                  </span>
+                </div>
+
+                <div class="field">
+                  <span class="label">認知症高齢者:</span>
+                  <span class="value">
+                    <%= @person_const["elderly_dementia"]["#{@person.elderly_dementia}"] %>
+                  </span>
+                </div>
+
+                <div class="field">
+                  <span class="label">療育手帳保持者:</span>
+                  <span class="value">
+                    <%= @person_const["rehabilitation_certificate"]["#{@person.rehabilitation_certificate}"] %>
+                  </span>
+                </div>
+
+                <div class="field">
+                  <span class="label">身体障害者手帳保持者:</span>
+                  <span class="value">
+                    <%= @person_const["physical_disability_certificate"]["#{@person.physical_disability_certificate}"] %>
+                  </span>
+                </div>
+
+
+                <div class="end-multi-columns"></div>
+              </div>
+
+              <div class="address section">
+                <h3>自宅住所</h3>
+                <div class="field">
+                  <span class="label">町名:</span>
+                  <span class="value"><%= @person.home_street %></span>
+                </div>
+                <div class="field">
+                  <span class="label">近隣の場所:</span>
+                  <span class="value"><%= @person.home_neighborhood %></span>
+                </div>
+                <div class="field">
+                  <span class="label">市:</span>
+                  <span class="value"><%= @person.home_city %></span>
+                </div>
+                <div class="field">
+                  <span class="label">都道府県:</span>
+                  <span class="value"><%= @person.home_state %></span>
+                </div>
+                <div class="field">
+                  <span class="label">郵便番号:</span>
+                  <span class="value"><%= @person.home_postal_code %></span>
+                </div>
+                <div class="field">
+                  <span class="label">市内・市外区分:</span>
+                  <span class="value">
+                    <%= @person_const["in_city_flag"]["#{@person.in_city_flag}"] %>
+                  </span>
+                </div>
+
+                <div class="end-multi-columns"></div>
+              </div>
+
+              <div class= "section">
+                <h3>避難所</h3>
+
+                <div class="field">
+                  <span class="label">避難所:</span>
+                  <span class="value">
+                    <%= @person_const["shelter_name"]["#{@person.shelter_name}"] %>
+                  </span>
+                </div>
+
+                <div class="field">
+                  <span class="label">避難状況:</span>
+                  <span class="value">
+                    <%= @person_const["refuge_status"]["#{@person.refuge_status}"] %>
+                  </span>
+                </div>
+
+                <div class="field">
+                  <span class="label">避難理由:</span>
+                  <span class="value"><%= @person.refuge_reason %></span>
+                </div>
+
+                <div class="field">
+                  <span class="label">入所年月日:</span>
+                  <span class="value"><%= @person.shelter_entry_date %></span>
+                </div>
+
+                <div class="field">
+                  <span class="label">退所年月日:</span>
+                  <span class="value"><%= @person.shelter_leave_date %></span>
+                </div>
+
+                <div class="field">
+                  <span class="label">退所先:</span>
+                  <span class="value"><%= @person.next_place %></span>
+                </div>
+
+                <div class="field">
+                  <span class="label">退所先電話番号:</span>
+                  <span class="value"><%= @person.next_place_phone %></span>
+                </div>
+
+
+                <div class="end-multi-columns"></div>
+
+              </div>
+
+
+              <% if @person.description.present? %>
+                <div class="description section">
+                  <h3>説明</h3>
+                  <div class="field">
+                    <span>
+                      <%= text_area :person, :description,
+                        :cols => "40", :rows => "5", :readonly => true %>
+                    </span>
+                  </div>
+                  <div class="end-multi-columns"></div>
+                </div>
+              <% end %>
+
+              <% if @person.photo_url.present? %>
+                <div class="photo section">
+                  <h3>写真</h3>
+                  <div class="field">
+                    <span>
+                      <%= image_tag(@person.photo_url, :class => "photo") %>
+                    </span>
+                  </div>
+                  <div class="end-multi-columns"></div>
+                </div>
+              <% end %>
+
+              <div class="source section">
+                <h3>この記録の情報源</h3>
+                <div class="field">
+                  <span class="label">情報提供者の名前:</span>
+                  <span class="value"><%= @person.author_name %></span>
+                </div>
+                <div class="field">
+                  <span class="label">情報提供者の電話番号:</span>
+                  <span class="value">
+                    <% if session[:pi_view] %>
+                      <%= @person.author_phone %>
+                    <% else %>
+                      <% unless @person.author_phone.blank? %>
+                        <%= link_to "（クリックして表示）", :action => :personal_info, :id => @person %>
+                      <% end %>
+                    <% end %>
+                  </span>
+                </div>
+                <div class="field">
+                  <span class="label">情報提供者のメールアドレス:</span>
+                  <span class="value">
+                    <% if session[:pi_view] %>
+                      <%= @person.author_email %>
+                    <% else %>
+                      <% unless @person.author_email.blank? %>
+                        <%= link_to "（クリックして表示）", :action => :personal_info, :id => @person %>
+                      <% end %>
+                    <% end %>
+                  </span>
+                </div>
+                <div class="field">
+                  <span class="label">情報元の URL:</span>
+                  <span class="value"><%= @person.source_url %></span>
+                </div>
+                <div class="field">
+                  <span class="label">情報元の投稿日:</span>
+                  <span class="value"><%= @person.source_date.strftime("%Y-%m-%d %H:%M %Z") if @person.source_date.present?  %></span>
+                </div>
+                <div class="field">
+                  <span class="label">情報元のサイト名:</span>
+                  <span class="value"><%= @person.source_name %></span>
+                </div>
+                <div class="field">
+                  <span class="label">この記録の有効期限:</span>
+                  <span class="value"><%= @person.expiry_date.strftime("%Y-%m-%d %H:%M %Z") if @person.expiry_date.present? %></span>
+                </div>
+                <div class="end-multi-columns"></div>
+              </div>
+            </div>
+
+            <div>
+              <%= submit_tag "有効期限を 60 日延長する", :name => "extend_days" %>
+            </div>
+
+            <div>
+              <%= submit_tag "この方の新着情報をメールで受け取る", :name => "subscribe_email" %>
+            </div>
+
+            <div>
+              <%= submit_tag "このレコードを削除する", :name => "delete" %>
+            </div>
+
+            <% unless @person.author_email.blank? %>
+              <div>
+                <%= submit_tag "この記録へのメモの書き込みを禁止する", :id => "note_invalid_apply" %>
+              </div>
+            <% end %>
+
+          </div>
+
+          <p><%= link_to "<< 最初のページに戻る ", :action => :index %></p>
+        </div>
+      </div>
+
+      <div class="column right">
+
+        <% if @notes.blank? %>
+          <h2>メモはまだありません</h2>
+
+        <% else %>
+          <h2>この人に関するメモ</h2>
+
+          <% @notes.each do |note| %>
+            <div class="view note">
+              <div class="source">
+                投稿者:<span class="author"><%= note.author_name %></span>
+                日付:<span class="date"><%= note.entry_date.strftime("%Y-%m-%d") if note.entry_date.present? %></span>
+                時刻:<span class="time"><%= note.entry_date.strftime("%H:%M:%S %Z") if note.entry_date.present? %></span>
+
+      <%# スパム認定:true, スパム解除:false %>
+                <% if note.spam_flag == true %>
+                  <div class="hidden-note">
+                    このメモはスパムとして登録されました
+                    <a href="#" id="<%= note.id %>-reveal-note" style="display: inline;"
+                       onclick="hide_unhide_note_contents(<%= note.id %>); return false;">
+                      メモを表示する</a>
+                    <a href="#" id="<%= note.id %>-hide-note" style="display: none;"
+                       onclick="hide_unhide_note_contents(<%= note.id %>); return false;">
+                      メモを隠す</a>
+                    <%= link_to "スパムではありません",
+                      {:action => :spam_cancel, :id => @person, :note_id => note.id},
+                    {:id => "#{note.id}" + "-mark-not-spam", :style => "display:none;"}%>
+                  </div>
+                <% else %>
+                  <span class="report-spam">
+                    <%= link_to "スパムを報告", :action => :spam, :id => @person, :note_id => note.id %>
+                  </span>
+                <% end %>
+
+                <% unless note.author_email.blank? %>
+                  <div class="contact">
+                    <% if session[:pi_view] %>
+                      メール:<%= note.author_email %>
+                    <% else %>
+                      メール:<%= link_to "（クリックして表示）", :action => :personal_info, :id => @person %>
+                    <% end %>
+                  </div>
+                <% end %>
+
+                <% unless note.author_phone.blank? %>
+                  <div class="contact">
+                    <% if session[:pi_view] %>
+                      電話:<%= note.author_phone %>
+                    <% else %>
+                      電話:<%= link_to "（クリックして表示）", :action => :personal_info, :id => @person %>
+                    <% end %>
+                  </div>
+                <% end %>
+
+                <% if note.spam_flag == true %> <%# スパム認定:true, スパム解除:false %>
+                  <div class="contents" id="<%= note.id %>-contents" style="display: none;">
+                  <% else %>
+                    <div class="contents" id="<%= note.id %>-contents">
+                    <% end %>
+                    <span name="note_text">
+                      <span><%= raw parse_br(note.text) %></span>
+                    </span>
+                    <p></p>
+                    <div class="status">
+                      <span class="label">状況:</span>
+                      <span class="field believed_missing">
+                        <%= @note_const["status"]["#{note.status}"] %>
+                      </span>
+                    </div>
+
+                    <% if note.email_of_found_person.present? %>
+                      <div>
+                        <span class="label"> 行方不明者の現在のメール アドレス: </span>
+                        <span class="field">
+                          <%= note.email_of_found_person %>
+                        </span>
+                      </div>
+                    <% end %>
+                    <% if note.phone_of_found_person.present? %>
+                      <div>
+                        <span class="label"> 行方不明者の現在の電話番号: </span>
+                        <span class="field">
+                          <%= note.phone_of_found_person %>
+                        </span>
+                      </div>
+                    <% end %>
+
+                    <div>
+                      <span class="label">最後に見かけた場所:</span>
+                      <span class="field"><%= note.last_known_location %></span>
+                    </div>
+
+                    <div>
+                      <%= content_tag(:div, :id => "set_map_"+"#{note.id}"+"_show_link", :style => "display:none") do -%>
+                        <a href='#' onclick="toggleMarkeredMap('set_map_<%= note.id %>'); return false;">
+                          地図を表示</a>
+                      <% end -%>
+                      <%= content_tag(:div, :id => "set_map_"+"#{note.id}"+"_hide_link", :style => "display:none") do -%>
+                        <a href='#' onclick="toggleMarkeredMap('set_map_<%= note.id %>'); return false;">
+                          地図を隠す</a>
+                      <% end -%>
+                      <%= content_tag(:div, :id => "set_map_"+"#{note.id}", :class => "map" , :style => "display:none") do -%><% end -%>
+                      <%= javascript_tag do %>
+                        parseLatLngOrGeocodeAndStore('<%= note.last_known_location %>', 'set_map_<%= note.id %>');
+                      <% end %>
+                    </div>
+                    <% if note.photo_url.present? %>
+                      <div class="photo section">
+                        <div class="field">
+                          <span>
+                            <%= image_tag(note.photo_url, :class => "photo") %>
+                          </span>
+                        </div>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+                <div class="end-multi-columns"></div>
+              </div>
+            <% end %>
+
+          <% end %>
+
+          <p></p>
+
+          <% if true %>
+            <div class="create">
+              <%= render :partial => "column_right",
+                :locals => {:note => @note} %>
+            </div>
+          <% else %>
+            <div class="mandatory">
+              作成者がこの記録に関するメモを無効にしました。
+              <%= submit_tag "この記録へのメモの書き込みを許可する", :name => "note_valid_apply" %>
+            </div>
+          <% end %>
+          <div class="end-multi-columns"></div>
+        </div>
+
+      <% end %>
+    </div>
+  </div>

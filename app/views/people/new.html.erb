@@ -1,0 +1,25 @@
+
+
+<div class="container">
+  <div class="content">
+    <%= form_tag({:action => :create},{:multipart => true,}) do %>
+        <div class="create">
+          <div class="column left">
+            <%= render :partial => "column_left" %>
+          </div>
+          <% unless @from_seek %>
+            <div class="column right">
+              <%= render :partial => "column_right" %>
+            </div>
+          <% end %>
+        </div>
+        <div class="end-multi-columns"></div>
+      <% end %>
+    </div>
+  </div>
+
+  <p></p>
+
+  <div class="backlink">
+    <%= link_to "<< 最初のページに戻る ", :action => :index %>
+  </div>

@@ -1,0 +1,757 @@
+/*
+ * Copyright 2010 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/* All pages */
+
+body {
+  font-family: arial, sans-serif;
+  font-size: 13px;
+  margin: auto;
+  width: 800px;
+  max-width: 1000px;
+}
+
+a img {
+  border: none;
+}
+
+h1 {
+  margin-top: 0.5em;
+  font-size: 18px;
+  font-weight: normal;
+}
+
+h2 {
+  font-size: 15px;
+  margin: 2em 0 1em;
+}
+
+h3 {
+  font-size: 13px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.header {
+  padding: 1em;
+  border-bottom: 1px solid #dadada;
+  overflow: auto;
+}
+
+.header a {
+  text-decoration: none;
+}
+
+.container {
+  clear: both;
+}
+
+.hidden {
+  display: none;
+}
+
+.warning {
+  color: red;
+  font-weight: bold;
+}
+
+.header-notification {
+  color: #f00;
+  padding: 2em;
+  margin: 2em auto;
+  border: 1px solid #f00;
+  background: #ffe;
+  font-weight: bold;
+  text-align: center;
+}
+
+.end-multi-columns {
+  clear: both;
+}
+
+var {/* variables in sample code or URLs */
+  color: #c00;
+}
+
+pre {/* code samples */
+  background: #f4f4f4;
+  border: 1px solid #dadada;
+  margin: 0 2em;
+  padding: 1em;
+  font-size: 12px;
+}
+
+/* Language menu */
+
+div.languages {
+  float: right;
+  margin: 10px 0;
+  padding: 0;
+}
+
+div.languages img {
+  vertical-align: text-top;
+}
+
+/* Repository menu */
+
+ul.repo-menu {
+  margin: 0 0 1em 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+/* Forms */
+
+form {
+  margin: 0;
+}
+
+input {
+  font-family: arial, sans-serif;
+  font-size: 13px;
+}
+
+.mandatory {
+  color: #f00;
+}
+
+.hint {
+  font-weight: normal;
+  color: #888;
+  font-size: 11px;
+}
+
+.hint .warning {
+  color: red;
+  font-weight: normal;
+}
+
+/* Multi-column page */
+
+.column {
+  width: 380px;
+}
+
+.column.left {
+  float: left;
+}
+
+.column.right {
+  float: right;
+}
+
+.column h2 {
+  margin: 2px 0 6px;
+  padding-left: 6px;
+}
+
+/* Tables which show a label and a value of each field e.g. in /view page.
+
+ See app/resources/view.html.template for a usage example.
+
+ Constructed with <div> and <span>, not <table>, so that:
+ - it looks like a table on normal UI (with CSS rules below)
+ - it looks like a normal div/span layout on ui=jp-mobile (where CSS is not
+ applied) which fits small screens.
+
+ You need:
+ <div class="end-multi-columns"></div>
+ after a sequence of <div class="field">. Otherwise the bottom margin is not
+ correctly inserted.
+ */
+
+.fields-table {
+  background: #e8e8e8;
+  padding: 4px;
+}
+
+.fields-table .section {
+  padding: 4px;
+  background: #f8f8f8;
+  border-bottom: 4px solid #e8e8e8;
+}
+
+.fields-table .field {
+  clear: both;
+  margin-left: 16px;
+}
+
+.fields-table .label {
+  display: block; /* to make float/width attribute work */
+  float: left;
+  width: 160px;
+  height: 100%;
+  text-align: right;
+}
+
+.fields-table .value {
+  display: block; /* to make float/width attribute work */
+  float: right;
+  width: 160px;
+}
+
+.fields-table .long-text-input {
+  width: 280px;
+}
+
+.fields-table .medium-text-input {
+  width: 140px;
+}
+
+.fields-table .short-text-input {
+  width: 70px;
+}
+
+/* Tables.
+
+ Mostly replaced by fields-table above, but we still have some e.g. in /admin
+ page.
+ */
+
+tr {
+  vertical-align: baseline;
+}
+
+th, td {
+  padding: 0px 4px;
+  text-align: left;
+}
+
+tr.columns {
+  vertical-align: baseline;
+}
+
+table.fields {
+  margin-left: 3em;
+}
+
+tr.text, tr.description, tr.location, tr.other {
+  vertical-align: top;
+}
+
+td.label {
+  text-align: right;
+  width: 12em;
+}
+
+.tracking, .note .contents div.tracking {
+  font-size: 9px;
+  color: #888;
+  text-align: right;
+}
+
+td.submit {
+  text-align: left;
+}
+
+/* Footer */
+
+.disclaimer {
+  margin: 0 0 1em 0;
+  text-align: left;
+}
+
+.footer {
+  clear: both;
+  padding: 1em;
+  text-align: center;
+  color: #666;
+}
+
+.footer .logo {
+  margin: 1em 0;
+}
+
+/* Error message and info message pages */
+
+.error {
+  color: #f00;
+  padding: 2em;
+  margin: 2em;
+  border: 1px solid #f00;
+  background: #ffe;
+}
+
+.info {
+  color: #000;
+  padding: 2em;
+  margin: 2em;
+  border: 1px solid green;
+}
+
+.deactivation {
+  margin: 2em 1em;
+}
+
+/* Main page */
+
+.main {
+  font-size: 16px;
+  width: 650px;
+  /* centering */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.main .row {
+  margin: 24px;
+}
+
+.main .stats {
+  font-size: 13px;
+  text-align: center;
+}
+
+.main .action-outer {
+  width: 240px;
+  height: 70px;
+  border-right: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  padding: 16px;
+}
+
+.main .action-outer.left {
+  background: #bea;
+  float: left;
+}
+
+.main .action-outer.right {
+  background: #bcf;
+  float: right;
+}
+
+.main .action-middle {
+  display: table-cell; /* to make vertical-align work */
+  height: 70px;
+  vertical-align: middle;
+  width: 240px;
+  text-align: center;
+}
+
+.main .action-inner {
+}
+
+.main .action-outer a {
+  font-weight: bold;
+}
+
+.custom-message {
+  width: 500px;
+  margin: 1em 0;
+}
+
+/* Query page */
+
+.query {
+  width: 380px;
+  margin: 2em auto;
+  padding: 1em;
+  border-right: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  background: #bcf;
+}
+
+.query.seek {
+  background: #bea;
+}
+
+.query .instructions {
+  padding-bottom: 0.5em;
+}
+
+.query .submit {
+  padding-top: 0.5em;
+}
+
+/* View page */
+
+.view .person {
+  background: #e8e8e8;
+}
+
+.view .person .section {
+  background: #f8f8f8;
+  border-bottom: 4px solid #e8e8e8;
+}
+
+.view .person .value {
+  font-weight: bold;
+}
+
+img.photo {
+  max-width: 250px;
+  max-height: 250px;
+  border: none;
+}
+
+img.icon {
+  vertical-align: middle;
+}
+
+.view.note {
+  margin: 1em 0;
+  background: #e8e8e8;
+  padding: 4px;
+}
+
+.view.note .source {
+  padding-left: 4px;
+  color: #888;
+}
+
+.note .author {
+  font-weight: bold;
+  color: #000;
+}
+
+.note .author.unknown {
+  font-weight: normal;
+  color: #888;
+}
+
+.view.note .contact {
+  font-size: 11px;
+  color: #888;
+}
+
+.note .contents {
+  background: #f8f8f8;
+  padding: 4px;
+  margin-top: 4px;
+}
+
+.note .contents div, .map-container {
+  font-size: 11px;
+  color: #666;
+}
+
+div.map {
+  margin-top: 0.5em;
+}
+
+.view .field .warning {
+  color: red;
+  font-weight: normal;
+}
+
+.note .contents div.translation {
+  margin-top: 8px;
+  font-style: italic;
+  font-size: 13px;
+  color: #66c;
+}
+
+/* Multiview page */
+
+table.multiview {
+  background-color: #e8e8e8;
+}
+
+.multiview table.column {
+  background: #e8e8e8;
+  padding: 4px 0 1px;
+  border: none;
+}
+
+.multiview .label {
+  white-space: nowrap;
+}
+
+.multiview .field {
+  background-color: #f8f8f8;
+  min-width: 5em;
+  border-left: 2px solid #e8e8e9;
+}
+
+.multiview .sectiontop {
+  padding: 0.5em;
+  background: #f8f8f8;
+}
+
+tr.sectionbottom td {
+  padding-bottom: 0.5em;
+  border-bottom: 4px solid #e8e8e8;
+}
+
+/* Create page */
+
+label.option {
+  font-weight: bold;
+}
+
+.create .fields-table {
+  background: #c0d0ff;
+}
+
+.create .fields-table .section {
+  background: #f0f4ff;
+  border-bottom: 4px solid #c0d0ff;
+}
+
+.create .fields-table .photo .radio {
+  display: block;
+  float: left;
+  width: 30px;
+}
+
+.create .fields-table .photo .label {
+  display: block;
+  float: left;
+  text-align: right;
+  width: 70px;
+}
+
+.create .fields-table .photo .value {
+  display: block;
+  float: right;
+  width: 220px;
+}
+
+.create .fields-table .profile .icon {
+  display: block;
+  float: left;
+  width: 30px;
+}
+
+.create .fields-table .profile .value {
+  display: block;
+  float: left;
+  text-align: right;
+  width: 220px;
+}
+
+.create .fields-table .profile .remove {
+  display: block;
+  float: right;
+  width: 70px;
+}
+
+.source .instructions {
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+/* results page */
+
+img.resultImage {
+  width: 80px;
+  height: auto;
+  max-width: 80px;
+  max-height: 80px;
+}
+
+resultsList {
+  width: 100%
+}
+
+.duplicate-checkbox {
+  margin: 4px 6px 2px 2px;
+}
+
+#dup_form, #dup_form form {
+  margin: 1em 0;
+}
+
+.result-link {
+  color: inherit;
+  display: block;
+  text-decoration: none;
+}
+
+.searchResults {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.searchResults .result-link:hover {
+  background: #cdf;
+}
+
+.searchResults .resultDataPersonFound {
+  background: lightGreen;
+}
+
+.searchResults .resultImageContainer {
+  float: left;
+}
+
+.searchResults .result-link {
+  padding: 5px;
+  overflow: hidden;
+}
+
+.searchResults .resultDataTitle {
+  color: #00e;
+  font-size: 130%;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.searchResults .resultData {
+  margin-left: 100px; /* 80px for image + 20px gutter */
+}
+
+.searchResults .resultImageContainer, .searchResults .resultData, .searchResults .resultDataTitle, .searchResults .tracking {
+  display: block;
+}
+
+.searchResults .tracking {
+  text-align: right;
+}
+
+/* Embedding instructions */
+
+div.embed pre {
+  margin-left: 2em;
+  padding: 0.5em;
+  background: #eee;
+  border: 1px solid #ddd;
+}
+
+/* Admin page */
+
+form.admin fieldset {
+  border: 1px solid #888;
+  margin: 24px 6px;
+  padding: 6px;
+}
+
+form.admin legend {
+  font-weight: bold;
+}
+
+form.admin .config {
+  margin: 12px 2px;
+}
+
+form.admin input#subdomain_new {
+  font-family: courier, monospace;
+  font-size: 14px;
+  text-align: right;
+}
+
+form.admin .config .response {
+  margin-left: 4em;
+}
+
+form.admin .config input, form .config textarea, form code {
+  font-family: courier, monospace;
+  font-size: 14px;
+}
+
+form.admin .option label {
+  width: 20em;
+}
+
+form.admin .config .note {
+  margin-left: 4em;
+}
+
+.subscribe_email_error {
+  color: #f00;
+}
+
+/* Review page */
+
+table.review {
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+table.review th, table.review td {
+  border: 1px solid #ccc;
+  padding: 4px 4px;
+}
+
+table.review th {
+  font-weight: normal;
+}
+
+table.review th.colgroup {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+table.review th.person.colgroup {
+  background: #5582dd;
+}
+
+table.review th.note.colgroup {
+  background: #555;
+}
+
+table.review .person, table.review .person a, table.review .person a:visited {
+  color: #04c;
+}
+
+table.review td.empty {
+  text-align: center;
+  border: none;
+}
+
+table.review td.caret, table.review td.checkbox {
+  padding: 2px 0;
+  border-left: none;
+  border-right: none;
+}
+
+table.review td.date {
+  white-space: nowrap;
+}
+
+table.review td.statuses {
+  font-family: monospace;
+}
+
+table.review .email {
+  color: #a66;
+}
+
+table.review .no-email {
+  color: #aaa;
+}
+
+table.review .entry-date {
+  color: #aaa;
+}
+
+/* Dashboard page */
+
+table.counts {
+  border-collapse: collapse;
+}
+
+table.counts th, table.counts td {
+  padding: 4px 8px;
+  border: 1px solid #aaa;
+}
+
+table.counts th {
+  text-align: left;
+  font-weight: bold;
+}
+
+table.counts td {
+  text-align: right;
+}
+
+.map {
+  width: 400px;
+  height: 280px;
+}
