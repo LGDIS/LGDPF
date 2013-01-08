@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(:version => 20121211032200) do
     t.string   "home_city"
     t.string   "home_state"
     t.string   "home_postal_code"
+    t.string   "home_country"
     t.string   "photo_url"
     t.integer  "public_flag"
     t.integer  "in_city_flag"

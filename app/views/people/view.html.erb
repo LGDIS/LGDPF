@@ -6,7 +6,7 @@
         <div class="column left">
           <div class="fields-table person">
             <div>
-              <h2>識別情報</h2>
+              <h2>対象者情報</h2>
 
               <div class="name section">
                 <h3>名前</h3>
@@ -32,101 +32,13 @@
                   <span class="value"><%= @person_const["sex"]["#{@person.sex}"] %></span>
                 </div>
                 <div class="field">
-                  <span class="label">年齢:</span>
-                  <span class="value"><%= @person.age %></span>
-                </div>
-                <div class="field">
                   <span class="label">生年月日:</span>
                   <span class="value"><%= @person.date_of_birth %></span>
                 </div>
-
                 <div class="field">
-                  <span class="label">負傷</span>
-                  <span class="value">
-                    <%= @person_const["injury_flag"]["#{@person.injury_flag}"] %>
-                  </span>
+                  <span class="label">年齢:</span>
+                  <span class="value"><%= @person.age %></span>
                 </div>
-
-                <div class="field">
-                  <span class="label">負傷内容:</span>
-                  <span class="value"><%= @person.injury_condition %></span>
-                </div>
-
-                <div class="field">
-                  <span class="label">アレルギー:</span>
-                  <span class="value">
-                    <%= @person_const["allergy_flag"]["#{@person.allergy_flag}"] %>
-                  </span>
-                </div>
-
-                <div class="field">
-                  <span class="label">アレルギー物質:</span>
-                  <span class="value"><%= @person.allergy_cause %></span>
-                </div>
-
-                <div class="field">
-                  <span class="label">妊娠:</span>
-                  <span class="value">
-                    <%= @person_const["pregnancy"]["#{@person.pregnancy}"] %>
-                  </span>
-                </div>
-
-                <div class="field">
-                  <span class="label">乳幼児:</span>
-                  <span class="value">
-                    <%= @person_const["baby"]["#{@person.baby}"] %>
-                  </span>
-                </div>
-
-                <div class="field">
-                  <span class="label">要介護度３以上:</span>
-                  <span class="value">
-                    <%= @person_const["upper_care_level_three"]["#{@person.upper_care_level_three}"] %>
-                  </span>
-                </div>
-
-                <div class="field">
-                  <span class="label">一人暮らし高齢者（６５歳以上）:</span>
-                  <span class="value">
-                    <%= @person_const["elderly_alone"]["#{@person.elderly_alone}"] %>
-                  </span>
-                </div>
-
-                <div class="field">
-                  <span class="label">高齢者世帯（夫婦共に６５歳以上）:</span>
-                  <span class="value">
-                    <%= @person_const["elderly_couple"]["#{@person.elderly_couple}"] %>
-                  </span>
-                </div>
-
-                <div class="field">
-                  <span class="label">寝たきり高齢者:</span>
-                  <span class="value">
-                    <%= @person_const["bedridden_elderly"]["#{@person.bedridden_elderly}"] %>
-                  </span>
-                </div>
-
-                <div class="field">
-                  <span class="label">認知症高齢者:</span>
-                  <span class="value">
-                    <%= @person_const["elderly_dementia"]["#{@person.elderly_dementia}"] %>
-                  </span>
-                </div>
-
-                <div class="field">
-                  <span class="label">療育手帳保持者:</span>
-                  <span class="value">
-                    <%= @person_const["rehabilitation_certificate"]["#{@person.rehabilitation_certificate}"] %>
-                  </span>
-                </div>
-
-                <div class="field">
-                  <span class="label">身体障害者手帳保持者:</span>
-                  <span class="value">
-                    <%= @person_const["physical_disability_certificate"]["#{@person.physical_disability_certificate}"] %>
-                  </span>
-                </div>
-
 
                 <div class="end-multi-columns"></div>
               </div>
@@ -134,24 +46,28 @@
               <div class="address section">
                 <h3>自宅住所</h3>
                 <div class="field">
-                  <span class="label">町名:</span>
-                  <span class="value"><%= @person.home_street %></span>
+                  <span class="label">出身国:</span>
+                  <span class="value"><%= @person.home_country %></span>
                 </div>
                 <div class="field">
-                  <span class="label">近隣の場所:</span>
-                  <span class="value"><%= @person.home_neighborhood %></span>
-                </div>
-                <div class="field">
-                  <span class="label">市:</span>
-                  <span class="value"><%= @person.home_city %></span>
+                  <span class="label">郵便番号:</span>
+                  <span class="value"><%= @person.home_postal_code %></span>
                 </div>
                 <div class="field">
                   <span class="label">都道府県:</span>
                   <span class="value"><%= @person.home_state %></span>
                 </div>
                 <div class="field">
-                  <span class="label">郵便番号:</span>
-                  <span class="value"><%= @person.home_postal_code %></span>
+                  <span class="label">市区町村:</span>
+                  <span class="value"><%= @person.home_city %></span>
+                </div>
+                <div class="field">
+                  <span class="label">町名:</span>
+                  <span class="value"><%= @person.home_street %></span>
+                </div>
+                <div class="field">
+                  <span class="label">近隣の場所:</span>
+                  <span class="value"><%= @person.home_neighborhood %></span>
                 </div>
                 <div class="field">
                   <span class="label">市内・市外区分:</span>
@@ -167,16 +83,16 @@
                 <h3>避難所</h3>
 
                 <div class="field">
-                  <span class="label">避難所:</span>
+                  <span class="label">避難状況:</span>
                   <span class="value">
-                    <%= @person_const["shelter_name"]["#{@person.shelter_name}"] %>
+                    <%= @person_const["refuge_status"]["#{@person.refuge_status}"] %>
                   </span>
                 </div>
 
                 <div class="field">
-                  <span class="label">避難状況:</span>
+                  <span class="label">指定避難所等:</span>
                   <span class="value">
-                    <%= @person_const["refuge_status"]["#{@person.refuge_status}"] %>
+                    <%= @person_const["shelter_name"]["#{@person.shelter_name}"] %>
                   </span>
                 </div>
 
@@ -186,22 +102,22 @@
                 </div>
 
                 <div class="field">
-                  <span class="label">入所年月日:</span>
+                  <span class="label">避難所入所年月日:</span>
                   <span class="value"><%= @person.shelter_entry_date %></span>
                 </div>
 
                 <div class="field">
-                  <span class="label">退所年月日:</span>
+                  <span class="label">避難所退所年月日:</span>
                   <span class="value"><%= @person.shelter_leave_date %></span>
                 </div>
 
                 <div class="field">
-                  <span class="label">退所先:</span>
+                  <span class="label">避難所を退所した後どこへ行ったか:</span>
                   <span class="value"><%= @person.next_place %></span>
                 </div>
 
                 <div class="field">
-                  <span class="label">退所先電話番号:</span>
+                  <span class="label">避難所を退所した後の電話番号:</span>
                   <span class="value"><%= @person.next_place_phone %></span>
                 </div>
 
@@ -337,7 +253,7 @@
                       メモを隠す</a>
                     <%= link_to "スパムではありません",
                       {:action => :spam_cancel, :id => @person, :note_id => note.id},
-                    {:id => "#{note.id}" + "-mark-not-spam", :style => "display:none;"}%>
+                      {:id => "#{note.id}" + "-mark-not-spam", :style => "display:none;"}%>
                   </div>
                 <% else %>
                   <span class="report-spam">

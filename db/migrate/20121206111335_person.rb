@@ -24,6 +24,7 @@ class Person < ActiveRecord::Migration
       t.column "home_city", :string
       t.column "home_state", :string
       t.column "home_postal_code", :string
+      t.column "home_country", :string
       t.column "photo_url", :string
       t.column "public_flag", :integer
 

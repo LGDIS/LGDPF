@@ -41,11 +41,26 @@ class PeopleController < ApplicationController
   end
 
   def multiviews
-    @person = Person.find_by_id(1)
-    @person2 = Person.find_by_id(2)
-    @person3 = Person.find_by_id(3)
+    @count = params[:mark_count].to_i + 1
+    @person = Person.find_by_id(params[:id1])
+    @person2 = Person.find_by_id(params[:id2])
+    @person3 = Person.find_by_id(params[:id3]) unless params[:id3].blank?
+    @note = Note.new
   end
 
+  # 重複した避難者をまとめる
+  def dup_merge
+    @note = Note.new(params[:note])
+    @note.liked_person_record_id     = @person.id
+    @note.last_known_location  = params[:clickable_map][:location_field]
+    if @note.save
+      session[:pi_view] = false  # 個人情報表示を無効にする
+      redirect_to :action => :view, :id => @person
+    else
+      flash.now[:error] = "すべての必須フィールドに入力してください。 "
+      render :action => "view"
+    end
+  end
 
   def new
     p "****** new ************************"
@@ -73,6 +88,14 @@ class PeopleController < ApplicationController
 
       @person = Person.new(params[:person])
       @person[:expiry_date] = Time.now.advance(:days => params[:person][:expiry_date].to_i)
+      @person[:injury_flag] = @person.injury_condition.present? ? 1:2
+      @person[:allergy_flag] = @person.allergy_cause.present? ? 1:2
+
+      if @person.home_state =~ /^(宮城)県?$/ && @person.home_city =~ /^(石巻)市?$/
+        @person[:in_city_flag] = 1  # 市内
+      else
+        @person[:in_city_flag] = 2  # 市外
+      end
 
       # 読み仮名登録用
       unless params[:kana].blank?
@@ -194,7 +217,9 @@ class PeopleController < ApplicationController
     session[:action] = action_name
     if params[:commit].present?
       @note.spam_flag = false  # 認定:true, 取消:false
-      if verify_recaptcha(:model => @user, :message => 'reCAPTCHA error.') && @note.save!
+      p "***************************:"
+      p verify_recaptcha
+      if verify_recaptcha && @note.save!
         redirect_to :action => :view, :id => @person
       end
     end

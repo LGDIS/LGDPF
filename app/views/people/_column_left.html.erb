@@ -49,6 +49,7 @@
   <div class="physical section">
     <h3>身体の特徴</h3>
     <div class="hint">この人の身体の特徴を入力してください。</div>
+
     <div class="field">
       <span class="label">
         <label for="sex">性別:</label>
@@ -59,6 +60,17 @@
           { :include_blank => true }) %>
       </span>
     </div>
+
+    <div class="field">
+      <span class="label">
+        <label for="date_of_birth">生年月日:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :date_of_birth, :value => @person.date_of_birth,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+
     <div class="field">
       <span class="label">
         <label for="age">年齢:</label>
@@ -69,28 +81,19 @@
           :class => "short-text-input" %>
       </span>
     </div>
-    <div class="field">
-      <span class="label">
-        <label for="date_of_birth">生年月日:</label>
-      </span>
-      <span class="value">
-        <%= text_field :person, :date_of_birth, :value => @person.date_of_birth,
-          :class => "medium-text-input" %>
-      </span>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="physical section">
+    <h3>身体の詳細な特徴</h3>
+    <div class="hint">
+      この人の詳細な身体の特徴を入力してください。
+      この情報は一般に公開されませんが、避難所運営・物資配送等の基礎情報となりますので、できる限り正確に入力してください。
     </div>
+
     <div class="field">
       <span class="label">
-        <label for="injury_flag">負傷:</label>
-      </span>
-      <span class="value">
-        <%= select(:person, :injury_flag,
-          options_for_select(@person_const["injury_flag"].invert, @person.injury_flag),
-          { :include_blank => true }) %>
-      </span>
-    </div>
-    <div class="field">
-      <span class="label">
-        <label for="injury_condition">負傷内容:</label>
+        <label for="injury_condition">災害等による負傷の内容:</label>
       </span>
       <span class="value">
         <%= text_field :person, :injury_condition, :value => @person.injury_condition,
@@ -99,17 +102,7 @@
     </div>
     <div class="field">
       <span class="label">
-        <label for="allergy_flag">アレルギー:</label>
-      </span>
-      <span class="value">
-        <%= select(:person, :allergy_flag,
-          options_for_select(@person_const["allergy_flag"].invert, @person.allergy_flag),
-          { :include_blank => true }) %>
-      </span>
-    </div>
-    <div class="field">
-      <span class="label">
-        <label for="allergy_cause">アレルギー物質:</label>
+        <label for="allergy_cause">アレルギーの詳細:</label>
       </span>
       <span class="value">
         <%= text_field :person, :allergy_cause, :value => @person.allergy_cause,
@@ -118,7 +111,7 @@
     </div>
     <div class="field">
       <span class="label">
-        <label for="pregnancy">妊娠:</label>
+        <label for="pregnancy">妊婦である:</label>
       </span>
       <span class="value">
         <%= select(:person, :pregnancy,
@@ -128,7 +121,7 @@
     </div>
     <div class="field">
       <span class="label">
-        <label for="baby">乳幼児:</label>
+        <label for="baby">乳幼児である:</label>
       </span>
       <span class="value">
         <%= select(:person, :baby,
@@ -138,7 +131,7 @@
     </div>
     <div class="field">
       <span class="label">
-        <label for="upper_care_level_three">要介護度３以上:</label>
+        <label for="upper_care_level_three">要介護者である:</label>
       </span>
       <span class="value">
         <%= select(:person, :upper_care_level_three,
@@ -148,7 +141,7 @@
     </div>
     <div class="field">
       <span class="label">
-        <label for="elderly_alone">一人暮らし高齢者（６５歳以上）:</label>
+        <label for="elderly_alone">一人暮らし高齢者（６５歳以上）である:</label>
       </span>
       <span class="value">
         <%= select(:person, :elderly_alone,
@@ -158,7 +151,7 @@
     </div>
     <div class="field">
       <span class="label">
-        <label for="elderly_couple">高齢者世帯（夫婦共に６５歳以上）:</label>
+        <label for="elderly_couple">高齢者世帯（夫婦共に６５歳以上）である:</label>
       </span>
       <span class="value">
         <%= select(:person, :elderly_couple,
@@ -168,7 +161,7 @@
     </div>
     <div class="field">
       <span class="label">
-        <label for="bedridden_elderly">寝たきり高齢者:</label>
+        <label for="bedridden_elderly">寝たきり高齢者である:</label>
       </span>
       <span class="value">
         <%= select(:person, :bedridden_elderly,
@@ -178,7 +171,7 @@
     </div>
     <div class="field">
       <span class="label">
-        <label for="elderly_dementia">認知症高齢者:</label>
+        <label for="elderly_dementia">認知症高齢者である:</label>
       </span>
       <span class="value">
         <%= select(:person, :elderly_dementia,
@@ -188,7 +181,7 @@
     </div>
     <div class="field">
       <span class="label">
-        <label for="rehabilitation_certificate">療育手帳保持者:</label>
+        <label for="rehabilitation_certificate">療育手帳保持者である:</label>
       </span>
       <span class="value">
         <%= select(:person, :rehabilitation_certificate,
@@ -198,7 +191,7 @@
     </div>
     <div class="field">
       <span class="label">
-        <label for="physical_disability_certificate">身体障害者手帳保持者:</label>
+        <label for="physical_disability_certificate">身体障害者手帳保持者である:</label>
       </span>
       <span class="value">
         <%= select(:person, :physical_disability_certificate,
@@ -207,12 +200,74 @@
       </span>
     </div>
 
+<%# ***************自動判別する項目************************************** %>
+    <%#*<div style="display:none;">%>
+      <%#*<div class="field">%>
+        <%#*<span class="label">%>
+          <%#*<label for="injury_flag">負傷:</label>%>
+        <%#*</span>%>
+        <%#*<span class="value">%>
+          <%#= select(:person, :injury_flag,
+            options_for_select(@person_const["injury_flag"].invert, @person.injury_flag),
+            { :include_blank => true }) %>
+        <%#*</span>%>
+      <%#*</div>%>
+      <%#*<div class="field">%>
+        <%#*<span class="label">%>
+          <%#*<label for="allergy_flag">アレルギー:</label>%>
+        <%#*</span>%>
+        <%#*<span class="value">%>
+          <%#= select(:person, :allergy_flag,
+            options_for_select(@person_const["allergy_flag"].invert, @person.allergy_flag),
+            { :include_blank => true }) %>
+        <%#*</span>%>
+      <%#*</div>%>
+    <%#*</div>%>
+<%# ***************自動判別する項目************************************** %>
+
+
     <div class="end-multi-columns"></div>
   </div>
 
   <div class="address section">
     <h3>自宅住所</h3>
     <div class="hint">この人の住所を入力してください。</div>
+    <div class="field">
+      <span class="label">
+        <label for="home_postal_code">出身国:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :home_country, :value => @person.home_country,
+          :class => "short-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="home_postal_code">郵便番号:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :home_postal_code, :value => @person.home_postal_code,
+          :class => "short-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="home_state">都道府県:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :home_state, :value => @person.home_state,
+          :class => "short-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="home_city">市区町村:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :home_city, :value => @person.home_city,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
     <div class="field">
       <span class="label">
         <label for="home_street">町名:</label>
@@ -232,60 +287,24 @@
           :class => "medium-text-input" %>
       </span>
     </div>
-    <div class="field">
-      <span class="label">
-        <label for="home_city">市:</label>
-      </span>
-      <span class="value">
-        <%= text_field :person, :home_city, :value => @person.home_city,
-          :class => "medium-text-input" %>
-      </span>
-    </div>
-    <div class="field">
-      <span class="label">
-        <label for="home_state">都道府県:</label>
-      </span>
-      <span class="value">
-        <%= text_field :person, :home_state, :value => @person.home_state,
-          :class => "short-text-input" %>
-      </span>
-    </div>
-    <div class="field">
-      <span class="label">
-        <label for="home_postal_code">郵便番号:</label>
-      </span>
-      <span class="value">
-        <%= text_field :person, :home_postal_code, :value => @person.home_postal_code,
-          :class => "short-text-input" %>
-      </span>
-    </div>
-    <div class="field">
-      <span class="label">
-        <label for="in_city_flag">市内・市外区分:</label>
-      </span>
-      <span class="value">
-        <%= select(:person, :in_city_flag,
+
+    <%#*<div class="field">%>
+      <%#*<span class="label">%>
+        <%#*<label for="in_city_flag">市内・市外区分:</label>%>
+      <%#*</span>%>
+      <%#*<span class="value">%>
+        <%#= select(:person, :in_city_flag,
           options_for_select(@person_const["in_city_flag"].invert, @person.in_city_flag),
           { :include_blank => true }) %>
-      </span>
-    </div>
+      <%#*</span>%>
+    <%#*</div>%>
+
     <div class="end-multi-columns"></div>
   </div>
 
   <div class="section">
     <h3>避難所</h3>
     <div class="hint">避難所に関する情報を入力してください。</div>
-
-    <div class="field">
-      <span class="label">
-        <label for="shelter_name">避難所:</label>
-      </span>
-      <span class="value">
-        <%= select(:person, :shelter_name,
-          options_for_select(@person_const["shelter_name"].invert, @person.shelter_name),
-          { :include_blank => true }) %>
-      </span>
-    </div>
     <div class="field">
       <span class="label">
         <label for="refuge_status">避難状況:</label>
@@ -296,9 +315,21 @@
           { :include_blank => true }) %>
       </span>
     </div>
+
+    <div class="field">
+      <span class="label">
+        <label for="shelter_name">指定避難所等:</label>
+      </span>
+      <span class="value">
+        <%= select(:person, :shelter_name,
+          options_for_select(@person_const["shelter_name"].invert, @person.shelter_name),
+          { :include_blank => true }) %>
+      </span>
+    </div>
     <div class="field">
       <span class="label">
         <label for="refuge_reason">避難理由:</label>
+         <div class="hint">「自主避難」・「避難勧告に基づき避難」・「避難指示に基づき避難」等を記述します。</div>
       </span>
       <span class="value">
         <%= text_field :person, :refuge_reason, :value => @person.refuge_reason,
@@ -307,7 +338,7 @@
     </div>
     <div class="field">
       <span class="label">
-        <label for="shelter_entry_date">入所年月日:</label>
+        <label for="shelter_entry_date">避難所入所年月日:</label>
       </span>
       <span class="value">
         <%= text_field :person, :shelter_entry_date, :value => @person.shelter_entry_date,
@@ -316,7 +347,7 @@
     </div>
     <div class="field">
       <span class="label">
-        <label for="shelter_leave_date">退所年月日:</label>
+        <label for="shelter_leave_date">避難所退所年月日:</label>
       </span>
       <span class="value">
         <%= text_field :person, :shelter_leave_date, :value => @person.shelter_leave_date,
@@ -325,7 +356,7 @@
     </div>
     <div class="field">
       <span class="label">
-        <label for="next_place">退所先:</label>
+        <label for="next_place">避難所を退所した後どこへ行ったか:</label>
       </span>
       <span class="value">
         <%= text_field :person, :next_place, :value => @person.next_place,
@@ -334,7 +365,7 @@
     </div>
     <div class="field">
       <span class="label">
-        <label for="next_place_phone">退所先電話番号:</label>
+        <label for="next_place_phone">避難所を退所した後どこへ行ったか:</label>
       </span>
       <span class="value">
         <%= text_field :person, :next_place_phone, :value => @person.next_place_phone,

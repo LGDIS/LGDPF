@@ -20,7 +20,7 @@
   <div class="location section">
     <h3>最後に見かけた場所</h3>
     <div class="hint">
-      Type an address or open the map below and indicate the location by clicking on the map.
+      住所を入力するか、下の地図を表示し、地図上をクリックして場所を示してください。
     </div>
     <div class="field">
       <%= text_area :clickable_map, :location_field,
@@ -38,10 +38,10 @@
         &nbsp;&nbsp;
         <a href='#' id="switch_to_latlng_link"
            onclick="toggleLatLngAndAddress('clickable_map'); return false;">
-          Switch to lat/long</a>
+          座標に変換</a>
         <a href='#' id="switch_to_address_link" style="display: none"
            onclick="toggleLatLngAndAddress('clickable_map'); return false;">
-          Switch to address</a>
+          住所に変換</a>
       </div>
       <div id="clickable_map" class="map" style="display: none"></div>
     </div>

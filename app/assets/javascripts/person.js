@@ -46,6 +46,7 @@ function check_dup(elem) {
         ++count;
     }
     $('#dup_count').text(count);
+    $('#mark_count').val(count);
     $('#dup_go').attr("disabled", (count < 2 || count > 3));
 }
 
@@ -53,7 +54,7 @@ function check_dup(elem) {
 function mark_dup() {
     var ind = 0;
     for (prop in checked_ids) {
-        $('#id' + (++ind)).value = prop;
+        $('#id' + (++ind)).val(prop);
         if (ind == 3) {
             break;
         }
@@ -97,7 +98,7 @@ $(document).ready(function(){
     if ($("#note_author_made_contact_true").attr('checked')){
         update_contact();
     }
-  });
+});
 
 // Dynamic behavior for the Note entry form.
 function update_contact() {
