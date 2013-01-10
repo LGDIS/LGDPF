@@ -53,7 +53,7 @@ class Person < ActiveRecord::Migration
     end
 
     change_table :people do |t|
-      t.set_column_comment "person_record_id", "id"
+      t.set_column_comment "person_record_id", "GooglePersonFinderのperson_id"
       t.set_column_comment "entry_date", "レコード作成日時"
       t.set_column_comment "expiry_date", "レコード削除予定日時"
       t.set_column_comment "author_name", "レコード作成者名"
@@ -76,7 +76,7 @@ class Person < ActiveRecord::Migration
       t.set_column_comment "home_state", "都道府県"
       t.set_column_comment "home_postal_code", "郵便番号"
       t.set_column_comment "photo_url", "写真のURL"
-      t.set_column_comment :public_flag, '公開フラグ'
+      t.set_column_comment "public_flag", '公開フラグ'
 
       t.set_column_comment "in_city_flag", "市内・市外区分"
       t.set_column_comment "shelter_name", "避難所"
