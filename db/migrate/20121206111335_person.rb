@@ -19,6 +19,7 @@ class Person < ActiveRecord::Migration
       t.column "sex", :integer
       t.column "date_of_birth", :date
       t.column "age", :string
+      t.column "house_number", :string
       t.column "home_street", :string
       t.column "home_neighborhood", :string
       t.column "home_city", :string
@@ -49,6 +50,7 @@ class Person < ActiveRecord::Migration
       t.column "elderly_dementia", :integer
       t.column "rehabilitation_certificate", :integer
       t.column "physical_disability_certificate", :integer
+      t.column "link_flag", :boolean, :default => false
       t.timestamps
     end
 
@@ -70,13 +72,15 @@ class Person < ActiveRecord::Migration
       t.set_column_comment "sex", "性別"
       t.set_column_comment "date_of_birth", "生年月日"
       t.set_column_comment "age", "年齢"
+      t.set_column_comment "house_number", "番地"
       t.set_column_comment "home_street", "町名"
       t.set_column_comment "home_neighborhood", "近隣"
       t.set_column_comment "home_city", "市区町村"
       t.set_column_comment "home_state", "都道府県"
       t.set_column_comment "home_postal_code", "郵便番号"
+      t.set_column_comment "home_country", "出身国"
       t.set_column_comment "photo_url", "写真のURL"
-      t.set_column_comment :public_flag, '公開フラグ'
+      t.set_column_comment "public_flag", '公開フラグ'
 
       t.set_column_comment "in_city_flag", "市内・市外区分"
       t.set_column_comment "shelter_name", "避難所"
@@ -99,6 +103,7 @@ class Person < ActiveRecord::Migration
       t.set_column_comment "elderly_dementia", "認知症高齢者"
       t.set_column_comment "rehabilitation_certificate", " 療育手帳所持者"
       t.set_column_comment "physical_disability_certificate", "身体障害者手帳所持者"
+      t.set_column_comment "link_flag", "連携フラグ"
     end                    
   end                      
                            

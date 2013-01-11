@@ -3,7 +3,7 @@ class Note < ActiveRecord::Base
   attr_accessible :person_record_id, :liked_person_record_id, :entry_date,
     :author_name, :author_email, :author_phone, :source_date,
     :author_made_contact, :status, :email_of_found_person, :phone_of_found_person,
-    :last_known_location, :text, :photo_url, :remote_photo_url_url, :spam_flag
+    :last_known_location, :text, :photo_url, :remote_photo_url_url, :spam_flag, :link_flag
   belongs_to :person, :foreign_key => "person_record_id"
   before_create :set_attributes
   mount_uploader :photo_url, PhotoUrlUploader

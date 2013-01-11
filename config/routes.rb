@@ -29,5 +29,9 @@ Localpersonfinder::Application.routes.draw do
   match "person/complete"                   => "people#complete",           :via => :post
   match "people/multiviews"                 => "people#multiviews",         :via => :post
   match "people/view/:id"                   => "people#dup_merge",          :via => :post
+  match "people"                            => "active_resource#people",    :via => :get
+  match "note"                              => "active_resource#note",      :via => :get
+  match "people/:id"                        => "active_resource#people_update", :via => :put
+  match "notes/:id"                         => "active_resource#note_update",   :via => :put
 
 end

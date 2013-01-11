@@ -10,7 +10,7 @@ class Person < ActiveRecord::Base
     :baby, :upper_care_level_three, :elderly_alone, :elderly_couple,
     :bedridden_elderly, :elderly_dementia, :rehabilitation_certificate,
     :physical_disability_certificate, :photo_url, :profile_urls, :remote_photo_url_url,
-    :public_flag
+    :public_flag, :link_flag
 
   has_many :notes
   
