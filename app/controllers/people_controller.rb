@@ -51,21 +51,31 @@ class PeopleController < ApplicationController
   # 重複した避難者をまとめる
   def dup_merge
     p "**** dup_merge  *********************************"
-    @count = params[:mark_count].to_i + 1
+    # エラー時に入力値を保持する
+    @count = params[:count].to_i
     @person = Person.find_by_id(params[:person][:id])
     @person2 = Person.find_by_id(params[:person2][:id])
     @person3 = Person.find_by_id(params[:person3][:id]) unless params[:id3].blank?
+    #
     @note = Note.new(params[:note])
+    @note.person_record_id  =  params[:person][:id]
+    @note.linked_person_record_id  =  params[:person2][:id]
+    @note.linked_person_record_id  =  params[:person3][:id] if params[:person3][:id].present?
     @note2 = Note.new(params[:note])
-    @note3 = Note.new(params[:note]) if params[:person3][:id].present?
-    @note.linked_person_record_id  =  params[:person][:id]
-    @note2.linked_person_record_id =  params[:person2][:id]
-    @note3.linked_person_record_id =  params[:person3][:id] if params[:person3][:id].present?
-
-    @note.save
-    @note2.save
-    @note3.save unless params[:id3].blank?
-
+    @note2.person_record_id  =  params[:person2][:id]
+    @note2.linked_person_record_id  =  params[:person][:id]
+    @note2.linked_person_record_id  =  params[:person3][:id] if params[:person3][:id].present?
+    if params[:person3][:id].present?
+      @note3 = Note.new(params[:note])
+      @note3.person_record_id  =  params[:person3][:id]
+      @note3.linked_person_record_id =  params[:person][:id]
+      @note3.linked_person_record_id =  params[:person2][:id]
+    end
+    Note.transaction do
+      @note.save!
+      @note2.save!
+      @note3.save! unless params[:person3][:id].blank?
+    end
     session[:pi_view] = false  # 個人情報表示を無効にする
     redirect_to :action => :view, :id =>  params[:person][:id]
   rescue
@@ -147,10 +157,18 @@ class PeopleController < ApplicationController
 
   def view
     @person = Person.find(params[:id])
-    @notes = Note.find(:all,
-      :conditions => ["person_record_id = ?", @person.id])
     @note = Note.new
     session[:action] = action_name
+    
+    @dup_flag = Person.check_dup(params[:id])  # 重複の有無
+    @dup_people = Person.duplication(params[:id]) # personと重複するperson
+
+    # 重複メモを表示するか
+    if params[:duplication].present?
+      @notes = Note.find_all_by_person_record_id(@person.id)
+    else
+      @notes = Note.no_duplication(@person.id)
+    end
   end
 
   def update

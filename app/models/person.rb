@@ -44,4 +44,26 @@ class Person < ActiveRecord::Base
     self.entry_date  = Time.now
     self.full_name   = "#{self.family_name} #{self.given_name}"
   end
+
+  # 重複Noteを持っているか確認する
+  def self.check_dup(pid)
+    notes = Note.find_all_by_person_record_id(pid)
+    notes.each do |note|
+      if note.linked_person_record_id.present?
+        return true
+      end
+    end
+    return false
+  end
+
+  # 重複するpersonを抽出する
+  def self.duplication(pid)
+    dup_notes = Note.duplication(pid) # pidが持つ重複note
+    people = []
+    dup_notes.each do |note|
+      people << self.find_by_id(note.linked_person_record_id)
+    end
+    return people
+  end
+
 end
