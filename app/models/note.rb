@@ -24,4 +24,14 @@ class Note < ActiveRecord::Base
     end
   end
 
+  # 重複確認用のNoteを抽出する
+  def self.duplication(pid)
+    find(:all, :conditions => ["linked_person_record_id IS NOT NULL AND person_record_id = ?", pid])
+  end
+
+   # 重複確認用のNote以外を抽出する
+  def self.no_duplication(pid)
+    find(:all, :conditions => ["linked_person_record_id IS NULL AND person_record_id = ?", pid])
+  end
+
 end

@@ -50,16 +50,37 @@ class PeopleController < ApplicationController
 
   # 重複した避難者をまとめる
   def dup_merge
+    p "**** dup_merge  *********************************"
+    # エラー時に入力値を保持する
+    @count = params[:count].to_i
+    @person = Person.find_by_id(params[:person][:id])
+    @person2 = Person.find_by_id(params[:person2][:id])
+    @person3 = Person.find_by_id(params[:person3][:id]) unless params[:id3].blank?
+    #
     @note = Note.new(params[:note])
-    @note.liked_person_record_id     = @person.id
-    @note.last_known_location  = params[:clickable_map][:location_field]
-    if @note.save
-      session[:pi_view] = false  # 個人情報表示を無効にする
-      redirect_to :action => :view, :id => @person
-    else
-      flash.now[:error] = "すべての必須フィールドに入力してください。 "
-      render :action => "view"
+    @note.person_record_id  =  params[:person][:id]
+    @note.linked_person_record_id  =  params[:person2][:id]
+    @note.linked_person_record_id  =  params[:person3][:id] if params[:person3][:id].present?
+    @note2 = Note.new(params[:note])
+    @note2.person_record_id  =  params[:person2][:id]
+    @note2.linked_person_record_id  =  params[:person][:id]
+    @note2.linked_person_record_id  =  params[:person3][:id] if params[:person3][:id].present?
+    if params[:person3][:id].present?
+      @note3 = Note.new(params[:note])
+      @note3.person_record_id  =  params[:person3][:id]
+      @note3.linked_person_record_id =  params[:person][:id]
+      @note3.linked_person_record_id =  params[:person2][:id]
     end
+    Note.transaction do
+      @note.save!
+      @note2.save!
+      @note3.save! unless params[:person3][:id].blank?
+    end
+    session[:pi_view] = false  # 個人情報表示を無効にする
+    redirect_to :action => :view, :id =>  params[:person][:id]
+  rescue
+    flash.now[:error] = "すべての必須フィールドに入力してください。 "
+    render :action => "multiviews"
   end
 
   def new
@@ -105,14 +126,16 @@ class PeopleController < ApplicationController
       @kana = params[:kana]
       @subscribe = params[:subscribe].present? ? true : ""
 
+      # provideから遷移してきた場合
       if params[:note].present?
         @note = Note.new(params[:note])
         @note[:last_known_location]  = params[:clickable_map][:location_field]
         @note[:note_author_made_contact] = params[:note][:note_author_made_contact_yes] ? true : false
-        @note[:author_name]  = @person.author_name unless params[:note][:author_name].present?
-        @note[:author_email] = @person.author_email unless params[:note][:author_email].present?
-        @note[:author_phone] = @person.author_phone unless params[:note][:author_phone].present?
-        @note[:source_date]  = @person.source_date unless params[:note][:source_date].present?
+        # Noteの投稿者情報を入力する
+        @note[:author_name]  = @person.author_name if params[:note][:author_name].blank?
+        @note[:author_email] = @person.author_email if params[:note][:author_email].blank?
+        @note[:author_phone] = @person.author_phone if params[:note][:author_phone].blank?
+        @note[:source_date]  = @person.source_date if params[:note][:source_date].blank?
       end
       
       @person.save!
@@ -124,7 +147,7 @@ class PeopleController < ApplicationController
     end
     redirect_to :action => "view", :id => @person.id
   rescue
-    if @note.errors.messages[:author_made_contact].present?
+    if @note.present? && @note.errors.messages[:author_made_contact].present?
       flash.now[:error] = @note.errors.messages[:author_made_contact][0]
     else
       flash.now[:error] = "すべての必須フィールドに入力してください。 "
@@ -134,10 +157,18 @@ class PeopleController < ApplicationController
 
   def view
     @person = Person.find(params[:id])
-    @notes = Note.find(:all,
-      :conditions => ["person_record_id = ?", @person.id])
     @note = Note.new
     session[:action] = action_name
+    
+    @dup_flag = Person.check_dup(params[:id])  # 重複の有無
+    @dup_people = Person.duplication(params[:id]) # personと重複するperson
+
+    # 重複メモを表示するか
+    if params[:duplication].present?
+      @notes = Note.find_all_by_person_record_id(@person.id)
+    else
+      @notes = Note.no_duplication(@person.id)
+    end
   end
 
   def update

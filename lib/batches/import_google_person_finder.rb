@@ -115,9 +115,10 @@ class Batches::ImportGooglePersonFinder
   
   def self.exec_insert_note(note, e)
     note.note_record_id         = e.elements["pfif:note_record_id"].try(:text)
-    person                      = Person.find_by_person_record_id(e.elements["pfif:person_record_id"].try(:text))
-    note.person_record_id       = person.try(:id)
-    note.liked_person_record_id = e.elements["pfif:liked_person_record_id"].try(:text)
+    person_record               = Person.find_by_person_record_id(e.elements["pfif:person_record_id"].try(:text))
+    note.person_record_id       = person_record.id if person_record.present?
+    linked_person_record        = Person.find_by_person_record_id(e.elements["pfif:linked_person_record_id"].try(:text))
+    note.linked_person_record_id       = linked_person_record.id if linked_person_record.present?
     entry_date                  = e.elements["pfif:entry_date"].try(:text)
     note.entry_date             = entry_date.to_time if entry_date.present?
     note.author_name            = e.elements["pfif:author_name"].try(:text)

@@ -55,7 +55,7 @@ class Person < ActiveRecord::Migration
     end
 
     change_table :people do |t|
-      t.set_column_comment "person_record_id", "id"
+      t.set_column_comment "person_record_id", "GooglePersonFinderのperson_id"
       t.set_column_comment "entry_date", "レコード作成日時"
       t.set_column_comment "expiry_date", "レコード削除予定日時"
       t.set_column_comment "author_name", "レコード作成者名"

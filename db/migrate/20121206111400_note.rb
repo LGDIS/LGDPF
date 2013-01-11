@@ -4,7 +4,7 @@ class Note < ActiveRecord::Migration
     create_table :notes, :force => true do |t|
       t.column "note_record_id", :string
       t.column "person_record_id", :integer
-      t.column "liked_person_record_id", :string
+      t.column "linked_person_record_id", :string
       t.column "entry_date", :datetime
       t.column "author_name", :string
       t.column "author_email", :string
@@ -23,9 +23,9 @@ class Note < ActiveRecord::Migration
     end
     
     change_table :notes do |t|
-      t.set_column_comment :note_record_id, ''
+      t.set_column_comment :note_record_id, 'GooglePersonFinderのnote_id'
       t.set_column_comment :person_record_id, '避難者情報との外部キー'
-      t.set_column_comment :liked_person_record_id, '重複キー'
+      t.set_column_comment :linked_person_record_id, '重複キー'
       t.set_column_comment :entry_date, '登録日'
       t.set_column_comment :author_name, '投稿者'
       t.set_column_comment :author_email, '投稿者のメールアドレス'

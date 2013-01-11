@@ -200,6 +200,26 @@
                 </div>
                 <div class="end-multi-columns"></div>
               </div>
+
+              <% if @dup_flag %>
+                <div class="other section">
+                  <h3>重複している可能性のある記録</h3>
+                  <% @dup_people.each do |dup_person| %>
+                    <div class="field">
+                      <span>
+                        <%= link_to dup_person.full_name, :action => :view, :id => dup_person.id %>
+                      </span>
+                    </div>
+                  <% end %>
+                  <div class="field">
+                    <span>
+                      <%= link_to "重複をマークしたメモを表示", :action => :view, :id => @person, :duplication => true %>
+                    </span>
+                  </div>
+                  <div class="end-multi-columns"></div>
+                </div>
+              <% end %>
+
             </div>
 
             <div>
@@ -233,7 +253,6 @@
 
         <% else %>
           <h2>この人に関するメモ</h2>
-
           <% @notes.each do |note| %>
             <div class="view note">
               <div class="source">
@@ -289,13 +308,22 @@
                     <span name="note_text">
                       <span><%= raw parse_br(note.text) %></span>
                     </span>
-                    <p></p>
-                    <div class="status">
-                      <span class="label">状況:</span>
-                      <span class="field believed_missing">
-                        <%= @note_const["status"]["#{note.status}"] %>
-                      </span>
-                    </div>
+
+                    <% if note.linked_person_record_id.blank? %>
+                      <div class="status">
+                        <span class="label">状況:</span>
+                        <span class="field believed_missing">
+                          <%= @note_const["status"]["#{note.status}"] %>
+                        </span>
+                      </div>
+                    <% end %>
+
+                    <% if note.linked_person_record_id.present? %>
+                      <div class="field">
+                        この記録は次の記録と重複しています:
+                        <%= link_to note.linked_person_record_id, :action => :view, :id => note.linked_person_record_id %>
+                      </div>
+                    <% end %>
 
                     <% if note.email_of_found_person.present? %>
                       <div>
@@ -314,10 +342,12 @@
                       </div>
                     <% end %>
 
-                    <div>
-                      <span class="label">最後に見かけた場所:</span>
-                      <span class="field"><%= note.last_known_location %></span>
-                    </div>
+                    <% if note.last_known_location.present? %>
+                      <div>
+                        <span class="label">最後に見かけた場所:</span>
+                        <span class="field"><%= note.last_known_location %></span>
+                      </div>
+                    <% end %>
 
                     <div>
                       <%= content_tag(:div, :id => "set_map_"+"#{note.id}"+"_show_link", :style => "display:none") do -%>
