@@ -57,6 +57,9 @@ gem 'recaptcha', :require => 'recaptcha/rails'
 # Dalli is a high performance pure Ruby client for accessing memcached servers.
 gem 'dalli'
 
+# jpmobile is Rails plugin for Japanese mobile-phones.
+gem 'jpmobile'
+
 # Load Local Gemfile
 local_gemfile = File.join(File.dirname(__FILE__), "Gemfile.local")
 if File.exists?(local_gemfile)
