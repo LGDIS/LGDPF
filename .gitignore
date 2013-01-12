@@ -3,6 +3,7 @@
 #
 .rspec
 .rvmrc
+Gemfile.local
 /.bundle
 /vendor/bundle
 /log/*
