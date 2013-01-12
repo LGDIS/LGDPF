@@ -47,6 +47,9 @@ gem 'carrierwave'
 # recaptcha adds helpers for the reCAPTCHA API.
 gem 'recaptcha', :require => 'recaptcha/rails'
 
+# Dalli is a high performance pure Ruby client for accessing memcached servers.
+gem 'dalli'
+
 # Load Local Gemfile
 local_gemfile = File.join(File.dirname(__FILE__), "Gemfile.local")
 if File.exists?(local_gemfile)

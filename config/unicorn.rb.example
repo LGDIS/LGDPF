@@ -99,4 +99,14 @@ after_fork do |server, worker|
   # and Redis.  TokyoCabinet file handles are safe to reuse
   # between any number of forked children (assuming your kernel
   # correctly implements pread()/pwrite() system calls)
+
+  # Added the following code for Dalli memcache client libraly.
+  if defined?(ActiveSupport::Cache::DalliStore) && Rails.cache.is_a?(ActiveSupport::Cache::DalliStore)
+    # Reset Rails's object cache
+    # Only works with DalliStore
+    Rails.cache.reset
+    # Reset Rails's session store
+    # If you know a cleaner way to find the session store instance, please let me know
+    ObjectSpace.each_object(ActionDispatch::Session::DalliStore) { |obj| obj.reset }
+  end
 end

@@ -34,4 +34,8 @@ LGDPF::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  # Dalli memcache client library settings
+  # config.cache_store = :dalli_store, 'cache-1.example.com', 'cache-2.example.com',
+  #   { :namespace => LGDPF_test, :expires_in => 1.day, :compress => true }
 end
