@@ -1,3 +1,6 @@
+#
+# .gitignore file
+#
 .rspec
 .rvmrc
 /.bundle
