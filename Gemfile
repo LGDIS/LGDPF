@@ -44,6 +44,12 @@ gem 'pg_comment'
 # store them on different backends.
 gem 'carrierwave'
 
+# If you're uploading images by CarrierWave, you'll probably want to
+# manipulate them in some way, you might want to create thumbnail images
+# for example. CarrierWave comes with a small library to make manipulating
+# images with RMagick easier.
+gem "rmagick", ">= 2.0.0"
+
 # recaptcha adds helpers for the reCAPTCHA API.
 gem 'recaptcha', :require => 'recaptcha/rails'
 
