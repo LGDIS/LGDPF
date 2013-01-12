@@ -1,4 +1,4 @@
-Localpersonfinder::Application.routes.draw do
+LGDPF::Application.routes.draw do
   root  :to => "people#index"
   match "people/index"                      => "people#index",              :via => :get
   match "people/seek"                       => "people#seek",               :via => :get
@@ -33,5 +33,4 @@ Localpersonfinder::Application.routes.draw do
   match "note"                              => "active_resource#note",      :via => :get
   match "people/:id"                        => "active_resource#people_update", :via => :put
   match "notes/:id"                         => "active_resource#note_update",   :via => :put
-
 end
