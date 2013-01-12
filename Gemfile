@@ -5,8 +5,12 @@ gem 'rails', '3.2.11'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-# gem 'sqlite3'
+# Pg is the Ruby interface to the PostgreSQL RDBMS.
+# It works with PostgreSQL 8.3 and later.
 gem "pg"
+
+# ActiveRecord extension to get more from PostgreSQL.
+gem 'pg_power'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -37,18 +41,15 @@ gem 'jquery-rails'
 # To use debugger
 # gem 'debugger'
 
-# Extends Rails migrations to support setting column and table comments.
-gem 'pg_comment'
-
-# Upload files in your Ruby applications, map them to a range of ORMs,
-# store them on different backends.
+# CarrierWave is Upload files in your Ruby applications, map them
+# to a range of ORMs, store them on different backends.
 gem 'carrierwave'
 
 # If you're uploading images by CarrierWave, you'll probably want to
 # manipulate them in some way, you might want to create thumbnail images
 # for example. CarrierWave comes with a small library to make manipulating
 # images with RMagick easier.
-gem "rmagick", ">= 2.0.0"
+gem 'rmagick', '>= 2.0.0'
 
 # recaptcha adds helpers for the reCAPTCHA API.
 gem 'recaptcha', :require => 'recaptcha/rails'
