@@ -11,4 +11,5 @@
 /public/system/*
 /coverage/
 /spec/tmp/*
-
+/config/database.yml
+/config/unicorn.rb
