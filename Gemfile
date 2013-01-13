@@ -7,7 +7,7 @@ gem 'rails', '3.2.11'
 
 # Pg is the Ruby interface to the PostgreSQL RDBMS.
 # It works with PostgreSQL 8.3 and later.
-gem "pg"
+gem 'pg'
 
 # ActiveRecord extension to get more from PostgreSQL.
 gem 'pg_power'
