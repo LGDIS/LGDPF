@@ -60,6 +60,12 @@ gem 'dalli'
 # jpmobile is Rails plugin for Japanese mobile-phones.
 gem 'jpmobile'
 
+# Devise is Flexible authentication solution for Rails with Warden.
+gem 'devise'
+
+# Devise extension to allow authentication via LDAP.
+gem 'devise_ldap_authenticatable'
+
 # Load Local Gemfile
 local_gemfile = File.join(File.dirname(__FILE__), "Gemfile.local")
 if File.exists?(local_gemfile)
