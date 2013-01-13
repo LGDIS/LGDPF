@@ -1,4 +1,4 @@
-# -*- coding:utf-8 -*-
+# -*- encoding:utf-8 -*-
 module PersonHelper
   # 検索結果に表示する姓名文字列を生成する
   # == Args
