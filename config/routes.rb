@@ -1,4 +1,4 @@
-LGDPF::Application.routes.draw do
+Lgdpf::Application.routes.draw do
   root  :to => "people#index"
   match "people/index"                      => "people#index",              :via => :get
   match "people/seek"                       => "people#seek",               :via => :get
