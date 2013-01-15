@@ -2,16 +2,19 @@
 class PeopleController < ApplicationController
 
   before_filter :init
-  
+
+  # コンスタントマスタの読み込み
   def init
     @person_const = get_const Person.table_name
     @note_const   = get_const Note.table_name
   end
 
+  # トップ画面
   def index
 
   end
 
+  # 避難者を検索する
   def seek
     if params[:first_step]
       if params[:name].present?
@@ -22,6 +25,7 @@ class PeopleController < ApplicationController
     end
   end
 
+  # 情報提供する避難者情報が既に登録されているか確認する
   def provide
     if params[:first_step]
       if params[:family_name].present? && params[:given_name].present?
@@ -40,6 +44,7 @@ class PeopleController < ApplicationController
     end
   end
 
+  # 避難者情報重複確認画面
   def multiviews
     @count = params[:mark_count].to_i + 1
     @person = Person.find_by_id(params[:id1])
@@ -50,7 +55,6 @@ class PeopleController < ApplicationController
 
   # 重複した避難者をまとめる
   def dup_merge
-    p "**** dup_merge  *********************************"
     # エラー時に入力値を保持する
     @count = params[:count].to_i
     @person = Person.find_by_id(params[:person][:id])
@@ -83,8 +87,8 @@ class PeopleController < ApplicationController
     render :action => "multiviews"
   end
 
+  # 新規作成画面
   def new
-    p "****** new ************************"
     @person = Person.new
     @person.family_name = params[:family_name]
     @person.given_name = params[:given_name]
@@ -98,8 +102,8 @@ class PeopleController < ApplicationController
     end
   end
 
+  # 新規情報登録
   def create
-    p "****** create ************************"
     # Person, Noteの登録
     Person.transaction do
       # 遷移元確認フラグ
@@ -155,6 +159,7 @@ class PeopleController < ApplicationController
     render :action => "new"
   end
 
+  # 詳細画面
   def view
     @person = Person.find(params[:id])
     @note = Note.new
@@ -171,6 +176,7 @@ class PeopleController < ApplicationController
     end
   end
 
+  # 安否情報を追加する
   def update
     @person = Person.find(params[:id])
 

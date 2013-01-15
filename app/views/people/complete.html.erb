@@ -11,6 +11,9 @@
           アップデートを受け取るように設定されました。
           <%= link_to "#{@person.full_name} さんの記録の表示に戻る", :action => :view, :id => @person %>
 
+        <% elsif @key == "unsubscribe_email" %>
+          アップデートの受け取りが停止されました。
+
         <% elsif @key == "delete" %>
           レコードが削除されました。
 

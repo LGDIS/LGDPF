@@ -18,6 +18,7 @@ Lgdpf::Application.configure do
 
   config.action_mailer.delivery_method = :smtp
 
+  # smtpの設定
   if File.exists?("#{Rails.root}/config/settings.yml")
     settings = YAML.load_file("#{Rails.root}/config/settings.yml")
     config.action_mailer.smtp_settings = {

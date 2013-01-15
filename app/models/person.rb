@@ -21,7 +21,17 @@ class Person < ActiveRecord::Base
   validates :given_name, :presence => true # 避難者_名
   validates :author_name, :presence => true # レコード作成者名
 
-  
+  # before_createで設定する項目
+  def set_attributes
+    self.source_date = Time.now
+    self.entry_date  = Time.now
+    self.full_name   = "#{self.family_name} #{self.given_name}"
+  end
+
+  # 避難者を検索する
+  # ==== Args
+  # _sp_ :: 検索条件
+  #
   def self.find_for_seek(sp)
     return nil if sp[:name].blank?
     
@@ -29,7 +39,11 @@ class Person < ActiveRecord::Base
       :conditions => ["(full_name LIKE :name) OR (alternate_names LIKE :name)",
         :name => "%#{sp[:name]}%"])
   end
-  
+
+  # 情報提供する避難者情報が既に登録されているか確認する
+  # ==== Args
+  # _sp_ :: 検索条件
+  #
   def self.find_for_provide(sp)
     return nil if sp[:family_name].blank? || sp[:given_name].blank?
     
@@ -39,13 +53,11 @@ class Person < ActiveRecord::Base
         :family_name => "%#{sp[:family_name]}%", :given_name => "%#{sp[:given_name]}%"])
   end
   
-  def set_attributes
-    self.source_date = Time.now
-    self.entry_date  = Time.now
-    self.full_name   = "#{self.family_name} #{self.given_name}"
-  end
 
   # 重複Noteを持っているか確認する
+  # === Args
+  # _pid_ :: 避難者id
+  #
   def self.check_dup(pid)
     notes = Note.find_all_by_person_record_id(pid)
     notes.each do |note|
@@ -57,6 +69,9 @@ class Person < ActiveRecord::Base
   end
 
   # 重複するpersonを抽出する
+  # === Args
+  # _pid_ :: 避難者id
+  #
   def self.duplication(pid)
     dup_notes = Note.duplication(pid) # pidが持つ重複note
     people = []

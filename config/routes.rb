@@ -26,6 +26,7 @@ Lgdpf::Application.routes.draw do
   match "person/personal_info"              => "people#personal_info",      :via => :post
   match "person/personal_info/:id/:note_id" => "people#personal_info",      :via => :get
   match "person/personal_info/:id/:note_id" => "people#personal_info",      :via => :post
+  match "person/complete"                   => "people#complete",           :via => :get
   match "person/complete"                   => "people#complete",           :via => :post
   match "people/multiviews"                 => "people#multiviews",         :via => :post
   match "people/dup_merge"                  => "people#dup_merge",          :via => :post

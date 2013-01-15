@@ -14,10 +14,12 @@ class Note < ActiveRecord::Base
   validate :author_made_contact, :note_author_valid
 
 
+  # before_createで設定する項目
   def set_attributes
     self.entry_date = Time.now
   end
 
+  # statusとauthor_made_contactの相互validation
   def note_author_valid
     if status == 3 && author_made_contact == false
       errors.add(:author_made_contact, "この人があなた本人である場合は、[この人と災害発生後にコンタクト取れましたか？] で [はい] を選択してください。 ")
@@ -29,7 +31,7 @@ class Note < ActiveRecord::Base
     find(:all, :conditions => ["linked_person_record_id IS NOT NULL AND person_record_id = ?", pid])
   end
 
-   # 重複確認用のNote以外を抽出する
+  # 重複確認用のNote以外を抽出する
   def self.no_duplication(pid)
     find(:all, :conditions => ["linked_person_record_id IS NULL AND person_record_id = ?", pid])
   end
