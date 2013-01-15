@@ -15,7 +15,6 @@ class LpfMailer < Jpmobile::Mailer::Base
       @person.id.to_s
     subject = "[パーソンファインダー]" + person.full_name + "さんについての新着情報を受け取るように設定しました"
 
-#    mail(:to => @person.author_email, :subject => subject)
-    mail(:to => "nakatyu-3126@docomo.ne.jp", :subject => subject)
+    mail(:to => @person.author_email, :subject => subject)
   end
 end
