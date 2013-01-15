@@ -14,7 +14,20 @@ Localpersonfinder::Application.configure do
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
+
+  config.action_mailer.delivery_method = :smtp
+  settings = YAML.load_file("#{Rails.root}/config/settings.yml")
+  config.action_mailer.smtp_settings = {
+    :enable_starttls_auto => true,
+    :address            => settings["ldgpf"]["mail"]["address"],
+    :port               => settings["ldgpf"]["mail"]["port"],
+    :domain             => settings["ldgpf"]["mail"]["domain"],
+    :authentication     => :plain,
+    :user_name          => settings["ldgpf"]["mail"]["user_name"],
+    :password           => settings["ldgpf"]["mail"]["password"]
+  }
+  config.action_mailer.default_url_options = { :host => settings["ldgpf"]["mail"]["host"] }
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log

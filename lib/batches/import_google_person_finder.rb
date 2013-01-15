@@ -19,8 +19,10 @@ class Batches::ImportGooglePersonFinder
     # Proxyを使用してGooglePersonFinderの情報を取得する
     # XML形式
     # 本番では不要？
-    proxy_addr         = 'inet-gw.adniss.jp'
-    proxy_port         = 80
+    #    proxy_addr         = 'inet-gw.adniss.jp'
+    #    proxy_port         = 80
+    proxy_addr = nil
+    proxy_port = nil
     https              = Net::HTTP::Proxy(proxy_addr, proxy_port).new("google.org", 443)
     https.use_ssl      = true
     https.verify_mode  = OpenSSL::SSL::VERIFY_NONE
@@ -79,6 +81,8 @@ class Batches::ImportGooglePersonFinder
     expiry_date              = e.elements["pfif:expiry_date"].try(:text)
     person.expiry_date       = expiry_date.to_time if expiry_date.present?
     person.author_name       = e.elements["pfif:author_name"].try(:text)
+    p e.elements["pfif:author_email"].try(:email)
+    p e.elements["pfif:author_phone"].try(:phone)
     person.author_email      = e.elements["pfif:author_email"].try(:text)
     person.author_phone      = e.elements["pfif:author_phone"].try(:text)
     person.source_name       = e.elements["pfif:source_name"].try(:text)

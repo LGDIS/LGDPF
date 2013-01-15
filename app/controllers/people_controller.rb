@@ -196,6 +196,7 @@ class PeopleController < ApplicationController
     @note.last_known_location  = params[:clickable_map][:location_field]
     if @note.save
       session[:pi_view] = false  # 個人情報表示を無効にする
+      LpfMailer.send_new_information(@person).deliver
       redirect_to :action => :view, :id => @person
     else
       flash.now[:error] = "すべての必須フィールドに入力してください。 "
@@ -248,8 +249,6 @@ class PeopleController < ApplicationController
     session[:action] = action_name
     if params[:commit].present?
       @note.spam_flag = false  # 認定:true, 取消:false
-      p "***************************:"
-      p verify_recaptcha
       if verify_recaptcha && @note.save!
         redirect_to :action => :view, :id => @person
       end

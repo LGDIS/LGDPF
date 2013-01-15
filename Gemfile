@@ -45,3 +45,5 @@ gem 'pg_comment'
 gem 'carrierwave'
 
 gem "recaptcha", :require => "recaptcha/rails"
+
+gem 'jpmobile'
