@@ -40,7 +40,7 @@ class Batches::ImportGooglePersonFinder
         person_record_id = e.elements["pfif:person_record_id"].try(:text)
         local_person = Person.find_by_person_record_id(person_record_id)
         next if local_person.present?
-        # LocalPersonFinderに取り込む
+        # LGDPFに取り込む
         person = Person.new
         person = exec_insert_person(person, e)
         # === 暫定
@@ -60,7 +60,7 @@ class Batches::ImportGooglePersonFinder
         note_record_id = e.elements["pfif:note_record_id"].try(:text)
         local_note = Note.find_by_note_record_id(note_record_id)
         next if local_note.present?
-        # LocalPersonFinderに取り込む
+        # LGDPFに取り込む
         note = Note.new
         note = exec_insert_note(note, e)
         # === 暫定
@@ -81,8 +81,6 @@ class Batches::ImportGooglePersonFinder
     expiry_date              = e.elements["pfif:expiry_date"].try(:text)
     person.expiry_date       = expiry_date.to_time if expiry_date.present?
     person.author_name       = e.elements["pfif:author_name"].try(:text)
-    p e.elements["pfif:author_email"].try(:email)
-    p e.elements["pfif:author_phone"].try(:phone)
     person.author_email      = e.elements["pfif:author_email"].try(:text)
     person.author_phone      = e.elements["pfif:author_phone"].try(:text)
     person.source_name       = e.elements["pfif:source_name"].try(:text)

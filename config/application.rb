@@ -9,7 +9,7 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
-module Localpersonfinder
+module Lgdpf
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -31,7 +31,7 @@ module Localpersonfinder
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    # config.i18n.default_locale = :de
+    config.i18n.default_locale = :ja
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
@@ -58,9 +58,5 @@ module Localpersonfinder
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
-
-    # div.field_with_errorsの出力を抑制する
-    config.action_view.field_error_proc =Proc.new { |html_tag, instance| %Q(#{html_tag}).html_safe }
-    
   end
 end

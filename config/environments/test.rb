@@ -1,4 +1,4 @@
-Localpersonfinder::Application.configure do
+Lgdpf::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # The test environment is used exclusively to run your application's
@@ -34,4 +34,8 @@ Localpersonfinder::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  # Dalli memcache client library settings
+  # config.cache_store = :dalli_store, 'cache-1.example.com', 'cache-2.example.com',
+  #   { :namespace => LGDPF_test, :expires_in => 1.day, :compress => true }
 end

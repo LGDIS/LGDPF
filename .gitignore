@@ -1,5 +1,9 @@
+#
+# .gitignore file
+#
 .rspec
 .rvmrc
+Gemfile.local
 /.bundle
 /vendor/bundle
 /log/*
@@ -8,4 +12,5 @@
 /public/system/*
 /coverage/
 /spec/tmp/*
-
+/config/database.yml
+/config/unicorn.rb
