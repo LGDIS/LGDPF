@@ -14,3 +14,4 @@ Gemfile.local
 /spec/tmp/*
 /config/database.yml
 /config/unicorn.rb
+/config/initializers/recaptcha.rb
