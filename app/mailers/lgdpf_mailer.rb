@@ -31,4 +31,65 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     mail(:to => @person.author_email, :subject => subject)
   end
 
+  # 削除されたレコードが復元したことを通知するメールを送信する
+  # ==== Args
+  # _person_ :: 復元する避難者
+  #
+  def send_restore_notice(person)
+    @person = person
+    @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
+
+    subject = "[パーソンファインダー]" + person.full_name + "さんの記録の復元の通知"
+    mail(:to => @person.author_email, :subject => subject)
+  end
+
+  # 安否情報登録無効申請
+  # ==== Args
+  # _person_ :: メモ登録を無効にする避難者
+  #
+  def send_note_invalid_apply(person)
+    @person = person
+    @invalid_path = @@settings["ldgpf"][Rails.env]["site"] + "person/note_invalid?id="+ @person.id.to_s
+
+    subject = "[パーソンファインダー]「" + person.full_name + "」さんに関するメモを無効にしますか? "
+    mail(:to => @person.author_email, :subject => subject)
+  end
+
+  # 安否情報登録無効にしたことを確認するメールを送信する
+  # ==== Args
+  # _person_ :: メモ登録を無効にした避難者
+  #
+  def send_note_invalid(person)
+    @person = person
+    @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
+
+    subject = "[パーソンファインダー]「" + person.full_name + "」さんに関するメモが無効になりました "
+    mail(:to => @person.author_email, :subject => subject)
+  end
+
+  # 安否情報登録有効申請
+  # ==== Args
+  # _person_ :: メモ登録を有効にする避難者
+  #
+  def send_note_valid_apply(person)
+    @person = person
+    @valid_path = @@settings["ldgpf"][Rails.env]["site"] + "person/note_valid?id="+ @person.id.to_s
+
+    subject = "[パーソンファインダー]「" + person.full_name + "」さんに関するメモを有効にしますか? "
+    mail(:to => @person.author_email, :subject => subject)
+  end
+
+  # 安否情報登録有効にしたことを確認するメールを送信する
+  # ==== Args
+  # _person_ :: メモ登録を有効にした避難者
+  #
+  def send_note_valid(person)
+    @person = person
+    @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
+
+    subject = "[パーソンファインダー]「" + person.full_name + "」さんに関するメモが有効になりました "
+    mail(:to => @person.author_email, :subject => subject)
+  end
+
+
 end

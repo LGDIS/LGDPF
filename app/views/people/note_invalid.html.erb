@@ -1,10 +1,9 @@
 <div class="container">
   <div class="content" role="main">
-
     <div>
-      <%= form_tag :action => :complete, :id => @person do %>
+      <%= form_tag :action => :note_invalid, :id => @person do %>
         <h2>
-          「一郎 山田」さんの記録に関するメモを無効にします。よろしいですか？
+          「<%= @person.full_name %> 」さんの記録に関するメモを無効にします。よろしいですか？
         </h2>
         記録は引き続きこのサイトに表示されますが、この記録に関するメモは誰も投稿できなくなります。
 
@@ -22,7 +21,7 @@
         <br/><br/>
 
         <br/>
-        <%= hidden_field :complete, :key, :value => "extend_days" %>
+        <%= hidden_field :complete, :key, :value => "note_invalid" %>
         <%= submit_tag "はい、この記録のメモを無効にします。" %>
         <input type="button" value="キャンセル" onclick="history.go(-1);" />
 

@@ -18,8 +18,12 @@ Lgdpf::Application.routes.draw do
   match "person/restore"                    => "people#restore",            :via => :get
   match "person/restore"                    => "people#restore",            :via => :post
   match "person/note_invalid_apply"         => "people#note_invalid_apply", :via => :get
+  match "person/note_invalid_apply"         => "people#note_invalid_apply", :via => :post
   match "person/note_invalid"               => "people#note_invalid",       :via => :get
+  match "person/note_invalid"               => "people#note_invalid",       :via => :post
   match "person/note_valid_apply"           => "people#note_valid_apply",   :via => :get
+  match "person/note_valid_apply"           => "people#note_valid_apply",   :via => :post
+  match "person/note_valid"                 => "people#note_valid",         :via => :get
   match "person/spam/:id/:note_id"          => "people#spam",               :via => :get
   match "person/spam/:id/:note_id"          => "people#spam",               :via => :post
   match "person/spam_cancel/:id/:note_id"   => "people#spam_cancel",        :via => :get

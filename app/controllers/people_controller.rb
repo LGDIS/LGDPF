@@ -162,6 +162,11 @@ class PeopleController < ApplicationController
   # 詳細画面
   def view
     @person = Person.find(params[:id])
+    # 論理削除されている場合
+    if @person.secret
+      flash.now[:error] = "この人の記録は存在しないか、削除されました。"
+    end
+
     @note = Note.new
     session[:action] = action_name
     
@@ -180,6 +185,7 @@ class PeopleController < ApplicationController
   def update
     @person = Person.find(params[:id])
 
+    # 登録以外のボタンを押されたら別画面に遷移する
     if params[:extend_days].present?
       redirect_to :action => "extend_days", :id => @person
       return
@@ -202,7 +208,7 @@ class PeopleController < ApplicationController
     @note.last_known_location  = params[:clickable_map][:location_field]
     if @note.save
       session[:pi_view] = false  # 個人情報表示を無効にする
-#      LgdpfMailer.send_new_information(@person).deliver
+      #      LgdpfMailer.send_new_information(@person).deliver
       redirect_to :action => :view, :id => @person
     else
       flash.now[:error] = "すべての必須フィールドに入力してください。 "
@@ -213,7 +219,7 @@ class PeopleController < ApplicationController
   # 避難者情報保持期間延長画面
   def extend_days
     @person = Person.find(params[:id])
-    if params[:complete].present? && params[:complete][:key] == "extend_days"
+    if params[:commit].present?
       @person.expiry_date = @person.expiry_date + 60.days
       if verify_recaptcha && @person.save!
         redirect_to :action => :complete,
@@ -231,7 +237,7 @@ class PeopleController < ApplicationController
   # 避難者情報削除画面
   def delete
     @person = Person.find(params[:id])
-    if params[:complete].present? && params[:complete][:key] == "delete"
+    if params[:commit].present?
       @person.secret = true
       if verify_recaptcha && @person.save!
         LgdpfMailer.send_delete_notice(@person).deliver
@@ -242,14 +248,64 @@ class PeopleController < ApplicationController
     end
   end
 
+  # 削除データ復元画面
+  def restore
+    @person = Person.find(params[:id])
+    if params[:commit].present?
+      @person.secret = false
+      if verify_recaptcha && @person.save!
+        LgdpfMailer.send_restore_notice(@person).deliver
+        redirect_to :action => :view, :id => @person
+      end
+    end
+  end
+
   # 安否情報登録無効申請画面
   def note_invalid_apply
     @person = Person.find(params[:id])
+    if params[:commit].present?
+      if verify_recaptcha
+        LgdpfMailer.send_note_invalid_apply(@person).deliver
+        redirect_to :action => :complete,
+          :id => @person,
+          :complete => {:key => "note_invalid_apply"}
+      end
+    end
+  end
+
+  # 安否情報登録無効画面
+  def note_invalid
+    @person = Person.find(params[:id])
+    if params[:commit].present?
+      @person.notes_disabled = true
+      if @person.save!
+        LgdpfMailer.send_note_invalid(@person).deliver
+        redirect_to :action => :view, :id => @person
+      end
+    end
   end
 
   # 安否情報登録有効申請画面
   def note_valid_apply
     @person = Person.find(params[:id])
+    if params[:commit].present?
+      if verify_recaptcha
+        LgdpfMailer.send_note_valid_apply(@person).deliver
+        redirect_to :action => :complete,
+          :id => @person,
+          :complete => {:key => "note_valid_apply"}
+      end
+    end
+  end
+
+  # 安否情報登録有効画面
+  def note_valid
+    @person = Person.find(params[:id])
+    @person.notes_disabled = false
+    if @person.save!
+      LgdpfMailer.send_note_valid(@person).deliver
+      redirect_to :action => :view, :id => @person
+    end
   end
 
   # スパム報告画面
@@ -273,17 +329,6 @@ class PeopleController < ApplicationController
     if params[:commit].present?
       @note.spam_flag = false  # 認定:true, 取消:false
       if verify_recaptcha && @note.save!
-        redirect_to :action => :view, :id => @person
-      end
-    end
-  end
-
-  # 削除データ復元画面
-  def restore
-    @person = Person.find(params[:id])
-    if params[:commit].present?
-      @person.secret = false
-      if verify_recaptcha && @person.save!
         redirect_to :action => :view, :id => @person
       end
     end
