@@ -19,8 +19,6 @@ class Batches::ImportGooglePersonFinder
     # Proxyを使用してGooglePersonFinderの情報を取得する
     # XML形式
     # 本番では不要？
-    #    proxy_addr         = 'inet-gw.adniss.jp'
-    #    proxy_port         = 80
     proxy_addr = nil
     proxy_port = nil
     https              = Net::HTTP::Proxy(proxy_addr, proxy_port).new("google.org", 443)

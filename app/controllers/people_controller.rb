@@ -202,7 +202,7 @@ class PeopleController < ApplicationController
     @note.last_known_location  = params[:clickable_map][:location_field]
     if @note.save
       session[:pi_view] = false  # 個人情報表示を無効にする
-      LpfMailer.send_new_information(@person).deliver
+#      LgdpfMailer.send_new_information(@person).deliver
       redirect_to :action => :view, :id => @person
     else
       flash.now[:error] = "すべての必須フィールドに入力してください。 "
@@ -213,6 +213,14 @@ class PeopleController < ApplicationController
   # 避難者情報保持期間延長画面
   def extend_days
     @person = Person.find(params[:id])
+    if params[:complete].present? && params[:complete][:key] == "extend_days"
+      @person.expiry_date = @person.expiry_date + 60.days
+      if verify_recaptcha && @person.save!
+        redirect_to :action => :complete,
+          :id => @person,
+          :complete => {:key => "extend_days"}
+      end
+    end
   end
 
   # 新着情報受信許可画面
@@ -223,6 +231,15 @@ class PeopleController < ApplicationController
   # 避難者情報削除画面
   def delete
     @person = Person.find(params[:id])
+    if params[:complete].present? && params[:complete][:key] == "delete"
+      @person.secret = true
+      if verify_recaptcha && @person.save!
+        LgdpfMailer.send_delete_notice(@person).deliver
+        redirect_to :action => :complete,
+          :id => @person,
+          :complete => {:key => "delete"}
+      end
+    end
   end
 
   # 安否情報登録無効申請画面
@@ -264,12 +281,11 @@ class PeopleController < ApplicationController
   # 削除データ復元画面
   def restore
     @person = Person.find(params[:id])
-    session[:action] = action_name
     if params[:commit].present?
-      # @note.spam_flag = false  # 認定:true, 取消:false
-      # if @note.save!
-      redirect_to :action => :view, :id => @person
-      # end
+      @person.secret = false
+      if verify_recaptcha && @person.save!
+        redirect_to :action => :view, :id => @person
+      end
     end
   end
 

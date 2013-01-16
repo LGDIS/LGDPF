@@ -51,6 +51,7 @@ class Person < ActiveRecord::Migration
       t.column "rehabilitation_certificate", :integer
       t.column "physical_disability_certificate", :integer
       t.column "link_flag", :boolean, :default => false
+      t.column "secret", :boolean, :default => false
       t.timestamps
     end
 
@@ -104,6 +105,7 @@ class Person < ActiveRecord::Migration
       t.set_column_comment "rehabilitation_certificate", " 療育手帳所持者"
       t.set_column_comment "physical_disability_certificate", "身体障害者手帳所持者"
       t.set_column_comment "link_flag", "連携フラグ"
+      t.set_column_comment "secret", "削除フラグ"
     end                    
   end                      
                            

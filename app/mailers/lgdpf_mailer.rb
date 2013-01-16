@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-class LpfMailer < Jpmobile::Mailer::Base
+class LgdpfMailer < Jpmobile::Mailer::Base
   @@settings = YAML.load_file("#{Rails.root}/config/settings.yml")
   default from: @@settings["ldgpf"]["mail"]["from"]
 
@@ -17,4 +17,18 @@ class LpfMailer < Jpmobile::Mailer::Base
 
     mail(:to => @person.author_email, :subject => subject)
   end
+
+  # 避難者のレコードが削除されたことを通知するメールを送信する
+  # ==== Args
+  # _person_ :: 削除された避難者
+  #
+  def send_delete_notice(person)
+    @person = person
+    @root_path = @@settings["ldgpf"][Rails.env]["site"]
+    @restore_path = @@settings["ldgpf"][Rails.env]["site"] + "person/restore?id="+ @person.id.to_s
+
+    subject = "[パーソンファインダー]" + person.full_name + "さんの削除の通知"
+    mail(:to => @person.author_email, :subject => subject)
+  end
+
 end
