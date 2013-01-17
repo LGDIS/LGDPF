@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 class Person < ActiveRecord::Base
   attr_accessible :entry_date, :expiry_date, :author_name, :author_email,
     :author_phone, :source_name, :source_date, :source_url,
@@ -10,10 +11,11 @@ class Person < ActiveRecord::Base
     :baby, :upper_care_level_three, :elderly_alone, :elderly_couple,
     :bedridden_elderly, :elderly_dementia, :rehabilitation_certificate,
     :physical_disability_certificate, :photo_url, :profile_urls, :remote_photo_url_url,
-    :public_flag, :link_flag
+    :public_flag, :link_flag, :notes_disabled, :email_flag
 
   has_many :notes
-  
+
+  acts_as_paranoid
   before_create :set_attributes
   mount_uploader :photo_url, PhotoUrlUploader
 
@@ -79,6 +81,28 @@ class Person < ActiveRecord::Base
       people << self.find_by_id(note.linked_person_record_id)
     end
     return people
+  end
+
+  # 入力値調整
+  # === Args
+  # _record_ :: 避難者ハッシュ
+  # === Return
+  # _person_ :: 入力値調整をした避難者
+  #
+  def self.set_values(record)
+    record[:email_flag] = record[:email_flag] == "true" ? true : false
+    person = self.new(record)
+    person.expiry_date = Time.now.advance(:days => record[:expiry_date].to_i)  # 削除予定日時
+    person.injury_flag = person.injury_condition.present? ? 1:2  # 負傷の有無
+    person.allergy_flag = person.allergy_cause.present? ? 1:2   # アレルギーの有無
+
+    if person.home_state =~ /^(宮城)県?$/ && person.home_city =~ /^(石巻)市?$/  # 市内・市外区分
+      person.in_city_flag = 1  # 市内
+    else
+      person.in_city_flag = 2  # 市外
+    end
+
+    return person
   end
 
 end

@@ -94,7 +94,6 @@ class PeopleController < ApplicationController
     @person.given_name = params[:given_name]
     @note = Note.new
     @kana = {:family_name => "", :given_name => ""}
-    @subscribe = ""
 
     # 遷移元確認フラグ
     if params[:family_name].blank? && params[:given_name].blank?
@@ -111,16 +110,8 @@ class PeopleController < ApplicationController
         @from_seek = true
       end
 
-      @person = Person.new(params[:person])
-      @person[:expiry_date] = Time.now.advance(:days => params[:person][:expiry_date].to_i)
-      @person[:injury_flag] = @person.injury_condition.present? ? 1:2
-      @person[:allergy_flag] = @person.allergy_cause.present? ? 1:2
-
-      if @person.home_state =~ /^(宮城)県?$/ && @person.home_city =~ /^(石巻)市?$/
-        @person[:in_city_flag] = 1  # 市内
-      else
-        @person[:in_city_flag] = 2  # 市外
-      end
+      # 画面入力値を加工
+      @person = Person.set_values(params[:person])
 
       # 読み仮名登録用
       unless params[:kana].blank?
@@ -128,7 +119,6 @@ class PeopleController < ApplicationController
       end
       # 読み仮名画面再表示用
       @kana = params[:kana]
-      @subscribe = params[:subscribe].present? ? true : ""
 
       # provideから遷移してきた場合
       if params[:note].present?
@@ -149,7 +139,12 @@ class PeopleController < ApplicationController
         @note.save!
       end
     end
-    redirect_to :action => "view", :id => @person.id
+
+    if @person.email_flag
+      redirect_to :action => "subscribe_email", :id => @person.id
+    else
+      redirect_to :action => "view", :id => @person.id
+    end
   rescue
     if @note.present? && @note.errors.messages[:author_made_contact].present?
       flash.now[:error] = @note.errors.messages[:author_made_contact][0]
@@ -163,7 +158,7 @@ class PeopleController < ApplicationController
   def view
     @person = Person.find(params[:id])
     # 論理削除されている場合
-    if @person.secret
+    unless @person.deleted_at.blank?
       flash.now[:error] = "この人の記録は存在しないか、削除されました。"
     end
 
@@ -202,14 +197,18 @@ class PeopleController < ApplicationController
       redirect_to :action => "note_valid_apply", :id => @person
       return
     end
-    
     @note = Note.new(params[:note])
+    @note.email_flag = params[:note][:email_flag] == "true" ? true : false
     @note.person_record_id     = @person.id
     @note.last_known_location  = params[:clickable_map][:location_field]
     if @note.save
-      session[:pi_view] = false  # 個人情報表示を無効にする
-      #      LgdpfMailer.send_new_information(@person).deliver
-      redirect_to :action => :view, :id => @person
+      if @note.email_flag
+        redirect_to :action => "subscribe_email", :id => @person.id
+      else
+        session[:pi_view] = false  # 個人情報表示を無効にする
+        LgdpfMailer.send_new_information(@person).deliver
+        redirect_to :action => :view, :id => @person
+      end
     else
       flash.now[:error] = "すべての必須フィールドに入力してください。 "
       render :action => "view"
@@ -232,14 +231,39 @@ class PeopleController < ApplicationController
   # 新着情報受信許可画面
   def subscribe_email
     @person = Person.find(params[:id])
+    #   @note = Person.find(params[:note_id])
+    if params[:commit].present?
+      @person.author_email = params[:person][:author_email]
+      # author_emailに重複がある場合は受取フラグを消す
+      if Note.find_for_author_email(@person)
+        @person.email_flag = false
+      end
+      if verify_recaptcha && @person.save!
+        LgdpfMailer.send_new_information(@person).deliver
+        redirect_to :action => :complete,
+          :id => @person,
+          :complete => {:key => "subscribe_email"}
+      end
+    end
+  end
+
+  # 新着情報受信拒否
+  def unsubscribe_email
+    @person = Person.find(params[:id])
+    #   @note = Person.find(params[:note_id])
+    @person.email_flag = false
+    if @person.save!
+      redirect_to :action => :complete,
+        :id => @person,
+        :complete => {:key => "unsubscribe_email"}
+    end
   end
 
   # 避難者情報削除画面
   def delete
     @person = Person.find(params[:id])
     if params[:commit].present?
-      @person.secret = true
-      if verify_recaptcha && @person.save!
+      if verify_recaptcha && @person.destroy!
         LgdpfMailer.send_delete_notice(@person).deliver
         redirect_to :action => :complete,
           :id => @person,
@@ -250,13 +274,17 @@ class PeopleController < ApplicationController
 
   # 削除データ復元画面
   def restore
-    @person = Person.find(params[:id])
-    if params[:commit].present?
-      @person.secret = false
-      if verify_recaptcha && @person.save!
-        LgdpfMailer.send_restore_notice(@person).deliver
-        redirect_to :action => :view, :id => @person
+    begin
+      @person = Person.with_deleted.find(params[:id])
+      if params[:commit].present?
+        @person.deleted_at = ""
+        if verify_recaptcha && @person.save!
+          LgdpfMailer.send_restore_notice(@person).deliver
+          redirect_to :action => :view, :id => @person
+        end
       end
+    rescue ActiveRecord::RecordNotFound
+      render :file => "#{Rails.root}/public/404.html"
     end
   end
 
@@ -275,13 +303,17 @@ class PeopleController < ApplicationController
 
   # 安否情報登録無効画面
   def note_invalid
-    @person = Person.find(params[:id])
-    if params[:commit].present?
-      @person.notes_disabled = true
-      if @person.save!
-        LgdpfMailer.send_note_invalid(@person).deliver
-        redirect_to :action => :view, :id => @person
+    begin
+      @person = Person.find(params[:id])
+      if params[:commit].present?
+        @person.notes_disabled = true
+        if @person.save!
+          LgdpfMailer.send_note_invalid(@person).deliver
+          redirect_to :action => :view, :id => @person
+        end
       end
+    rescue ActiveRecord::RecordNotFound
+      render :file => "#{Rails.root}/public/404.html"
     end
   end
 
@@ -300,60 +332,81 @@ class PeopleController < ApplicationController
 
   # 安否情報登録有効画面
   def note_valid
-    @person = Person.find(params[:id])
-    @person.notes_disabled = false
-    if @person.save!
-      LgdpfMailer.send_note_valid(@person).deliver
-      redirect_to :action => :view, :id => @person
+    begin
+      @person = Person.find(params[:id])
+      @person.notes_disabled = false
+      if @person.save!
+        LgdpfMailer.send_note_valid(@person).deliver
+        redirect_to :action => :view, :id => @person
+      end
+    rescue ActiveRecord::RecordNotFound
+      render :file => "#{Rails.root}/public/404.html"
     end
+
   end
 
   # スパム報告画面
   def spam
-    @person = Person.find(params[:id])
-    @note = Note.find(params[:note_id])
-    session[:action] = action_name
-    if params[:commit].present?
-      @note.spam_flag = true  # 認定:true, 取消:false
-      if @note.save!
-        redirect_to :action => :view, :id => @person
+    begin
+      @person = Person.find(params[:id])
+      @note = Note.find(params[:note_id])
+      session[:action] = action_name
+      if params[:commit].present?
+        @note.spam_flag = true  # 認定:true, 取消:false
+        if @note.save!
+          redirect_to :action => :view, :id => @person
+        end
       end
+    rescue ActiveRecord::RecordNotFound
+      render :file => "#{Rails.root}/public/404.html"
     end
   end
 
   # スパム報告取消画面
   def spam_cancel
-    @person = Person.find(params[:id])
-    @note = Note.find(params[:note_id])
-    session[:action] = action_name
-    if params[:commit].present?
-      @note.spam_flag = false  # 認定:true, 取消:false
-      if verify_recaptcha && @note.save!
-        redirect_to :action => :view, :id => @person
+    begin
+      @person = Person.find(params[:id])
+      @note = Note.find(params[:note_id])
+      session[:action] = action_name
+      if params[:commit].present?
+        @note.spam_flag = false  # 認定:true, 取消:false
+        if verify_recaptcha && @note.save!
+          redirect_to :action => :view, :id => @person
+        end
       end
+    rescue ActiveRecord::RecordNotFound
+      render :file => "#{Rails.root}/public/404.html"
     end
   end
 
   # 個人情報表示許可画面
   def personal_info
-    @person = Person.find(params[:id])
-    @note = Note.find(params[:note_id])
-    if params[:commit].present?
-      session[:pi_view] = true
-      if session[:action] == "spam"
-        redirect_to :action => session[:action], :id => @person, :note_id => @note
-      else
-        redirect_to :action => session[:action], :id => @person
+    begin
+      @person = Person.find(params[:id])
+      @note = Note.find(params[:note_id])
+      if params[:commit].present?
+        session[:pi_view] = true
+        if session[:action] == "spam"
+          redirect_to :action => session[:action], :id => @person, :note_id => @note
+        else
+          redirect_to :action => session[:action], :id => @person
+        end
       end
+    rescue ActiveRecord::RecordNotFound
+      render :file => "#{Rails.root}/public/404.html"
     end
-
   end
 
 
   # 完了画面
   def complete
-    @person = Person.find(params[:id])
-    @key = params[:complete][:key]
+    begin
+      @person = Person.find(params[:id])
+      @key = params[:complete][:key]
+    rescue ActiveRecord::RecordNotFound
+      render :file => "#{Rails.root}/public/404.html"
+    end
+
   end
 
 

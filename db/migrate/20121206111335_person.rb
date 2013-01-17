@@ -52,7 +52,8 @@ class Person < ActiveRecord::Migration
       t.column "physical_disability_certificate", :integer
       t.column "link_flag", :boolean, :default => false
       t.column "notes_disabled", :boolean, :default => false
-      t.column "secret", :boolean, :default => false
+      t.column "email_flag", :boolean, :default => false
+      t.column "deleted_at", :datetime
       t.timestamps
     end
 
@@ -107,7 +108,10 @@ class Person < ActiveRecord::Migration
       t.set_column_comment "physical_disability_certificate", "身体障害者手帳所持者"
       t.set_column_comment "link_flag", "連携フラグ"
       t.set_column_comment "notes_disabled", "メモ無効フラグ"
-      t.set_column_comment "secret", "削除フラグ"
+      t.set_column_comment "email_flag", "新着メッセージ受取フラグ"
+      t.set_column_comment "deleted_at", "削除日時"
+      t.set_column_comment "created_at", "登録日時"
+      t.set_column_comment "updated_at", "更新日時"
     end                    
   end                      
                            

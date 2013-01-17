@@ -19,6 +19,7 @@ class Note < ActiveRecord::Migration
       t.column "photo_url", :string
       t.column "spam_flag", :boolean
       t.column "link_flag", :boolean, :default => false
+      t.column "email_flag", :boolean, :default => false
       t.timestamps
     end
     
@@ -40,6 +41,7 @@ class Note < ActiveRecord::Migration
       t.set_column_comment :photo_url, '写真のURL'
       t.set_column_comment :spam_flag, 'スパムフラグ'
       t.set_column_comment :link_flag, '連携フラグ'
+      t.set_column_comment :email_flag, "新着メッセージ受取フラグ"
     end
   end
 

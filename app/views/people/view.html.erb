@@ -1,5 +1,5 @@
 <div class="container">
-  <% unless @person.secret %>
+  <% if @person.deleted_at.blank? %>
     <div class="content" role="main">
       <%= form_tag({:action => :update, :id => @person},{:multipart => true,}) do %>
 

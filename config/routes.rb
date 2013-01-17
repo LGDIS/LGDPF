@@ -13,6 +13,7 @@ Lgdpf::Application.routes.draw do
   match "person/extend_days"                => "people#extend_days",        :via => :get
   match "person/extend_days"                => "people#extend_days",        :via => :post
   match "person/subscribe_email"            => "people#subscribe_email",    :via => :get
+  match "person/subscribe_email"            => "people#subscribe_email",    :via => :post
   match "person/delete"                     => "people#delete",             :via => :get
   match "person/delete"                     => "people#delete",             :via => :post
   match "person/restore"                    => "people#restore",            :via => :get

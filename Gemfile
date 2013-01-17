@@ -66,6 +66,10 @@ gem 'devise'
 # Devise extension to allow authentication via LDAP.
 gem 'devise_ldap_authenticatable'
 
+# acts_as_paranoid is Active Record (~>3.2) plugin which allows you to
+# hide and restore records without actually deleting them.
+gem 'acts_as_paranoid'
+
 # Load Local Gemfile
 local_gemfile = File.join(File.dirname(__FILE__), "Gemfile.local")
 if File.exists?(local_gemfile)

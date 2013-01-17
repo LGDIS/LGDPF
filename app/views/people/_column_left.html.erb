@@ -1,5 +1,5 @@
 <div class="fields-table person">
-  <% if @person.family_name.present? %>
+  <% if @from_seek %>
     <h2>この人を特定できる情報を入力してください</h2>
   <% else %>
     <h2>探している人を特定できる情報を入力してください</h2>
@@ -365,7 +365,7 @@
     </div>
     <div class="field">
       <span class="label">
-        <label for="next_place_phone">避難所を退所した後どこへ行ったか:</label>
+        <label for="next_place_phone">避難所を退所した後の電話番号: </label>
       </span>
       <span class="value">
         <%= text_field :person, :next_place_phone, :value => @person.next_place_phone,
@@ -551,7 +551,7 @@
         </label>
       </span>
       <span class="value">
-        <%= check_box "subscribe", "checkbox", {:checked => @subscribe}, true, false %>
+        <%= check_box :person, :email_flag, {:checked => @person.email_flag}, true, false %>
       </span>
     </div>
     <div class="end-multi-columns"></div>
