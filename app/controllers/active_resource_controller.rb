@@ -1,8 +1,8 @@
 # -*- coding:utf-8 -*-
 class ActiveResourceController < ApplicationController
   
-  # ActiveResource
-  # LGDPF => LGDPM People取得処理
+  # ActiveResource[LGDPF <=> LGDPM]
+  # People取得処理
   # ==== Args
   # ==== Return
   # ==== Raise
@@ -14,49 +14,91 @@ class ActiveResourceController < ApplicationController
     end
   end
   
-  # ActiveResource
-  # LGDPF => LGDPM Note取得処理
+  # ActiveResource[LGDPF <=> LGDPM]
+  # Person登録処理
   # ==== Args
-  # _person_record_id_ :: 避難者ID
+  # _params[:person]_ :: 避難者情報
   # ==== Return
   # ==== Raise
-  def note
-    @note = Note.find(:first,
-      :conditions => ["person_record_id = ? AND link_flag = ?",
-      params[:person_record_id], false], :order => "created_at DESC")
+  def people_create
+    @person = Person.new(params[:person])
+    
+    if @person.save
+      respond_to do |format|
+        format.json { render :json => @person.to_json }
+      end
+    else
       
-    respond_to do |format|
-      format.json { render :json => (@note.present? ? @note.to_json : Note.new.to_json) }
     end
   end
   
-  # ActiveResource
-  # LGDPF => LGDPM People更新処理
+  # ActiveResource[LGDPF <=> LGDPM]
+  # People更新処理
   # ==== Args
   # _id_ :: 避難者ID
   # ==== Return
   # ==== Raise
   def people_update
     @person = Person.find(params[:id])
-    @person.update_attributes(:link_flag => true)
     
-    respond_to do |format|
-      format.json { render :json => @person.to_json }
+    if @person.update_attributes(:link_flag => true)
+      respond_to do |format|
+        format.json { render :json => @person.to_json }
+      end
+    else
+      
     end
   end
   
-  # ActiveResource
-  # LGDPF => LGDPM Note更新処理
+  # ActiveResource[LGDPF <=> LGDPM]
+  # Note取得処理
+  # ==== Args
+  # _person_record_id_ :: 避難者ID
+  # ==== Return
+  # ==== Raise
+  def notes
+    @note = Note.find(:all,
+      :conditions => ["person_record_id = ? AND link_flag = ?",
+      params[:person_record_id], false], :order => "created_at DESC")
+      
+    respond_to do |format|
+      format.json { render :json => @note.to_json }
+    end
+  end
+  
+  # ActiveResource[LGDPF <=> LGDPM]
+  # Note登録処理
+  # ==== Args
+  # _params[:note]_ :: 安否情報
+  # ==== Return
+  # ==== Raise
+  def notes_create
+    @note = Note.new(params[:note])
+    
+    if @note.save
+      respond_to do |format|
+        format.json { render :json => @note.to_json }
+      end
+    else
+      
+    end
+  end
+  
+  # ActiveResource[LGDPF <=> LGDPM]
+  # Note更新処理
   # ==== Args
   # _id_ :: 安否情報ID
   # ==== Return
   # ==== Raise
-  def note_update
-    @note   = Note.find(params[:id])
-    @note.update_attributes(:link_flag => true)
+  def notes_update
+    @note = Note.find(params[:id])
     
-    respond_to do |format|
-      format.json { render :json => @note.to_json }
+    if @note.update_attributes(:link_flag => true)
+      respond_to do |format|
+        format.json { render :json => @note.to_json }
+      end
+    else
+      
     end
   end
 end
