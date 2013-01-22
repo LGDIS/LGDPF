@@ -15,13 +15,13 @@ gem 'pg_power', '1.3.0'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
+  gem 'sass-rails', '3.2.6'
+  gem 'coffee-rails', '3.2.2'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem 'therubyracer', :platforms => :ruby
 
-  gem 'uglifier', '>= 1.0.3'
+  gem 'uglifier', '1.3.0'
 end
 
 gem 'jquery-rails', '2.2.0'
@@ -49,7 +49,7 @@ gem 'carrierwave', '0.8.0'
 # manipulate them in some way, you might want to create thumbnail images
 # for example. CarrierWave comes with a small library to make manipulating
 # images with RMagick easier.
-gem 'rmagick', '>= 2.0.0'
+gem 'rmagick', '2.13.1'
 
 # recaptcha adds helpers for the reCAPTCHA API.
 gem 'recaptcha', '0.3.4', :require => 'recaptcha/rails'
@@ -69,6 +69,11 @@ gem 'devise_ldap_authenticatable', '0.6.1'
 # acts_as_paranoid is Active Record (~>3.2) plugin which allows you to
 # hide and restore records without actually deleting them.
 gem 'acts_as_paranoid', '0.4.1'
+
+# Fork of validates_date_time rails plugin.
+# Please do submit pull requests for any changes, and I'll merge them with Jonathan's svn changes.
+gem "validates_date_time", '1.0.0', :git => "git://github.com/sofatutor/validates_date_time", :branch => 'rails-3'
+
 
 # Load Local Gemfile
 local_gemfile = File.join(File.dirname(__FILE__), "Gemfile.local")
