@@ -35,7 +35,9 @@ class Note < ActiveRecord::Base
 
   # 重複確認用のNote以外を抽出する
   def self.no_duplication(pid)
-    find(:all, :conditions => ["linked_person_record_id IS NULL AND person_record_id = ?", pid])
+    find(:all, 
+      :conditions => ["linked_person_record_id IS NULL AND person_record_id = ?", pid],
+      :order => "entry_date ASC")
   end
 
   # personとそれに紐付くnoteに重複するauthor_emailがあるかチェックする
@@ -45,7 +47,7 @@ class Note < ActiveRecord::Base
   # _true_ :: 重複あり
   # _false_ :: 重複無し
   #
-  def self.find_for_author_email(person)
+  def self.check_for_author_email(person)
     dup = where(:person_record_id => person.id, :author_email => person.author_email).all
     return dup.size > 1 ? true : false
   end

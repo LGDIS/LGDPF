@@ -164,7 +164,7 @@
           </label>
         </span>
         <span class="value">
-          <%= check_box :note, :email_flag, {:checked => @note.email_flag}, true, false %>
+          <%= check_box_tag "subscribe", true, false, {:checked => @subscribe} %>
         </span>
       </div>
       <div class="end-multi-columns"></div>

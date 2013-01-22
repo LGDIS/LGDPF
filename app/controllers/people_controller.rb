@@ -51,6 +51,7 @@ class PeopleController < ApplicationController
     @person2 = Person.find_by_id(params[:id2])
     @person3 = Person.find_by_id(params[:id3]) unless params[:id3].blank?
     @note = Note.new
+    @subscribe = false
   end
 
   # 重複した避難者をまとめる
@@ -60,6 +61,7 @@ class PeopleController < ApplicationController
     @person = Person.find_by_id(params[:person][:id])
     @person2 = Person.find_by_id(params[:person2][:id])
     @person3 = Person.find_by_id(params[:person3][:id]) unless params[:id3].blank?
+    @subscribe = params[:subscribe] == "true" ? true : false
     #
     @note = Note.new(params[:note])
     @note.person_record_id  =  params[:person][:id]
@@ -75,16 +77,37 @@ class PeopleController < ApplicationController
       @note3.linked_person_record_id =  params[:person][:id]
       @note3.linked_person_record_id =  params[:person2][:id]
     end
+    # 新着メールを送るアドレスを抽出
+    to = Person.subscribe_email_address(@person)
+
     Note.transaction do
       @note.save!
       @note2.save!
       @note3.save! unless params[:person3][:id].blank?
     end
-    session[:pi_view] = false  # 個人情報表示を無効にする
-    redirect_to :action => :view, :id =>  params[:person][:id]
-  rescue
-    flash.now[:error] = "すべての必須フィールドに入力してください。 "
-    render :action => "multiviews"
+    # Personに新着メールを送信する
+    to.each do |address|
+      LgdpfMailer.send_add_note(@person, @note, address).deliver
+      LgdpfMailer.send_add_note(@person2, @note, address).deliver
+      LgdpfMailer.send_add_note(@person3, @note, address).deliver unless params[:person3][:id].blank?
+    end
+    if @subscribe
+      redirect_to :action => "subscribe_email",
+        :id => @person,
+        :id2 => @person2,
+        :id3 => @person3,
+        :note_id => @note,
+        :note_id2 => @note2,
+        :note_id3 => @note3
+    else
+      session[:pi_view] = false  # 個人情報表示を無効にする
+      redirect_to :action => :view, :id => @person
+    end
+  rescue ActiveRecord::RecordNotFound
+    render :file => "#{Rails.root}/public/404.html"
+    #  rescue
+    #    flash.now[:error] = "すべての必須フィールドに入力してください。 "
+    #    render :action => "multiviews"
   end
 
   # 新規作成画面
@@ -94,11 +117,12 @@ class PeopleController < ApplicationController
     @person.given_name = params[:given_name]
     @note = Note.new
     @kana = {:family_name => "", :given_name => ""}
-
+    @subscribe = ""
     # 遷移元確認フラグ
     if params[:family_name].blank? && params[:given_name].blank?
       @from_seek = true
     end
+
   end
 
   # 新規情報登録
@@ -141,39 +165,32 @@ class PeopleController < ApplicationController
     end
 
     if @person.email_flag
-      redirect_to :action => "subscribe_email", :id => @person.id
+      redirect_to :action => "subscribe_email", :id => @person
     else
-      redirect_to :action => "view", :id => @person.id
+      redirect_to :action => "view", :id => @person
     end
   rescue
-    if @note.present? && @note.errors.messages[:author_made_contact].present?
-      flash.now[:error] = @note.errors.messages[:author_made_contact][0]
-    else
-      flash.now[:error] = "すべての必須フィールドに入力してください。 "
-    end
     render :action => "new"
   end
 
   # 詳細画面
   def view
     @person = Person.find(params[:id])
-    # 論理削除されている場合
-    unless @person.deleted_at.blank?
-      flash.now[:error] = "この人の記録は存在しないか、削除されました。"
-    end
 
     @note = Note.new
     session[:action] = action_name
     
     @dup_flag = Person.check_dup(params[:id])  # 重複の有無
     @dup_people = Person.duplication(params[:id]) # personと重複するperson
-
+    @subscribe = false
     # 重複メモを表示するか
     if params[:duplication].present?
-      @notes = Note.find_all_by_person_record_id(@person.id)
+      @notes = Note.where(:person_record_id => @person.id).order("entry_date ASC")
     else
       @notes = Note.no_duplication(@person.id)
     end
+  rescue ActiveRecord::RecordNotFound
+    render :file => "#{Rails.root}/public/404.html"
   end
 
   # 安否情報を追加する
@@ -198,21 +215,36 @@ class PeopleController < ApplicationController
       return
     end
     @note = Note.new(params[:note])
-    @note.email_flag = params[:note][:email_flag] == "true" ? true : false
     @note.person_record_id     = @person.id
     @note.last_known_location  = params[:clickable_map][:location_field]
+    @subscribe = params[:subscribe]== "true" ? true : false
+    if params[:duplication].present?
+      @notes = Note.where(:person_record_id => @person.id).order("entry_date ASC")
+    else
+      @notes = Note.no_duplication(@person.id)
+    end
+
+    # 新着メールを送るアドレスを抽出
+    to = Person.subscribe_email_address(@person)
+  
     if @note.save
-      if @note.email_flag
-        redirect_to :action => "subscribe_email", :id => @person.id
+      # Personに新着メールを送信する
+      to.each do |address|
+        LgdpfMailer.send_add_note(@person, @note, address).deliver
+      end
+      # 新規登録したnoteが新着メールを受け取るか
+      if @subscribe
+        redirect_to :action => "subscribe_email", :id => @person.id, :note_id => @note.id
       else
         session[:pi_view] = false  # 個人情報表示を無効にする
-        LgdpfMailer.send_new_information(@person).deliver
         redirect_to :action => :view, :id => @person
       end
     else
       flash.now[:error] = "すべての必須フィールドに入力してください。 "
       render :action => "view"
     end
+  rescue ActiveRecord::RecordNotFound
+    render :file => "#{Rails.root}/public/404.html"
   end
 
   # 避難者情報保持期間延長画面
@@ -230,21 +262,62 @@ class PeopleController < ApplicationController
 
   # 新着情報受信許可画面
   def subscribe_email
-    @person = Person.find(params[:id])
-    #   @note = Person.find(params[:note_id])
+    @person = Person.find(params[:id])  # ウォッチする避難者
+    @person2 = Person.find(params[:id2]) if params[:id2].present? # ウォッチする避難者
+    @person3 = Person.find(params[:id3]) if params[:id3].present? # ウォッチする避難者
+    @note = Note.find_by_id(params[:note_id]) if params[:note_id].present?
+    @note2 = Note.find_by_id(params[:note_id2]) if params[:note_id2].present?
+    @note3 = Note.find_by_id(params[:note_id3]) if params[:note_id3].present?
     if params[:commit].present?
-      @person.author_email = params[:person][:author_email]
-      # author_emailに重複がある場合は受取フラグを消す
-      if Note.find_for_author_email(@person)
-        @person.email_flag = false
+      if params[:note].blank?  # personで新着受取チェック
+        if params[:person][:author_email].blank?
+          flash.now[:error] = "メールアドレスに問題があります。再度入力してください。"
+        end
+        @person.email_flag = true
+        @person.author_email = params[:person][:author_email]
+        # author_emailに重複がある場合は受取フラグを消す
+        if Note.check_for_author_email(@person)
+          @person.email_flag = false
+        end
+        @person.save!
+      else  # noteで新着受取チェック
+        if params[:note][:author_email].blank?
+          flash.now[:error] = "メールアドレスに問題があります。再度入力してください。"
+        end
+        Note.transaction do
+          @note.author_email = params[:note][:author_email]
+          @note.email_flag = true
+          @note.email_flag  = false if Note.check_for_author_email(@person)
+          @note.save!
+          if @note2.present?
+            @note2.author_email = params[:note][:author_email]
+            @note2.email_flag = true
+            @note2.email_flag = false if Note.check_for_author_email(@person2)
+            @note2.save!
+          end
+          if @note3.present?
+            @note3.author_email = params[:note][:author_email]
+            @note3.email_flag = true
+            @note3.email_flag = false if Note.check_for_author_email(@person3)
+            @note3.save!
+          end
+        end
       end
-      if verify_recaptcha && @person.save!
-        LgdpfMailer.send_new_information(@person).deliver
+      if verify_recaptcha
+        if @note.blank?
+          LgdpfMailer.send_new_information(@person, nil).deliver
+        else
+          LgdpfMailer.send_new_information(@person, @note).deliver
+          LgdpfMailer.send_new_information(@person2, @note2).deliver if @note2.present?
+          LgdpfMailer.send_new_information(@person3, @note3).deliver if @note3.present?
+        end
         redirect_to :action => :complete,
           :id => @person,
           :complete => {:key => "subscribe_email"}
       end
     end
+  rescue ActiveRecord::RecordNotFound
+    render :file => "#{Rails.root}/public/404.html"
   end
 
   # 新着情報受信拒否
@@ -263,21 +336,27 @@ class PeopleController < ApplicationController
   def delete
     @person = Person.find(params[:id])
     if params[:commit].present?
-      if verify_recaptcha && @person.destroy!
+      @person.destroy
+      if verify_recaptcha
         LgdpfMailer.send_delete_notice(@person).deliver
         redirect_to :action => :complete,
           :id => @person,
           :complete => {:key => "delete"}
       end
     end
+  rescue ActiveRecord::RecordNotFound
+    render :file => "#{Rails.root}/public/404.html"
   end
 
   # 削除データ復元画面
   def restore
     begin
       @person = Person.with_deleted.find(params[:id])
+      if @person.deleted_at.blank?  # 復元されている場合
+        redirect_to :action => :view, :id => @person
+      end
       if params[:commit].present?
-        @person.deleted_at = ""
+        @person.recover
         if verify_recaptcha && @person.save!
           LgdpfMailer.send_restore_notice(@person).deliver
           redirect_to :action => :view, :id => @person
@@ -383,7 +462,7 @@ class PeopleController < ApplicationController
   def personal_info
     begin
       @person = Person.find(params[:id])
-      @note = Note.find(params[:note_id])
+      @note = Note.find(params[:note_id]) unless params[:note_id].blank?
       if params[:commit].present?
         session[:pi_view] = true
         if session[:action] == "spam"
@@ -400,9 +479,13 @@ class PeopleController < ApplicationController
 
   # 完了画面
   def complete
+    @key = params[:complete][:key]
     begin
-      @person = Person.find(params[:id])
-      @key = params[:complete][:key]
+      if @key == "delete"
+        @person = Person.with_deleted.find(params[:id])
+      else
+        @person = Person.find(params[:id])
+      end
     rescue ActiveRecord::RecordNotFound
       render :file => "#{Rails.root}/public/404.html"
     end

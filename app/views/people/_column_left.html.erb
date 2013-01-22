@@ -199,33 +199,6 @@
           { :include_blank => true }) %>
       </span>
     </div>
-
-<%# ***************自動判別する項目************************************** %>
-    <%#*<div style="display:none;">%>
-      <%#*<div class="field">%>
-        <%#*<span class="label">%>
-          <%#*<label for="injury_flag">負傷:</label>%>
-        <%#*</span>%>
-        <%#*<span class="value">%>
-          <%#= select(:person, :injury_flag,
-            options_for_select(@person_const["injury_flag"].invert, @person.injury_flag),
-            { :include_blank => true }) %>
-        <%#*</span>%>
-      <%#*</div>%>
-      <%#*<div class="field">%>
-        <%#*<span class="label">%>
-          <%#*<label for="allergy_flag">アレルギー:</label>%>
-        <%#*</span>%>
-        <%#*<span class="value">%>
-          <%#= select(:person, :allergy_flag,
-            options_for_select(@person_const["allergy_flag"].invert, @person.allergy_flag),
-            { :include_blank => true }) %>
-        <%#*</span>%>
-      <%#*</div>%>
-    <%#*</div>%>
-<%# ***************自動判別する項目************************************** %>
-
-
     <div class="end-multi-columns"></div>
   </div>
 
@@ -287,18 +260,6 @@
           :class => "medium-text-input" %>
       </span>
     </div>
-
-    <%#*<div class="field">%>
-      <%#*<span class="label">%>
-        <%#*<label for="in_city_flag">市内・市外区分:</label>%>
-      <%#*</span>%>
-      <%#*<span class="value">%>
-        <%#= select(:person, :in_city_flag,
-          options_for_select(@person_const["in_city_flag"].invert, @person.in_city_flag),
-          { :include_blank => true }) %>
-      <%#*</span>%>
-    <%#*</div>%>
-
     <div class="end-multi-columns"></div>
   </div>
 
@@ -329,7 +290,7 @@
     <div class="field">
       <span class="label">
         <label for="refuge_reason">避難理由:</label>
-         <div class="hint">「自主避難」・「避難勧告に基づき避難」・「避難指示に基づき避難」等を記述します。</div>
+        <div class="hint">「自主避難」・「避難勧告に基づき避難」・「避難指示に基づき避難」等を記述します。</div>
       </span>
       <span class="value">
         <%= text_field :person, :refuge_reason, :value => @person.refuge_reason,

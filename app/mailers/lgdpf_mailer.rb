@@ -7,15 +7,38 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   # ==== Args
   # _person_ :: 新着情報をウォッチする避難者
   #
-  def send_new_information(person)
+  def send_new_information(person, note)
     @person = person
     @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
     @complete_path = @@settings["ldgpf"][Rails.env]["site"] +
       "person/complete?complete[key]=unsubscribe_email&id=" +
       @person.id.to_s
     subject = "[パーソンファインダー]" + person.full_name + "さんについての新着情報を受け取るように設定しました"
+    if note.blank?
+      address = @person.author_email
+    else
+      address = note.author_email
+    end
 
-    mail(:to => @person.author_email, :subject => subject)
+    mail(:to => address, :subject => subject)
+  end
+
+  # 新着情報
+  # ==== Args
+  # _person_ :: 新着情報をウォッチする避難者
+  # _note_   :: Note
+  #
+  def send_add_note(person, note, address)
+    @person = person
+    @note = note
+    @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
+    @unsubscribe_path = @@settings["ldgpf"][Rails.env]["site"] +
+      "person/complete?complete[key]=unsubscribe_email&id=" +
+      @person.id.to_s
+
+    subject = "[パーソンファインダー]" + person.full_name + "さんについての新着情報"
+
+    mail(:to => address, :subject => subject)
   end
 
   # 避難者のレコードが削除されたことを通知するメールを送信する

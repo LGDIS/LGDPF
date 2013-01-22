@@ -286,7 +286,7 @@
                       <% if session[:pi_view] %>
                         メール:<%= note.author_email %>
                       <% else %>
-                        メール:<%= link_to "（クリックして表示）", :action => :personal_info, :id => @person %>
+                        メール:<%= link_to "（クリックして表示）", :action => :personal_info, :id => @person, :note_id => note.id %>
                       <% end %>
                     </div>
                   <% end %>
@@ -296,7 +296,7 @@
                       <% if session[:pi_view] %>
                         電話:<%= note.author_phone %>
                       <% else %>
-                        電話:<%= link_to "（クリックして表示）", :action => :personal_info, :id => @person %>
+                        電話:<%= link_to "（クリックして表示）", :action => :personal_info, :id => @person, :note_id => note.id %>
                       <% end %>
                     </div>
                   <% end %>

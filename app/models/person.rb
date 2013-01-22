@@ -11,7 +11,7 @@ class Person < ActiveRecord::Base
     :baby, :upper_care_level_three, :elderly_alone, :elderly_couple,
     :bedridden_elderly, :elderly_dementia, :rehabilitation_certificate,
     :physical_disability_certificate, :photo_url, :profile_urls, :remote_photo_url_url,
-    :public_flag, :link_flag, :house_number, :notes_disabled, :email_flag
+    :public_flag, :link_flag, :house_number, :notes_disabled, :email_flag, :deleted_at
 
   has_many :notes
 
@@ -22,6 +22,7 @@ class Person < ActiveRecord::Base
   validates :family_name, :presence => true # 避難者_姓
   validates :given_name, :presence => true # 避難者_名
   validates :author_name, :presence => true # レコード作成者名
+  validates :age,  :format => { :with => /^\d+(-\d+)?$/ } # 年齢
 
   # before_createで設定する項目
   def set_attributes
@@ -103,6 +104,25 @@ class Person < ActiveRecord::Base
     end
 
     return person
+  end
+
+  # 新着メールを受け取るメールアドレスを抽出
+  # === Args
+  # _person_ :: Person
+  # === Return
+  # _to_ :: メールアドレス配列
+  #
+  def self.subscribe_email_address(person)
+    to = []
+    notes = Note.where(:person_record_id => person.id)
+    notes.each do |note|
+      to << note.author_email
+    end
+
+    to << person.author_email
+    to = to.uniq
+    to.delete("")
+    return to
   end
 
 end

@@ -15,7 +15,8 @@ Lgdpf::Application.configure do
   config.assets.compress = true
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
-  config.assets.compile = false
+  # trueに変更
+  config.assets.compile = true
 
   # Generate digests for assets URLs
   config.assets.digest = true
@@ -50,6 +51,24 @@ Lgdpf::Application.configure do
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
+
+  # smtpの設定
+  config.action_mailer.delivery_method = :smtp
+
+  if File.exists?("#{Rails.root}/config/settings.yml")
+    settings = YAML.load_file("#{Rails.root}/config/settings.yml")
+    config.action_mailer.smtp_settings = {
+      :enable_starttls_auto => true,
+      :address            => settings["ldgpf"]["mail"]["address"],
+      :port               => settings["ldgpf"]["mail"]["port"],
+      :domain             => settings["ldgpf"]["mail"]["domain"],
+      :authentication     => :plain,
+      :user_name          => settings["ldgpf"]["mail"]["user_name"],
+      :password           => settings["ldgpf"]["mail"]["password"]
+    }
+    config.action_mailer.default_url_options = { :host => settings["ldgpf"]["mail"]["host"] }
+  end
+
 
   # Enable threaded mode
   # config.threadsafe!

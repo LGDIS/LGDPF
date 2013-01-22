@@ -42,8 +42,14 @@ module PersonHelper
     end
   end
 
+  # 改行コードをHTMLの改行タグに変換する
+  # === Args
+  # _str_ :: 変換する文字列
+  # 
   def parse_br(str)
     str = html_escape(str)
     return str.gsub(/(\r\n|\r|\n)/, "<br />")
   end
+
+  
 end

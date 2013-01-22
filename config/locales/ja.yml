@@ -1,0 +1,17 @@
+ja:
+  activerecord:
+    attributes:
+      person:
+        given_name: 避難者の名
+        family_name: 避難者の姓
+        author_name: レコード作成者名
+        age: 年齢
+        date_of_birth: 生年月日
+        source_date: 情報元の投稿日
+        shelter_entry_date: 入所年月日
+        shelter_leave_date: 退所年月日
+    errors:
+      messages:
+        blank: を入力してください。
+        invalid: の入力形式が不正です。
+      

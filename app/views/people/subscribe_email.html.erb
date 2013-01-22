@@ -1,7 +1,7 @@
 <div class="container">
   <div class="content" role="main">
     <div>
-      <%= form_tag :action => :subscribe_email, :id => @person do %>
+      <%= form_tag :action => :subscribe_email, :id => @person, :note_id => @note do %>
         <h2><%= @person.full_name %>さんについての新着情報を受け取る</h2>
 
         <p>新着情報を受け取るにはメールアドレスを入力してください</p>
@@ -10,8 +10,11 @@
           あなたのメールアドレス
         </span>
 
-        <%= text_field :person, :author_email, :value => @person.author_email %>
-
+        <% if @note.blank? %>
+          <%= text_field :person, :author_email, :value => @person.author_email %>
+        <% else %>
+          <%= text_field :note, :author_email, :value => @note.try(:author_email) %>
+        <% end %>
         <div class="subscribe_email_error"></div>
         <br/><br/>
 
