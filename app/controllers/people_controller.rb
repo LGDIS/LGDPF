@@ -38,7 +38,7 @@ class PeopleController < ApplicationController
             :given_name  => params[:given_name]
         end
       else
-        flash.now[:error] = "その人の姓名を入力してください。  "
+        flash.now[:error] = "その人の姓名を入力してください。"
         render :action => "provide"
       end
     end
@@ -105,9 +105,8 @@ class PeopleController < ApplicationController
     end
   rescue ActiveRecord::RecordNotFound
     render :file => "#{Rails.root}/public/404.html"
-    #  rescue
-    #    flash.now[:error] = "すべての必須フィールドに入力してください。 "
-    #    render :action => "multiviews"
+  rescue
+    render :action => "multiviews"
   end
 
   # 新規作成画面
@@ -136,6 +135,7 @@ class PeopleController < ApplicationController
 
       # 画面入力値を加工
       @person = Person.set_values(params[:person])
+      @subscribe = params[:subscribe]== "true" ? true : false
 
       # 読み仮名登録用
       unless params[:kana].blank?
@@ -156,7 +156,7 @@ class PeopleController < ApplicationController
         @note[:source_date]  = @person.source_date if params[:note][:source_date].blank?
       end
       
-      @person.save!
+      @person.save
 
       if params[:note].present?
         @note[:person_record_id] = @person.id
@@ -164,7 +164,7 @@ class PeopleController < ApplicationController
       end
     end
 
-    if @person.email_flag
+    if @subscribe
       redirect_to :action => "subscribe_email", :id => @person
     else
       redirect_to :action => "view", :id => @person
@@ -268,6 +268,7 @@ class PeopleController < ApplicationController
     @note = Note.find_by_id(params[:note_id]) if params[:note_id].present?
     @note2 = Note.find_by_id(params[:note_id2]) if params[:note_id2].present?
     @note3 = Note.find_by_id(params[:note_id3]) if params[:note_id3].present?
+
     if params[:commit].present?
       if params[:note].blank?  # personで新着受取チェック
         if params[:person][:author_email].blank?
