@@ -22,7 +22,8 @@ class Person < ActiveRecord::Base
   validates :family_name, :presence => true # 避難者_姓
   validates :given_name, :presence => true # 避難者_名
   validates :author_name, :presence => true # レコード作成者名
-  validates :age,  :format => { :with => /^\d+(-\d+)?$/ } # 年齢
+  validates :age, :allow_blank => true, :format => { :with => /^\d+(-\d+)?$/ } # 年齢
+  validates_date_time :date_of_birth, :allow_nil => true, :message => "を正しい日付で入力してください。"
 
   # before_createで設定する項目
   def set_attributes
@@ -91,7 +92,6 @@ class Person < ActiveRecord::Base
   # _person_ :: 入力値調整をした避難者
   #
   def self.set_values(record)
-    record[:email_flag] = record[:email_flag] == "true" ? true : false
     person = self.new(record)
     person.expiry_date = Time.now.advance(:days => record[:expiry_date].to_i)  # 削除予定日時
     person.injury_flag = person.injury_condition.present? ? 1:2  # 負傷の有無

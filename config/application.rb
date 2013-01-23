@@ -58,5 +58,7 @@ module Lgdpf
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
-  end
+
+    # div.field_with_errorsの出力を抑制する
+    config.action_view.field_error_proc =Proc.new { |html_tag, instance| %Q(#{html_tag}).html_safe }  end
 end

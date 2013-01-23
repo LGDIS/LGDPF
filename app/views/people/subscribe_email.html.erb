@@ -26,6 +26,12 @@
           <%= submit_tag "アップデートを受け取る" %>
           <input type="button" value="キャンセル" onclick="history.go(-1);" />
         </div>
+        <%= hidden_field_tag :id2, @person2.try(:id) %>
+        <%= hidden_field_tag :id3, @person3.try(:id) %>
+        <%= hidden_field_tag :note_id, @note.try(:id) %>
+        <%= hidden_field_tag :note_id2, @note2.try(:id) %>
+        <%= hidden_field_tag :note_id3, @note3.try(:id) %>
+
       <% end %>
     </div>
     <br/><br/>

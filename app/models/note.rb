@@ -24,7 +24,7 @@ class Note < ActiveRecord::Base
   # statusとauthor_made_contactの相互validation
   def note_author_valid
     if status == 3 && author_made_contact == false
-      errors.add(:author_made_contact, "この人があなた本人である場合は、[この人と災害発生後にコンタクト取れましたか？] で [はい] を選択してください。 ")
+      errors.add(:author_made_contact, "")
     end
   end
 

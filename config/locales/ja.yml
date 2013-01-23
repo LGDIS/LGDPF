@@ -10,6 +10,10 @@ ja:
         source_date: 情報元の投稿日
         shelter_entry_date: 入所年月日
         shelter_leave_date: 退所年月日
+      note:
+        author_name: あなたの名前
+        text: メッセージ
+        author_made_contact: この人があなた本人である場合は、[この人と災害発生後にコンタクト取れましたか？] で [はい] を選択してください。 
     errors:
       messages:
         blank: を入力してください。
