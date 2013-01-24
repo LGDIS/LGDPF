@@ -282,6 +282,9 @@
         <label for="shelter_name">指定避難所等:</label>
       </span>
       <span class="value">
+        <%#= select(:person, :shelter_name,
+          options_for_select(@shelter.invert, @person.shelter_name),
+          { :include_blank => true }) %>
         <%= select(:person, :shelter_name,
           options_for_select(@person_const["shelter_name"].invert, @person.shelter_name),
           { :include_blank => true }) %>

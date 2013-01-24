@@ -7,6 +7,9 @@ class PeopleController < ApplicationController
   def init
     @person_const = get_const Person.table_name
     @note_const   = get_const Note.table_name
+#    @area = get_cache("area")
+#    @address = Rails.cache.read("address")
+#    @shelter = get_cache("shelter")
   end
 
   # トップ画面
