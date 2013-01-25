@@ -4,9 +4,8 @@
     <meta charset="utf-8" />
     <meta http-equiv="content-language" content="ja" />
     <title> 石巻パーソンファインダー </title>
-    <%= stylesheet_link_tag    "style", :media => "all" %>
-<%#　API KEY はテスト用に個人のkeyを使用してます %>
-    <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyBytXHtE1zbJnUHb-Qvsr5pYgrgX5XXiGY&language=ja&sensor=false"></script>
+    <%= stylesheet_link_tag "application", :media => "all" %>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&language=ja"></script>
     <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
   </head>
