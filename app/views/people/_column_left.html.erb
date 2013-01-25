@@ -1,3 +1,41 @@
+<%= javascript_tag do %>
+  $(function(){
+    $( "#person_home_city" ).autocomplete({
+      source: function(request, response) {
+        $.ajax({
+         url: <%= raw "\"#{autocomplete_city_path}\"" %>,
+          dataType: "json",
+          data: {
+            term: request.term,
+            state: $('#person_home_state').val()
+          },
+          success: function(data) {
+            response(data);
+         }
+        });
+      },
+    minLength: 1
+  });
+
+  $( "#person_home_street" ).autocomplete({
+    source: function(request, response) {
+      $.ajax({
+        url: <%= raw "\"#{autocomplete_street_path}\"" %>,
+        dataType: "json",
+        data: {
+          term: request.term,
+          state: $('#person_home_state').val()
+        },
+        success: function(data) {
+          response(data);
+        }
+      });
+    },
+    minLength: 1
+  });
+});
+<% end %>
+
 <div class="fields-table person">
   <% if @from_seek %>
     <h2>この人を特定できる情報を入力してください</h2>
@@ -282,9 +320,9 @@
         <label for="shelter_name">指定避難所等:</label>
       </span>
       <span class="value">
-        <%#= select(:person, :shelter_name,
-          options_for_select(@shelter.invert, @person.shelter_name),
-          { :include_blank => true }) %>
+<%#= select(:person, :shelter_name,
+options_for_select(@shelter.invert, @person.shelter_name),
+{ :include_blank => true }) %>
         <%= select(:person, :shelter_name,
           options_for_select(@person_const["shelter_name"].invert, @person.shelter_name),
           { :include_blank => true }) %>
@@ -378,6 +416,86 @@
       </span>
     </div>
     <div class="end-multi-columns"></div>
+  </div>
+
+
+
+  <div class="profile section">
+    <h3>Profile Pages</h3>
+    <div class="hint">
+      Does this person have profile pages at other websites?
+    </div>
+    <table class="fields">
+
+
+      <tr id="profile_entry1" style="display:none">
+        <td valign="middle">
+          <div style="width:16px;height:16px"
+               id="profile_icon1"></div>
+        </td>
+        <td>
+          <input type="hidden" id="profile_website_index1" />
+          <input type="text" id="profile_url1"
+                 name="profile_url1" size="30"
+                 placeholder="Link to profile page" />
+        </td>
+        <td>
+          <a href="javascript:remove_profile_entry(1)"
+             >削除</a>
+        </td>
+      </tr>
+
+      <tr id="profile_entry2" style="display:none">
+        <td valign="middle">
+          <div style="width:16px;height:16px"
+               id="profile_icon2"></div>
+        </td>
+        <td>
+          <input type="hidden" id="profile_website_index2" />
+          <input type="text" id="profile_url2"
+                 name="profile_url2" size="30"
+                 placeholder="Link to profile page" />
+        </td>
+        <td>
+          <a href="javascript:remove_profile_entry(2)"
+             >削除</a>
+        </td>
+      </tr>
+
+      <tr id="profile_entry3" style="display:none">
+        <td valign="middle">
+          <div style="width:16px;height:16px"
+               id="profile_icon3"></div>
+        </td>
+        <td>
+          <input type="hidden" id="profile_website_index3" value="aaa" />
+          <input type="text" id="profile_url3"
+                 name="profile_url3" size="30"
+                 placeholder="Link to profile page" />
+        </td>
+        <td>
+          <a href="javascript:remove_profile_entry(3)"
+             >削除</a>
+        </td>
+      </tr>
+
+      <tr id="add_profile_entry">
+        <td colspan="3">
+          <select id="add_profile_entry_select"
+                  onchange="add_profile_entry(this)">
+            <option>Select a website to add a profile page...</option>
+
+            <option>Facebook</option>
+
+            <option>Twitter</option>
+
+            <option>LinkedIn</option>
+
+            <option>Other website</option>
+          </select>
+        </td>
+      </tr>
+    </table>
   </div>
 
   <div class="expiry section">
@@ -515,12 +633,12 @@
         </label>
       </span>
       <span class="value">
-          <%= check_box_tag "subscribe", true, false, {:checked => @subscribe} %>
+        <%= check_box_tag "subscribe", true, false, {:checked => @subscribe} %>
       </span>
     </div>
     <div class="end-multi-columns"></div>
   </div>
   <% if @from_seek %>
-    <div class="submit"><%= submit_tag "この記録を保存" %></div>
+    <div class="submit"><%= submit_tag "この記録を保存", :onclick =>"return validate_fields()" %></div>
   <% end %>
 </div>

@@ -45,4 +45,7 @@ Lgdpf::Application.routes.draw do
   match "notes"                             => "active_resource#notes",         :via => :get
   match "notes"                             => "active_resource#notes_create",  :via => :post
   match "notes/:id"                         => "active_resource#notes_update",  :via => :put
+
+  match "autocomplete/city"                 => "application#autocomplete_city", :via => :get
+  match "autocomplete/street"               => "application#autocomplete_street", :via => :get
 end

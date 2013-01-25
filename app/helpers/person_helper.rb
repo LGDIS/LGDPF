@@ -51,5 +51,34 @@ module PersonHelper
     return str.gsub(/(\r\n|\r|\n)/, "<br />")
   end
 
+  # アイコンのイメージを挿入する
+  # === Args
+  # _url_ :: URL
+  def icon_image_tag(url)
+    if  url =~ /^http:\/\/(www\.)?(facebook)\.com\/*/
+      tag = "<img class='icon' src='/assets/facebook-16x16.png' alt='Facebook-16x16' />"
+    elsif url =~ /^http:\/\/(www\.)?(twitter)\.com\/*/
+      tag = "<img class='icon' src='/assets/twitter-16x16.png' alt='Twitter-16x16' />"
+    elsif url =~ /^http:\/\/(www\.)?(linkedin)\.com\/*/
+      tag = "<img class='icon' src='/assets/linkedin-16x16.png' alt='Linkedin-16x16' />"
+    end
+    return tag
+  end
+
+  # URLの通称を返す
+  # === Args
+  # _url_ :: URL
+  def url_name(url)
+    if  url =~ /^http:\/\/(www\.)?(facebook)\.com\/*/
+      name = "Facebook"
+    elsif url =~ /^http:\/\/(www\.)?(twitter)\.com\/*/
+      name = "Twitter"
+    elsif url =~ /^http:\/\/(www\.)?(linkedin)\.com\/*/
+      name = "Linkedin"
+    else
+      name = url.split("/")[2]
+    end
+    return name
+  end
   
 end

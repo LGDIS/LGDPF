@@ -1,3 +1,30 @@
+var profile_websites = [
+  {"icon_filename": "facebook-16x16.png",
+    "icon_url": "/assets/facebook-16x16.png",
+    "name": "Facebook",
+    "url_regexp": "http://(www\\.)?facebook\\.com/.*"},
+  {"icon_filename": "twitter-16x16.png",
+    "icon_url": "/assets/twitter-16x16.png",
+    "name": "Twitter",
+    "url_regexp": "http://(www\\.)?twitter\\.com/.*"},
+  {"icon_filename": "linkedin-16x16.png",
+    "icon_url": "/assets/linkedin-16x16.png",
+    "name": "LinkedIn",
+    "url_regexp": "http://(www\\.)?linkedin\\.com/.*"}
+];
+
+function show(element) {
+  if (element) {
+    element.style.display = '';
+  }
+}
+
+function hide(element) {
+  if (element) {
+    element.style.display = 'none';
+  }
+}
+
 // Selected people in duplicate handling mode.
 var checked_ids = {};
 
@@ -131,6 +158,82 @@ function hide_unhide_note_contents(note_contents_id) {
     set_display(note_contents_id + '-reveal-note', hidden);
     set_display(note_contents_id + '-hide-note', !hidden);
     set_display(note_contents_id + '-mark-not-spam', !hidden);
+}
+
+// Shows a new text input field for a profile URL.
+function add_profile_entry(select) {
+  function set_profile_website(entry_index, website_index) {
+    // Remember the website index, so we can validate the input URL later.
+    $('#profile_website_index' + entry_index).val(website_index);
+
+    // First remove the existing icon if any.
+    icon_container = document.getElementById('profile_icon' + entry_index);
+    icon_container.innerHTML = '';
+
+    var profile_website = profile_websites[profile_website_index];
+    if (profile_website && profile_website.icon_url) {
+      var icon = document.createElement('img');
+      icon.src = profile_website.icon_url;
+      icon_container.appendChild(icon);
+    }
+  }
+
+  // The dropdown menu has a placeholder as the first option (index = 0).
+  var profile_website_index = select.selectedIndex - 1;
+  // Reset the dropdown menu for the next time it'll be shown.
+  select.selectedIndex = 0;
+
+  var added = false;
+  var can_add_more = false;
+  for (var i = 1, entry; entry = document.getElementById('profile_entry' + i); ++i) {
+    if (entry.style.display == 'none') {
+      if (!added) {
+        set_profile_website(i, profile_website_index);
+        show(entry);
+        added = true;
+      } else {
+        can_add_more = true;
+      }
+    }
+  }
+
+  // Hide the link and the dropdown menu, so no new profile URL can be added.
+  if (!can_add_more) {
+    hide(document.getElementById('add_profile_entry'));
+  }
+}
+
+// Hides one of the profile URL input fields specified by an index,
+// and shows the dropdown menu if hidden.
+function remove_profile_entry(profile_entry_index) {
+  // Clears the text input field.
+  $('#profile_url' + profile_entry_index).val('');
+  hide(document.getElementById('profile_entry' + profile_entry_index));
+  show(document.getElementById('add_profile_entry'));
+}
+
+// Returns true if the contents of the form are okay to submit.
+function validate_fields() {
+  // Check profile_urls
+  for (var i = 0; i < profile_websites.length; ++i) {
+    hide(document.getElementById('invalid_profile_url'));
+  }
+  for (var i = 1, entry; entry = document.getElementById('profile_entry' + i); ++i) {
+    if (entry.style.display != 'none') {
+      var input = document.getElementById('profile_url' + i);
+      var url = input.value;
+      var website_index = parseInt(document.getElementById('profile_website_index' + i).value);
+      var website = profile_websites[website_index];
+      if (url && website && website.url_regexp &&
+          !url.match(website.url_regexp)) {
+        show(document.getElementById('invalid_profile_url'));
+        $("h1 + div.error").remove();
+        scrollTo(0,0);
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 //------------------------------------------------------------------------------

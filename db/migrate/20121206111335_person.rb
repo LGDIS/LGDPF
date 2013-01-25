@@ -27,6 +27,7 @@ class Person < ActiveRecord::Migration
       t.column "home_postal_code", :string
       t.column "home_country", :string
       t.column "photo_url", :string
+      t.column "profile_urls", :string
       t.column "public_flag", :integer
 
       t.column "in_city_flag", :integer
@@ -83,6 +84,7 @@ class Person < ActiveRecord::Migration
       t.set_column_comment "home_postal_code", "郵便番号"
       t.set_column_comment "home_country", "出身国"
       t.set_column_comment "photo_url", "写真のURL"
+      t.set_column_comment "profile_urls", "プロフィールURL"
       t.set_column_comment "public_flag", '公開フラグ'
 
       t.set_column_comment "in_city_flag", "市内・市外区分"

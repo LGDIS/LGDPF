@@ -155,6 +155,24 @@
                   </div>
                 <% end %>
 
+                <% if @person.profile_urls.present? %>
+                  <div class="profile section">
+                    <h3>プロフィール</h3>
+                    <% @person.profile_urls.split("\n").each_with_index do |url, i| %>
+                      <div class="field">
+                        <span class="label">プロフィール <%= i+1 %>:</span>
+                        <span class="value">
+                          <%= raw icon_image_tag(url) %>
+                          <a target="_blank" href=<%= url %> >
+                            <%= url_name(url) %>
+                          </a>
+                        </span>
+                      </div>
+                    <% end %>
+                    <div class="end-multi-columns"></div>
+                  </div>
+                <% end %>
+
                 <div class="source section">
                   <h3>この記録の情報源</h3>
                   <div class="field">

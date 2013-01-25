@@ -10,6 +10,7 @@ ja:
         source_date: 情報元の投稿日
         shelter_entry_date: 入所年月日
         shelter_leave_date: 退所年月日
+        profile_urls: 入力したURLの形式が不正です。プロフィールURLをコピーして貼り付けてください。 
       note:
         author_name: あなたの名前
         text: メッセージ

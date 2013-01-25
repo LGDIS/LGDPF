@@ -11,7 +11,8 @@ class Person < ActiveRecord::Base
     :baby, :upper_care_level_three, :elderly_alone, :elderly_couple,
     :bedridden_elderly, :elderly_dementia, :rehabilitation_certificate,
     :physical_disability_certificate, :photo_url, :profile_urls, :remote_photo_url_url,
-    :public_flag, :link_flag, :house_number, :notes_disabled, :email_flag, :deleted_at
+    :public_flag, :link_flag, :house_number, :notes_disabled, :email_flag, :deleted_at,
+    :profile_urls
 
   has_many :notes
 
@@ -24,12 +25,26 @@ class Person < ActiveRecord::Base
   validates :author_name, :presence => true # レコード作成者名
   validates :age, :allow_blank => true, :format => { :with => /^\d+(-\d+)?$/ } # 年齢
   validates_date_time :date_of_birth, :allow_nil => true, :message => "を正しい日付で入力してください。"
+  validate :profile_urls, :url_validater
 
   # before_createで設定する項目
   def set_attributes
     self.source_date = Time.now
     self.entry_date  = Time.now
     self.full_name   = "#{self.family_name} #{self.given_name}"
+  end
+
+  # 入力値チェック
+  def url_validater
+    urls = self.profile_urls.split("\n")
+    urls.each do |url|
+      unless  url =~ /^http(s)?:\/\/*/
+        errors.add(:profile_urls, "")
+        return false
+      end
+    end
+
+    return true
   end
 
   # 避難者を検索する

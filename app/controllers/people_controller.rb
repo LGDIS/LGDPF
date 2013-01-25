@@ -119,16 +119,19 @@ class PeopleController < ApplicationController
     @person.given_name = params[:given_name]
     @note = Note.new
     @kana = {:family_name => "", :given_name => ""}
-    @subscribe = ""
+    @subscribe = false
+    @error_message = "入力したURLの形式が不正です。プロフィールURLをコピーして貼り付けてください。"
     # 遷移元確認フラグ
     if params[:family_name].blank? && params[:given_name].blank?
       @from_seek = true
     end
 
+    binding.pry
   end
 
   # 新規情報登録
   def create
+     @error_message = "入力したURLの形式が不正です。プロフィールURLをコピーして貼り付けてください。"
     # Person, Noteの登録
     Person.transaction do
       # 遷移元確認フラグ
@@ -139,6 +142,7 @@ class PeopleController < ApplicationController
       # 画面入力値を加工
       @person = Person.set_values(params[:person])
       @subscribe = params[:subscribe]== "true" ? true : false
+      @person[:profile_urls] = set_profile_urls
 
       # 読み仮名登録用
       unless params[:kana].blank?
@@ -165,6 +169,9 @@ class PeopleController < ApplicationController
         @note[:person_record_id] = @person.id
         @note.save!
       end
+      if @person.errors.messages.present?
+        raise ActiveRecord::RecordNotFound
+      end
     end
 
     if @subscribe
@@ -172,7 +179,7 @@ class PeopleController < ApplicationController
     else
       redirect_to :action => "view", :id => @person
     end
-  rescue
+  rescue ActiveRecord::RecordNotFound
     render :action => "new"
   end
 
@@ -494,6 +501,13 @@ class PeopleController < ApplicationController
       render :file => "#{Rails.root}/public/404.html"
     end
 
+  end
+
+  private
+  def set_profile_urls
+    urls = [params[:profile_url1], params[:profile_url2], params[:profile_url3]]
+    urls.delete("")
+    return urls.join("\n")
   end
 
 
