@@ -68,12 +68,15 @@
                     <span class="label">近隣の場所:</span>
                     <span class="value"><%= @person.home_neighborhood %></span>
                   </div>
-                  <div class="field">
-                    <span class="label">市内・市外区分:</span>
-                    <span class="value">
-                      <%= @person_const["in_city_flag"]["#{@person.in_city_flag}"] %>
-                    </span>
-                  </div>
+
+                  <% if @person.in_city_flag.present? %>
+                    <div class="field">
+                      <span class="label">市内・市外区分:</span>
+                      <span class="value">
+                        <%= @person_const["in_city_flag"]["#{@person.in_city_flag}"] %>
+                      </span>
+                    </div>
+                  <% end %>
 
                   <div class="end-multi-columns"></div>
                 </div>

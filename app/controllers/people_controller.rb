@@ -126,7 +126,6 @@ class PeopleController < ApplicationController
       @from_seek = true
     end
 
-    binding.pry
   end
 
   # 新規情報登録

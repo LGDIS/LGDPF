@@ -1,39 +1,39 @@
 <%= javascript_tag do %>
   $(function(){
-    $( "#person_home_city" ).autocomplete({
-      source: function(request, response) {
-        $.ajax({
-         url: <%= raw "\"#{autocomplete_city_path}\"" %>,
-          dataType: "json",
-          data: {
-            term: request.term,
-            state: $('#person_home_state').val()
-          },
-          success: function(data) {
-            response(data);
-         }
-        });
-      },
-    minLength: 1
+  $( "#person_home_city" ).autocomplete({
+  source: function(request, response) {
+  $.ajax({
+  url: <%= raw "\"#{autocomplete_city_path}\"" %>,
+  dataType: "json",
+  data: {
+  term: request.term,
+  state: $('#person_home_state').val()
+  },
+  success: function(data) {
+  response(data);
+  }
+  });
+  },
+  minLength: 1
   });
 
   $( "#person_home_street" ).autocomplete({
-    source: function(request, response) {
-      $.ajax({
-        url: <%= raw "\"#{autocomplete_street_path}\"" %>,
-        dataType: "json",
-        data: {
-          term: request.term,
-          state: $('#person_home_state').val()
-        },
-        success: function(data) {
-          response(data);
-        }
-      });
-    },
-    minLength: 1
+  source: function(request, response) {
+  $.ajax({
+  url: <%= raw "\"#{autocomplete_street_path}\"" %>,
+  dataType: "json",
+  data: {
+  term: request.term,
+  state: $('#person_home_state').val()
+  },
+  success: function(data) {
+  response(data);
+  }
   });
-});
+  },
+  minLength: 1
+  });
+  });
 <% end %>
 
 <div class="fields-table person">
@@ -102,6 +102,7 @@
     <div class="field">
       <span class="label">
         <label for="date_of_birth">生年月日:</label>
+        <div class="hint">YYYY-MM-DD の形式で入力してください</div>
       </span>
       <span class="value">
         <%= text_field :person, :date_of_birth, :value => @person.date_of_birth,
@@ -119,6 +120,16 @@
           :class => "short-text-input" %>
       </span>
     </div>
+    <div class="field">
+      <span class="label">
+        <label for="home_postal_code">出身国:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :home_country, :value => @person.home_country,
+          :class => "short-text-input" %>
+      </span>
+    </div>
+
     <div class="end-multi-columns"></div>
   </div>
 
@@ -243,15 +254,6 @@
   <div class="address section">
     <h3>自宅住所</h3>
     <div class="hint">この人の住所を入力してください。</div>
-    <div class="field">
-      <span class="label">
-        <label for="home_postal_code">出身国:</label>
-      </span>
-      <span class="value">
-        <%= text_field :person, :home_country, :value => @person.home_country,
-          :class => "short-text-input" %>
-      </span>
-    </div>
     <div class="field">
       <span class="label">
         <label for="home_postal_code">郵便番号:</label>
