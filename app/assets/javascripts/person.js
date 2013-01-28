@@ -1,16 +1,22 @@
 var profile_websites = [
-  {"icon_filename": "facebook-16x16.png",
-    "icon_url": "/assets/facebook-16x16.png",
-    "name": "Facebook",
-    "url_regexp": "http://(www\\.)?facebook\\.com/.*"},
-  {"icon_filename": "twitter-16x16.png",
-    "icon_url": "/assets/twitter-16x16.png",
-    "name": "Twitter",
-    "url_regexp": "http://(www\\.)?twitter\\.com/.*"},
-  {"icon_filename": "linkedin-16x16.png",
-    "icon_url": "/assets/linkedin-16x16.png",
-    "name": "LinkedIn",
-    "url_regexp": "http://(www\\.)?linkedin\\.com/.*"}
+{
+  "icon_filename": "facebook-16x16.png",
+  "icon_url": "/assets/facebook-16x16.png",
+  "name": "Facebook",
+  "url_regexp": "http://(www\\.)?facebook\\.com/.*"
+},
+{
+  "icon_filename": "twitter-16x16.png",
+  "icon_url": "/assets/twitter-16x16.png",
+  "name": "Twitter",
+  "url_regexp": "http://(www\\.)?twitter\\.com/.*"
+},
+{
+  "icon_filename": "linkedin-16x16.png",
+  "icon_url": "/assets/linkedin-16x16.png",
+  "name": "LinkedIn",
+  "url_regexp": "http://(www\\.)?linkedin\\.com/.*"
+}
 ];
 
 function show(element) {
@@ -30,85 +36,100 @@ var checked_ids = {};
 
 // Initialize JavaScript state based on hidden fields.
 function init_dup_state() {
-    var dup_mode_enabled = $('#dup_state').val() == 'true';
-    set_dup_mode(dup_mode_enabled, true);
+  var dup_mode_enabled = $('#dup_state').val() == 'true';
+  set_dup_mode(dup_mode_enabled, true);
 }
 
 // Switched duplicate handling UI on or off.
 function set_dup_mode(enable, init) {
-    $('#dup_on_link').css("display", enable ? 'none' : '');
-    $('#dup_off_link').css("display", enable ? '' : 'none');
-    $('#dup_form').css("display", enable ? '' : 'none');
-    $('#dup_state').attr("cheched", enable);
+  $('#dup_on_link').css("display", enable ? 'none' : '');
+  $('#dup_off_link').css("display", enable ? '' : 'none');
+  $('#dup_form').css("display", enable ? '' : 'none');
+  $('#dup_state').attr("cheched", enable);
 
-    var elems = document.getElementsByTagName('input');
-    for (var i = 0; i < elems.length; ++i) {
-        var elem = elems[i];
-        if (elem.type.toLowerCase() == 'checkbox' && elem.name == 'dup') {
-            elem.style.display = enable ? 'block' : 'none';
-            if (init) {
-                check_dup(elem);
-            } else {
-                elem.checked = false;
-            }
-        }
+  var elems = document.getElementsByTagName('input');
+  for (var i = 0; i < elems.length; ++i) {
+    var elem = elems[i];
+    if (elem.type.toLowerCase() == 'checkbox' && elem.name == 'dup') {
+      elem.style.display = enable ? 'block' : 'none';
+      if (init) {
+        check_dup(elem);
+      } else {
+        elem.checked = false;
+      }
     }
-    if (!init) {
-        checked_ids = {};
-        $('#dup_count').innerHTML = '0';
-        $('#dup_go').disabled = true;
-    }
-    return false;
+  }
+  if (!init) {
+    checked_ids = {};
+    $('#dup_count').innerHTML = '0';
+    $('#dup_go').disabled = true;
+  }
+  return false;
 }
 
 // Handles checking / unchecking a person for duplicate handling.
 function check_dup(elem) {
-    if (elem.checked) {
-        checked_ids[elem.value] = true;
-    } else {
-        delete checked_ids[elem.value];
-    }
-    var count = 0;
-    for (prop in checked_ids) {
-        ++count;
-    }
-    $('#dup_count').text(count);
-    $('#mark_count').val(count);
-    $('#dup_go').attr("disabled", (count < 2 || count > 3));
+  if (elem.checked) {
+    checked_ids[elem.value] = true;
+  } else {
+    delete checked_ids[elem.value];
+  }
+  var count = 0;
+  for (prop in checked_ids) {
+    ++count;
+  }
+  $('#dup_count').text(count);
+  $('#mark_count').val(count);
+  $('#dup_go').attr("disabled", (count < 2 || count > 3));
 }
 
 // Before submit, collect IDs for duplicate marking.
 function mark_dup() {
-    var ind = 0;
-    for (prop in checked_ids) {
-        $('#id' + (++ind)).val(prop);
-        if (ind == 3) {
-            break;
-        }
+  var ind = 0;
+  for (prop in checked_ids) {
+    $('#id' + (++ind)).val(prop);
+    if (ind == 3) {
+      break;
     }
+  }
 }
 
 // Dynamic behavior for the image URL / upload entry fields.
-// If for_note is true, target fields in the Note entry form; otherwise target
-// fields in the Person entry form.
-function update_image_input(for_note) {
-    var id_prefix = for_note ? '#note_' : '#person_';
-    var upload = $(id_prefix + 'photo_input_upload').attr("checked");
-    if (upload) {
-        $(id_prefix + 'photo_url').removeAttr("disabled").focus();
-        $(id_prefix + 'remote_photo_url_url').attr("disabled", true);
+$(document).ready(function() {
+  $("input[name=person_photo_input]").bind("change", function(){
+    var check = $(this).val();
+    if (check == "url") {
+      $('#person_remote_photo_url_url').removeAttr("disabled").focus()
+      $('#person_photo_url').attr("disabled", true);
     }
     else {
-        $(id_prefix + 'photo_url').attr("disabled", true);
-        $(id_prefix + 'remote_photo_url_url').removeAttr("disabled").focus()
+      $('#person_remote_photo_url_url').attr("disabled", true);
+      $('#person_photo_url').removeAttr("disabled").focus()
     }
-}
+  });
+});
+
+$(document).ready(function() {
+  $("input[name=note_photo_input]").bind("change", function(){
+    var check = $(this).val();
+    if (check == "url") {
+      $('#note_remote_photo_url_url').removeAttr("disabled").focus()
+      $('#note_photo_url').attr("disabled", true);
+    }
+    else {
+      $('#note_remote_photo_url_url').attr("disabled", true);
+      $('#note_photo_url').removeAttr("disabled").focus()
+    }
+  });
+});
+
 
 // Dynamic behavior for the Person entry form.
-function update_clone() {
-    var display_original = $('#clone_clone_input_no').attr("checked") ? 'inline' : 'none';
-    var display_clone = $('#clone_clone_input_yes').attr("checked") ? 'inline' : 'none';
-    var display_source = $('#clone_clone_input_yes').attr("checked") ? '' : 'none';
+$(document).ready(function(){
+  $("input[name='clone[clone_input]' ]").bind("change", function(){
+    var display_original = $(this).val() == "no" ? 'inline' : 'none';
+    var display_clone = $(this).val() == "no" ? 'none' : 'inline';
+    var display_source = $(this).val() == "no" ? 'none' : '';
 
     $('#author_name_original').css("display", display_original);
     $('#author_phone_original').css("display", display_original);
@@ -119,45 +140,42 @@ function update_clone() {
     $('#source_url_row').css("display", display_source);
     $('#source_date_row').css("display", display_source);
     $('#source_name_row').css("display", display_source);
-}
-
-$(document).ready(function(){
-    if ($("#note_author_made_contact_true").attr('checked')){
-        update_contact();
-    }
+  });
 });
 
-// Dynamic behavior for the Note entry form.
-function update_contact() {
-    var display_contact = $('#note_author_made_contact_true').attr('checked') ? '' : 'none';
-    if($('#note_author_made_contact_true').attr('checked')){
-        $('#note_author_made_contact_true').attr('checked','checked');
-        $('#note_author_made_contact_false').removeAttr('checked');
+
+$(document).ready(function(){
+  $("input[name='note[author_made_contact]' ]").bind("change", function(){
+    var display_contact = $(this).val() == "true" ? '' : 'none';
+    if ($(this).val() == "true") {
+      $('#note_author_made_contact_true').attr('checked',true);
+      $('#note_author_made_contact_false').removeAttr('checked');
     }
-    else{
-        $('#note_author_made_contact_true').removeAttr('checked');
-        $('#note_author_made_contact_false').attr('checked','checked');
+    else {
+      $('#note_author_made_contact_true').removeAttr('checked');
+      $('#note_author_made_contact_false').attr('checked','checked');
     }
     $('#contact_row').css("display", display_contact);
-}
+  });
+});
 
 // メモの表示切り替え
 function set_display(id_or_elem, hide) {
-    var hide_text = hide ? 'none' : '';
-    if (typeof(id_or_elem) == 'string') {
-        document.getElementById(id_or_elem).style.display = hide_text;
-    } else {
-        id_or_elem.style.display = hide_text;
-    }
+  var hide_text = hide ? 'none' : '';
+  if (typeof(id_or_elem) == 'string') {
+    document.getElementById(id_or_elem).style.display = hide_text;
+  } else {
+    id_or_elem.style.display = hide_text;
+  }
 }
 
 function hide_unhide_note_contents(note_contents_id) {
-    var note = document.getElementById(note_contents_id + '-contents');
-    var hidden = note.style.display == 'none';
-    set_display(note, !hidden);
-    set_display(note_contents_id + '-reveal-note', hidden);
-    set_display(note_contents_id + '-hide-note', !hidden);
-    set_display(note_contents_id + '-mark-not-spam', !hidden);
+  var note = document.getElementById(note_contents_id + '-contents');
+  var hidden = note.style.display == 'none';
+  set_display(note, !hidden);
+  set_display(note_contents_id + '-reveal-note', hidden);
+  set_display(note_contents_id + '-hide-note', !hidden);
+  set_display(note_contents_id + '-mark-not-spam', !hidden);
 }
 
 // Shows a new text input field for a profile URL.
@@ -225,7 +243,7 @@ function validate_fields() {
       var website_index = parseInt(document.getElementById('profile_website_index' + i).value);
       var website = profile_websites[website_index];
       if (url && website && website.url_regexp &&
-          !url.match(website.url_regexp)) {
+        !url.match(website.url_regexp)) {
         show(document.getElementById('invalid_profile_url'));
         $("h1 + div.error").remove();
         scrollTo(0,0);
@@ -254,77 +272,77 @@ var address_by_map_id = {};
 var map_initialized = {};
 
 function parseLatLng(latlng_str) {
-    var latlng_split = latlng_str.split(',');
-    if (latlng_split.length == 2) {
-        var lat = parseFloat(latlng_split[0])
-        var lng = parseFloat(latlng_split[1])
-        if (!isNaN(lat) && !isNaN(lng)) {
-            return new google.maps.LatLng(lat, lng);
-        }
+  var latlng_split = latlng_str.split(',');
+  if (latlng_split.length == 2) {
+    var lat = parseFloat(latlng_split[0])
+    var lng = parseFloat(latlng_split[1])
+    if (!isNaN(lat) && !isNaN(lng)) {
+      return new google.maps.LatLng(lat, lng);
     }
+  }
 }
 
 function printLatLng(latlng) {
-    return latlng.lat() + ',' + latlng.lng();
+  return latlng.lat() + ',' + latlng.lng();
 }
 
 // Tries to parse "location_str" as a latlng or geocodes it as an address.
 function parseLatLngOrGeocode(location_str, onLatLngAvailable) {
-    var latlng = parseLatLng(location_str);
-    if (latlng) {
-        onLatLngAvailable(latlng);
-    } else {
-        // If location_str is not a lat/lng pair, try geocoding it as an address.
-        var geocoder = new google.maps.Geocoder();
-        geocoder.geocode({
-            address: location_str
-        }, function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK && results[0]) {
-                onLatLngAvailable(results[0].geometry.location);
-            }
-        });
-    }
+  var latlng = parseLatLng(location_str);
+  if (latlng) {
+    onLatLngAvailable(latlng);
+  } else {
+    // If location_str is not a lat/lng pair, try geocoding it as an address.
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({
+      address: location_str
+    }, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK && results[0]) {
+        onLatLngAvailable(results[0].geometry.location);
+      }
+    });
+  }
 }
 
 function parseLatLngOrGeocodeAndStore(location_str, map_id) {
-    // On success, store the latlng and make the show link visible.
-    function onLatLngAvailable(latlng) {
-        latlng_by_map_id[map_id] = latlng;
-        document.getElementById(map_id + '_show_link').style.display = '';
-    }
-    parseLatLngOrGeocode(location_str, onLatLngAvailable);
+  // On success, store the latlng and make the show link visible.
+  function onLatLngAvailable(latlng) {
+    latlng_by_map_id[map_id] = latlng;
+    document.getElementById(map_id + '_show_link').style.display = '';
+  }
+  parseLatLngOrGeocode(location_str, onLatLngAvailable);
 }
 
 // Initializes a map at the canvas whose id is "map_id" and drops a marker at
 // the map's center.  "center" and "zoom" may be undefined, in which case the
 // default values are used.
 function initMap(map_id, center, zoom) {
-    var map_canvas = document.getElementById(map_id);
-    if (!map_canvas) return;
+  var map_canvas = document.getElementById(map_id);
+  if (!map_canvas) return;
 
-    var map = new google.maps.Map(map_canvas, {
-        center: center || DEFAULT_MAP_CENTER,
-        zoom: zoom || DEFAULT_MAP_ZOOM,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    });
-    var marker = new google.maps.Marker({
-        map: map,
-        position: center || DEFAULT_MAP_CENTER
-    });
+  var map = new google.maps.Map(map_canvas, {
+    center: center || DEFAULT_MAP_CENTER,
+    zoom: zoom || DEFAULT_MAP_ZOOM,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  });
+  var marker = new google.maps.Marker({
+    map: map,
+    position: center || DEFAULT_MAP_CENTER
+  });
 
-    return {
-        map: map,
-        marker: marker
-    };
+  return {
+    map: map,
+    marker: marker
+  };
 }
 
 // Initializes a map and a marker, using the lat/lng stored in latlng_by_map_id
 // as the center.
 function initMarkeredMap(map_id) {
-    var latlng = latlng_by_map_id[map_id];
-    if (latlng) {
-        initMap(map_id, latlng);
-    }
+  var latlng = latlng_by_map_id[map_id];
+  if (latlng) {
+    initMap(map_id, latlng);
+  }
 }
 
 // Initializes a map with the default viewport and listens to click events.
@@ -333,98 +351,98 @@ function initMarkeredMap(map_id) {
 // the geocoder to reverse geocode the lat/lng, and if successful, updates the
 // text field with the reverse-geocoded address.
 function initClickableMap(map_id) {
-    var markered_map = initMap(map_id);
-    var location_field = document.getElementById(map_id + '_location_field');
-    if (!markered_map || !location_field) return;
+  var markered_map = initMap(map_id);
+  var location_field = document.getElementById(map_id + '_location_field');
+  if (!markered_map || !location_field) return;
 
-    markered_map.map.setOptions({
-        draggableCursor: 'pointer'
+  markered_map.map.setOptions({
+    draggableCursor: 'pointer'
+  });
+  markered_map.marker.setVisible(false);
+
+  var onLocationFieldChanged = function() {
+    parseLatLngOrGeocode(location_field.value, function(latlng) {
+      markered_map.map.panTo(latlng);
+      markered_map.marker.setPosition(latlng);
+      markered_map.marker.setVisible(true);
     });
-    markered_map.marker.setVisible(false);
+  };
+  // Updates the marker position according to the location field value.
+  location_field.onchange = onLocationFieldChanged;
+  if (location_field.value) {
+    onLocationFieldChanged();
+  }
 
-    var onLocationFieldChanged = function() {
-        parseLatLngOrGeocode(location_field.value, function(latlng) {
-            markered_map.map.panTo(latlng);
-            markered_map.marker.setPosition(latlng);
-            markered_map.marker.setVisible(true);
-        });
-    };
-    // Updates the marker position according to the location field value.
-    location_field.onchange = onLocationFieldChanged;
-    if (location_field.value) {
-        onLocationFieldChanged();
-    }
+  // Updates the location field value according to the marker position.
+  var geocoder = new google.maps.Geocoder();
+  google.maps.event.addListener(markered_map.map, "click", function(event) {
+    var latlng = event.latLng;
+    latlng_by_map_id[map_id] = latlng;
 
-    // Updates the location field value according to the marker position.
-    var geocoder = new google.maps.Geocoder();
-    google.maps.event.addListener(markered_map.map, "click", function(event) {
-        var latlng = event.latLng;
-        latlng_by_map_id[map_id] = latlng;
+    // Show the marker at the clicked location and updates the text field.
+    markered_map.marker.setPosition(latlng);
+    markered_map.marker.setVisible(true);
+    location_field.value = printLatLng(latlng);
 
-        // Show the marker at the clicked location and updates the text field.
-        markered_map.marker.setPosition(latlng);
-        markered_map.marker.setVisible(true);
-        location_field.value = printLatLng(latlng);
-
-        // Try reverse geocoding the lat/lng location to an address.
-        geocoder.geocode({
-            location: latlng
-        }, function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK && results[0]) {
-                location_field.value = address_by_map_id[map_id] =
-                results[0].formatted_address;
-            }
-        });
+    // Try reverse geocoding the lat/lng location to an address.
+    geocoder.geocode({
+      location: latlng
+    }, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK && results[0]) {
+        location_field.value = address_by_map_id[map_id] =
+        results[0].formatted_address;
+      }
     });
+  });
 }
 
 // Toggles the visibility of an element specified by the id and returns the
 // visibility of the element after the toggle.
 function toggle(id) {
-    var element = document.getElementById(id);
-    var to_be_visible = element.style.display == 'none';
-    element.style.display = to_be_visible ? '' : 'none';
-    return to_be_visible;
+  var element = document.getElementById(id);
+  var to_be_visible = element.style.display == 'none';
+  element.style.display = to_be_visible ? '' : 'none';
+  return to_be_visible;
 }
 
 // Toggles the value of location field between lat/long and address string.
 function toggleLatLngAndAddress(map_id) {
-    var location_field = document.getElementById(map_id + '_location_field');
-    if (!location_field) return;
-    if (toggle('switch_to_latlng_link')) {
-        var address = address_by_map_id[map_id];
-        if (address) {
-            location_field.value = address;
-        }
+  var location_field = document.getElementById(map_id + '_location_field');
+  if (!location_field) return;
+  if (toggle('switch_to_latlng_link')) {
+    var address = address_by_map_id[map_id];
+    if (address) {
+      location_field.value = address;
     }
-    if (toggle('switch_to_address_link')) {
-        var latlng = latlng_by_map_id[map_id];
-        if (latlng) {
-            location_field.value = printLatLng(latlng);
-        }
+  }
+  if (toggle('switch_to_address_link')) {
+    var latlng = latlng_by_map_id[map_id];
+    if (latlng) {
+      location_field.value = printLatLng(latlng);
     }
+  }
 }
 
 // Toggles the visibility of the map and the show/hide link.
 function toggleMap(map_id) {
-    toggle(map_id);
-    toggle(map_id + '_show_link');
-    toggle(map_id + '_hide_link');
+  toggle(map_id);
+  toggle(map_id + '_show_link');
+  toggle(map_id + '_hide_link');
 }
 
 function toggleMarkeredMap(map_id) {
-    toggleMap(map_id);
-    if (!map_initialized[map_id]) {
-        initMarkeredMap(map_id);
-        map_initialized[map_id] = true;
-    }
+  toggleMap(map_id);
+  if (!map_initialized[map_id]) {
+    initMarkeredMap(map_id);
+    map_initialized[map_id] = true;
+  }
 }
 
 function toggleClickableMap(map_id) {
-    toggleMap(map_id);
-    if (!map_initialized[map_id]) {
-        initClickableMap(map_id);
-        map_initialized[map_id] = true;
-    }
+  toggleMap(map_id);
+  if (!map_initialized[map_id]) {
+    initClickableMap(map_id);
+    map_initialized[map_id] = true;
+  }
 }
 

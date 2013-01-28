@@ -397,7 +397,7 @@ options_for_select(@shelter.invert, @person.shelter_name),
     <div class="hint">
       この人の写真がある場合は、写真をアップロードするか、写真の URL を指定してください。
     </div>
-    <div class="field" onclick="$('#photo_input_url').attr('checked',true); update_image_input(false);">
+    <div class="field">
       <span class="radio">
         <%= radio_button_tag "person_photo_input","url", true %>
       </span>
@@ -407,7 +407,7 @@ options_for_select(@shelter.invert, @person.shelter_name),
           :class => "medium-text-input" %>
       </span>
     </div>
-    <div class="field" onclick="$('#photo_input_upload').attr('checked',true); update_image_input(false);">
+    <div class="field">
       <span class="radio">
         <%= radio_button_tag "person_photo_input", "upload", false %>
       </span>
@@ -536,16 +536,14 @@ options_for_select(@shelter.invert, @person.shelter_name),
       <div class="instructions">
         <div>
           <%= radio_button "clone", "clone_input", "no",
-            {:checked => true,
-            :onclick => "update_clone()",
-            :onchange => "update_clone()"} %>
+            {:checked => true} %>
           <label class="option" for="clone_clone_input_no">
             これは新しい記録です。
           </label>
         </div>
         <div>
           <%= radio_button "clone", "clone_input", "yes",
-            {:onclick => "update_clone()", :onchange => "update_clone()"}%>
+            {}%>
           <label class="option" for="clone_clone_input_yes">
             この記録は別の情報源からコピーしたものです。
           </label>
