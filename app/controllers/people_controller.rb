@@ -7,9 +7,9 @@ class PeopleController < ApplicationController
   def init
     @person_const = get_const Person.table_name
     @note_const   = get_const Note.table_name
-#    @area = get_cache("area")
-#    @address = Rails.cache.read("address")
-#    @shelter = get_cache("shelter")
+    #    @area = get_cache("area")
+    #    @address = Rails.cache.read("address")
+    #    @shelter = get_cache("shelter")
   end
 
   # トップ画面
@@ -65,7 +65,7 @@ class PeopleController < ApplicationController
     @person2 = Person.find_by_id(params[:person2][:id])
     @person3 = Person.find_by_id(params[:person3][:id]) unless params[:id3].blank?
     @subscribe = params[:subscribe] == "true" ? true : false
-    #
+
     @note = Note.new(params[:note])
     @note.person_record_id  =  params[:person][:id]
     @note.linked_person_record_id  =  params[:person2][:id]
@@ -125,12 +125,11 @@ class PeopleController < ApplicationController
     if params[:family_name].blank? && params[:given_name].blank?
       @from_seek = true
     end
-
   end
 
   # 新規情報登録
   def create
-     @error_message = "入力したURLの形式が不正です。プロフィールURLをコピーして貼り付けてください。"
+    @error_message = "入力したURLの形式が不正です。プロフィールURLをコピーして貼り付けてください。"
     # Person, Noteの登録
     Person.transaction do
       # 遷移元確認フラグ
@@ -178,7 +177,7 @@ class PeopleController < ApplicationController
     else
       redirect_to :action => "view", :id => @person
     end
-  rescue ActiveRecord::RecordNotFound
+  rescue ActiveRecord::RecordNotFound, ActiveRecord::RecordInvalid
     render :action => "new"
   end
 
