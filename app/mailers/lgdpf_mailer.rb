@@ -34,7 +34,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     aal = ActiveRecord::Base::ApiActionLog.create
     @person = person
     @note = note
-    @note_const = Common.get_const(Note.table_name)
+    @note_const = Constant.get_const(Note.table_name)
     @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
     @unsubscribe_path = @@settings["ldgpf"][Rails.env]["site"] +
       "person/complete?complete[key]=unsubscribe_email&id=" +

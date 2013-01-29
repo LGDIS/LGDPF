@@ -5,8 +5,8 @@ class PeopleController < ApplicationController
 
   # コンスタントマスタの読み込み
   def init
-    @person_const = Common.get_const(Person.table_name)
-    @note_const   = Common.get_const(Note.table_name)
+    @person_const = Constant.get_const(Person.table_name)
+    @note_const   = Constant.get_const(Note.table_name)
     #    @area = get_cache("area")
     #    @address = Rails.cache.read("address")
     #    @shelter = get_cache("shelter")
