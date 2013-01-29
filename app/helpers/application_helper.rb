@@ -1,4 +1,11 @@
 module ApplicationHelper
+
+  # エラーメッセージを表示
+  # === Args
+  # _objects_ :: ActiveRecordオブジェクト
+  # === Return
+  # エラーメッセージを含んだタグ
+  # === Raise
   def error_messages_for(*objects)
     html = ""
     objects = objects.map {|o| o.is_a?(String) ? instance_variable_get("@#{o}") : o}.compact

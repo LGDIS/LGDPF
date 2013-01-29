@@ -1,15 +1,27 @@
 # -*- coding:utf-8 -*-
 class PeopleController < ApplicationController
 
-  before_filter :init
+  before_filter :init, :expiry_date
 
   # コンスタントマスタの読み込み
   def init
-    @person_const = get_const Person.table_name
-    @note_const   = get_const Note.table_name
+    @person_const = Common.get_const(Person.table_name)
+    @note_const   = Common.get_const(Note.table_name)
     #    @area = get_cache("area")
     #    @address = Rails.cache.read("address")
     #    @shelter = get_cache("shelter")
+  end
+
+  # 有効期限の確認
+  def expiry_date
+    if params[:token].present?
+      aal = ApiActionLog.find_by_unique_key(params[:token])
+      if aal.blank? || (aal.entry_date + 3.days) < Time.now
+        raise ActiveRecord::RecordNotFound
+      end
+    end
+  rescue ActiveRecord::RecordNotFound
+    render :file => "#{Rails.root}/public/404.html"
   end
 
   # トップ画面
