@@ -21,17 +21,17 @@ module PersonHelper
   def create_address(person)
     address_ary = []
     join_str = "&nbsp;&nbsp;&nbsp;"
-    
+
+    # 郵便番号
+    address_ary << person.home_postal_code if person.home_postal_code.present?
+    # 都道府県
+    address_ary << person.home_state if person.home_state.present?
+    # 市
+    address_ary << person.home_city if person.home_city.present?
     # 町名
     address_ary << person.home_street if person.home_street.present?
     # 近隣の場所
     address_ary << person.home_neighborhood if person.home_neighborhood.present?
-    # 市
-    address_ary << person.home_city if person.home_city.present?
-    # 都道府県
-    address_ary << person.home_state if person.home_state.present?
-    # 郵便番号
-    address_ary << person.home_postal_code if person.home_postal_code.present?
     
     if address_ary.present?
       # 住所文字列をHTMLエスケープする
