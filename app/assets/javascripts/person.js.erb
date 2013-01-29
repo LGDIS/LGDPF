@@ -1,19 +1,19 @@
 var profile_websites = [
 {
   "icon_filename": "facebook-16x16.png",
-  "icon_url": "/assets/facebook-16x16.png",
+  "icon_url": "<%=asset_path('facebook-16x16.png') %>",
   "name": "Facebook",
   "url_regexp": "http://(www\\.)?facebook\\.com/.*"
 },
 {
   "icon_filename": "twitter-16x16.png",
-  "icon_url": "/assets/twitter-16x16.png",
+  "icon_url": "<%=asset_path('twitter-16x16.png') %>",
   "name": "Twitter",
   "url_regexp": "http://(www\\.)?twitter\\.com/.*"
 },
 {
   "icon_filename": "linkedin-16x16.png",
-  "icon_url": "/assets/linkedin-16x16.png",
+  "icon_url": "<%=asset_path('linkedin-16x16.png') %>",
   "name": "LinkedIn",
   "url_regexp": "http://(www\\.)?linkedin\\.com/.*"
 }
@@ -262,7 +262,7 @@ function validate_fields() {
 
 // The default viewport of the map.
 var DEFAULT_MAP_CENTER = new google.maps.LatLng(38.4342786010442,141.30284786224365);
-var DEFAULT_MAP_ZOOM = 6;
+var DEFAULT_MAP_ZOOM = 13;
 
 // key: map_id, value: LatLng
 var latlng_by_map_id = {};
