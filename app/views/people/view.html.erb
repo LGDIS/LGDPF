@@ -204,7 +204,11 @@
                   </div>
                   <div class="field">
                     <span class="label">情報元の URL:</span>
-                    <span class="value"><%= @person.source_url %></span>
+                    <span class="value">
+                      <% if @person.source_url.present? %>
+                          <%= link_to "リンク", @person.source_url, :target => ["_blank"] %>
+                      <% end %>
+                    </span>
                   </div>
                   <div class="field">
                     <span class="label">情報元の投稿日:</span>
