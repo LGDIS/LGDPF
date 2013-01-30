@@ -1,0 +1,27 @@
+# -*- coding:utf-8 -*-
+# LGDPF ActiveResource settings
+ldgpf:
+  development:
+    site: 
+    user: 
+    password: 
+    proxy: 
+  test:
+    site: 
+    user: 
+    password: 
+    proxy: 
+  production:
+    site: 
+    user: 
+    password: 
+    proxy:
+  mail:
+    address: 
+    port: 
+    domain: 
+    user_name: 
+    password: 
+    host: 
+    from: 
+    
