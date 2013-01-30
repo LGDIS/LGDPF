@@ -148,11 +148,15 @@ class PeopleController < ApplicationController
       if params[:note].blank?
         @from_seek = true
       end
-
       # 画面入力値を加工
       @person = Person.set_values(params[:person])
       @subscribe = params[:subscribe]== "true" ? true : false
+      @clone_clone_input = params[:clone][:clone_input] == "no" ? true : false
+      if @clone_clone_input
+        @person[:source_name] = request.headers["host"]
+      end
       @person[:profile_urls] = set_profile_urls
+
 
       # 読み仮名登録用
       unless params[:kana].blank?
