@@ -30,27 +30,27 @@ class Person < ActiveRecord::Migration
       t.column "profile_urls", :string
       t.column "public_flag", :integer
 
-      t.column "in_city_flag", :integer
-      t.column "shelter_name", :string
-      t.column "refuge_status", :integer
-      t.column "refuge_reason", :string
+      t.column "in_city_flag", :string, :limit => 1
+      t.column "shelter_name", :string, :limit => 20
+      t.column "refuge_status", :string, :limit => 1
+      t.column "refuge_reason", :string, :limit => 4000
       t.column "shelter_entry_date", :date
       t.column "shelter_leave_date", :date
-      t.column "next_place", :string
-      t.column "next_place_phone", :string
-      t.column "injury_flag", :integer
-      t.column "injury_condition", :string
-      t.column "allergy_flag", :integer
-      t.column "allergy_cause", :string
-      t.column "pregnancy", :integer
-      t.column "baby", :integer
-      t.column "upper_care_level_three", :integer
-      t.column "elderly_alone", :integer
-      t.column "elderly_couple", :integer
-      t.column "bedridden_elderly", :integer
-      t.column "elderly_dementia", :integer
-      t.column "rehabilitation_certificate", :integer
-      t.column "physical_disability_certificate", :integer
+      t.column "next_place", :string, :limit => 100
+      t.column "next_place_phone", :string, :limit => 20
+      t.column "injury_flag", :string, :limit => 1
+      t.column "injury_condition", :string, :limit => 4000
+      t.column "allergy_flag", :string, :limit => 1
+      t.column "allergy_cause", :string, :limit => 4000
+      t.column "pregnancy", :string, :limit => 1
+      t.column "baby", :string, :limit => 1
+      t.column "upper_care_level_three", :string, :limit => 2
+      t.column "elderly_alone", :string, :limit => 1
+      t.column "elderly_couple", :string, :limit => 1
+      t.column "bedridden_elderly", :string, :limit => 1
+      t.column "elderly_dementia", :string, :limit => 1
+      t.column "rehabilitation_certificate", :string, :limit => 2
+      t.column "physical_disability_certificate", :string, :limit => 1
       t.column "link_flag", :boolean, :default => false
       t.column "notes_disabled", :boolean, :default => false
       t.column "email_flag", :boolean, :default => false
