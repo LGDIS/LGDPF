@@ -36,14 +36,15 @@ class Person < ActiveRecord::Base
 
   # 入力値チェック
   def url_validater
-    urls = self.profile_urls.split("\n")
-    urls.each do |url|
-      unless  url =~ /^http(s)?:\/\/*/
-        errors.add(:profile_urls, "")
-        return false
+    unless self.profile_urls.blank?
+      urls = self.profile_urls.split("\n")
+      urls.each do |url|
+        unless  url =~ /^http(s)?:\/\/*/
+          errors.add(:profile_urls, "")
+          return false
+        end
       end
     end
-
     return true
   end
 
