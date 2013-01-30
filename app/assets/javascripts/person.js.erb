@@ -125,11 +125,11 @@ $(document).ready(function() {
 
 
 // Dynamic behavior for the Person entry form.
-$(document).ready(function(){
-  $("input[name='clone[clone_input]' ]").bind("change", function(){
-    var display_original = $(this).val() == "no" ? 'inline' : 'none';
-    var display_clone = $(this).val() == "no" ? 'none' : 'inline';
-    var display_source = $(this).val() == "no" ? 'none' : '';
+function update_clone(){
+    var check = $("input[name='clone[clone_input]' ]:checked").val();
+    var display_original = check == "no" ? 'inline' : 'none';
+    var display_clone = check == "no" ? 'none' : 'inline';
+    var display_source = check == "no" ? 'none' : '';
 
     $('#author_name_original').css("display", display_original);
     $('#author_phone_original').css("display", display_original);
@@ -140,7 +140,10 @@ $(document).ready(function(){
     $('#source_url_row').css("display", display_source);
     $('#source_date_row').css("display", display_source);
     $('#source_name_row').css("display", display_source);
-  });
+  }
+
+$(document).ready(function(){
+  $("input[name='clone[clone_input]' ]").bind("change", update_clone).change();
 });
 
 

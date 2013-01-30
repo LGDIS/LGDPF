@@ -470,7 +470,7 @@ options_for_select(@shelter.invert, @person.shelter_name),
                id="profile_icon3"></div>
         </td>
         <td>
-          <input type="hidden" id="profile_website_index3" value="aaa" />
+          <input type="hidden" id="profile_website_index3" />
           <input type="text" id="profile_url3"
                  name="profile_url3" size="30"
                  placeholder="Link to profile page" />
@@ -536,14 +536,14 @@ options_for_select(@shelter.invert, @person.shelter_name),
       <div class="instructions">
         <div>
           <%= radio_button "clone", "clone_input", "no",
-            {:checked => true} %>
+            {:checked => @clone_clone_input} %>
           <label class="option" for="clone_clone_input_no">
             これは新しい記録です。
           </label>
         </div>
         <div>
           <%= radio_button "clone", "clone_input", "yes",
-            {}%>
+            {:checked => !@clone_clone_input}%>
           <label class="option" for="clone_clone_input_yes">
             この記録は別の情報源からコピーしたものです。
           </label>
