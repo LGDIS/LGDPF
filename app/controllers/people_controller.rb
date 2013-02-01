@@ -1,4 +1,7 @@
 # -*- coding:utf-8 -*-
+# 利用規約の同意しない場合に発生するエラー
+class ConsentError < StandardError; end
+
 class PeopleController < ApplicationController
 
   before_filter :init, :expiry_date
@@ -22,6 +25,13 @@ class PeopleController < ApplicationController
     end
   rescue ActiveRecord::RecordNotFound
     render :file => "#{Rails.root}/public/404.html"
+  end
+
+  # 利用規約画面
+  def terms_of_service
+    f = open("#{Rails.root}/config/terms_message.txt")
+    @terms_message =  f.read
+    f.close
   end
 
   # トップ画面
@@ -150,6 +160,7 @@ class PeopleController < ApplicationController
       end
       # 画面入力値を加工
       @person = Person.set_values(params[:person])
+      @consent = params[:consent] == "true" ? true :false
       @subscribe = params[:subscribe]== "true" ? true : false
       @clone_clone_input = params[:clone][:clone_input] == "no" ? true : false
       if @clone_clone_input
@@ -186,14 +197,24 @@ class PeopleController < ApplicationController
       if @person.errors.messages.present?
         raise ActiveRecord::RecordNotFound
       end
-    end
 
+      # 利用規約のチェック判定
+      unless @consent
+        raise ConsentError
+      end
+
+    end
+   
     if @subscribe
       redirect_to :action => "subscribe_email", :id => @person
     else
       redirect_to :action => "view", :id => @person
     end
-  rescue ActiveRecord::RecordNotFound, ActiveRecord::RecordInvalid
+
+  rescue ActiveRecord::RecordNotFound
+    render :action => "new"
+  rescue ConsentError
+    flash.now[:error] = "利用規約に同意していただかないと、情報を登録することはできません。"
     render :action => "new"
   end
 
@@ -241,6 +262,7 @@ class PeopleController < ApplicationController
     @note = Note.new(params[:note])
     @note.person_record_id     = @person.id
     @note.last_known_location  = params[:clickable_map][:location_field]
+    @consent = params[:consent] == "true" ? true :false
     @subscribe = params[:subscribe]== "true" ? true : false
     if params[:duplication].present?
       @notes = Note.where(:person_record_id => @person.id).order("entry_date ASC")
@@ -248,14 +270,20 @@ class PeopleController < ApplicationController
       @notes = Note.no_duplication(@person.id)
     end
 
+    # 利用規約のチェック判定
+    unless @consent
+      raise ConsentError
+    end
+
     # 新着メールを送るアドレスを抽出
     to = Person.subscribe_email_address(@person)
-  
-    if @note.save
+
+    if @note.save!
       # Personに新着メールを送信する
       to.each do |address|
         LgdpfMailer.send_add_note(@person, @note, address).deliver
       end
+     
       # 新規登録したnoteが新着メールを受け取るか
       if @subscribe
         redirect_to :action => "subscribe_email", :id => @person.id, :note_id => @note.id
@@ -263,12 +291,12 @@ class PeopleController < ApplicationController
         session[:pi_view] = false  # 個人情報表示を無効にする
         redirect_to :action => :view, :id => @person
       end
-    else
-      flash.now[:error] = "すべての必須フィールドに入力してください。 "
-      render :action => "view"
     end
   rescue ActiveRecord::RecordNotFound
     render :file => "#{Rails.root}/public/404.html"
+  rescue ConsentError
+    flash.now[:error] = "利用規約に同意していただかないと、情報を登録することはできません。"
+    render :action => "new"
   end
 
   # 避難者情報保持期間延長画面

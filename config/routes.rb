@@ -1,6 +1,7 @@
 Lgdpf::Application.routes.draw do
   root  :to => "people#index"
   match "people/index"                      => "people#index",              :via => :get
+  match "people/terms_of_service"           => "people#terms_of_service",   :via => :get
   match "people/seek"                       => "people#seek",               :via => :get
   match "people/seek"                       => "people#seek",               :via => :post
   match "person"                            => "people#new",                :via => :get

@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="content">
+    <div class="terms_of_service">
+      <h1>ご利用規約</h1>
+      <textarea class="terms_message" disabled="disabled"><%= @terms_message %></textarea>
+      <br />
+      <br />
+      <input type="button" value="戻る" onclick="history.go(-1);" />
+    </div>
+  </div>
+</div>
+<div class="backlink">
+  <%= link_to "<< 最初のページに戻る ", :action => :index %>
+</div>

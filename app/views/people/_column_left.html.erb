@@ -628,7 +628,7 @@ options_for_select(@shelter.invert, @person.shelter_name),
     </div>
     <div class="field">
       <span class="label">
-        <label for="subscribe-checkbox">
+        <label for="subscribe">
           この方の新着情報をメールで受け取る:
         </label>
       </span>
@@ -639,6 +639,13 @@ options_for_select(@shelter.invert, @person.shelter_name),
     <div class="end-multi-columns"></div>
   </div>
   <% if @from_seek %>
-    <div class="submit"><%= submit_tag "この記録を保存", :onclick =>"return validate_fields()" %></div>
+    <div class="submit">
+      <div class="consent">
+        <label for="consent"class="mandatory">システムの利用規約に同意します。</label>
+        <%= check_box_tag "consent", true, false, {:checked => @consent} %>
+        <%= link_to "ご利用規約", :action => :terms_of_service %>
+      </div>
+      <%= submit_tag "この記録を保存", :onclick =>"return validate_fields()" %>
+    </div>
   <% end %>
 </div>

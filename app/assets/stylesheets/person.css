@@ -1,0 +1,15 @@
+div.terms_of_service {
+  text-align: center;
+}
+
+div.terms_of_service input{
+  width: 50px;
+  height: 30px;
+
+}
+
+div.terms_of_service textarea.terms_message{
+  width: 700px;
+  height: 350px;
+  color: black;
+}
