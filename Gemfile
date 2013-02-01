@@ -75,6 +75,11 @@ gem 'acts_as_paranoid', '0.4.1'
 gem "validates_date_time", '1.0.0', :git => "git://github.com/sofatutor/validates_date_time", :branch => 'rails-3'
 
 
+group :development, :test do
+  gem 'rspec'
+  gem 'factory_girl_rails'
+end
+
 # Load Local Gemfile
 local_gemfile = File.join(File.dirname(__FILE__), "Gemfile.local")
 if File.exists?(local_gemfile)
