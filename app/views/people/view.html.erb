@@ -259,7 +259,7 @@
                 <%= submit_tag "このレコードを削除する", :name => "delete" %>
               </div>
 
-              <% unless @person.author_email.blank? %>
+              <% if @person.notes_disabled == false && @person.author_email.present? %>
                 <div>
                   <%= submit_tag "この記録へのメモの書き込みを禁止する", :name => "note_invalid_apply" %>
                 </div>
