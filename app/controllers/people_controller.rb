@@ -211,7 +211,7 @@ class PeopleController < ApplicationController
       redirect_to :action => "view", :id => @person
     end
 
-  rescue ActiveRecord::RecordNotFound
+  rescue ActiveRecord::RecordNotFound, ActiveRecord::RecordInvalid
     render :action => "new"
   rescue ConsentError
     flash.now[:error] = "利用規約に同意していただかないと、情報を登録することはできません。"
@@ -296,7 +296,7 @@ class PeopleController < ApplicationController
     render :file => "#{Rails.root}/public/404.html"
   rescue ConsentError
     flash.now[:error] = "利用規約に同意していただかないと、情報を登録することはできません。"
-    render :action => "new"
+    render :action => "view"
   end
 
   # 避難者情報保持期間延長画面
