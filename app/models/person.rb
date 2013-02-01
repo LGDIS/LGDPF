@@ -110,14 +110,14 @@ class Person < ActiveRecord::Base
   def self.set_values(record)
     person = self.new(record)
     person.expiry_date = Time.now.advance(:days => record[:expiry_date].to_i)  # 削除予定日時
-    person.injury_flag = person.injury_condition.present? ? 1:2  # 負傷の有無
-    person.allergy_flag = person.allergy_cause.present? ? 1:2   # アレルギーの有無
+    person.injury_flag = person.injury_condition.present? ? 1:0  # 負傷の有無
+    person.allergy_flag = person.allergy_cause.present? ? 1:0   # アレルギーの有無
 
     if person.home_state.present? && person.home_city.present?  # 市内・市外区分
       if person.home_state =~ /^(宮城)県?$/ && person.home_city =~ /^(石巻)市?$/
         person.in_city_flag = 1  # 市内
       else
-        person.in_city_flag = 2  # 市外
+        person.in_city_flag = 0  # 市外
       end
     end
 
