@@ -294,6 +294,8 @@ class PeopleController < ApplicationController
     end
   rescue ActiveRecord::RecordNotFound
     render :file => "#{Rails.root}/public/404.html"
+  rescue ActiveRecord::RecordInvalid
+        render :action => "view"
   rescue ConsentError
     flash.now[:error] = "利用規約に同意していただかないと、情報を登録することはできません。"
     render :action => "view"
