@@ -132,12 +132,12 @@ class Person < ActiveRecord::Base
   #
   def self.subscribe_email_address(person)
     to = []
-    notes = Note.where(:person_record_id => person.id)
+    notes = Note.where(:person_record_id => person.id, :email_flag => true)
     notes.each do |note|
       to << note.author_email
     end
 
-    to << person.author_email
+    to << person.author_email if person.email_flag
     to = to.uniq
     to.delete("")
     return to

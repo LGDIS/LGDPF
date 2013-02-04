@@ -18,11 +18,16 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     subject = "[パーソンファインダー]" + person.full_name + "さんについての新着情報を受け取るように設定しました"
     if note.blank?
       address = @person.author_email
+      email_flag = @person.email_flag
     else
       address = note.author_email
+      email_flag = note.email_flag
     end
-    
-    mail(:to => address, :subject => subject)
+
+    # 受信フラグがtrueの場合にメールを送信する
+    if email_flag
+      mail(:to => address, :subject => subject)
+    end
   end
 
   # 新着情報
@@ -41,7 +46,10 @@ class LgdpfMailer < Jpmobile::Mailer::Base
       "person/unsubscribe_email&id=" + @person.id.to_s + "&token=" + aal.unique_key
     subject = "[パーソンファインダー]" + person.full_name + "さんについての新着情報"
     
-    mail(:to => address, :subject => subject)
+    # 受信フラグがtrueの場合にメールを送信する
+    if @person.email_flag
+      mail(:to => address, :subject => subject)
+    end
   end
 
   # 避難者のレコードが削除されたことを通知するメールを送信する
@@ -56,7 +64,10 @@ class LgdpfMailer < Jpmobile::Mailer::Base
       "person/restore?id="+ @person.id.to_s + "&token=" + aal.unique_key
     subject = "[パーソンファインダー]" + person.full_name + "さんの削除の通知"
 
-    mail(:to => @person.author_email, :subject => subject)
+    # 受信フラグがtrueの場合にメールを送信する
+    if @person.email_flag
+      mail(:to => @person.author_email, :subject => subject)
+    end
   end
 
   # 削除されたレコードが復元したことを通知するメールを送信する
@@ -67,7 +78,11 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     @person = person
     @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
     subject = "[パーソンファインダー]" + person.full_name + "さんの記録の復元の通知"
-    mail(:to => @person.author_email, :subject => subject)
+
+    # 受信フラグがtrueの場合にメールを送信する
+    if @person.email_flag
+      mail(:to => @person.author_email, :subject => subject)
+    end
   end
 
   # 安否情報登録無効申請
@@ -81,7 +96,11 @@ class LgdpfMailer < Jpmobile::Mailer::Base
       "person/note_invalid?id="+ @person.id.to_s + "&token=" + aal.unique_key
 
     subject = "[パーソンファインダー]「" + person.full_name + "」さんに関するメモを無効にしますか? "
-    mail(:to => @person.author_email, :subject => subject)
+
+    # 受信フラグがtrueの場合にメールを送信する
+    if @person.email_flag
+      mail(:to => @person.author_email, :subject => subject)
+    end
   end
 
   # 安否情報登録無効にしたことを確認するメールを送信する
@@ -93,7 +112,10 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
     subject = "[パーソンファインダー]「" + person.full_name + "」さんに関するメモが無効になりました "
 
-    mail(:to => @person.author_email, :subject => subject)
+    # 受信フラグがtrueの場合にメールを送信する
+    if @person.email_flag
+      mail(:to => @person.author_email, :subject => subject)
+    end
   end
 
   # 安否情報登録有効申請
@@ -105,9 +127,12 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     @person = person
     @valid_path = @@settings["ldgpf"][Rails.env]["site"] +
       "person/note_valid?id="+ @person.id.to_s + "&token=" + aal.unique_key
-
     subject = "[パーソンファインダー]「" + person.full_name + "」さんに関するメモを有効にしますか? "
-    mail(:to => @person.author_email, :subject => subject)
+
+    # 受信フラグがtrueの場合にメールを送信する
+    if @person.email_flag
+      mail(:to => @person.author_email, :subject => subject)
+    end
   end
 
   # 安否情報登録有効にしたことを確認するメールを送信する
@@ -117,9 +142,12 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   def send_note_valid(person)
     @person = person
     @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
-
     subject = "[パーソンファインダー]「" + person.full_name + "」さんに関するメモが有効になりました "
-    mail(:to => @person.author_email, :subject => subject)
+
+    # 受信フラグがtrueの場合にメールを送信する
+    if @person.email_flag
+      mail(:to => @person.author_email, :subject => subject)
+    end
   end
 
 
