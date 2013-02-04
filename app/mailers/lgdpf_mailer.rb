@@ -8,19 +8,20 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   # _person_ :: 新着情報をウォッチする避難者
   #
   def send_new_information(person, note)
+    # ユニークキーの設定
     aal = ActiveRecord::Base::ApiActionLog.create
+
     @person = person
     @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
-    @complete_path = @@settings["ldgpf"][Rails.env]["site"] +
-      "person/complete?complete[key]=unsubscribe_email&id=" +
-      @person.id.to_s + "&token=" + aal.unique_key
+    @unsubscribe_email_path = @@settings["ldgpf"][Rails.env]["site"] +
+      "person/unsubscribe_email&id=" + @person.id.to_s + "&token=" + aal.unique_key
     subject = "[パーソンファインダー]" + person.full_name + "さんについての新着情報を受け取るように設定しました"
     if note.blank?
       address = @person.author_email
     else
       address = note.author_email
     end
-
+    
     mail(:to => address, :subject => subject)
   end
 
@@ -36,12 +37,10 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     @note = note
     @note_const = Constant.get_const(Note.table_name)
     @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
-    @unsubscribe_path = @@settings["ldgpf"][Rails.env]["site"] +
-      "person/complete?complete[key]=unsubscribe_email&id=" +
-      @person.id.to_s + "&token=" + aal.unique_key
-
+    @unsubscribe_email_path = @@settings["ldgpf"][Rails.env]["site"] +
+      "person/unsubscribe_email&id=" + @person.id.to_s + "&token=" + aal.unique_key
     subject = "[パーソンファインダー]" + person.full_name + "さんについての新着情報"
-
+    
     mail(:to => address, :subject => subject)
   end
 
@@ -55,8 +54,8 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     @root_path = @@settings["ldgpf"][Rails.env]["site"]
     @restore_path = @@settings["ldgpf"][Rails.env]["site"] +
       "person/restore?id="+ @person.id.to_s + "&token=" + aal.unique_key
-
     subject = "[パーソンファインダー]" + person.full_name + "さんの削除の通知"
+
     mail(:to => @person.author_email, :subject => subject)
   end
 
@@ -67,7 +66,6 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   def send_restore_notice(person)
     @person = person
     @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
-
     subject = "[パーソンファインダー]" + person.full_name + "さんの記録の復元の通知"
     mail(:to => @person.author_email, :subject => subject)
   end
@@ -93,8 +91,8 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   def send_note_invalid(person)
     @person = person
     @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
-
     subject = "[パーソンファインダー]「" + person.full_name + "」さんに関するメモが無効になりました "
+
     mail(:to => @person.author_email, :subject => subject)
   end
 
