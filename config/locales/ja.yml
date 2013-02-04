@@ -19,4 +19,6 @@ ja:
       messages:
         blank: を入力してください。
         invalid: の入力形式が不正です。
-      
+  recaptcha:
+    errors:
+      verification_failed: 正しくありません。もう一度やり直してください。

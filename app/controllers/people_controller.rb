@@ -295,7 +295,7 @@ class PeopleController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     render :file => "#{Rails.root}/public/404.html"
   rescue ActiveRecord::RecordInvalid
-        render :action => "view"
+    render :action => "view"
   rescue ConsentError
     flash.now[:error] = "利用規約に同意していただかないと、情報を登録することはできません。"
     render :action => "view"
@@ -306,7 +306,7 @@ class PeopleController < ApplicationController
     @person = Person.find(params[:id])
     if params[:commit].present?
       @person.expiry_date = @person.expiry_date + 60.days
-      if verify_recaptcha && @person.save!
+      if verify_recaptcha(:model => @person) && @person.save!
         redirect_to :action => :complete,
           :id => @person,
           :complete => {:key => "extend_days"}
@@ -358,7 +358,7 @@ class PeopleController < ApplicationController
           end
         end
       end
-      if verify_recaptcha
+      if verify_recaptcha(:model => @person)
         if @note.blank?
           LgdpfMailer.send_new_information(@person, nil).deliver
         else
@@ -391,8 +391,8 @@ class PeopleController < ApplicationController
   def delete
     @person = Person.find(params[:id])
     if params[:commit].present?
-      @person.destroy
-      if verify_recaptcha
+      if verify_recaptcha(:model => @person)
+        @person.destroy
         LgdpfMailer.send_delete_notice(@person).deliver
         redirect_to :action => :complete,
           :id => @person,
@@ -412,7 +412,7 @@ class PeopleController < ApplicationController
       end
       if params[:commit].present?
         @person.recover
-        if verify_recaptcha && @person.save!
+        if verify_recaptcha(:model => @person) && @person.save!
           LgdpfMailer.send_restore_notice(@person).deliver
           redirect_to :action => :view, :id => @person
         end
@@ -426,7 +426,7 @@ class PeopleController < ApplicationController
   def note_invalid_apply
     @person = Person.find(params[:id])
     if params[:commit].present?
-      if verify_recaptcha
+      if verify_recaptcha(:model => @person)
         LgdpfMailer.send_note_invalid_apply(@person).deliver
         redirect_to :action => :complete,
           :id => @person,
@@ -455,7 +455,7 @@ class PeopleController < ApplicationController
   def note_valid_apply
     @person = Person.find(params[:id])
     if params[:commit].present?
-      if verify_recaptcha
+      if verify_recaptcha(:model => @person)
         LgdpfMailer.send_note_valid_apply(@person).deliver
         redirect_to :action => :complete,
           :id => @person,
@@ -504,7 +504,7 @@ class PeopleController < ApplicationController
       session[:action] = action_name
       if params[:commit].present?
         @note.spam_flag = false  # 認定:true, 取消:false
-        if verify_recaptcha && @note.save!
+        if verify_recaptcha(:model => @person) && @note.save!
           redirect_to :action => :view, :id => @person
         end
       end
@@ -518,14 +518,18 @@ class PeopleController < ApplicationController
     begin
       @person = Person.find(params[:id])
       @note = Note.find(params[:note_id]) unless params[:note_id].blank?
-      if params[:commit].present?
-        session[:pi_view] = true
-        if session[:action] == "spam"
-          redirect_to :action => session[:action], :id => @person, :note_id => @note
-        else
-          redirect_to :action => session[:action], :id => @person
+
+      if verify_recaptcha(:model => @person)
+        if params[:commit].present?
+          session[:pi_view] = true
+          if session[:action] == "spam"
+            redirect_to :action => session[:action], :id => @person, :note_id => @note
+          else
+            redirect_to :action => session[:action], :id => @person
+          end
         end
       end
+
     rescue ActiveRecord::RecordNotFound
       render :file => "#{Rails.root}/public/404.html"
     end
