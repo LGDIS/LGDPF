@@ -342,7 +342,7 @@ class PeopleController < ApplicationController
     @note2 = Note.find_by_id(params[:note_id2]) if params[:note_id2].present?
     @note3 = Note.find_by_id(params[:note_id3]) if params[:note_id3].present?
 
-    if params[:commit].present?
+    if params[:success].present?
       if params[:note].blank?  # personで新着受取チェック
         if params[:person][:author_email].blank?
           flash.now[:error] = "メールアドレスに問題があります。再度入力してください。"
@@ -389,6 +389,8 @@ class PeopleController < ApplicationController
           :id => @person,
           :complete => {:key => "subscribe_email"}
       end
+    elsif params[:cancel].present?
+      redirect_to :action => :view, :id => @person
     end
   rescue ActiveRecord::RecordNotFound
     render :file => "#{Rails.root}/public/404.html"
