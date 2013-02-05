@@ -95,7 +95,7 @@
                     <span class="label">指定避難所等:</span>
                     <span class="value">
                       <%= @person_const["shelter_name"]["#{@person.shelter_name}"] %>
-                      <%#= @shelter["#{@person.shelter_name}"] %>
+    <%#= @shelter["#{@person.shelter_name}"] %>
                     </span>
                   </div>
 
@@ -207,7 +207,7 @@
                     <span class="label">情報元の URL:</span>
                     <span class="value">
                       <% if @person.source_url.present? %>
-                          <%= link_to "リンク", @person.source_url, :target => ["_blank"] %>
+                        <%= link_to "リンク", @person.source_url, :target => ["_blank"] %>
                       <% end %>
                     </span>
                   </div>
@@ -266,8 +266,11 @@
               <% end %>
 
             </div>
-
-            <p><%= link_to "<< 最初のページに戻る ", :action => :index %></p>
+            <% if @from_search %>
+              <p><a href="#" onclick="history.go(-1);"><< 結果一覧に戻る </a></p>
+            <% else %>
+              <p><%= link_to "<< 最初のページに戻る ", :action => :index %></p>
+            <% end %>
           </div>
         </div>
 

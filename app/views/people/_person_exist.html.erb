@@ -17,7 +17,7 @@
 
 <div class='searchResults'>
   <% @person.each do |person| %>
-    <a class="result-link" href="<%= people_view_path(person) %>">
+    <a class="result-link" href="<%= people_view_path(person) + "?from_search=true" %>">
       <div class="resultItem">
         <span class="resultImageContainer">
           <% if person.photo_url.present? %>
