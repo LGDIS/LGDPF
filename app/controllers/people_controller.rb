@@ -32,7 +32,7 @@ class PeopleController < ApplicationController
   def cancel_personal_info
     # submitボタン押下
     if params[:commit].present?
-        session[:pi_view] = false  # 個人情報表示を無効にする
+      session[:pi_view] = false  # 個人情報表示を無効にする
     end
   end
 
@@ -189,7 +189,7 @@ class PeopleController < ApplicationController
       if params[:note].present?
         @note = Note.new(params[:note])
         @note[:last_known_location]  = params[:clickable_map][:location_field]
-        @note[:note_author_made_contact] = params[:note][:note_author_made_contact_yes] ? true : false
+        @note[:author_made_contact] = params[:note][:author_made_contact] == "true" ? true : false
         # Noteの投稿者情報を入力する
         @note[:author_name]  = @person.author_name if params[:note][:author_name].blank?
         @note[:author_email] = @person.author_email if params[:note][:author_email].blank?
@@ -198,17 +198,22 @@ class PeopleController < ApplicationController
       end
       
       @person.save
-      if @clone_clone_input
-        @person[:source_url] = people_view_path(@person.id)
-        @person.save
-      end
 
+      # noteをpersonに紐付ける
       if params[:note].present?
         @note[:person_record_id] = @person.id
         @note.save!
       end
+
+      # personの入力にエラーが合った場合
       if @person.errors.messages.present?
         raise ActiveRecord::RecordNotFound
+      end
+
+      # 新規情報の場合
+      if @clone_clone_input
+        @person[:source_url] = people_view_path(@person.id)
+        @person.save
       end
 
       # 利用規約のチェック判定
@@ -276,6 +281,7 @@ class PeopleController < ApplicationController
     @note = Note.new(params[:note])
     @note.person_record_id     = @person.id
     @note.last_known_location  = params[:clickable_map][:location_field]
+    @note[:note_author_made_contact] = params[:note][:note_author_made_contact_yes] ? true : false
     @consent = params[:consent] == "true" ? true :false
     @subscribe = params[:subscribe]== "true" ? true : false
     if params[:duplication].present?

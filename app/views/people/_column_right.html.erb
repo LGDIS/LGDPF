@@ -81,13 +81,11 @@
   <div class="author_made_contact section">
     <h3 class="mandatory">この人と災害発生後に連絡が取れましたか？（必須）</h3>
     <div class="field">
-      <%= radio_button "note", "author_made_contact", true,
-        {} %>
+      <%= radio_button_tag "note[author_made_contact]", true, @note.author_made_contact %>
       <label class="option" for="note_author_made_contact_true">はい</label>
     </div>
     <div class="field">
-      <%= radio_button "note", "author_made_contact", false,
-        {:checked => true}%>
+      <%= radio_button_tag "note[author_made_contact]", false, !@note.author_made_contact %>
       <label class="option" for="note_author_made_contact_false">いいえ</label>
     </div>
     <div class="end-multi-columns"></div>

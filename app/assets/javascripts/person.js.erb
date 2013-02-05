@@ -142,16 +142,20 @@ function update_clone(){
     $('#source_name_row').css("display", display_source);
   }
 
+// この記録の情報源の入力項目の表示切替
 $(document).ready(function(){
-  $("input[name='clone[clone_input]' ]").bind("change", update_clone).change();
+  $("input[name='clone[clone_input]' ]").bind("change click", update_clone);
+  if ($("input[name='clone[clone_input]' ]").attr("checked") != "checked"){
+    $("#clone_clone_input_yes").click()
+  }
 });
 
-
-$(document).ready(function(){
-  $("input[name='note[author_made_contact]' ]").bind("change", function(){
-    var display_contact = $(this).val() == "true" ? '' : 'none';
-    if ($(this).val() == "true") {
-      $('#note_author_made_contact_true').attr('checked',true);
+// 行方不明者の入力項目の表示切替
+function update_contact(){
+    var check = $("input[name='note[author_made_contact]']:checked").val();
+    var display_contact = check == "true" ? '' : 'none';
+    if (check == "true") {
+      $('#note_author_made_contact_true').attr('checked','checked');
       $('#note_author_made_contact_false').removeAttr('checked');
     }
     else {
@@ -159,7 +163,13 @@ $(document).ready(function(){
       $('#note_author_made_contact_false').attr('checked','checked');
     }
     $('#contact_row').css("display", display_contact);
-  });
+}
+
+$(document).ready(function(){
+  $("input[name='note[author_made_contact]' ]").bind("change click", update_contact);
+  if ($("#note_author_made_contact_true").attr("checked") == "checked"){
+    $('#note_author_made_contact_true').click()
+  }
 });
 
 // メモの表示切り替え
@@ -256,6 +266,7 @@ function validate_fields() {
   }
   return true;
 }
+
 
 //------------------------------------------------------------------------------
 //                             GoogleMaps用

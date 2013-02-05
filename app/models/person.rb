@@ -17,6 +17,7 @@ class Person < ActiveRecord::Base
   has_many :notes
 
   acts_as_paranoid
+  # newレコードをsaveした場合の処理
   before_create :set_attributes
   mount_uploader :photo_url, PhotoUrlUploader
 
@@ -25,6 +26,7 @@ class Person < ActiveRecord::Base
   validates :author_name, :presence => true # レコード作成者名
   validates :age, :allow_blank => true, :format => { :with => /^\d+(-\d+)?$/ } # 年齢
   validates_date_time :date_of_birth, :allow_nil => true, :message => "を正しい日付で入力してください。"
+  validates_date_time :source_date, :allow_nil => true, :message => "を正しい日付で入力してください。"
   validate :profile_urls, :url_validater
 
   # before_createで設定する項目

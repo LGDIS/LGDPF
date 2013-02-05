@@ -10,7 +10,7 @@ class Note < ActiveRecord::Migration
       t.column "author_email", :string
       t.column "author_phone", :string
       t.column "source_date", :datetime
-      t.column "author_made_contact", :boolean
+      t.column "author_made_contact", :boolean, :default => false
       t.column "status", :integer
       t.column "email_of_found_person", :string
       t.column "phone_of_found_person", :string
