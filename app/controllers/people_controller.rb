@@ -4,7 +4,7 @@ class ConsentError < StandardError; end
 
 class PeopleController < ApplicationController
 
-  before_filter :init, :expiry_date
+  before_filter :init, :expiry_date, :cancel_personal_info
 
   # コンスタントマスタの読み込み
   def init
@@ -25,6 +25,15 @@ class PeopleController < ApplicationController
     end
   rescue ActiveRecord::RecordNotFound
     render :file => "#{Rails.root}/public/404.html"
+  end
+
+  # 個人情報表示を無効にする
+  # submitしたときに個人情報を非表示にする
+  def cancel_personal_info
+    # submitボタン押下
+    if params[:commit].present?
+        session[:pi_view] = false  # 個人情報表示を無効にする
+    end
   end
 
   # 利用規約画面
@@ -125,7 +134,6 @@ class PeopleController < ApplicationController
         :note_id2 => @note2,
         :note_id3 => @note3
     else
-      session[:pi_view] = false  # 個人情報表示を無効にする
       redirect_to :action => :view, :id => @person
     end
   rescue ActiveRecord::RecordNotFound
@@ -142,6 +150,7 @@ class PeopleController < ApplicationController
     @note = Note.new
     @kana = {:family_name => "", :given_name => ""}
     @subscribe = false
+    @clone_clone_input = true
     @error_message = "入力したURLの形式が不正です。プロフィールURLをコピーして貼り付けてください。"
     # 遷移元確認フラグ
     if params[:family_name].blank? && params[:given_name].blank?
@@ -189,6 +198,10 @@ class PeopleController < ApplicationController
       end
       
       @person.save
+      if @clone_clone_input
+        @person[:source_url] = people_view_path(@person.id)
+        @person.save
+      end
 
       if params[:note].present?
         @note[:person_record_id] = @person.id
@@ -289,7 +302,6 @@ class PeopleController < ApplicationController
       if @subscribe
         redirect_to :action => "subscribe_email", :id => @person.id, :note_id => @note.id
       else
-        session[:pi_view] = false  # 個人情報表示を無効にする
         redirect_to :action => :view, :id => @person
       end
     end
@@ -520,8 +532,8 @@ class PeopleController < ApplicationController
       @person = Person.find(params[:id])
       @note = Note.find(params[:note_id]) unless params[:note_id].blank?
 
-      if verify_recaptcha(:model => @person)
-        if params[:commit].present?
+      if params[:commit].present?
+        if verify_recaptcha(:model => @person)
           session[:pi_view] = true
           if session[:action] == "spam"
             redirect_to :action => session[:action], :id => @person, :note_id => @note

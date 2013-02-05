@@ -50,7 +50,11 @@
                   <div>
                     <span class="label"> 行方不明者の現在のメール アドレス: </span>
                     <span class="field">
-                      <%= @note.email_of_found_person %>
+                      <% if session[:pi_view] %>
+                        <%= @note.email_of_found_person %>
+                      <% else %>
+                        <%= link_to "（クリックして表示）", :action => :personal_info, :id => @person %>
+                      <% end %>
                     </span>
                   </div>
                 <% end %>
@@ -58,7 +62,11 @@
                   <div>
                     <span class="label"> 行方不明者の現在の電話番号: </span>
                     <span class="field">
-                      <%= @note.phone_of_found_person %>
+                      <% if session[:pi_view] %>
+                        <%= @note.phone_of_found_person %>
+                      <% else %>
+                        <%= link_to "（クリックして表示）", :action => :personal_info, :id => @person %>
+                      <% end %>
                     </span>
                   </div>
                 <% end %>
