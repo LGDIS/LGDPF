@@ -189,6 +189,11 @@ class PeopleController < ApplicationController
       end
       @person[:profile_urls] = set_profile_urls
 
+      # source_dateの入力が日付までの場合datetime型に変換する
+      if @person.source_date_before_type_cast =~ /^(\d{4})(?:\/|-|.)?(\d{1,2})(?:\/|-|.)?(\d{1,2})$/
+        datetime_str = @person[:source_date].strftime("%Y-%m-%d %H:%M:%S %Z")
+        @person[:source_date] = Time.parse(datetime_str)
+      end
 
       # 読み仮名登録用
       unless params[:kana].blank?

@@ -31,7 +31,7 @@ class Person < ActiveRecord::Base
 
   # before_createで設定する項目
   def set_attributes
-    self.source_date = Time.now
+    self.source_date = Time.now if self.source_date.blank?
     self.entry_date  = Time.now
     self.full_name   = "#{self.family_name} #{self.given_name}"
   end
