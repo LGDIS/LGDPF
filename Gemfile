@@ -70,14 +70,9 @@ gem 'devise_ldap_authenticatable', '0.6.1'
 # hide and restore records without actually deleting them.
 gem 'acts_as_paranoid', '0.4.1'
 
-# Fork of validates_date_time rails plugin.
-# Please do submit pull requests for any changes, and I'll merge them with Jonathan's svn changes.
-gem "validates_date_time", '1.0.0', :git => "git://github.com/sofatutor/validates_date_time", :branch => 'rails-3'
-
-
-group :development, :test do
-  gem 'rspec'
-  gem 'factory_girl_rails'
+group :test do
+  gem 'rspec', '2.12.0'
+  gem 'factory_girl_rails', '4.2.0'
 end
 
 # Load Local Gemfile
@@ -92,3 +87,4 @@ Dir.glob File.expand_path("../plugins/*/Gemfile", __FILE__) do |file|
   puts "Loading #{file} ..." if $DEBUG # `ruby -d` or `bundle -v`
   instance_eval File.read(file)
 end
+

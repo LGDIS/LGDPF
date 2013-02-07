@@ -25,8 +25,8 @@ class Person < ActiveRecord::Base
   validates :given_name, :presence => true # 避難者_名
   validates :author_name, :presence => true # レコード作成者名
   validates :age, :allow_blank => true, :format => { :with => /^\d+(-\d+)?$/ } # 年齢
-  validates_date_time :date_of_birth, :allow_nil => true, :message => "を正しい日付で入力してください。"
-  validates_date_time :source_date, :allow_nil => true, :message => "を正しい日付で入力してください。"
+  validates :date_of_birth, :date => true
+  validates :source_date, :time => true
   validate :profile_urls, :url_validater
 
   # before_createで設定する項目
