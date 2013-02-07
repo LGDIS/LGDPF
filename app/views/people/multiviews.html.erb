@@ -294,10 +294,22 @@
 
               <tr>
                 <td class="label">情報元の URL:</td>
-                <td class="field"><%= @person.source_url %></td>
-                <td class="field"><%= @person2.source_url %></td>
+                <td class="field">
+                  <% if @person.source_url.present? %>
+                    <%= link_to "リンク", @person.source_url, :target => ["_blank"] %>
+                  <% end %>
+                </td>
+                <td class="field">
+                  <% if @person2.source_url.present? %>
+                    <%= link_to "リンク", @person2.source_url, :target => ["_blank"] %>
+                  <% end %>
+                </td>
                 <% if @person3.present? %>
-                  <td class="field"><%= @person3.source_url %></td>
+                  <td class="field">
+                    <% if @person3.source_url.present? %>
+                      <%= link_to "リンク", @person3.source_url, :target => ["_blank"] %>
+                    <% end %>
+                  </td>
                 <% end %>
               </tr>
 

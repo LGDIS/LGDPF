@@ -50,7 +50,12 @@ class PeopleController < ApplicationController
 
   # 避難者を検索する
   def seek
-    if params[:first_step]
+    # 検索条件を保持
+    @query = params[:name]
+    @query_family = ""
+    @query_given  = ""
+    @action = action_name
+    if params[:role]
       if params[:name].present?
         @person = Person.find_for_seek(params)
       else
@@ -61,7 +66,12 @@ class PeopleController < ApplicationController
 
   # 情報提供する避難者情報が既に登録されているか確認する
   def provide
-    if params[:first_step]
+    # 検索条件を保持
+    @query = ""
+    @query_family = params[:family_name]
+    @query_given  = params[:given_name]
+    @action = action_name
+    if params[:role]
       if params[:family_name].present? && params[:given_name].present?
         @person = Person.find_for_provide(params)
         if @person.present?
@@ -94,7 +104,7 @@ class PeopleController < ApplicationController
     @count = params[:count].to_i
     @person = Person.find_by_id(params[:person][:id])
     @person2 = Person.find_by_id(params[:person2][:id])
-    @person3 = Person.find_by_id(params[:person3][:id]) unless params[:id3].blank?
+    @person3 = Person.find_by_id(params[:person3][:id]) if params[:person3][:id].present?
     @subscribe = params[:subscribe] == "true" ? true : false
 
     @note = Note.new(params[:note])
@@ -167,6 +177,8 @@ class PeopleController < ApplicationController
       if params[:note].blank?
         @from_seek = true
       end
+
+
       # 画面入力値を加工
       @person = Person.set_values(params[:person])
       @consent = params[:consent] == "true" ? true :false
@@ -191,10 +203,10 @@ class PeopleController < ApplicationController
         @note[:last_known_location]  = params[:clickable_map][:location_field]
         @note[:author_made_contact] = params[:note][:author_made_contact] == "true" ? true : false
         # Noteの投稿者情報を入力する
-        @note[:author_name]  = @person.author_name if params[:note][:author_name].blank?
-        @note[:author_email] = @person.author_email if params[:note][:author_email].blank?
-        @note[:author_phone] = @person.author_phone if params[:note][:author_phone].blank?
-        @note[:source_date]  = @person.source_date if params[:note][:source_date].blank?
+        @note[:author_name]  = @person.author_name
+        @note[:author_email] = @person.author_email
+        @note[:author_phone] = @person.author_phone
+        @note[:source_date]  = @person.source_date
       end
       
       @person.save
@@ -239,14 +251,18 @@ class PeopleController < ApplicationController
   # 詳細画面
   def view
     @person = Person.find(params[:id])
-
     @note = Note.new
     session[:action] = action_name
-    
+
+    # 検索画面に戻る用
+    @action = params[:role].present? ? params[:role] : false
+    @query = params[:name]
+    @query_family = params[:family_name]
+    @query_given  = params[:given_name]
+
     @dup_flag = Person.check_dup(params[:id])  # 重複の有無
     @dup_people = Person.duplication(params[:id]) # personと重複するperson
     @subscribe = false
-    @from_search = params[:from_search]=="true" ? true : false
     # 重複メモを表示するか
     if params[:duplication].present?
       @notes = Note.where(:person_record_id => @person.id).order("entry_date ASC")
@@ -281,7 +297,7 @@ class PeopleController < ApplicationController
     @note = Note.new(params[:note])
     @note.person_record_id     = @person.id
     @note.last_known_location  = params[:clickable_map][:location_field]
-    @note[:note_author_made_contact] = params[:note][:note_author_made_contact_yes] ? true : false
+    @note[:author_made_contact] = params[:note][:author_made_contact] ? true : false
     @consent = params[:consent] == "true" ? true :false
     @subscribe = params[:subscribe]== "true" ? true : false
     if params[:duplication].present?
@@ -290,34 +306,34 @@ class PeopleController < ApplicationController
       @notes = Note.no_duplication(@person.id)
     end
 
-    # 利用規約のチェック判定
-    unless @consent
-      raise ConsentError
-    end
+    Note.transaction do
+      if @note.save!
+        # 利用規約のチェック判定
+        unless @consent
+          raise ConsentError
+        end
+        # 新着メールを送るアドレスを抽出
+        to = Person.subscribe_email_address(@person)
+        # Personに新着メールを送信する
+        to.each do |address|
+          LgdpfMailer.send_add_note(@person, @note, address).deliver
+        end
 
-    # 新着メールを送るアドレスを抽出
-    to = Person.subscribe_email_address(@person)
-
-    if @note.save!
-      # Personに新着メールを送信する
-      to.each do |address|
-        LgdpfMailer.send_add_note(@person, @note, address).deliver
-      end
-     
-      # 新規登録したnoteが新着メールを受け取るか
-      if @subscribe
-        redirect_to :action => "subscribe_email", :id => @person.id, :note_id => @note.id
-      else
-        redirect_to :action => :view, :id => @person
+        # 新規登録したnoteが新着メールを受け取るか
+        if @subscribe
+          redirect_to :action => :subscribe_email, :id => @person.id, :note_id => @note.id
+        else
+          redirect_to :action => :view, :id => @person
+        end
       end
     end
   rescue ActiveRecord::RecordNotFound
     render :file => "#{Rails.root}/public/404.html"
   rescue ActiveRecord::RecordInvalid
-    render :action => "view"
+    render :action => :view
   rescue ConsentError
     flash.now[:error] = "利用規約に同意していただかないと、情報を登録することはできません。"
-    render :action => "view"
+    render :action => :view
   end
 
   # 避難者情報保持期間延長画面
@@ -342,6 +358,7 @@ class PeopleController < ApplicationController
     @note2 = Note.find_by_id(params[:note_id2]) if params[:note_id2].present?
     @note3 = Note.find_by_id(params[:note_id3]) if params[:note_id3].present?
 
+    # アップデートを受け取るボタン押下
     if params[:success].present?
       if params[:note].blank?  # personで新着受取チェック
         if params[:person][:author_email].blank?
@@ -389,6 +406,7 @@ class PeopleController < ApplicationController
           :id => @person,
           :complete => {:key => "subscribe_email"}
       end
+      # キャンセルボタン押下
     elsif params[:cancel].present?
       redirect_to :action => :view, :id => @person
     end
@@ -432,8 +450,8 @@ class PeopleController < ApplicationController
         redirect_to :action => :view, :id => @person
       end
       if params[:commit].present?
-        @person.recover
-        if verify_recaptcha(:model => @person) && @person.save!
+        if verify_recaptcha(:model => @person)
+          @person.recover
           LgdpfMailer.send_restore_notice(@person).deliver
           redirect_to :action => :view, :id => @person
         end

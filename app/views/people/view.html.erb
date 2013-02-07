@@ -266,8 +266,13 @@
               <% end %>
 
             </div>
-            <% if @from_search %>
-              <p><a href="#" onclick="history.go(-1);"><< 結果一覧に戻る </a></p>
+            <% if @action.present? %>
+              <p><%= link_to "<< 結果一覧に戻る ",
+                  :action => @action,
+                  :family_name => @query_family,
+                  :given_name => @query_given,
+                  :name => @query,
+                  :role => @action%></p>
             <% else %>
               <p><%= link_to "<< 最初のページに戻る ", :action => :index %></p>
             <% end %>
