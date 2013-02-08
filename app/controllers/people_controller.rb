@@ -209,7 +209,6 @@ class PeopleController < ApplicationController
       if params[:note].present?
         @note = Note.new(params[:note])
         @note[:last_known_location]  = params[:clickable_map][:location_field]
-        @note[:author_made_contact] = params[:note][:author_made_contact] == "true" ? true : false
         # Noteの投稿者情報を入力する
         @note[:author_name]  = @person.author_name
         @note[:author_email] = @person.author_email
@@ -305,7 +304,6 @@ class PeopleController < ApplicationController
     @note = Note.new(params[:note])
     @note.person_record_id     = @person.id
     @note.last_known_location  = params[:clickable_map][:location_field]
-    @note[:author_made_contact] = params[:note][:author_made_contact] ? true : false
     @consent = params[:consent] == "true" ? true :false
     @subscribe = params[:subscribe]== "true" ? true : false
     if params[:duplication].present?
