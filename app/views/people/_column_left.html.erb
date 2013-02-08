@@ -397,7 +397,7 @@ options_for_select(@shelter.invert, @person.shelter_name),
     <div class="hint">
       この人の写真がある場合は、写真をアップロードするか、写真の URL を指定してください。
     </div>
-    <div class="field">
+    <div class="field" onclick="document.getElementById('person_photo_input_url').click();">
       <span class="radio">
         <%= radio_button_tag "person_photo_input","url", true %>
       </span>
@@ -407,7 +407,7 @@ options_for_select(@shelter.invert, @person.shelter_name),
           :class => "medium-text-input" %>
       </span>
     </div>
-    <div class="field">
+    <div class="field" onclick="document.getElementById('person_photo_input_upload').click();">
       <span class="radio">
         <%= radio_button_tag "person_photo_input", "upload", false %>
       </span>

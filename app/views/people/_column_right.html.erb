@@ -53,17 +53,19 @@
     <div class="hint">
       メモに写真を添付するには、アップロードするか、写真の URL を入力してください。
     </div>
-    <div class="field">
+    <div class="field" onclick="document.getElementById('note_photo_input_url').click();">
       <span class="radio">
         <%= radio_button_tag "note_photo_input", "url", true %>
       </span>
-      <span class="label">URL:</span>
+      <span class="label">
+       URL:
+      </span>
       <span class="value">
         <%= text_field :note, :remote_photo_url_url, :value => @note.photo_url,
           :class => "medium-text-input" %>
       </span>
     </div>
-    <div class="field">
+    <div class="field" onclick="document.getElementById('note_photo_input_upload').click();">
       <span class="radio">
         <%= radio_button_tag "note_photo_input", "upload", false %>
       </span>
