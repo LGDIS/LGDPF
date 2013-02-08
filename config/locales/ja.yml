@@ -2,9 +2,11 @@ ja:
   activerecord:
     attributes:
       person:
-        given_name: 避難者の名
-        family_name: 避難者の姓
-        author_name: レコード作成者名
+        given_name: 名
+        family_name: 姓
+        author_name: あなたの名前
+        author_email: あなたのメールアドレス
+        author_phone: あなたの電話番号
         age: 年齢
         date_of_birth: 生年月日
         source_date: 情報元の投稿日
@@ -13,12 +15,20 @@ ja:
         profile_urls: 入力したURLの形式が不正です。プロフィールURLをコピーして貼り付けてください。 
       note:
         author_name: あなたの名前
+        author_email: あなたのメールアドレス
+        author_phone: あなたの電話番号
         text: メッセージ
         author_made_contact: この人があなた本人である場合は、[この人と災害発生後にコンタクト取れましたか？] で [はい] を選択してください。 
     errors:
       messages:
         blank: を入力してください。
         invalid: の入力形式が不正です。
+        seek_blank: その人の名前、または名前の一部を入力してください。
+        provide_blank: その人の姓名を入力してください。
+        email_blank: メールアドレスに問題があります。再度入力してください。
+        profile_invalid: 入力したURLの形式が不正です。プロフィールURLをコピーして貼り付けてください。
+        disagree: 利用規約に同意していただかないと、情報を登録することはできません。
+
   recaptcha:
     errors:
       verification_failed: 正しくありません。もう一度やり直してください。

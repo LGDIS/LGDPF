@@ -25,9 +25,11 @@ class Person < ActiveRecord::Base
   validates :given_name, :presence => true # 避難者_名
   validates :author_name, :presence => true # レコード作成者名
   validates :age, :allow_blank => true, :format => { :with => /^\d+(-\d+)?$/ } # 年齢
-  validates :date_of_birth, :date => true
-  validates :source_date, :time => true
-  validate :profile_urls, :url_validater
+  validates :author_email, :allow_blank => true, :format => { :with => /.+@.+/ } # メールアドレス
+  validates :author_phone, :allow_blank => true, :format => { :with => /[\-+()\d ]+/ } # 電話番号
+  validates :date_of_birth, :date => true # 生年月日
+  validates :source_date, :time => true # 投稿日
+  validate :profile_urls, :url_validater # プロフィール
 
   # before_createで設定する項目
   def set_attributes

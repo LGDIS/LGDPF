@@ -1,6 +1,9 @@
 # -*- coding:utf-8 -*-
+
 # 利用規約の同意しない場合に発生するエラー
 class ConsentError < StandardError; end
+# 新着情報受取画面でメールアドレスの入力が空の場合に発生するエラー
+class EmailBlankError < StandardError; end
 
 class PeopleController < ApplicationController
 
@@ -59,7 +62,7 @@ class PeopleController < ApplicationController
       if params[:name].present?
         @person = Person.find_for_seek(params)
       else
-        flash.now[:error] = "その人の名前、または名前の一部を入力してください。 "
+        flash.now[:error] = I18n.t("activerecord.errors.messages.seek_blank")
       end
     end
   end
@@ -82,7 +85,7 @@ class PeopleController < ApplicationController
             :given_name  => params[:given_name]
         end
       else
-        flash.now[:error] = "その人の姓名を入力してください。"
+        flash.now[:error] = I18n.t("activerecord.errors.messages.provide_blank")
         render :action => "provide"
       end
     end
@@ -161,7 +164,7 @@ class PeopleController < ApplicationController
     @kana = {:family_name => "", :given_name => ""}
     @subscribe = false
     @clone_clone_input = true
-    @error_message = "入力したURLの形式が不正です。プロフィールURLをコピーして貼り付けてください。"
+    @error_message =  I18n.t("activerecord.errors.messages.profile_invalid")
     # 遷移元確認フラグ
     if params[:family_name].blank? && params[:given_name].blank?
       @from_seek = true
@@ -170,7 +173,7 @@ class PeopleController < ApplicationController
 
   # 新規情報登録
   def create
-    @error_message = "入力したURLの形式が不正です。プロフィールURLをコピーして貼り付けてください。"
+    @error_message = I18n.t("activerecord.errors.messages.profile_invalid")
     # Person, Noteの登録
     Person.transaction do
       # 遷移元確認フラグ
@@ -249,7 +252,7 @@ class PeopleController < ApplicationController
   rescue ActiveRecord::RecordNotFound, ActiveRecord::RecordInvalid
     render :action => "new"
   rescue ConsentError
-    flash.now[:error] = "利用規約に同意していただかないと、情報を登録することはできません。"
+    flash.now[:error] = I18n.t("activerecord.errors.messages.disagree")
     render :action => "new"
   end
 
@@ -337,7 +340,7 @@ class PeopleController < ApplicationController
   rescue ActiveRecord::RecordInvalid
     render :action => :view
   rescue ConsentError
-    flash.now[:error] = "利用規約に同意していただかないと、情報を登録することはできません。"
+    flash.now[:error] = I18n.t("activerecord.errors.messages.disagree")
     render :action => :view
   end
 
@@ -367,7 +370,7 @@ class PeopleController < ApplicationController
     if params[:success].present?
       if params[:note].blank?  # personで新着受取チェック
         if params[:person][:author_email].blank?
-          flash.now[:error] = "メールアドレスに問題があります。再度入力してください。"
+          raise EmailBlankError
         end
         @person.email_flag = true
         @person.author_email = params[:person][:author_email]
@@ -378,7 +381,7 @@ class PeopleController < ApplicationController
         @person.save!
       else  # noteで新着受取チェック
         if params[:note][:author_email].blank?
-          flash.now[:error] = "メールアドレスに問題があります。再度入力してください。"
+          raise EmailBlankError
         end
         Note.transaction do
           @note.author_email = params[:note][:author_email]
@@ -415,10 +418,15 @@ class PeopleController < ApplicationController
     elsif params[:cancel].present?
       redirect_to :action => :view, :id => @person
     end
+  rescue EmailBlankError
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_blank")
+    render :action => :subscribe_email
+  rescue ActiveRecord::RecordInvalid
+    render :action => :subscribe_email
   rescue ActiveRecord::RecordNotFound
     render :file => "#{Rails.root}/public/404.html"
   end
-
+  
   # 新着情報受信拒否
   def unsubscribe_email
     @person = Person.find(params[:id])
