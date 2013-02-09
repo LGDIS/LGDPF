@@ -25,7 +25,7 @@ class Person < ActiveRecord::Base
   validates :given_name, :presence => true # 避難者_名
   validates :author_name, :presence => true # レコード作成者名
   validates :age, :allow_blank => true, :format => { :with => /^\d+(-\d+)?$/ } # 年齢
-  validates :author_email, :allow_blank => true, :format => { :with => /.+@.+/ } # メールアドレス
+  validates :author_email, :allow_blank => true, :format => { :with => /^[^@]+@[^@]+$/ } # メールアドレス
   validates :author_phone, :allow_blank => true, :format => { :with => /[\-+()\d ]+/ } # 電話番号
   validates :date_of_birth, :date => true # 生年月日
   validates :source_date, :time => true # 投稿日
@@ -131,19 +131,25 @@ class Person < ActiveRecord::Base
   # 新着メールを受け取るメールアドレスを抽出
   # === Args
   # _person_ :: Person
+  # _new_note_ :: 新規Note
   # === Return
-  # _to_ :: メールアドレス配列
+  # _to_ :: [person, new_note, 送信対象のperson or note]
   #
-  def self.subscribe_email_address(person)
+  def self.subscribe_email_address(person, new_note)
     to = []
-    notes = Note.where(:person_record_id => person.id, :email_flag => true)
+    # 送信可能なnote
+    # 重複無し、受取フラグ有
+    notes = Note.where(:person_record_id => person.id, :email_flag => true).where("author_email <> ?","").select("DISTINCT author_email, id")
+
+    # Personが紐付くNoteのemailと重複するか判定
     notes.each do |note|
-      to << note.author_email
+      if person.author_email == note.author_email && person.email_flag == true
+       to << [person, new_note, person]
+      else
+        to << [person, new_note, note]
+      end
     end
 
-    to << person.author_email if person.email_flag
-    to = to.uniq
-    to.delete("")
     return to
   end
 

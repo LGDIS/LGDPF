@@ -12,6 +12,8 @@ class Note < ActiveRecord::Base
 
   validates :text, :presence => true # メッセージ
   validates :author_name, :presence => true # 投稿者の名前
+  validates :author_email, :allow_blank => true, :format => { :with => /^[^@]+@[^@]+$/ } # メールアドレス
+  validates :author_phone, :allow_blank => true, :format => { :with => /[\-+()\d ]+/ } # 電話番号
 
   validate :author_made_contact, :note_author_valid
 

@@ -32,24 +32,30 @@ class LgdpfMailer < Jpmobile::Mailer::Base
 
   # 新着情報
   # ==== Args
-  # _person_  :: 新着情報をウォッチする避難者
-  # _note_    :: Note
-  # _address_ :: 送信メールアドレス
+  # _target_ :: 送信対象
+  # _[0]_    :: 新着情報をウォッチする避難者
+  # _[1]_    :: 追加されたNote
+  # _[2]_    :: 送信メールアドレス
   #
-  def send_add_note(person, note, address)
+  def send_add_note(target)
     aal = ActiveRecord::Base::ApiActionLog.create
-    @person = person
-    @note = note
+    @person = target[0]
+    @note = target[1]
+    record_type = target[2]
     @note_const = Constant.get_const(Note.table_name)
     @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
-    @unsubscribe_email_path = @@settings["ldgpf"][Rails.env]["site"] +
-      "person/unsubscribe_email&id=" + @person.id.to_s + "&token=" + aal.unique_key
-    subject = "[パーソンファインダー]" + person.full_name + "さんについての新着情報"
-    
-    # 受信フラグがtrueの場合にメールを送信する
-    if @person.email_flag
-      mail(:to => address, :subject => subject)
+    # Noteに送る場合
+    if record_type.is_a? Note
+      note_id = record_type.id
     end
+    @unsubscribe_email_path = @@settings["ldgpf"][Rails.env]["site"] +
+      "person/unsubscribe_email?id=" + @person.id.to_s +
+      "&note_id=" + note_id.to_s + "&token=" + aal.unique_key
+    address = record_type.author_email
+    subject = "[パーソンファインダー]" + @person.full_name + "さんについての新着情報"
+
+    mail(:to => address, :subject => subject)
+
   end
 
   # 避難者のレコードが削除されたことを通知するメールを送信する

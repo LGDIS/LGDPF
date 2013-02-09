@@ -26,8 +26,6 @@ class PeopleController < ApplicationController
         raise ActiveRecord::RecordNotFound
       end
     end
-  rescue ActiveRecord::RecordNotFound
-    render :file => "#{Rails.root}/public/404.html"
   end
 
   # 個人情報表示を無効にする
@@ -149,10 +147,11 @@ class PeopleController < ApplicationController
     else
       redirect_to :action => :view, :id => @person
     end
-  rescue ActiveRecord::RecordNotFound
-    render :file => "#{Rails.root}/public/404.html"
+  rescue Net::SMTPFatalError
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
+    render :action => :multiviews
   rescue
-    render :action => "multiviews"
+    render :action => :multiviews
   end
 
   # 新規作成画面
@@ -180,7 +179,6 @@ class PeopleController < ApplicationController
       if params[:note].blank?
         @from_seek = true
       end
-
 
       # 画面入力値を加工
       @person = Person.set_values(params[:person])
@@ -276,8 +274,6 @@ class PeopleController < ApplicationController
     else
       @notes = Note.no_duplication(@person.id)
     end
-  rescue ActiveRecord::RecordNotFound
-    render :file => "#{Rails.root}/public/404.html"
   end
 
   # 安否情報を追加する
@@ -319,10 +315,10 @@ class PeopleController < ApplicationController
           raise ConsentError
         end
         # 新着メールを送るアドレスを抽出
-        to = Person.subscribe_email_address(@person)
+        to = Person.subscribe_email_address(@person, @note)
         # Personに新着メールを送信する
         to.each do |address|
-          LgdpfMailer.send_add_note(@person, @note, address).deliver
+          LgdpfMailer.send_add_note(address).deliver
         end
 
         # 新規登録したnoteが新着メールを受け取るか
@@ -333,9 +329,10 @@ class PeopleController < ApplicationController
         end
       end
     end
-  rescue ActiveRecord::RecordNotFound
-    render :file => "#{Rails.root}/public/404.html"
   rescue ActiveRecord::RecordInvalid
+    render :action => :view
+  rescue Net::SMTPFatalError
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
     render :action => :view
   rescue ConsentError
     flash.now[:error] = I18n.t("activerecord.errors.messages.disagree")
@@ -366,6 +363,7 @@ class PeopleController < ApplicationController
 
     # アップデートを受け取るボタン押下
     if params[:success].present?
+      #      binding.pry
       if params[:note].blank?  # personで新着受取チェック
         if params[:person][:author_email].blank?
           raise EmailBlankError
@@ -419,22 +417,30 @@ class PeopleController < ApplicationController
   rescue EmailBlankError
     flash.now[:error] = I18n.t("activerecord.errors.messages.email_blank")
     render :action => :subscribe_email
+  rescue Net::SMTPFatalError
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
+    render :action => :subscribe_email
   rescue ActiveRecord::RecordInvalid
     render :action => :subscribe_email
-  rescue ActiveRecord::RecordNotFound
-    render :file => "#{Rails.root}/public/404.html"
   end
   
   # 新着情報受信拒否
   def unsubscribe_email
+    @person = params[:id].present?
     @person = Person.find(params[:id])
-    #   @note = Person.find(params[:note_id])
-    @person.email_flag = false
-    if @person.save!
-      redirect_to :action => :complete,
-        :id => @person,
-        :complete => {:key => "unsubscribe_email"}
+    if params[:note_id].present?
+      # noteへの新着メールを停止する
+      @note = Note.find(params[:note_id])
+      @note.email_flag = false
+      @note.save!
+    else
+      # personへの新着メールを停止する
+      @person.email_flag = false
+      @person.save!
     end
+    redirect_to :action => :complete,
+      :id => @person,
+      :complete => {:key => "unsubscribe_email"}
   end
 
   # 避難者情報削除画面
@@ -449,27 +455,31 @@ class PeopleController < ApplicationController
           :complete => {:key => "delete"}
       end
     end
-  rescue ActiveRecord::RecordNotFound
-    render :file => "#{Rails.root}/public/404.html"
+  rescue Net::SMTPFatalError
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
+    render :action => :delete
   end
 
   # 削除データ復元画面
   def restore
-    begin
-      @person = Person.with_deleted.find(params[:id])
+    # 削除されたデータも含め全件から抽出する
+    @person = Person.with_deleted.find(params[:id])
+    if params[:commit].present?
+      # POST
+      if verify_recaptcha(:model => @person)
+        @person.recover
+        LgdpfMailer.send_restore_notice(@person).deliver
+        redirect_to :action => :view, :id => @person
+      end
+    else
+      # GET
       if @person.deleted_at.blank?  # 復元されている場合
         redirect_to :action => :view, :id => @person
       end
-      if params[:commit].present?
-        if verify_recaptcha(:model => @person)
-          @person.recover
-          LgdpfMailer.send_restore_notice(@person).deliver
-          redirect_to :action => :view, :id => @person
-        end
-      end
-    rescue ActiveRecord::RecordNotFound
-      render :file => "#{Rails.root}/public/404.html"
     end
+  rescue Net::SMTPFatalError
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
+    render :action => :restore
   end
 
   # 安否情報登録無効申請画面
@@ -483,22 +493,24 @@ class PeopleController < ApplicationController
           :complete => {:key => "note_invalid_apply"}
       end
     end
+  rescue Net::SMTPFatalError
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
+    render :action => :note_invalid_apply
   end
 
   # 安否情報登録無効画面
   def note_invalid
-    begin
-      @person = Person.find(params[:id])
-      if params[:commit].present?
-        @person.notes_disabled = true
-        if @person.save!
-          LgdpfMailer.send_note_invalid(@person).deliver
-          redirect_to :action => :view, :id => @person
-        end
+    @person = Person.find(params[:id])
+    if params[:commit].present?
+      @person.notes_disabled = true
+      if @person.save!
+        LgdpfMailer.send_note_invalid(@person).deliver
+        redirect_to :action => :view, :id => @person
       end
-    rescue ActiveRecord::RecordNotFound
-      render :file => "#{Rails.root}/public/404.html"
     end
+  rescue Net::SMTPFatalError
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
+    render :action => :note_invalid
   end
 
   # 安否情報登録有効申請画面
@@ -512,93 +524,85 @@ class PeopleController < ApplicationController
           :complete => {:key => "note_valid_apply"}
       end
     end
+  rescue Net::SMTPFatalError
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
+    render :action => :note_valid_apply
   end
 
   # 安否情報登録有効画面
   def note_valid
-    begin
-      @person = Person.find(params[:id])
-      @person.notes_disabled = false
-      if @person.save!
-        LgdpfMailer.send_note_valid(@person).deliver
-        redirect_to :action => :view, :id => @person
-      end
-    rescue ActiveRecord::RecordNotFound
-      render :file => "#{Rails.root}/public/404.html"
+    @person = Person.find(params[:id])
+    @person.notes_disabled = false
+    if @person.save!
+      LgdpfMailer.send_note_valid(@person).deliver
+      redirect_to :action => :view, :id => @person
     end
-
+  rescue Net::SMTPFatalError
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
+    render :action => :note_valid
   end
 
   # スパム報告画面
   def spam
-    begin
-      @person = Person.find(params[:id])
-      @note = Note.find(params[:note_id])
-      session[:action] = action_name
-      if params[:commit].present?
-        @note.spam_flag = true  # 認定:true, 取消:false
-        if @note.save!
-          redirect_to :action => :view, :id => @person
-        end
+    @person = Person.find(params[:id])
+    @note = Note.find(params[:note_id])
+    session[:action] = action_name
+    if params[:commit].present?
+      @note.spam_flag = true  # 認定:true, 取消:false
+      if @note.save!
+        redirect_to :action => :view, :id => @person
       end
-    rescue ActiveRecord::RecordNotFound
-      render :file => "#{Rails.root}/public/404.html"
     end
+  rescue Net::SMTPFatalError
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
+    render :action => :spam
   end
 
   # スパム報告取消画面
   def spam_cancel
-    begin
-      @person = Person.find(params[:id])
-      @note = Note.find(params[:note_id])
-      session[:action] = action_name
-      if params[:commit].present?
-        @note.spam_flag = false  # 認定:true, 取消:false
-        if verify_recaptcha(:model => @person) && @note.save!
-          redirect_to :action => :view, :id => @person
-        end
+    @person = Person.find(params[:id])
+    @note = Note.find(params[:note_id])
+    session[:action] = action_name
+    if params[:commit].present?
+      @note.spam_flag = false  # 認定:true, 取消:false
+      if verify_recaptcha(:model => @person) && @note.save!
+        redirect_to :action => :view, :id => @person
       end
-    rescue ActiveRecord::RecordNotFound
-      render :file => "#{Rails.root}/public/404.html"
     end
+  rescue Net::SMTPFatalError
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
+    render :action => :spam_cancel
   end
 
   # 個人情報表示許可画面
   def personal_info
-    begin
-      @person = Person.find(params[:id])
-      @note = Note.find(params[:note_id]) unless params[:note_id].blank?
+    @person = Person.find(params[:id])
+    @note = Note.find(params[:note_id]) unless params[:note_id].blank?
 
-      if params[:commit].present?
-        if verify_recaptcha(:model => @person)
-          session[:pi_view] = true
-          if session[:action] == "spam"
-            redirect_to :action => session[:action], :id => @person, :note_id => @note
-          else
-            redirect_to :action => session[:action], :id => @person
-          end
+    if params[:commit].present?
+      if verify_recaptcha(:model => @person)
+        session[:pi_view] = true
+        if session[:action] == "spam"
+          redirect_to :action => session[:action], :id => @person, :note_id => @note
+        else
+          redirect_to :action => session[:action], :id => @person
         end
       end
-
-    rescue ActiveRecord::RecordNotFound
-      render :file => "#{Rails.root}/public/404.html"
     end
+  rescue Net::SMTPFatalError
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
+    render :action => :personal_info
   end
 
 
   # 完了画面
   def complete
     @key = params[:complete][:key]
-    begin
-      if @key == "delete"
-        @person = Person.with_deleted.find(params[:id])
-      else
-        @person = Person.find(params[:id])
-      end
-    rescue ActiveRecord::RecordNotFound
-      render :file => "#{Rails.root}/public/404.html"
+    if @key == "delete"
+      @person = Person.with_deleted.find(params[:id])
+    else
+      @person = Person.find(params[:id])
     end
-
   end
 
   private

@@ -50,4 +50,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # レコードが削除されていた場合の処理
+  rescue_from ActiveRecord::RecordNotFound do
+     render :file => "#{Rails.root}/public/404.html"
+  end
+
 end
