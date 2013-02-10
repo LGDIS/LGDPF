@@ -13,7 +13,7 @@ class Note < ActiveRecord::Base
   validates :text, :presence => true # メッセージ
   validates :author_name, :presence => true # 投稿者の名前
   validates :author_email, :allow_blank => true, :format => { :with => /^[^@]+@[^@]+$/ } # メールアドレス
-  validates :author_phone, :allow_blank => true, :format => { :with => /[\-+()\d ]+/ } # 電話番号
+  validates :author_phone, :allow_blank => true, :format => { :with => /^[\-+()\d ]+$/ } # 電話番号
 
   validate :author_made_contact, :note_author_valid
 
@@ -51,7 +51,7 @@ class Note < ActiveRecord::Base
   #
   def self.check_for_author_email(person)
     dup = where(:person_record_id => person.id, :author_email => person.author_email).all
-    return dup.size > 1 ? true : false
+    return dup.size > 0 ? true : false
   end
 
 end
