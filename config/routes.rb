@@ -16,7 +16,6 @@ Lgdpf::Application.routes.draw do
   match "person/subscribe_email"            => "people#subscribe_email",    :via => :get
   match "person/subscribe_email"            => "people#subscribe_email",    :via => :post
   match "person/unsubscribe_email"          => "people#unsubscribe_email",  :via => :get
-  match "person/unsubscribe_email"          => "people#unsubscribe_email",  :via => :post
   match "person/delete"                     => "people#delete",             :via => :get
   match "person/delete"                     => "people#delete",             :via => :post
   match "person/restore"                    => "people#restore",            :via => :get
@@ -37,7 +36,7 @@ Lgdpf::Application.routes.draw do
   match "person/personal_info/:id/:note_id" => "people#personal_info",      :via => :get
   match "person/personal_info/:id/:note_id" => "people#personal_info",      :via => :post
   match "person/complete"                   => "people#complete",           :via => :get
-  match "person/complete"                   => "people#complete",           :via => :post
+  match "people/multiviews"                 => "people#multiviews",         :via => :get
   match "people/multiviews"                 => "people#multiviews",         :via => :post
   match "people/dup_merge"                  => "people#dup_merge",          :via => :post
   
