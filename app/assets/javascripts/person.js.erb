@@ -45,7 +45,7 @@ function set_dup_mode(enable, init) {
   $('#dup_on_link').css("display", enable ? 'none' : '');
   $('#dup_off_link').css("display", enable ? '' : 'none');
   $('#dup_form').css("display", enable ? '' : 'none');
-  $('#dup_state').attr("cheched", enable);
+  $('#dup_state').val(enable);
 
   var elems = document.getElementsByTagName('input');
   for (var i = 0; i < elems.length; ++i) {

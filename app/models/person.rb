@@ -26,7 +26,7 @@ class Person < ActiveRecord::Base
   validates :author_name, :presence => true # レコード作成者名
   validates :age, :allow_blank => true, :format => { :with => /^\d+(-\d+)?$/ } # 年齢
   validates :author_email, :allow_blank => true, :format => { :with => /^[^@]+@[^@]+$/ } # メールアドレス
-  validates :author_phone, :allow_blank => true, :format => { :with => /[\-+()\d ]+/ } # 電話番号
+  validates :author_phone, :allow_blank => true, :format => { :with => /^[\-+()\d ]+$/ } # 電話番号
   validates :date_of_birth, :date => true # 生年月日
   validates :source_date, :time => true # 投稿日
   validate :profile_urls, :url_validater # プロフィール
@@ -36,6 +36,17 @@ class Person < ActiveRecord::Base
     self.source_date = Time.now if self.source_date.blank?
     self.entry_date  = Time.now
     self.full_name   = "#{self.family_name} #{self.given_name}"
+    self.injury_flag = self.injury_condition.present? ? 1:0  # 負傷の有無
+    self.allergy_flag = self.allergy_cause.present? ? 1:0   # アレルギーの有無
+
+    if self.home_state.present? && self.home_city.present?  # 市内・市外区分
+      if self.home_state =~ /^(宮城)県?$/ && self.home_city =~ /^(石巻)市?$/
+        self.in_city_flag = 1  # 市内
+      else
+        self.in_city_flag = 0  # 市外
+      end
+    end
+
   end
 
   # 入力値チェック
@@ -105,28 +116,6 @@ class Person < ActiveRecord::Base
     return people
   end
 
-  # 入力値調整
-  # === Args
-  # _record_ :: 避難者ハッシュ
-  # === Return
-  # _person_ :: 入力値調整をした避難者
-  #
-  def self.set_values(record)
-    person = self.new(record)
-    person.expiry_date = Time.now.advance(:days => record[:expiry_date].to_i)  # 削除予定日時
-    person.injury_flag = person.injury_condition.present? ? 1:0  # 負傷の有無
-    person.allergy_flag = person.allergy_cause.present? ? 1:0   # アレルギーの有無
-
-    if person.home_state.present? && person.home_city.present?  # 市内・市外区分
-      if person.home_state =~ /^(宮城)県?$/ && person.home_city =~ /^(石巻)市?$/
-        person.in_city_flag = 1  # 市内
-      else
-        person.in_city_flag = 0  # 市外
-      end
-    end
-
-    return person
-  end
 
   # 新着メールを受け取るメールアドレスを抽出
   # === Args
@@ -140,11 +129,11 @@ class Person < ActiveRecord::Base
     # 送信可能なnote
     # 重複無し、受取フラグ有
     notes = Note.where(:person_record_id => person.id, :email_flag => true).where("author_email <> ?","").select("DISTINCT author_email, id")
-
+    
     # Personが紐付くNoteのemailと重複するか判定
     notes.each do |note|
       if person.author_email == note.author_email && person.email_flag == true
-       to << [person, new_note, person]
+        to << [person, new_note, person]
       else
         to << [person, new_note, note]
       end

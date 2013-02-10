@@ -4,11 +4,13 @@
 
     <div>
       <h2>個人情報の表示</h2>
-      <%= form_tag :action => :personal_info, :id => @person do %>
+      <%= form_tag :action => :personal_info, :id => @person, :note_id => @note do %>
 
         <%= render :partial =>'recaptcha', :locals => {:captcha => true} %>
         <br/>
         <%= hidden_field :pi_view, :check, :value => true %>
+        <%= hidden_field_tag :id2, @id2  %>
+        <%= hidden_field_tag :id3, @id3  %>
         <%= submit_tag '続行' %>
       <% end %>
     </div>

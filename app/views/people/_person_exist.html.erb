@@ -47,7 +47,7 @@
 
 <div id='dup_form' style='display:none'>
   重複している記録を 3 つまで選択できます:
-  <%= hidden_field_tag "dup_state" %>
+  <%= hidden_field_tag "dup_state", false %>
   <%= form_tag({:action => :multiviews}, {:onsubmit => "mark_dup()"}) do %>
     <%= submit_tag "重複している記録としてマークする", :id => "dup_go" %>
     <span id='dup_count'></span> 件の記録が選択されています

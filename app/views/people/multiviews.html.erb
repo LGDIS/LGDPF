@@ -232,7 +232,7 @@
                     <%= @person.author_phone %>
                   <% else %>
                     <% unless @person.author_phone.blank? %>
-                      <%= link_to "（クリックして表示）", :action => :personal_info, :id => @person %>
+                      <%= link_to "（クリックして表示）", :action => :personal_info, :id => @person, :id2 => @person2, :id3 => @person3 %>
                     <% end %>
                   <% end %>
                 </td>
@@ -241,7 +241,7 @@
                     <%= @person2.author_phone %>
                   <% else %>
                     <% unless @person2.author_phone.blank? %>
-                      <%= link_to "（クリックして表示）", :action => :personal_info, :id => @person2 %>
+                      <%= link_to "（クリックして表示）", :action => :personal_info, :id => @person, :id2 => @person2, :id3 => @person3 %>
                     <% end %>
                   <% end %>
                 </td>
@@ -252,7 +252,7 @@
                       <%= @person3.author_phone %>
                     <% else %>
                       <% unless @person3.author_phone.blank? %>
-                        <%= link_to "（クリックして表示）", :action => :personal_info, :id => @person3 %>
+                      <%= link_to "（クリックして表示）", :action => :personal_info, :id => @person, :id2 => @person2, :id3 => @person3 %>
                       <% end %>
                     <% end %>
                   </td>
@@ -266,7 +266,7 @@
                     <%= @person.author_email %>
                   <% else %>
                     <% unless @person.author_email.blank? %>
-                      <%= link_to "（クリックして表示）", :action => :personal_info, :id => @person %>
+                      <%= link_to "（クリックして表示）", :action => :personal_info, :id => @person, :id2 => @person2, :id3 => @person3 %>
                     <% end %>
                   <% end %>
                 </td>
@@ -275,7 +275,7 @@
                     <%= @person2.author_email %>
                   <% else %>
                     <% unless @person2.author_email.blank? %>
-                      <%= link_to "（クリックして表示）", :action => :personal_info, :id => @person2 %>
+                      <%= link_to "（クリックして表示）", :action => :personal_info, :id => @person, :id2 => @person2, :id3 => @person3 %>
                     <% end %>
                   <% end %>
                 </td>
@@ -285,7 +285,7 @@
                       <%= @person3.author_email %>
                     <% else %>
                       <% unless @person3.author_email.blank? %>
-                        <%= link_to "（クリックして表示）", :action => :personal_info, :id => @person3 %>
+                      <%= link_to "（クリックして表示）", :action => :personal_info, :id => @person, :id2 => @person2, :id3 => @person3 %>
                       <% end %>
                     <% end %>
                   </td>
@@ -417,6 +417,12 @@
         </div>
 
         <div class="submit">
+          <div class="consent">
+            <label for="consent"class="mandatory">システムの利用規約に同意します。</label>
+            <%= check_box_tag "consent", true, false, {:checked => @consent} %>
+            <%= link_to "ご利用規約", :action => :terms_of_service %>
+          </div>
+
           <%= submit_tag "はい、同一人物です。" %>
           <input type="button" value="キャンセル" onclick="history.go(-1)" />
         </div>

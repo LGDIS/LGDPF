@@ -91,12 +91,13 @@ class PeopleController < ApplicationController
 
   # 避難者情報重複確認画面
   def multiviews
-    @count = params[:mark_count].to_i + 1
+    @count = params[:id3].blank? ? 3 : 4
     @person = Person.find_by_id(params[:id1])
     @person2 = Person.find_by_id(params[:id2])
     @person3 = Person.find_by_id(params[:id3]) unless params[:id3].blank?
     @note = Note.new
     @subscribe = false
+    session[:action] = action_name
   end
 
   # 重複した避難者をまとめる
@@ -107,6 +108,7 @@ class PeopleController < ApplicationController
     @person2 = Person.find_by_id(params[:person2][:id])
     @person3 = Person.find_by_id(params[:person3][:id]) if params[:person3][:id].present?
     @subscribe = params[:subscribe] == "true" ? true : false
+    @consent = params[:consent] == "true" ? true :false
 
     @note = Note.new(params[:note])
     @note.person_record_id  =  params[:person][:id]
@@ -122,19 +124,24 @@ class PeopleController < ApplicationController
       @note3.linked_person_record_id =  params[:person][:id]
       @note3.linked_person_record_id =  params[:person2][:id]
     end
-    # 新着メールを送るアドレスを抽出
-    to = Person.subscribe_email_address(@person)
 
     Note.transaction do
       @note.save!
       @note2.save!
       @note3.save! unless params[:person3][:id].blank?
     end
+    # 利用規約のチェック判定
+    unless @consent
+      raise ConsentError
+    end
+
+    # 新着メールを送るアドレスを抽出
+    to = Person.subscribe_email_address(@person, @note)
     # Personに新着メールを送信する
     to.each do |address|
-      LgdpfMailer.send_add_note(@person, @note, address).deliver
-      LgdpfMailer.send_add_note(@person2, @note, address).deliver
-      LgdpfMailer.send_add_note(@person3, @note, address).deliver unless params[:person3][:id].blank?
+      LgdpfMailer.send_add_note(address).deliver
+      LgdpfMailer.send_add_note(address).deliver
+      LgdpfMailer.send_add_note(address).deliver unless params[:person3][:id].blank?
     end
     if @subscribe
       redirect_to :action => "subscribe_email",
@@ -149,6 +156,9 @@ class PeopleController < ApplicationController
     end
   rescue Net::SMTPFatalError
     flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
+    render :action => :multiviews
+  rescue ConsentError
+    flash.now[:error] = I18n.t("activerecord.errors.messages.disagree")
     render :action => :multiviews
   rescue
     render :action => :multiviews
@@ -181,7 +191,9 @@ class PeopleController < ApplicationController
       end
 
       # 画面入力値を加工
-      @person = Person.set_values(params[:person])
+
+      @person = Person.new(params[:person])
+      @person.expiry_date = Time.now.advance(:days => @person[:expiry_date].to_i)  # 削除予定日時
       @consent = params[:consent] == "true" ? true :false
       @subscribe = params[:subscribe]== "true" ? true : false
       @clone_clone_input = params[:clone][:clone_input] == "no" ? true : false
@@ -553,9 +565,6 @@ class PeopleController < ApplicationController
         redirect_to :action => :view, :id => @person
       end
     end
-  rescue Net::SMTPFatalError
-    flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
-    render :action => :spam
   end
 
   # スパム報告取消画面
@@ -569,29 +578,28 @@ class PeopleController < ApplicationController
         redirect_to :action => :view, :id => @person
       end
     end
-  rescue Net::SMTPFatalError
-    flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
-    render :action => :spam_cancel
   end
 
   # 個人情報表示許可画面
   def personal_info
     @person = Person.find(params[:id])
     @note = Note.find(params[:note_id]) unless params[:note_id].blank?
+    @id2 = params[:id2]
+    @id3 = params[:id3]
 
     if params[:commit].present?
       if verify_recaptcha(:model => @person)
         session[:pi_view] = true
-        if session[:action] == "spam"
+        if session[:action] == ("spam" || "spam_cancel")
           redirect_to :action => session[:action], :id => @person, :note_id => @note
+        elsif session[:action] == "multiviews"
+          redirect_to :action => session[:action], :id => @person, :note_id => @note,
+            :id1 => @person.id, :id2 => @id2, :id3 => @id3
         else
           redirect_to :action => session[:action], :id => @person
         end
       end
     end
-  rescue Net::SMTPFatalError
-    flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
-    render :action => :personal_info
   end
 
 
