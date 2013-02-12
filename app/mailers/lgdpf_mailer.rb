@@ -9,7 +9,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   #
   def send_new_information(person, note)
     # ユニークキーの設定
-    aal = ActiveRecord::Base::ApiActionLog.create
+    aal = ApiActionLog.create
 
     @person = person
     @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
@@ -38,7 +38,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   # _[2]_    :: 送信メールアドレス
   #
   def send_add_note(target)
-    aal = ActiveRecord::Base::ApiActionLog.create
+    aal = ApiActionLog.create
     @person = target[0]
     @note = target[1]
     record_type = target[2]
@@ -63,7 +63,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   # _person_ :: 削除された避難者
   #
   def send_delete_notice(person)
-    aal = ActiveRecord::Base::ApiActionLog.create
+    aal = ApiActionLog.create
     @person = person
     @root_path = @@settings["ldgpf"][Rails.env]["site"]
     @restore_path = @@settings["ldgpf"][Rails.env]["site"] +
@@ -96,7 +96,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   # _person_ :: メモ登録を無効にする避難者
   #
   def send_note_invalid_apply(person)
-    aal = ActiveRecord::Base::ApiActionLog.create
+    aal = ApiActionLog.create
     @person = person
     @invalid_path = @@settings["ldgpf"][Rails.env]["site"] +
       "person/note_invalid?id="+ @person.id.to_s + "&token=" + aal.unique_key
@@ -129,7 +129,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   # _person_ :: メモ登録を有効にする避難者
   #
   def send_note_valid_apply(person)
-    aal = ActiveRecord::Base::ApiActionLog.create
+    aal = ApiActionLog.create
     @person = person
     @valid_path = @@settings["ldgpf"][Rails.env]["site"] +
       "person/note_valid?id="+ @person.id.to_s + "&token=" + aal.unique_key

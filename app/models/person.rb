@@ -21,15 +21,48 @@ class Person < ActiveRecord::Base
   before_create :set_attributes
   mount_uploader :photo_url, PhotoUrlUploader
 
-  validates :family_name, :presence => true # 避難者_姓
-  validates :given_name, :presence => true # 避難者_名
-  validates :author_name, :presence => true # レコード作成者名
-  validates :age, :allow_blank => true, :format => { :with => /^\d+(-\d+)?$/ } # 年齢
-  validates :author_email, :allow_blank => true, :format => { :with => /^[^@]+@[^@]+$/ } # メールアドレス
-  validates :author_phone, :allow_blank => true, :format => { :with => /^[\-+()\d ]+$/ } # 電話番号
-  validates :date_of_birth, :date => true # 生年月日
-  validates :source_date, :time => true # 投稿日
-  validate :profile_urls, :url_validater # プロフィール
+  validates :person_record_id,                :length => {:maximum => 500}
+  validates :full_name,                       :length => {:maximum => 500}
+  validates :family_name, :presence => true,  :length => {:maximum => 500}
+  validates :given_name, :presence => true,   :length => {:maximum => 500}
+  validates :alternate_names,                 :length => {:maximum => 500}
+  validates :date_of_birth,                   :date   => true
+  validates :sex,                             :length => {:maximum => 1}
+  validates :age,                             :allow_blank => true, :format => { :with => /^\d+(-\d+)?$/ }
+  validates :home_postal_code,                :length => {:maximum => 500}
+  validates :in_city_flag,                    :length => {:maximum => 1}
+  validates :home_state,                      :length => {:maximum => 500}
+  validates :home_city,                       :length => {:maximum => 500}
+  validates :home_street,                     :length => {:maximum => 500}
+  validates :house_number,                    :length => {:maximum => 500}
+  validates :shelter_name,                    :length => {:maximum => 20}
+  validates :refuge_status,                   :length => {:maximum => 1}
+  validates :refuge_reason,                   :length => {:maximum => 4000}
+  validates :shelter_entry_date,              :date   => true
+  validates :shelter_leave_date,              :date   => true
+  validates :next_place,                      :length => {:maximum => 100}
+  validates :next_place_phone,                :length => {:maximum => 20}
+  validates :injury_flag,                     :length => {:maximum => 1}
+  validates :injury_condition,                :length => {:maximum => 4000}
+  validates :allergy_flag,                    :length => {:maximum => 1}
+  validates :allergy_cause,                   :length => {:maximum => 4000}
+  validates :pregnancy,                       :length => {:maximum => 1}
+  validates :baby,                            :length => {:maximum => 1}
+  validates :upper_care_level_three,          :length => {:maximum => 2}
+  validates :elderly_alone,                   :length => {:maximum => 1}
+  validates :elderly_couple,                  :length => {:maximum => 1}
+  validates :bedridden_elderly,               :length => {:maximum => 1}
+  validates :elderly_dementia,                :length => {:maximum => 1}
+  validates :rehabilitation_certificate,      :length => {:maximum => 2}
+  validates :physical_disability_certificate, :length => {:maximum => 1}
+  validates :author_name,                     :presence => true # レコード作成者名
+  validates :author_email,                    :allow_blank => true, :format => { :with => /^[^@]+@[^@]+$/ } # メールアドレス
+  validates :author_phone,                    :allow_blank => true, :format => { :with => /^[\-+()\d ]+$/ } # 電話番号
+  validates :source_name,                     :length => {:maximum => 500}
+  validates :source_date,                     :time   => true
+  validates :source_url,                      :length => {:maximum => 500}
+  validate :profile_urls,                     :url_validater # プロフィール
+
 
   # before_createで設定する項目
   def set_attributes

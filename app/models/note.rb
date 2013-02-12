@@ -10,10 +10,23 @@ class Note < ActiveRecord::Base
   before_create :set_attributes
   mount_uploader :photo_url, PhotoUrlUploader
 
-  validates :text, :presence => true # メッセージ
+  validates :note_record_id,          :length => {:maximum => 500}
+  validates :linked_person_record_id, :length => {:maximum => 500}
+  validates :author_name,             :length => {:maximum => 500}
+  validates :author_email,            :length => {:maximum => 500}
+  validates :author_phone,            :length => {:maximum => 500}
+  validates :email_of_found_person,   :length => {:maximum => 500}
+  validates :phone_of_found_person,   :length => {:maximum => 500}
+  validates :last_known_location,     :length => {:maximum => 500}
+
+  validates :text,        :presence => true # メッセージ
   validates :author_name, :presence => true # 投稿者の名前
+
   validates :author_email, :allow_blank => true, :format => { :with => /^[^@]+@[^@]+$/ } # メールアドレス
   validates :author_phone, :allow_blank => true, :format => { :with => /^[\-+()\d ]+$/ } # 電話番号
+
+  validates :entry_date,  :time => true
+  validates :source_date, :time => true
 
   validate :author_made_contact, :note_author_valid
 

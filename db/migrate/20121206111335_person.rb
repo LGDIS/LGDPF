@@ -2,32 +2,32 @@
 class Person < ActiveRecord::Migration
   def self.up
     create_table :people, :force => true do |t|
-      t.column "person_record_id", :string
+      t.column "person_record_id", :string, :limit => 500
       t.column "entry_date", :datetime
       t.column "expiry_date", :datetime
-      t.column "author_name", :string
-      t.column "author_email", :string
-      t.column "author_phone", :string
-      t.column "source_name", :string
+      t.column "author_name", :string, :limit => 500
+      t.column "author_email", :string, :limit => 500
+      t.column "author_phone", :string, :limit => 500
+      t.column "source_name", :string, :limit => 500
       t.column "source_date", :datetime
-      t.column "source_url", :string
-      t.column "full_name", :string
-      t.column "given_name", :string
-      t.column "family_name", :string
-      t.column "alternate_names", :string
+      t.column "source_url", :string, :limit => 500
+      t.column "full_name", :string, :limit => 500
+      t.column "given_name", :string, :limit => 500
+      t.column "family_name", :string, :limit => 500
+      t.column "alternate_names", :string, :limit => 500
       t.column "description", :text
-      t.column "sex", :integer
+      t.column "sex", :string, :limit => 1
       t.column "date_of_birth", :date
-      t.column "age", :string
-      t.column "house_number", :string
-      t.column "home_street", :string
-      t.column "home_neighborhood", :string
-      t.column "home_city", :string
-      t.column "home_state", :string
-      t.column "home_postal_code", :string
-      t.column "home_country", :string
-      t.column "photo_url", :string
-      t.column "profile_urls", :string
+      t.column "age", :string, :limit => 500
+      t.column "house_number", :string, :limit => 500
+      t.column "home_street", :string, :limit => 500
+      t.column "home_neighborhood", :string, :limit => 500
+      t.column "home_city", :string, :limit => 500
+      t.column "home_state", :string, :limit => 500
+      t.column "home_postal_code", :string, :limit => 500
+      t.column "home_country", :string, :limit => 500
+      t.column "photo_url", :string, :limit => 500
+      t.column "profile_urls", :string, :limit => 500
       t.column "public_flag", :integer
 
       t.column "in_city_flag", :string, :limit => 1

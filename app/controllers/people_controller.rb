@@ -393,19 +393,16 @@ class PeopleController < ApplicationController
         end
         Note.transaction do
           @note.author_email = params[:note][:author_email]
-          @note.email_flag = true
-          @note.email_flag  = false if Note.check_for_author_email(@person)
+          @note.email_flag = Note.check_for_author_email(@person) ? false : true
           @note.save!
           if @note2.present?
             @note2.author_email = params[:note][:author_email]
-            @note2.email_flag = true
-            @note2.email_flag = false if Note.check_for_author_email(@person2)
+            @note2.email_flag = Note.check_for_author_email(@person2) ? false : true
             @note2.save!
           end
           if @note3.present?
             @note3.author_email = params[:note][:author_email]
-            @note3.email_flag = true
-            @note3.email_flag = false if Note.check_for_author_email(@person3)
+            @note3.email_flag = Note.check_for_author_email(@person3) ? false : true
             @note3.save!
           end
         end

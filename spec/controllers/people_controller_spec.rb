@@ -6,9 +6,6 @@ describe PeopleController do
 
   before(:each) do
     @person = FactoryGirl.create(:person)
-    @params = {
-      :id => @person.id
-    }
   end
 
   describe '#index' do

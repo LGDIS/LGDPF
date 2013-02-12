@@ -99,6 +99,26 @@ describe 'Note' do
         @note.errors.full_messages[0].strip.should == I18n.t("activerecord.attributes.note.author_made_contact")
       end
     end
+
+    describe "validation" do
+      let(:model) { FactoryGirl.create(:note) }
+
+      it_should_behave_like :max_length, :note_record_id
+      it_should_behave_like :max_length, :linked_person_record_id
+      it_should_behave_like :max_length, :author_name
+      it_should_behave_like :max_length, :email_of_found_person
+      it_should_behave_like :max_length, :phone_of_found_person
+      it_should_behave_like :max_length, :last_known_location
+
+      it_should_behave_like :presence, :text
+      it_should_behave_like :presence, :author_name
+
+      it_should_behave_like :datetime, :entry_date
+      it_should_behave_like :datetime, :source_date
+      
+    end
+
+
   end
 
   describe 'duplication' do

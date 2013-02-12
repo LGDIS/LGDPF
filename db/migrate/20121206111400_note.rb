@@ -2,21 +2,21 @@
 class Note < ActiveRecord::Migration
   def up
     create_table :notes, :force => true do |t|
-      t.column "note_record_id", :string
+      t.column "note_record_id", :string, :limit => 500
       t.column "person_record_id", :integer
-      t.column "linked_person_record_id", :string
+      t.column "linked_person_record_id", :string, :limit => 500
       t.column "entry_date", :datetime
-      t.column "author_name", :string
-      t.column "author_email", :string
-      t.column "author_phone", :string
+      t.column "author_name", :string, :limit => 500
+      t.column "author_email", :string, :limit => 500
+      t.column "author_phone", :string, :limit => 500
       t.column "source_date", :datetime
       t.column "author_made_contact", :boolean, :default => false
       t.column "status", :integer
-      t.column "email_of_found_person", :string
-      t.column "phone_of_found_person", :string
-      t.column "last_known_location", :string
+      t.column "email_of_found_person", :string, :limit => 500
+      t.column "phone_of_found_person", :string, :limit => 500
+      t.column "last_known_location", :string, :limit => 500
       t.column "text", :text
-      t.column "photo_url", :string
+      t.column "photo_url", :string, :limit => 500
       t.column "spam_flag", :boolean
       t.column "link_flag", :boolean, :default => false
       t.column "email_flag", :boolean, :default => false
