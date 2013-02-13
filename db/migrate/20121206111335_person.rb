@@ -19,7 +19,6 @@ class Person < ActiveRecord::Migration
       t.column "sex", :string, :limit => 1
       t.column "date_of_birth", :date
       t.column "age", :string, :limit => 500
-      t.column "house_number", :string, :limit => 500
       t.column "home_street", :string, :limit => 500
       t.column "home_neighborhood", :string, :limit => 500
       t.column "home_city", :string, :limit => 500
@@ -76,7 +75,6 @@ class Person < ActiveRecord::Migration
       t.set_column_comment "sex", "性別"
       t.set_column_comment "date_of_birth", "生年月日"
       t.set_column_comment "age", "年齢"
-      t.set_column_comment "house_number", "番地"
       t.set_column_comment "home_street", "町名"
       t.set_column_comment "home_neighborhood", "近隣"
       t.set_column_comment "home_city", "市区町村"

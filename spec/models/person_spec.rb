@@ -367,7 +367,6 @@ describe Person do
       it_should_behave_like :max_length, :home_state
       it_should_behave_like :max_length, :home_city
       it_should_behave_like :max_length, :home_street
-      it_should_behave_like :max_length, :house_number
       it_should_behave_like :max_length, :shelter_name
       it_should_behave_like :max_length, :refuge_status
       it_should_behave_like :max_length, :refuge_reason
