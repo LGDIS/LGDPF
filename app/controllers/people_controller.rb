@@ -7,43 +7,6 @@ class EmailBlankError < StandardError; end
 
 class PeopleController < ApplicationController
 
-  before_filter :init, :expiry_date, :cancel_personal_info
-
-  # コンスタントマスタの読み込み
-  def init
-    @person_const = Constant.get_const(Person.table_name)
-    @note_const   = Constant.get_const(Note.table_name)
-    #    @area = get_cache("area")
-    #    @address = Rails.cache.read("address")
-    #    @shelter = get_cache("shelter")
-  end
-
-  # 有効期限の確認
-  def expiry_date
-    if params[:token].present?
-      aal = ApiActionLog.find_by_unique_key(params[:token])
-      if aal.blank? || (aal.entry_date + 3.days) < Time.now
-        raise ActiveRecord::RecordNotFound
-      end
-    end
-  end
-
-  # 個人情報表示を無効にする
-  # submitしたときに個人情報を非表示にする
-  def cancel_personal_info
-    # submitボタン押下
-    if params[:commit].present?
-      session[:pi_view] = false  # 個人情報表示を無効にする
-    end
-  end
-
-  # 利用規約画面
-  def terms_of_service
-    f = open("#{Rails.root}/config/terms_message.txt")
-    @terms_message =  f.read
-    f.close
-  end
-
   # トップ画面
   def index
 
@@ -375,7 +338,6 @@ class PeopleController < ApplicationController
 
     # アップデートを受け取るボタン押下
     if params[:success].present?
-      #      binding.pry
       if params[:note].blank?  # personで新着受取チェック
         if params[:person][:author_email].blank?
           raise EmailBlankError
