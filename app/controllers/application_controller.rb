@@ -5,6 +5,9 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   # コンスタントマスタの読み込み
+  # === Args
+  # === Return
+  # === Raise
   def init
     # セレクトボックスの表示に使用するコンスタントテーブルの取得
     @person_const = Constant.get_const(Person.table_name)
@@ -18,6 +21,7 @@ class ApplicationController < ActionController::Base
   # 有効期限の確認
   # === Args
   # _token_ :: ユニークキー
+  # === Return
   # === Raise
   # ActiveRecord::RecordNotFound
   def expiry_date
@@ -33,6 +37,9 @@ class ApplicationController < ActionController::Base
 
   # 個人情報表示を無効にする
   # submitしたときに個人情報を非表示にする
+  # === Args
+  # === Return
+  # === Raise
   def cancel_personal_info
     # submitボタン押下
     if params[:commit].present?
@@ -41,6 +48,10 @@ class ApplicationController < ActionController::Base
   end
 
   # 利用規約画面
+  # config/terms_message.txt に記述された内容を表示する
+  # === Args
+  # === Return
+  # === Raise
   def terms_of_service
     f = open("#{Rails.root}/config/terms_message.txt")
     @terms_message =  f.read

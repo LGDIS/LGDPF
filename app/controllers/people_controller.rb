@@ -8,11 +8,19 @@ class EmailBlankError < StandardError; end
 class PeopleController < ApplicationController
 
   # トップ画面
+  # === Args
+  # === Return
+  # === Raise
   def index
 
   end
 
-  # 避難者を検索する
+  # 検索画面
+  # === Args
+  # _name_ :: 画面入力された検索条件
+  # _role_ :: 画面種別
+  # === Return
+  # === Raise
   def seek
     # 検索条件を保持
     @query = params[:name]
@@ -28,7 +36,13 @@ class PeopleController < ApplicationController
     end
   end
 
-  # 情報提供する避難者情報が既に登録されているか確認する
+  # 安否情報対象者入力画面
+  # === Args
+  # _family_name_ :: 画面入力された検索条件(姓)
+  # _given_name_  :: 画面入力された検索条件(名)
+  # _role_ :: 画面種別
+  # === Return
+  # === Raise
   def provide
     # 検索条件を保持
     @query = ""
@@ -53,6 +67,12 @@ class PeopleController < ApplicationController
   end
 
   # 避難者情報重複確認画面
+  # === Args
+  # _id1_ :: 検索一覧で選択されたPerson.id
+  # _id2_ :: 検索一覧で選択されたPerson.id
+  # _id3_ :: 検索一覧で選択されたPerson.id
+  # === Return
+  # === Raise
   def multiviews
     @count = params[:id3].blank? ? 3 : 4
     @person = Person.find_by_id(params[:id1])
@@ -64,6 +84,14 @@ class PeopleController < ApplicationController
   end
 
   # 重複した避難者をまとめる
+  # === Args
+  # _person_    :: Person
+  # _note_      :: Note
+  # _count_     :: 重複件数
+  # _subscribe_ :: 新着情報受信のチェック有無
+  # _consent_   :: 利用規約に同意するのチェック有無
+  # === Return
+  # === Raise
   def dup_merge
     # エラー時に入力値を保持する
     @count = params[:count].to_i
@@ -128,6 +156,11 @@ class PeopleController < ApplicationController
   end
 
   # 新規作成画面
+  # === Args
+  # _family_name_ :: 安否情報対象者入力画面で入力した値
+  # _given_name_  :: 安否情報対象者入力画面で入力した値
+  # === Return
+  # === Raise
   def new
     @person = Person.new
     @person.family_name = params[:family_name]
@@ -144,6 +177,16 @@ class PeopleController < ApplicationController
   end
 
   # 新規情報登録
+  # === Args
+  # _person_    :: Person
+  # _note_      :: Note
+  # _subscribe_ :: 新着情報受信のチェック有無
+  # _consent_   :: 利用規約に同意するのチェック有無
+  # _clone_     :: 新規か複製か
+  # _kana_      :: よみがな
+  # _clickable_map_ :: 最後に見かけた場所
+  # === Return
+  # === Raise
   def create
     @error_message = I18n.t("activerecord.errors.messages.profile_invalid")
     # Person, Noteの登録
@@ -156,7 +199,7 @@ class PeopleController < ApplicationController
       # 画面入力値を加工
 
       @person = Person.new(params[:person])
-      @person.expiry_date = Time.now.advance(:days => @person[:expiry_date].to_i)  # 削除予定日時
+      @person.expiry_date = Time.now.advance(:days => params[:person][:expiry_date].to_i)  # 削除予定日時
       @consent = params[:consent] == "true" ? true :false
       @subscribe = params[:subscribe]== "true" ? true : false
       @clone_clone_input = params[:clone][:clone_input] == "no" ? true : false
@@ -229,6 +272,15 @@ class PeopleController < ApplicationController
   end
 
   # 詳細画面
+  # === Args
+  # _id_ :: Person.id
+  # _role_ :: 画面種別
+  # _name_ :: 検索画面の検索条件
+  # _family_name_ :: 安否情報対象者入力画面の検索条件
+  # _given_name_  :: 安否情報対象者入力画面の検索条件
+  # _duplication_ :: 重複Noteの表示有無
+  # === Return
+  # === Raise
   def view
     @person = Person.find(params[:id])
     @note = Note.new
@@ -252,6 +304,21 @@ class PeopleController < ApplicationController
   end
 
   # 安否情報を追加する
+  # === Args
+  # _id_                 :: Person.id
+  # _extend_days_        :: ボタン種別(有効期限を60日延長する)
+  # _subscribe_email_    :: ボタン種別(この方の新着情報をメールで受け取る)
+  # _delete_             :: ボタン種別(このレコードを削除する)
+  # _note_invalid_apply_ :: ボタン種別(この記録へのメモの書き込みを禁止する)
+  # _note_valid_apply_   :: ボタン種別(この記録へのメモの書き込みを許可する)
+  # _note_               :: Note
+  # _subscribe_          :: 新着情報受信のチェック有無
+  # _consent_            :: 利用規約に同意するのチェック有無
+  # _clone_              :: 新規か複製か
+  # _clickable_map_      :: 最後に見かけた場所
+  # _duplication_        :: 重複Noteの表示有無
+  # === Return
+  # === Raise
   def update
     @person = Person.find(params[:id])
 
@@ -315,6 +382,11 @@ class PeopleController < ApplicationController
   end
 
   # 避難者情報保持期間延長画面
+  # === Args
+  # _id_     :: Person.id
+  # _commit_ :: ボタン種別
+  # === Return
+  # === Raise
   def extend_days
     @person = Person.find(params[:id])
     if params[:commit].present?
@@ -328,6 +400,17 @@ class PeopleController < ApplicationController
   end
 
   # 新着情報受信許可画面
+  # === Args
+  # _id_       :: Person.id
+  # _id2_      :: Person.id(重複)
+  # _id3_      :: Person.id(重複)
+  # _note_id_  :: Note.id
+  # _note_id2_ :: Note.id(重複)
+  # _note_id3_ :: Note.id(重複)
+  # _success_  :: ボタン種別(アップデートする)
+  # _cancel_   :: ボタン種別(キャンセル)
+  # === Return
+  # === Raise
   def subscribe_email
     @person = Person.find(params[:id])  # ウォッチする避難者
     @person2 = Person.find(params[:id2]) if params[:id2].present? # ウォッチする避難者
@@ -396,6 +479,11 @@ class PeopleController < ApplicationController
   end
   
   # 新着情報受信拒否
+  # === Args
+  # _id_      :: Person.id
+  # _note_id_ :: Note.id
+  # === Return
+  # === Raise
   def unsubscribe_email
     @person = params[:id].present?
     @person = Person.find(params[:id])
@@ -415,6 +503,11 @@ class PeopleController < ApplicationController
   end
 
   # 避難者情報削除画面
+  # === Args
+  # _id_     :: Person.id
+  # _commit_ :: ボタン種別
+  # === Return
+  # === Raise
   def delete
     @person = Person.find(params[:id])
     if params[:commit].present?
@@ -432,6 +525,11 @@ class PeopleController < ApplicationController
   end
 
   # 削除データ復元画面
+  # === Args
+  # _id_     :: Person.id
+  # _commit_ :: ボタン種別
+  # === Return
+  # === Raise
   def restore
     # 削除されたデータも含め全件から抽出する
     @person = Person.with_deleted.find(params[:id])
@@ -454,6 +552,11 @@ class PeopleController < ApplicationController
   end
 
   # 安否情報登録無効申請画面
+  # === Args
+  # _id_     :: Person.id
+  # _commit_ :: ボタン種別
+  # === Return
+  # === Raise
   def note_invalid_apply
     @person = Person.find(params[:id])
     if params[:commit].present?
@@ -470,6 +573,11 @@ class PeopleController < ApplicationController
   end
 
   # 安否情報登録無効画面
+  # === Args
+  # _id_     :: Person.id
+  # _commit_ :: ボタン種別
+  # === Return
+  # === Raise
   def note_invalid
     @person = Person.find(params[:id])
     if params[:commit].present?
@@ -485,6 +593,11 @@ class PeopleController < ApplicationController
   end
 
   # 安否情報登録有効申請画面
+  # === Args
+  # _id_     :: Person.id
+  # _commit_ :: ボタン種別
+  # === Return
+  # === Raise
   def note_valid_apply
     @person = Person.find(params[:id])
     if params[:commit].present?
@@ -501,6 +614,10 @@ class PeopleController < ApplicationController
   end
 
   # 安否情報登録有効画面
+  # === Args
+  # _id_ :: Person.id
+  # === Return
+  # === Raise
   def note_valid
     @person = Person.find(params[:id])
     @person.notes_disabled = false
@@ -514,6 +631,12 @@ class PeopleController < ApplicationController
   end
 
   # スパム報告画面
+  # === Args
+  # _id_      :: Person.id
+  # _note_id_ :: Note.id
+  # _commit_  :: ボタン種別
+  # === Return
+  # === Raise
   def spam
     @person = Person.find(params[:id])
     @note = Note.find(params[:note_id])
@@ -527,6 +650,12 @@ class PeopleController < ApplicationController
   end
 
   # スパム報告取消画面
+  # === Args
+  # _id_      :: Person.id
+  # _note_id_ :: Note.id
+  # _commit_  :: ボタン種別
+  # === Return
+  # === Raise
   def spam_cancel
     @person = Person.find(params[:id])
     @note = Note.find(params[:note_id])
@@ -540,6 +669,14 @@ class PeopleController < ApplicationController
   end
 
   # 個人情報表示許可画面
+  # === Args
+  # _id_      :: Person.id
+  # _id2_     :: Person.id(重複)
+  # _id3_     :: Person.id(重複)
+  # _note_id_ :: Note.id
+  # _commit_  :: ボタン種別
+  # === Return
+  # === Raise
   def personal_info
     @person = Person.find(params[:id])
     @note = Note.find(params[:note_id]) unless params[:note_id].blank?
@@ -563,6 +700,11 @@ class PeopleController < ApplicationController
 
 
   # 完了画面
+  # === Args
+  # _id_ :: Person.id
+  # _complete_ :: 設定種別
+  # === Return
+  # === Raise
   def complete
     @key = params[:complete][:key]
     if @key == "delete"
@@ -573,13 +715,20 @@ class PeopleController < ApplicationController
   end
 
   private
+
+  # profile_urlsをDBに登録できる形に整形する
+  # === Args
+  # _profile_url1_ :: プロフィール1件目
+  # _profile_url2_ :: プロフィール2件目
+  # _profile_url3_ :: プロフィール3件目
+  # === Return
+  # 3件を結合した文字列
+  # === Raise
   def set_profile_urls
     urls = [params[:profile_url1], params[:profile_url2], params[:profile_url3]]
     urls.delete("")
     return urls.join("\n")
   end
-
-
 
   
 end

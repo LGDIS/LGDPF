@@ -4,13 +4,13 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   default from: @@settings["ldgpf"]["mail"]["from"]
 
   # 新着情報を受け取るように設定したことを確認するメールを送信する
-  # ==== Args
+  # === Args
   # _person_ :: 新着情報をウォッチする避難者
-  #
+  # === Return
+  # === Raise
   def send_new_information(person, note)
     # ユニークキーの設定
     aal = ApiActionLog.create
-
     @person = person
     @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
     @unsubscribe_email_path = @@settings["ldgpf"][Rails.env]["site"] +
@@ -31,12 +31,13 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   end
 
   # 新着情報
-  # ==== Args
+  # === Args
   # _target_ :: 送信対象
   # _[0]_    :: 新着情報をウォッチする避難者
   # _[1]_    :: 追加されたNote
   # _[2]_    :: 送信メールアドレス
-  #
+  # === Return
+  # === Raise
   def send_add_note(target)
     aal = ApiActionLog.create
     @person = target[0]
@@ -59,9 +60,10 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   end
 
   # 避難者のレコードが削除されたことを通知するメールを送信する
-  # ==== Args
+  # === Args
   # _person_ :: 削除された避難者
-  #
+  # === Return
+  # === Raise
   def send_delete_notice(person)
     aal = ApiActionLog.create
     @person = person
@@ -77,9 +79,10 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   end
 
   # 削除されたレコードが復元したことを通知するメールを送信する
-  # ==== Args
+  # === Args
   # _person_ :: 復元する避難者
-  #
+  # === Return
+  # === Raise
   def send_restore_notice(person)
     @person = person
     @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
@@ -92,9 +95,10 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   end
 
   # 安否情報登録無効申請
-  # ==== Args
+  # === Args
   # _person_ :: メモ登録を無効にする避難者
-  #
+  # === Return
+  # === Raise
   def send_note_invalid_apply(person)
     aal = ApiActionLog.create
     @person = person
@@ -110,9 +114,10 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   end
 
   # 安否情報登録無効にしたことを確認するメールを送信する
-  # ==== Args
+  # === Args
   # _person_ :: メモ登録を無効にした避難者
-  #
+  # === Return
+  # === Raise
   def send_note_invalid(person)
     @person = person
     @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
@@ -125,9 +130,10 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   end
 
   # 安否情報登録有効申請
-  # ==== Args
+  # === Args
   # _person_ :: メモ登録を有効にする避難者
-  #
+  # === Return
+  # === Raise
   def send_note_valid_apply(person)
     aal = ApiActionLog.create
     @person = person
@@ -142,9 +148,10 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   end
 
   # 安否情報登録有効にしたことを確認するメールを送信する
-  # ==== Args
+  # === Args
   # _person_ :: メモ登録を有効にした避難者
-  #
+  # === Return
+  # === Raise
   def send_note_valid(person)
     @person = person
     @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
@@ -155,6 +162,5 @@ class LgdpfMailer < Jpmobile::Mailer::Base
       mail(:to => @person.author_email, :subject => subject)
     end
   end
-
 
 end

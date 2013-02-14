@@ -15,20 +15,20 @@ class Person < ActiveRecord::Base
     :profile_urls
 
   has_many :notes
-
-  acts_as_paranoid
   # newレコードをsaveした場合の処理
   before_create :set_attributes
+  # 論理削除機能の有効化
+  acts_as_paranoid
+  # 画像のアップロード
   mount_uploader :photo_url, PhotoUrlUploader
 
+  # maxlength validation
   validates :person_record_id,                :length => {:maximum => 500}
   validates :full_name,                       :length => {:maximum => 500}
-  validates :family_name, :presence => true,  :length => {:maximum => 500}
-  validates :given_name, :presence => true,   :length => {:maximum => 500}
+  validates :family_name,                     :length => {:maximum => 500}
+  validates :given_name,                      :length => {:maximum => 500}
   validates :alternate_names,                 :length => {:maximum => 500}
-  validates :date_of_birth,                   :date   => true
   validates :sex,                             :length => {:maximum => 1}
-  validates :age,                             :allow_blank => true, :format => { :with => /^\d+(-\d+)?$/ }
   validates :home_postal_code,                :length => {:maximum => 500}
   validates :in_city_flag,                    :length => {:maximum => 1}
   validates :home_state,                      :length => {:maximum => 500}
@@ -37,8 +37,6 @@ class Person < ActiveRecord::Base
   validates :shelter_name,                    :length => {:maximum => 20}
   validates :refuge_status,                   :length => {:maximum => 1}
   validates :refuge_reason,                   :length => {:maximum => 4000}
-  validates :shelter_entry_date,              :date   => true
-  validates :shelter_leave_date,              :date   => true
   validates :next_place,                      :length => {:maximum => 100}
   validates :next_place_phone,                :length => {:maximum => 20}
   validates :injury_flag,                     :length => {:maximum => 1}
@@ -54,16 +52,34 @@ class Person < ActiveRecord::Base
   validates :elderly_dementia,                :length => {:maximum => 1}
   validates :rehabilitation_certificate,      :length => {:maximum => 2}
   validates :physical_disability_certificate, :length => {:maximum => 1}
-  validates :author_name,                     :presence => true # レコード作成者名
-  validates :author_email,                    :allow_blank => true, :format => { :with => /^[^@]+@[^@]+$/ } # メールアドレス
-  validates :author_phone,                    :allow_blank => true, :format => { :with => /^[\-+()\d ]+$/ } # 電話番号
   validates :source_name,                     :length => {:maximum => 500}
-  validates :source_date,                     :time   => true
   validates :source_url,                      :length => {:maximum => 500}
-  validate :profile_urls,                     :url_validater # プロフィール
 
+  # presence validation
+  validates :author_name,        :presence => true # レコード作成者名
+  validates :family_name,        :presence => true
+  validates :given_name,         :presence => true
+
+  # date validation
+  validates :date_of_birth,      :date   => true
+  validates :shelter_entry_date, :date   => true
+  validates :shelter_leave_date, :date   => true
+
+  # datetime validation
+  validates :source_date,        :time   => true
+
+  # format validation
+  validates :age,                :allow_blank => true, :format => { :with => /^\d+(-\d+)?$/ }
+  validates :author_email,       :allow_blank => true, :format => { :with => /^[^@]+@[^@]+$/ } # メールアドレス
+  validates :author_phone,       :allow_blank => true, :format => { :with => /^[\-+()\d ]+$/ } # 電話番号
+
+  # profile_urls validation
+  validate :profile_urls,        :url_validater # プロフィール
 
   # before_createで設定する項目
+  # === Args
+  # === Return
+  # === Raise
   def set_attributes
     self.source_date = Time.now if self.source_date.blank?
     self.entry_date  = Time.now
@@ -81,7 +97,11 @@ class Person < ActiveRecord::Base
 
   end
 
-  # 入力値チェック
+  # profile_urlsの入力形式が正しい書式か？
+  # === Args
+  # === Return
+  # boolean
+  # === Raise
   def url_validater
     unless self.profile_urls.blank?
       urls = self.profile_urls.split("\n")
@@ -95,10 +115,12 @@ class Person < ActiveRecord::Base
     return true
   end
 
-  # 避難者を検索する
-  # ==== Args
+  # フルネーム or よみがなに部分一致するPersonを検索する
+  # === Args
   # _sp_ :: 検索条件
-  #
+  # === Return
+  # Personオブジェクト配列
+  # === Raise
   def self.find_for_seek(sp)
     return nil if sp[:name].blank?
     
@@ -107,10 +129,12 @@ class Person < ActiveRecord::Base
         :name => "%#{sp[:name]}%"])
   end
 
-  # 情報提供する避難者情報が既に登録されているか確認する
-  # ==== Args
+  # 姓、名がそれぞれ部分一致 or よみがなに部分一致するPersonを抽出する
+  # === Args
   # _sp_ :: 検索条件
-  #
+  # === Return
+  # Personオブジェクト配列
+  # === Raise
   def self.find_for_provide(sp)
     return nil if sp[:family_name].blank? || sp[:given_name].blank?
     
@@ -121,10 +145,12 @@ class Person < ActiveRecord::Base
   end
   
 
-  # 重複Noteを持っているか確認する
+  # 対象Personが重複Noteを持っているか？
   # === Args
-  # _pid_ :: 避難者id
-  #
+  # _pid_ :: Person.id
+  # === Return
+  # boolean
+  # === Raise
   def self.check_dup(pid)
     notes = Note.find_all_by_person_record_id(pid)
     notes.each do |note|
@@ -135,10 +161,12 @@ class Person < ActiveRecord::Base
     return false
   end
 
-  # 重複するpersonを抽出する
+  # 対象のPersonと重複しているPersonを抽出する
   # === Args
-  # _pid_ :: 避難者id
-  #
+  # _pid_ :: Person.id
+  # === Return
+  # Personオブジェクト配列
+  # === Raise
   def self.duplication(pid)
     dup_notes = Note.duplication(pid) # pidが持つ重複note
     people = []
@@ -154,12 +182,11 @@ class Person < ActiveRecord::Base
   # _person_ :: Person
   # _new_note_ :: 新規Note
   # === Return
-  # _to_ :: [person, new_note, 送信対象のperson or note]
-  #
+  # _to_ :: [Person, 新規Note, 送信対象のPerson or Note]
+  # === Raise
   def self.subscribe_email_address(person, new_note)
     to = []
-    # 送信可能なnote
-    # 重複無し、受取フラグ有
+    # 送信可能なnoteを抽出する (重複無し、受取フラグ有)
     notes = Note.where(:person_record_id => person.id, :email_flag => true).where("author_email <> ?","").select("DISTINCT author_email, id")
     
     # Personが紐付くNoteのemailと重複するか判定

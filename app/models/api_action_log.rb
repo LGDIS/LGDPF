@@ -6,7 +6,7 @@ class ApiActionLog < ActiveRecord::Base
 
   # before_createで設定する項目
   def set_attributes
-    # 最初のレコードでは"0"を設定する
+    # 最初のレコードではApiActionLog.last.idが取得できないので、"0"を設定する
     self.unique_key = ApiActionLog.last.blank? ? "0" : (ApiActionLog.last.id + 1).to_s
     self.entry_date = Time.now
   end
