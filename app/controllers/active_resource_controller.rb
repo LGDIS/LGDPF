@@ -7,7 +7,7 @@ class ActiveResourceController < ApplicationController
   # ==== Return
   # ==== Raise
   def people
-    @people = Person.find(:all, :conditions => ["link_flag = ?", false])
+    @people = Person.where(:link_flag => false)
     
     respond_to do |format|
       format.json { render :json => @people.to_json }
@@ -17,7 +17,7 @@ class ActiveResourceController < ApplicationController
   # ActiveResource[LGDPF <=> LGDPM]
   # Person登録処理
   # ==== Args
-  # _params[:person]_ :: 避難者情報
+  # _person_ :: 避難者情報
   # ==== Return
   # ==== Raise
   def people_create
@@ -28,7 +28,9 @@ class ActiveResourceController < ApplicationController
         format.json { render :json => @person.to_json }
       end
     else
-      
+      respond_to do |format|
+        format.json { render :json => @person.to_json, :status => :internal_server_error }
+      end
     end
   end
   
@@ -46,7 +48,9 @@ class ActiveResourceController < ApplicationController
         format.json { render :json => @person.to_json }
       end
     else
-      
+      respond_to do |format|
+        format.json { render :json => @person.to_json, :status => :internal_server_error }
+      end
     end
   end
   
@@ -57,19 +61,17 @@ class ActiveResourceController < ApplicationController
   # ==== Return
   # ==== Raise
   def notes
-    @note = Note.find(:all,
-      :conditions => ["person_record_id = ? AND link_flag = ?",
-      params[:person_record_id], false], :order => "created_at DESC")
+    @notes = Note.where(:person_record_id => params[:person_record_id], :link_flag => false).order("created_at DESC")
       
     respond_to do |format|
-      format.json { render :json => @note.to_json }
+      format.json { render :json => @notes.to_json }
     end
   end
   
   # ActiveResource[LGDPF <=> LGDPM]
   # Note登録処理
   # ==== Args
-  # _params[:note]_ :: 安否情報
+  # _note_ :: 安否情報
   # ==== Return
   # ==== Raise
   def notes_create
@@ -80,7 +82,9 @@ class ActiveResourceController < ApplicationController
         format.json { render :json => @note.to_json }
       end
     else
-      
+      respond_to do |format|
+        format.json { render :json => @note.to_json, :status => :internal_server_error }
+      end
     end
   end
   
@@ -98,7 +102,9 @@ class ActiveResourceController < ApplicationController
         format.json { render :json => @note.to_json }
       end
     else
-      
+      respond_to do |format|
+        format.json { render :json => @note.to_json, :status => :internal_server_error }
+      end
     end
   end
 end
