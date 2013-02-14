@@ -7,7 +7,7 @@ class TimeValidator < ActiveModel::EachValidator
 
     return if raw_value.blank?
 
-    if raw_value.to_s =~ /^(\d{4})(?:\/|-|.)?(\d{1,2})(?:\/|-|.)?(\d{1,2})(?:\s{1})(\d{1,2}):?(\d{1,2}):?(\d{1,2})/
+    if raw_value.to_s =~ /^(\d{4})(?:\/|-|.)?(\d{1,2})(?:\/|-|.)?(\d{1,2})(?:\s{1}|T)(\d{1,2}):?(\d{1,2}):?(\d{1,2})/
       begin
         DateTime.new($1.to_i,$2.to_i,$3.to_i,$4.to_i,$5.to_i,$6.to_i)
       rescue
