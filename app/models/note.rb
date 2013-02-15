@@ -90,4 +90,54 @@ class Note < ActiveRecord::Base
     return dup.size > 0 ? true : false
   end
 
+  # pfifをNoteレコードに格納する
+  # === Args
+  # === Return
+  # Noteオブジェクト
+  # === Raise
+  def self.exec_insert_note(note, e)
+    note.note_record_id         = e.elements["pfif:note_record_id"].try(:text)
+    person_record               = Person.find_by_person_record_id(e.elements["pfif:person_record_id"].try(:text))
+    note.person_record_id       = person_record.id if person_record.present?
+    linked_person_record        = Person.find_by_person_record_id(e.elements["pfif:linked_person_record_id"].try(:text))
+    note.linked_person_record_id       = linked_person_record.id if linked_person_record.present?
+    entry_date                  = e.elements["pfif:entry_date"].try(:text)
+    note.entry_date             = entry_date.to_time if entry_date.present?
+    note.author_name            = e.elements["pfif:author_name"].try(:text)
+    note.author_email           = e.elements["pfif:author_email"].try(:text)
+    note.author_phone           = e.elements["pfif:author_phone"].try(:text)
+    source_date                 = e.elements["pfif:source_date"].try(:text)
+    note.source_date            = source_date.to_time if source_date.present?
+    case e.elements["pfif:author_made_contact"].try(:text)
+    when "true"
+      author_made_contact = true
+    when "false"
+      author_made_contact = false
+    else
+      author_made_contact = nil
+    end
+    note.author_made_contact    = author_made_contact
+    case e.elements["pfif:status"].try(:text)
+    when "information_sought" # 情報を探している
+      status = 2
+    when "is_note_author" # 私が本人である
+      status = 3
+    when "believed_alive" # この人が生きているという情報を入手した
+      status = 4
+    when "believed_missing" # この人を行方不明と判断した理由がある
+      status = 5
+    else
+      status = 1
+    end
+    note.status                 = status
+    note.email_of_found_person  = e.elements["pfif:email_of_found_person"].try(:text)
+    note.phone_of_found_person  = e.elements["pfif:phone_of_found_person"].try(:text)
+    note.last_known_location    = e.elements["pfif:last_known_location"].try(:text)
+    note.text                   = e.elements["pfif:text"].try(:text)
+    note.photo_url              = e.elements["pfif:photo_url"].try(:text)
+
+    return note
+  end
+
+
 end

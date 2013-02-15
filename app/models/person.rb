@@ -36,13 +36,10 @@ class Person < ActiveRecord::Base
   validates :home_street,                     :length => {:maximum => 500}
   validates :shelter_name,                    :length => {:maximum => 20}
   validates :refuge_status,                   :length => {:maximum => 1}
-  validates :refuge_reason,                   :length => {:maximum => 4000}
   validates :next_place,                      :length => {:maximum => 100}
   validates :next_place_phone,                :length => {:maximum => 20}
   validates :injury_flag,                     :length => {:maximum => 1}
-  validates :injury_condition,                :length => {:maximum => 4000}
   validates :allergy_flag,                    :length => {:maximum => 1}
-  validates :allergy_cause,                   :length => {:maximum => 4000}
   validates :pregnancy,                       :length => {:maximum => 1}
   validates :baby,                            :length => {:maximum => 1}
   validates :upper_care_level_three,          :length => {:maximum => 2}
@@ -199,6 +196,52 @@ class Person < ActiveRecord::Base
     end
 
     return to
+  end
+
+  # pfifをPersonレコードに格納する
+  # === Args
+  # === Return
+  # Personオブジェクト
+  # === Raise
+  def self.exec_insert_person(person, e)
+    person.person_record_id  = e.elements["pfif:person_record_id"].try(:text)
+    entry_date               = e.elements["pfif:entry_date"].try(:text)
+    person.entry_date        = entry_date.to_time if entry_date.present?
+    expiry_date              = e.elements["pfif:expiry_date"].try(:text)
+    person.expiry_date       = expiry_date.to_time if expiry_date.present?
+    person.author_name       = e.elements["pfif:author_name"].try(:text)
+    person.author_email      = e.elements["pfif:author_email"].try(:text)
+    person.author_phone      = e.elements["pfif:author_phone"].try(:text)
+    person.source_name       = e.elements["pfif:source_name"].try(:text)
+    source_date              = e.elements["pfif:source_date"].try(:text)
+    person.source_date       = source_date.to_time if source_date.present?
+    person.source_url        = e.elements["pfif:source_url"].try(:text)
+    person.full_name         = e.elements["pfif:full_name"].try(:text)
+    person.given_name        = e.elements["pfif:given_name"].try(:text)
+    person.family_name       = e.elements["pfif:family_name"].try(:text)
+    person.alternate_names   = e.elements["pfif:alternate_names"].try(:text)
+    person.description       = e.elements["pfif:description"].try(:text)
+    sex                      = e.elements["pfif:sex"].try(:text)
+    case sex
+    when "male"
+      person.sex = 2
+    when "female"
+      person.sex = 1
+    when "other"
+      person.sex = 3
+    else
+      person.sex = nil
+    end
+    date_of_birth            = e.elements["pfif:date_of_birth"].try(:text)
+    person.date_of_birth     = date_of_birth.to_date if date_of_birth.present?
+    person.age               = e.elements["pfif:age"].try(:text)
+    person.home_street       = e.elements["pfif:home_street"].try(:text)
+    person.home_neighborhood = e.elements["pfif:home_neighborhood"].try(:text)
+    person.home_city         = e.elements["pfif:home_city"].try(:text)
+    person.home_state        = e.elements["pfif:home_state"].try(:text)
+    person.home_postal_code  = e.elements["pfif:home_postal_code"].try(:text)
+    person.photo_url         = e.elements["pfif:photo_url"].try(:text)
+    return person
   end
 
 end
