@@ -125,7 +125,11 @@
         <label for="home_postal_code">出身国:</label>
       </span>
       <span class="value">
-        <%= text_field :person, :home_country, :value => @person.home_country,
+        <%= select(:person, :home_country,
+          options_for_select(@country_code.invert, @person.home_country),
+          { :include_blank => true}, :class => "medium-text-input") %>
+
+        <%#= text_field :person, :home_country, :value => @person.home_country,
           :class => "short-text-input" %>
       </span>
     </div>
@@ -145,8 +149,8 @@
         <label for="injury_condition">災害等による負傷の内容:</label>
       </span>
       <span class="value">
-         <%= text_area :person, :injury_condition,
-        { :rows => "3", :class => "medium-text-input" } %>
+        <%= text_area :person, :injury_condition,
+          { :rows => "3", :class => "medium-text-input" } %>
       </span>
     </div>
     <div class="field">
@@ -154,8 +158,8 @@
         <label for="allergy_cause">アレルギーの詳細:</label>
       </span>
       <span class="value">
-         <%= text_area :person, :allergy_cause,
-        { :rows => "3", :class => "medium-text-input" } %>
+        <%= text_area :person, :allergy_cause,
+          { :rows => "3", :class => "medium-text-input" } %>
       </span>
     </div>
     <div class="field">
@@ -336,8 +340,8 @@ options_for_select(@shelter.invert, @person.shelter_name),
         <div class="hint">「自主避難」・「避難勧告に基づき避難」・「避難指示に基づき避難」等を記述します。</div>
       </span>
       <span class="value">
-         <%= text_area :person, :refuge_reason,
-        { :rows => "3", :class => "medium-text-input" } %>
+        <%= text_area :person, :refuge_reason,
+          { :rows => "3", :class => "medium-text-input" } %>
       </span>
     </div>
     <div class="field">

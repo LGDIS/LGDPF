@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
     # セレクトボックスの表示に使用するコンスタントテーブルの取得
     @person_const = Constant.get_const(Person.table_name)
     @note_const   = Constant.get_const(Note.table_name)
+    @country_code = CountryCode.hash_for_selectbox
     # memcacheからマスタを取得
     # @area = get_cache("area")
     # @address = Rails.cache.read("address")

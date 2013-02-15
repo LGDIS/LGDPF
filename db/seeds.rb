@@ -1,4 +1,6 @@
 # -*- coding:utf-8 -*-
+require 'csv'
+
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
@@ -104,3 +106,9 @@ Constant.create(kind1: 'TD', kind2: 'people', kind3: 'invalid_reason', text: '�
 Constant.create(kind1: 'TD', kind2: 'people', kind3: 'invalid_reason', text: 'この記録が原因でスパムを受信したから', value: 'spam_received', _order: '2')
 Constant.create(kind1: 'TD', kind2: 'people', kind3: 'invalid_reason', text: 'この記録がスパム情報だから', value: 'record_is_spam', _order: '3')
 Constant.create(kind1: 'TD', kind2: 'people', kind3: 'invalid_reason', text: 'この記録が目的を果たしたから', value: 'served_its_purpose', _order: '4')
+
+
+# 国別コード
+CSV.foreach('db/country_code.csv') do |row|
+  CountryCode.create(:name => row[0], :code => row[1])
+end
