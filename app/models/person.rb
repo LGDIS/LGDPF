@@ -12,7 +12,7 @@ class Person < ActiveRecord::Base
     :bedridden_elderly, :elderly_dementia, :rehabilitation_certificate,
     :physical_disability_certificate, :photo_url, :profile_urls, :remote_photo_url_url,
     :public_flag, :link_flag, :house_number, :notes_disabled, :email_flag, :deleted_at,
-    :profile_urls
+    :profile_urls, :family_well
 
   has_many :notes
   # newレコードをsaveした場合の処理
@@ -73,6 +73,21 @@ class Person < ActiveRecord::Base
   # profile_urls validation
   validate :profile_urls,        :url_validater # プロフィール
 
+  # 市内・市外区分
+  IN_CITY_FLAG_INSIDE  = 1 # 市内
+  IN_CITY_FLAG_OUTSIDE = 0 # 市外
+  # 負傷
+  INJURY_FLAG_ON  = 1 # 有
+  INJURY_FLAG_OFF = 0 # 無
+  # アレルギー
+  ALLERGY_FLAG_ON  = 1 # アレルギー有
+  ALLERGY_FLAG_OFF = 0 # アレルギー無
+  # 公開フラグ
+  PUBLIC_FLAG_ON  = 1 # 公開
+  PUBLIC_FLAG_OFF = 0 # 非公開
+
+
+
   # before_createで設定する項目
   # === Args
   # === Return
@@ -81,14 +96,14 @@ class Person < ActiveRecord::Base
     self.source_date = Time.now if self.source_date.blank?
     self.entry_date  = Time.now
     self.full_name   = "#{self.family_name} #{self.given_name}"
-    self.injury_flag = self.injury_condition.present? ? 1:0  # 負傷の有無
-    self.allergy_flag = self.allergy_cause.present? ? 1:0    # アレルギーの有無
+    self.injury_flag = self.injury_condition.present? ? INJURY_FLAG_ON : INJURY_FLAG_OFF  # 負傷の有無
+    self.allergy_flag = self.allergy_cause.present? ? ALLERGY_FLAG_ON : ALLERGY_FLAG_OFF    # アレルギーの有無
 
     if self.home_state.present? && self.home_city.present?    # 市内・市外区分
       if self.home_state =~ /^(宮城)県?$/ && self.home_city =~ /^(石巻)市?$/
-        self.in_city_flag = 1  # 市内
+        self.in_city_flag = IN_CITY_FLAG_INSIDE  # 市内
       else
-        self.in_city_flag = 0  # 市外
+        self.in_city_flag = IN_CITY_FLAG_OUTSIDE # 市外
       end
     end
 
@@ -226,11 +241,11 @@ class Person < ActiveRecord::Base
     sex                      = e.elements["pfif:sex"].try(:text)
     case sex
     when "male"
-      person.sex = 1
+      person.sex = "1"
     when "female"
-      person.sex = 2
+      person.sex = "2"
     when "other"
-      person.sex = 3
+      person.sex = "3"
     else
       person.sex = nil
     end
@@ -256,7 +271,7 @@ class Person < ActiveRecord::Base
   # Personオブジェクト配列
   # === Raise
   def self.find_for_export_gpf
-    where(:public_flag => 1)
+    where(:public_flag => PUBLIC_FLAG_ON)
   end
 
 end

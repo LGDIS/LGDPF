@@ -106,7 +106,9 @@ Constant.create(kind1: 'TD', kind2: 'people', kind3: 'invalid_reason', text: '�
 Constant.create(kind1: 'TD', kind2: 'people', kind3: 'invalid_reason', text: 'この記録が原因でスパムを受信したから', value: 'spam_received', _order: '2')
 Constant.create(kind1: 'TD', kind2: 'people', kind3: 'invalid_reason', text: 'この記録がスパム情報だから', value: 'record_is_spam', _order: '3')
 Constant.create(kind1: 'TD', kind2: 'people', kind3: 'invalid_reason', text: 'この記録が目的を果たしたから', value: 'served_its_purpose', _order: '4')
-
+# 家族も無事
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'family_well', text: '無事', value: '1', _order: '1')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'family_well', text: '無事か確認できていない', value: '0', _order: '2')
 
 # 国別コード
 CSV.foreach('db/country_code.csv') do |row|

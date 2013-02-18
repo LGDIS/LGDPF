@@ -50,6 +50,7 @@ class Person < ActiveRecord::Migration
       t.column "elderly_dementia", :string, :limit => 1
       t.column "rehabilitation_certificate", :string, :limit => 2
       t.column "physical_disability_certificate", :string, :limit => 1
+      t.column "family_well", :string, :limit => 1
       t.column "link_flag", :boolean, :default => false
       t.column "notes_disabled", :boolean, :default => false
       t.column "email_flag", :boolean, :default => false
@@ -106,6 +107,7 @@ class Person < ActiveRecord::Migration
       t.set_column_comment "elderly_dementia", "認知症高齢者"
       t.set_column_comment "rehabilitation_certificate", " 療育手帳所持者"
       t.set_column_comment "physical_disability_certificate", "身体障害者手帳所持者"
+      t.set_column_comment "family_well", "家族も無事"
       t.set_column_comment "link_flag", "連携フラグ"
       t.set_column_comment "notes_disabled", "メモ無効フラグ"
       t.set_column_comment "email_flag", "新着メッセージ受取フラグ"

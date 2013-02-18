@@ -377,6 +377,14 @@ options_for_select(@shelter.invert, @person.shelter_name),
           :class => "medium-text-input" %>
       </span>
     </div>
+    <div class="field">
+      <span class="label">
+        <label for="person_family_well">家族も無事ですか？</label>
+      </span>
+      <span class="value">
+        <%= check_box :person, :family_well, {:checked => @person.family_well == "1"}, "1", "0"%>
+      </span>
+    </div>
 
     <div class="end-multi-columns"></div>
 

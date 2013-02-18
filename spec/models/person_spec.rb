@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 require 'spec_helper'
+require 'rexml/document'
 
 describe Person do
   describe 'set_attributes' do
@@ -541,6 +542,69 @@ describe Person do
         send_record = Note.find(@note.id, :select => "author_email, id" )
         result.should == []
       end
+    end
+  end
+
+  describe 'exec_insert_person' do
+    before do
+      pfif = File.open("spec/pfif_sample.xml", "r").read
+      doc = REXML::Document.new(pfif)
+      @elements = doc.elements["pfif:pfif/pfif:person"]
+      @person = Person.new
+    end
+    it 'マッピングが合っていること' do
+      Person.exec_insert_person(@person, @elements)
+
+      @person.person_record_id.should == @elements.elements["pfif:person_record_id"].text
+      @person.entry_date.should       == @elements.elements["pfif:entry_date"].text.to_time
+      @person.expiry_date.should      == @elements.elements["pfif:expiry_date"].text.to_time
+      @person.author_name.should      == @elements.elements["pfif:author_name"].text
+      @person.author_email.should     == @elements.elements["pfif:author_email"].text
+      @person.author_phone.should     == @elements.elements["pfif:author_phone"].text
+      @person.source_name.should      == @elements.elements["pfif:source_name"].text
+      @person.source_date.should      == @elements.elements["pfif:source_date"].text
+      @person.source_url.should       == @elements.elements["pfif:source_url"].text
+      @person.full_name.should        == @elements.elements["pfif:full_name"].text
+      @person.given_name.should       == @elements.elements["pfif:given_name"].text
+      @person.family_name.should      == @elements.elements["pfif:family_name"].text
+      @person.alternate_names.should  == @elements.elements["pfif:alternate_names"].text
+      @person.description.should      == @elements.elements["pfif:description"].text
+      sex                      = @elements.elements["pfif:sex"].try(:text)
+      case sex
+      when "male"
+        sex = "1"
+      when "female"
+        sex = "2"
+      when "other"
+        sex = "3"
+      else
+        sex = nil
+      end
+      @person.sex.should == sex
+      @person.date_of_birth.should     == @elements.elements["pfif:date_of_birth"].text.to_date
+      @person.age.should               == @elements.elements["pfif:age"].text
+      @person.home_street.should       == @elements.elements["pfif:home_street"].text
+      @person.home_neighborhood.should == @elements.elements["pfif:home_neighborhood"].text
+      @person.home_city.should         == @elements.elements["pfif:home_city"].text
+      @person.home_state.should        == @elements.elements["pfif:home_state"].text
+      @person.home_postal_code.should  == @elements.elements["pfif:home_postal_code"].text
+      @person.home_country.should      == @elements.elements["pfif:home_country"].text
+      # CarrierWaveの記述に合わせてremote_XXX_urlの書式にしてある
+      @person.remote_photo_url_url.should == @elements.elements["pfif:photo_url"].text
+      @person.profile_urls.should      == @elements.elements["pfif:profile_urls"].text
+    end
+  end
+
+  describe 'find_for_export_gpf' do
+    before do
+      @person_open  = FactoryGirl.create(:person, :public_flag => Person::PUBLIC_FLAG_ON)
+      @person_local = FactoryGirl.create(:person, :public_flag => Person::PUBLIC_FLAG_OFF)
+    end
+    it '公開対象のレコードを抽出すること' do
+      Person.all.size.should == 2
+      record = Person.find_for_export_gpf
+      record.size.should == 1
+      record[0].public_flag.should == Person::PUBLIC_FLAG_ON
     end
   end
 

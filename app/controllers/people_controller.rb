@@ -74,7 +74,7 @@ class PeopleController < ApplicationController
   # === Return
   # === Raise
   def multiviews
-    @count = params[:id3].blank? ? 3 : 4
+    @count = params[:id3].blank? ? 3 : 4  # 重複件数が2件 or 3件
     @person = Person.find_by_id(params[:id1])
     @person2 = Person.find_by_id(params[:id2])
     @person3 = Person.find_by_id(params[:id3]) unless params[:id3].blank?
@@ -204,7 +204,7 @@ class PeopleController < ApplicationController
       @subscribe = params[:subscribe]== "true" ? true : false
       @clone_clone_input = params[:clone][:clone_input] == "no" ? true : false
       if @clone_clone_input
-        @person[:source_name] = request.headers["host"]
+        @person[:source_name] = `hostname`
       end
       @person[:profile_urls] = set_profile_urls
 
@@ -247,7 +247,7 @@ class PeopleController < ApplicationController
 
       # 新規情報の場合
       if @clone_clone_input
-        @person[:source_url] = url_for(:action => 'view', :id => @person.id, :only_path => false)
+        @person[:source_url] = url_for(:action => :view, :id => @person.id, :only_path => false)
         @person.save
       end
 
@@ -390,6 +390,7 @@ class PeopleController < ApplicationController
   def extend_days
     @person = Person.find(params[:id])
     if params[:commit].present?
+      # 削除予定日を60日延長する
       @person.expiry_date = @person.expiry_date + 60.days
       if verify_recaptcha(:model => @person) && @person.save!
         redirect_to :action => :complete,

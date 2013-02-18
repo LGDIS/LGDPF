@@ -42,24 +42,24 @@ class Batches::ExportGooglePersonFinder
       node_person.add_element("pfif:entry_date").add_text("#{person.entry_date.utc.xmlschema}")
       node_person.add_element("pfif:expiry_date").add_text("#{person.expiry_date.utc.xmlschema}")
       node_person.add_element("pfif:author_name").add_text("#{person.author_name}")
-      node_person.add_element("pfif:author_email").add_text("#{person.author_email}")
-      node_person.add_element("pfif:author_phone").add_text("#{person.author_phone}")
-      node_person.add_element("pfif:source_name").add_text("#{person.source_name}")
-      node_person.add_element("pfif:source_date").add_text("#{person.source_date.utc.xmlschema}")
-      node_person.add_element("pfif:source_url").add_text("#{person.source_url}")
+      node_person.add_element("pfif:author_email").add_text("#{person.author_email}") if person.author_email.present?
+      node_person.add_element("pfif:author_phone").add_text("#{person.author_phone}") if person.author_phone.present?
+      node_person.add_element("pfif:source_name").add_text("#{person.source_name}") if person.source_name.present?
+      node_person.add_element("pfif:source_date").add_text("#{person.source_date.utc.xmlschema}") if person.source_date.present?
+      node_person.add_element("pfif:source_url").add_text("#{person.source_url}") if person.source_url.present?
       node_person.add_element("pfif:full_name").add_text("#{person.full_name}")
       node_person.add_element("pfif:given_name").add_text("#{person.given_name}")
       node_person.add_element("pfif:family_name").add_text("#{person.family_name}")
-      node_person.add_element("pfif:description").add_text("#{person.description}")
-      node_person.add_element("pfif:sex").add_text("#{sex_parse_for_gpf(person.sex)}") if person.sex.present?
+      node_person.add_element("pfif:description").add_text("#{person.description}") if person.description.present?
+      node_person.add_element("pfif:sex").add_text("#{sex_parse_for_gpf(person.sex)}")
       node_person.add_element("pfif:date_of_birth").add_text("#{date_parse_for_gpf(person.date_of_birth)}")
-      node_person.add_element("pfif:age").add_text("#{person.age}")
-      node_person.add_element("pfif:home_street").add_text("#{person.home_street}")
-      node_person.add_element("pfif:home_neighborhood").add_text("#{person.home_neighborhood}")
-      node_person.add_element("pfif:home_city").add_text("#{person.home_city}")
-      node_person.add_element("pfif:home_state").add_text("#{person.home_state}")
-      node_person.add_element("pfif:home_postal_code").add_text("#{person.home_postal_code}")
-      node_person.add_element("pfif:home_country").add_text("#{person.home_country}")
+      node_person.add_element("pfif:age").add_text("#{person.age}") if person.age.present?
+      node_person.add_element("pfif:home_street").add_text("#{person.home_street}") if person.home_street.present?
+      node_person.add_element("pfif:home_neighborhood").add_text("#{person.home_neighborhood}") if person.home_neighborhood.present?
+      node_person.add_element("pfif:home_city").add_text("#{person.home_city}") if person.home_city.present?
+      node_person.add_element("pfif:home_state").add_text("#{person.home_state}") if person.home_state.present?
+      node_person.add_element("pfif:home_postal_code").add_text("#{person.home_postal_code}") if person.home_postal_code.present?
+      node_person.add_element("pfif:home_country").add_text("#{person.home_country}") if person.home_country.present?
 
       notes = Note.find_all_by_person_record_id(person.id)
       notes.each do |note|
@@ -82,7 +82,7 @@ class Batches::ExportGooglePersonFinder
       end
 
       # 公開フラグを消す
-      person.public_flag = 0
+      person.public_flag = Person::PUBLIC_FLAG_OFF
       person.save
     end
     return doc.to_s
@@ -95,7 +95,7 @@ class Batches::ExportGooglePersonFinder
   # ”yyyy-mm-dd”文字列
   # === Raise
   def self.date_parse_for_gpf(date)
-    date.blank? ? "" : date.utc.strftime("%Y-%m-%d")
+    date.blank? ? "" : date.strftime("%Y-%m-%d")
   end
 
   # 性別をGooglePersonFinderの形式に変換する
@@ -106,12 +106,14 @@ class Batches::ExportGooglePersonFinder
   # === Raise
   def self.sex_parse_for_gpf(sex)
     case sex
-    when 1 then
+    when "1" then
       "male"
-    when 2 then
+    when "2" then
       "female"
-    when 3 then
+    when "3" then
       "other"
+    else
+      nil
     end
   end
 

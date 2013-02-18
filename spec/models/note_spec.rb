@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 require 'spec_helper'
+require 'rexml/document'
+
 
 describe 'Note' do
   describe 'Validation' do
@@ -172,5 +174,63 @@ describe 'Note' do
     end
 
   end
+
+
+  describe 'exec_insert_note' do
+    before do
+      pfif = File.open("spec/pfif_sample.xml", "r").read
+      doc = REXML::Document.new(pfif)
+      elements = doc.elements["pfif:pfif/pfif:person"]
+      person = Person.new
+      person = Person.exec_insert_person(person, elements)
+      person.save
+      @note = Note.new
+      @elements = doc.elements["pfif:pfif/pfif:person/pfif:note"]
+    end
+    it 'マッピングが合っていること' do
+      Note.exec_insert_note(@note, @elements)
+      person_record = Person.find_by_person_record_id(@elements.elements["pfif:person_record_id"].text)
+      linked_person_record = Person.find_by_person_record_id(@elements.elements["pfif:linked_person_record_id"].text)
+
+      @note.note_record_id.should          == @elements.elements["pfif:note_record_id"].text
+      @note.person_record_id.should        == person_record.id
+      @note.linked_person_record_id.should == linked_person_record.id if linked_person_record.present?
+      @note.entry_date.should              == @elements.elements["pfif:entry_date"].text.to_time
+      @note.author_name.should             == @elements.elements["pfif:author_name"].text
+      @note.author_email.should            == @elements.elements["pfif:author_email"].text
+      @note.author_phone.should            == @elements.elements["pfif:author_phone"].text
+      @note.source_date.should             == @elements.elements["pfif:source_date"].text.to_time
+      case @elements.elements["pfif:author_made_contact"].text
+      when "true"
+        author_made_contact = true
+      when "false"
+        author_made_contact = false
+      else
+        author_made_contact = nil
+      end
+      @note.author_made_contact.should     == author_made_contact
+
+      case @elements.elements["pfif:status"].text
+      when "information_sought" # 情報を探している
+        status = 2
+      when "is_note_author" # 私が本人である
+        status = 3
+      when "believed_alive" # この人が生きているという情報を入手した
+        status = 4
+      when "believed_missing" # この人を行方不明と判断した理由がある
+        status = 5
+      else
+        status = 1
+      end
+      @note.status.should          == status
+      @note.email_of_found_person  == @elements.elements["pfif:email_of_found_person"].text
+      @note.phone_of_found_person  == @elements.elements["pfif:phone_of_found_person"].text
+      @note.last_known_location    == @elements.elements["pfif:last_known_location"].text
+      @note.text                   == @elements.elements["pfif:text"].text
+      @note.remote_photo_url_url   == @elements.elements["pfif:photo_url"].text
+
+    end
+  end
+
 
 end
