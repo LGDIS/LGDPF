@@ -1,0 +1,119 @@
+# -*- coding:utf-8 -*-
+# バッチの実行コマンド
+# rails runner Batches::ExportGooglePersonFinder.execute
+# ==== options
+# 実行環境の指定 :: -e production
+require 'net/http'
+require 'net/https'
+require "rexml/document"
+Net::HTTP.version_1_2
+
+class Batches::ExportGooglePersonFinder
+  def self.execute
+    p " #{Time.now.to_s} ===== START ===== "
+
+    # 書き込み専用でファイルを開く（新規作成）
+    file_name = "lgdpf#{Time.now.utc.xmlschema.gsub(":","")}.xml"
+    output_file = File.open(file_name, "w")
+    output_file.write(create_pfif)    # ファイルにデータ書き込み
+    output_file.close
+
+    # GooglePersonFinderにexport
+    puts `curl -X POST -H 'Content-type: application/xml' --data-binary #{file_name} \ https://www.google.org/personfinder/test-nokey/api/write `
+
+    p " #{Time.now.to_s} =====  END  ===== "
+  end
+
+  # GooglePersonFinderへアップロードするデータの作成処理
+  # ==== Args
+  # ==== Return
+  # PFIF形式の文字列
+  # ==== Raise
+  def self.create_pfif
+    doc =  REXML::Document.new
+    doc << REXML::XMLDecl.new('1.0', 'UTF-8')
+    doc.add_element("pfif:pfif").add_namespace("pfif", "http://zesty.ca/pfif/1.4")
+
+    # export対象を抽出する
+    people = Person.find_for_export_gpf
+    people.each do |person|
+      node_person = doc.root.add_element("pfif:person")
+      node_person.add_element("pfif:person_record_id").add_text("LGDPF/person.#{person.id}")  # LGDPFはドメイン名に変えるかも
+      node_person.add_element("pfif:entry_date").add_text("#{person.entry_date.utc.xmlschema}")
+      node_person.add_element("pfif:expiry_date").add_text("#{person.expiry_date.utc.xmlschema}")
+      node_person.add_element("pfif:author_name").add_text("#{person.author_name}")
+      node_person.add_element("pfif:author_email").add_text("#{person.author_email}")
+      node_person.add_element("pfif:author_phone").add_text("#{person.author_phone}")
+      node_person.add_element("pfif:source_name").add_text("#{person.source_name}")
+      node_person.add_element("pfif:source_date").add_text("#{person.source_date.utc.xmlschema}")
+      node_person.add_element("pfif:source_url").add_text("#{person.source_url}")
+      node_person.add_element("pfif:full_name").add_text("#{person.full_name}")
+      node_person.add_element("pfif:given_name").add_text("#{person.given_name}")
+      node_person.add_element("pfif:family_name").add_text("#{person.family_name}")
+      node_person.add_element("pfif:description").add_text("#{person.description}")
+      node_person.add_element("pfif:sex").add_text("#{sex_parse_for_gpf(person.sex)}") if person.sex.present?
+      node_person.add_element("pfif:date_of_birth").add_text("#{date_parse_for_gpf(person.date_of_birth)}")
+      node_person.add_element("pfif:age").add_text("#{person.age}")
+      node_person.add_element("pfif:home_street").add_text("#{person.home_street}")
+      node_person.add_element("pfif:home_neighborhood").add_text("#{person.home_neighborhood}")
+      node_person.add_element("pfif:home_city").add_text("#{person.home_city}")
+      node_person.add_element("pfif:home_state").add_text("#{person.home_state}")
+      node_person.add_element("pfif:home_postal_code").add_text("#{person.home_postal_code}")
+      node_person.add_element("pfif:home_country").add_text("#{person.home_country}")
+
+      notes = Note.find_all_by_person_record_id(person.id)
+      notes.each do |note|
+        node_note = node_person.add_element("pfif:note")
+        node_note.add_element("pfif:note_record_id").add_text("LGDPF/note.#{note.id}")
+        node_note.add_element("pfif:person_record_id").add_text("LGDPF/person.#{note.person_record_id}")
+        node_note.add_element("pfif:linked_person_record_id").add_text("LGDPF/person.#{note.linked_person_record_id}") if note.linked_person_record_id.present?
+        node_note.add_element("pfif:entry_date").add_text("#{note.entry_date.utc.xmlschema}")
+        node_note.add_element("pfif:author_name").add_text("#{note.author_name}")
+        node_note.add_element("pfif:author_email").add_text("#{note.author_email}") if note.author_email.present?
+        node_note.add_element("pfif:author_phone").add_text("#{note.author_phone}") if note.author_phone.present?
+        node_note.add_element("pfif:source_date").add_text("#{note.source_date.utc.xmlschema}") if note.source_date.present?
+        node_note.add_element("pfif:author_made_contact").add_text("#{note.author_made_contact}") if note.author_made_contact.present?
+        node_note.add_element("pfif:status").add_text("#{note.status}") if note.status.present?
+        node_note.add_element("pfif:email_of_found_person").add_text("#{note.email_of_found_person}") if note.email_of_found_person.present?
+        node_note.add_element("pfif:phone_of_found_person").add_text("#{note.phone_of_found_person}") if note.phone_of_found_person.present?
+        node_note.add_element("pfif:last_known_location").add_text("#{note.last_known_location}") if note.last_known_location.present?
+        node_note.add_element("pfif:text").add_text("#{note.text}")
+        node_note.add_element("pfif:photo_url").add_text("#{note.photo_url}") if note.photo_url.present?
+      end
+
+      # 公開フラグを消す
+      person.public_flag = 0
+      person.save
+    end
+    return doc.to_s
+  end
+
+  # date型をGooglePersonFinderの形式に変換する
+  # === Args
+  # _date_ :: date
+  # === Return
+  # ”yyyy-mm-dd”文字列
+  # === Raise
+  def self.date_parse_for_gpf(date)
+    date.blank? ? "" : date.utc.strftime("%Y-%m-%d")
+  end
+
+  # 性別をGooglePersonFinderの形式に変換する
+  # === Args
+  # _sex_ :: Person.sex
+  # === Return
+  # "female" | "male" | "other"
+  # === Raise
+  def self.sex_parse_for_gpf(sex)
+    case sex
+    when 1 then
+      "male"
+    when 2 then
+      "female"
+    when 3 then
+      "other"
+    end
+  end
+
+
+end

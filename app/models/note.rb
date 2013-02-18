@@ -92,6 +92,8 @@ class Note < ActiveRecord::Base
 
   # pfifをNoteレコードに格納する
   # === Args
+  # _note_ :: Noteオブジェクト
+  # _e_    :: pfif形式のNoteエレメント
   # === Return
   # Noteオブジェクト
   # === Raise
@@ -134,7 +136,7 @@ class Note < ActiveRecord::Base
     note.phone_of_found_person  = e.elements["pfif:phone_of_found_person"].try(:text)
     note.last_known_location    = e.elements["pfif:last_known_location"].try(:text)
     note.text                   = e.elements["pfif:text"].try(:text)
-    note.photo_url              = e.elements["pfif:photo_url"].try(:text)
+    note.remote_photo_url_url   = e.elements["pfif:photo_url"].try(:text)
 
     return note
   end

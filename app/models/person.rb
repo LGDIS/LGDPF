@@ -82,9 +82,9 @@ class Person < ActiveRecord::Base
     self.entry_date  = Time.now
     self.full_name   = "#{self.family_name} #{self.given_name}"
     self.injury_flag = self.injury_condition.present? ? 1:0  # 負傷の有無
-    self.allergy_flag = self.allergy_cause.present? ? 1:0   # アレルギーの有無
+    self.allergy_flag = self.allergy_cause.present? ? 1:0    # アレルギーの有無
 
-    if self.home_state.present? && self.home_city.present?  # 市内・市外区分
+    if self.home_state.present? && self.home_city.present?    # 市内・市外区分
       if self.home_state =~ /^(宮城)県?$/ && self.home_city =~ /^(石巻)市?$/
         self.in_city_flag = 1  # 市内
       else
@@ -198,8 +198,10 @@ class Person < ActiveRecord::Base
     return to
   end
 
-  # pfifをPersonレコードに格納する
+  # インポートしたpfifをPersonレコードに格納する
   # === Args
+  # _person_ :: Personオブジェクト
+  # _e_      :: pfif形式のPersonエレメント
   # === Return
   # Personオブジェクト
   # === Raise
@@ -224,9 +226,9 @@ class Person < ActiveRecord::Base
     sex                      = e.elements["pfif:sex"].try(:text)
     case sex
     when "male"
-      person.sex = 2
-    when "female"
       person.sex = 1
+    when "female"
+      person.sex = 2
     when "other"
       person.sex = 3
     else
@@ -240,8 +242,21 @@ class Person < ActiveRecord::Base
     person.home_city         = e.elements["pfif:home_city"].try(:text)
     person.home_state        = e.elements["pfif:home_state"].try(:text)
     person.home_postal_code  = e.elements["pfif:home_postal_code"].try(:text)
-    person.photo_url         = e.elements["pfif:photo_url"].try(:text)
+    person.home_country      = e.elements["pfif:home_country"].try(:text)
+    # CarrierWaveの記述に合わせてremote_XXX_urlの書式にしてある
+    person.remote_photo_url_url = e.elements["pfif:photo_url"].try(:text)
+    person.profile_urls      = e.elements["pfif:profile_urls"].try(:text)
     return person
+  end
+
+  # exportするレコードを抽出する
+  # * 公開フラグがtrue
+  # === Args
+  # === Return
+  # Personオブジェクト配列
+  # === Raise
+  def self.find_for_export_gpf
+    where(:public_flag => 1)
   end
 
 end

@@ -128,9 +128,6 @@
         <%= select(:person, :home_country,
           options_for_select(@country_code.invert, @person.home_country),
           { :include_blank => true}, :class => "medium-text-input") %>
-
-        <%#= text_field :person, :home_country, :value => @person.home_country,
-          :class => "short-text-input" %>
       </span>
     </div>
 
@@ -522,11 +519,11 @@ options_for_select(@shelter.invert, @person.shelter_name),
   <div class="section">
     <h3 class="mandatory">この人の情報をローカルパーソンファインダーの外部に公開しますか？（必須）</h3>
     <div class="field">
-      <%= radio_button :person, :public_flag, true, {} %>
+      <%= radio_button :person, :public_flag, 1, {} %>
       <label class="option" for="person_public_flag_true">はい</label>
     </div>
     <div class="field">
-      <%= radio_button :person, :public_flag, false, {:checked => true} %>
+      <%= radio_button :person, :public_flag, 0, {:checked => true} %>
       <label class="option" for="person_public_flag_false">いいえ</label>
     </div>
     <div class="end-multi-columns"></div>

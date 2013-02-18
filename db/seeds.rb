@@ -10,8 +10,8 @@ require 'csv'
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 # 性別
-Constant.create(kind1: 'TD', kind2: 'people', kind3: 'sex', text: '女性',  value: '1', _order: '1')
-Constant.create(kind1: 'TD', kind2: 'people', kind3: 'sex', text: '男性',  value: '2', _order: '2')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'sex', text: '男性',  value: '1', _order: '1')
+Constant.create(kind1: 'TD', kind2: 'people', kind3: 'sex', text: '女性',  value: '2', _order: '2')
 Constant.create(kind1: 'TD', kind2: 'people', kind3: 'sex', text: 'その他', value: '3', _order: '3')
 # レコード保持期間
 Constant.create(kind1: 'TD', kind2: 'people', kind3: 'expiry_date', text: '約 1 か月（30 日）後', value: '30', _order: '1')

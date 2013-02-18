@@ -231,7 +231,7 @@ class PeopleController < ApplicationController
         @note[:author_phone] = @person.author_phone
         @note[:source_date]  = @person.source_date
       end
-      
+
       @person.save
 
       # noteをpersonに紐付ける
@@ -247,7 +247,7 @@ class PeopleController < ApplicationController
 
       # 新規情報の場合
       if @clone_clone_input
-        @person[:source_url] = people_view_path(@person.id)
+        @person[:source_url] = url_for(:action => 'view', :id => @person.id, :only_path => false)
         @person.save
       end
 

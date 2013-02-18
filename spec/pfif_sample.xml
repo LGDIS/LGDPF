@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <pfif:pfif xmlns:pfif="http://zesty.ca/pfif/1.4">
+        <pfif:person>
+            <pfif:person_record_id>test/person.1</pfif:person_record_id>
+            <pfif:entry_date>2013-01-09T03:15:20Z</pfif:entry_date>
+            <pfif:expiry_date>2013-04-09T03:15:20Z</pfif:expiry_date>
+            <pfif:author_name>投稿者名</pfif:author_name>
+            <pfif:author_email>author_email@test.com</pfif:author_email>
+            <pfif:author_phone>000-1111-2222</pfif:author_phone>
+            <pfif:source_name>test_source_name</pfif:source_name>
+            <pfif:source_date>2013-01-09T03:15:20Z</pfif:source_date>
+            <pfif:source_url>http://test/view?id=1</pfif:source_url>
+            <pfif:full_name>東京　一郎</pfif:full_name>
+            <pfif:given_name>一郎</pfif:given_name>
+            <pfif:family_name>東京</pfif:family_name>
+            <pfif:alternate_names>いちろう とうきょう</pfif:alternate_names>
+            <pfif:description>description</pfif:description>
+            <pfif:sex>male</pfif:sex>
+            <pfif:date_of_birth>2000/12/12</pfif:date_of_birth>
+            <pfif:age>10</pfif:age>
+            <pfif:home_street>home_street</pfif:home_street>
+            <pfif:home_neighborhood>home_neighborhood</pfif:home_neighborhood>
+            <pfif:home_city>home_city</pfif:home_city>
+            <pfif:home_state>home_state</pfif:home_state>
+            <pfif:home_postal_code>home_postal_code</pfif:home_postal_code>
+            <pfif:home_country>home_country</pfif:home_country>
+            <pfif:photo_url>https://google.org/personfinder/test-nokey/photo?id=17521253</pfif:photo_url>
+            <pfif:profile_urls>http://aaa</pfif:profile_urls>
+            <pfif:note>
+                <pfif:note_record_id>test/note.1</pfif:note_record_id>
+                <pfif:person_record_id>test/person.1</pfif:person_record_id>
+                <pfif:linked_person_record_id>test/person.2</pfif:linked_person_record_id>
+                <pfif:entry_date>2013-01-09T03:15:20Z</pfif:entry_date>
+                <pfif:author_name>大阪　二郎</pfif:author_name>
+                <pfif:author_email>bbb@test.com</pfif:author_email>
+                <pfif:author_phone>000-9999-8888</pfif:author_phone>
+                <pfif:source_date>2013-01-09T03:15:20Z</pfif:source_date>
+                <pfif:author_made_contact>true</pfif:author_made_contact>
+                <pfif:status>believed_missing</pfif:status>
+                <pfif:email_of_found_person>email_of_found_person@test.com</pfif:email_of_found_person>
+                <pfif:phone_of_found_person>111-2222-3333</pfif:phone_of_found_person>
+                <pfif:last_known_location>last_known_location</pfif:last_known_location>
+                <pfif:text>text</pfif:text>
+                <pfif:photo_url>https://google.org/personfinder/test-nokey/photo?id=17521253</pfif:photo_url>
+            </pfif:note>
+        </pfif:person>
+    </pfif:pfif>
