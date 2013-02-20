@@ -36,12 +36,21 @@ class Note < ActiveRecord::Base
   validate :author_made_contact, :note_author_valid
 
 
+  # --*--*-- 定数 --*--*--
+  # 状況
+  STATUS_UNSPECIFIED        = 1 # 指定なし
+  STATUS_INFORMATION_SOUGHT = 2 # 情報を探している
+  STATUS_IS_NOTE_AUTHOR     = 3 # 私が本人である
+  STATUS_BELIEVED_ALIVE     = 4 # この人が生きているという情報を入手した
+  STATUS_BELIEVED_MISSING   = 5 # この人を行方不明と判断した理由がある
+
   # before_createで設定する項目
   # === Args
   # === Return
   # === Raise
   def set_attributes
     self.entry_date = Time.now
+    self.source_date = Time.now if self.source_date.blank?
   end
 
   # statusとauthor_made_contactの相互validation
@@ -52,7 +61,7 @@ class Note < ActiveRecord::Base
   # errorメッセージ
   # === Raise
   def note_author_valid
-    if status == 3 && author_made_contact == false
+    if status == STATUS_IS_NOTE_AUTHOR && author_made_contact == false
       errors.add(:author_made_contact, "")
     end
   end
@@ -101,7 +110,7 @@ class Note < ActiveRecord::Base
     note.note_record_id         = e.elements["pfif:note_record_id"].try(:text)
     person_record               = Person.find_by_person_record_id(e.elements["pfif:person_record_id"].try(:text))
     note.person_record_id       = person_record.id if person_record.present?
-    linked_person_record        = Person.find_by_person_record_id(e.elements["pfif:linked_person_record_id"].try(:text))
+    linked_person_record        = Person.find_by_person_record_id(e.elements["pfif:linked_person_record_id"].text) if e.elements["pfif:linked_person_record_id"].present?
     note.linked_person_record_id       = linked_person_record.id if linked_person_record.present?
     entry_date                  = e.elements["pfif:entry_date"].try(:text)
     note.entry_date             = entry_date.to_time if entry_date.present?
@@ -120,16 +129,16 @@ class Note < ActiveRecord::Base
     end
     note.author_made_contact    = author_made_contact
     case e.elements["pfif:status"].try(:text)
-    when "information_sought" # 情報を探している
-      status = 2
-    when "is_note_author" # 私が本人である
-      status = 3
-    when "believed_alive" # この人が生きているという情報を入手した
-      status = 4
-    when "believed_missing" # この人を行方不明と判断した理由がある
-      status = 5
+    when "information_sought"     # 情報を探している
+      status = STATUS_INFORMATION_SOUGHT
+    when "is_note_author"         # 私が本人である
+      status = STATUS_IS_NOTE_AUTHOR
+    when "believed_alive"         # この人が生きているという情報を入手した
+      status = STATUS_BELIEVED_ALIVE
+    when "believed_missing"       # この人を行方不明と判断した理由がある
+      status = STATUS_BELIEVED_MISSING
     else
-      status = 1
+      status = STATUS_UNSPECIFIED # 指定無し
     end
     note.status                 = status
     note.email_of_found_person  = e.elements["pfif:email_of_found_person"].try(:text)

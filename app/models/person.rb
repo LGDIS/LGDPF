@@ -73,6 +73,7 @@ class Person < ActiveRecord::Base
   # profile_urls validation
   validate :profile_urls,        :url_validater # プロフィール
 
+  # --*--*-- 定数 --*--*--
   # 市内・市外区分
   IN_CITY_FLAG_INSIDE  = 1 # 市内
   IN_CITY_FLAG_OUTSIDE = 0 # 市外
@@ -85,7 +86,11 @@ class Person < ActiveRecord::Base
   # 公開フラグ
   PUBLIC_FLAG_ON  = 1 # 公開
   PUBLIC_FLAG_OFF = 0 # 非公開
-
+  # 家族も無事
+  FAMILY_WELL_YES = "1" # 無事
+  FAMILY_WELL_NO  = "0" # 無事であるか未確認
+  # GooglePersonFinderに1度にアップロードする件数
+  GPF_UPLOAD_MAX_RECORD = 100
 
 
   # before_createで設定する項目
@@ -266,12 +271,13 @@ class Person < ActiveRecord::Base
 
   # exportするレコードを抽出する
   # * 公開フラグがtrue
+  # * 100件/xmlファイル
   # === Args
   # === Return
   # Personオブジェクト配列
   # === Raise
   def self.find_for_export_gpf
-    where(:public_flag => PUBLIC_FLAG_ON)
+    where(:public_flag => PUBLIC_FLAG_ON).limit(GPF_UPLOAD_MAX_RECORD)
   end
 
 end

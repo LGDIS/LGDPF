@@ -95,7 +95,7 @@ describe 'Note' do
     describe 'author_made_contact' do
       context 'statusが「本人である」&& author_made_contactが「いいえ」の場合'
       it 'エラーメッセージが追加されること' do
-        @note.status = 3
+        @note.status = Note::STATUS_IS_NOTE_AUTHOR
         @note.author_made_contact = false
         @note.save
         @note.errors.full_messages[0].strip.should == I18n.t("activerecord.attributes.note.author_made_contact")
@@ -212,15 +212,15 @@ describe 'Note' do
 
       case @elements.elements["pfif:status"].text
       when "information_sought" # 情報を探している
-        status = 2
+        status = Note::STATUS_INFORMATION_SOUGHT
       when "is_note_author" # 私が本人である
-        status = 3
+        status = Note::STATUS_IS_NOTE_AUTHOR
       when "believed_alive" # この人が生きているという情報を入手した
-        status = 4
+        status = Note::STATUS_BELIEVED_ALIVE
       when "believed_missing" # この人を行方不明と判断した理由がある
-        status = 5
+        status = Note::STATUS_BELIEVED_MISSING
       else
-        status = 1
+        status = Note::STATUS_UNSPECIFIED
       end
       @note.status.should          == status
       @note.email_of_found_person  == @elements.elements["pfif:email_of_found_person"].text

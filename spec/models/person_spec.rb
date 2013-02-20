@@ -24,31 +24,31 @@ describe Person do
         @person.full_name.should == @person.family_name + " " + @person.given_name
       end
       context 'injury_conditionが未入力の場合' do
-        it 'injury_flagに0が登録されること' do
+        it 'injury_flagに負傷無しが登録されること' do
           @person.injury_condition = ""
           @person.save
-          @person.injury_flag == 0
+          @person.injury_flag == Person::INJURY_FLAG_OFF
         end
       end
       context 'injury_conditionが入力の場合' do
-        it 'injury_flagに0が登録されること' do
+        it 'injury_flagに負傷が登録されること' do
           @person.injury_condition = "怪我"
           @person.save
-          @person.injury_flag == 1
+          @person.injury_flag == Person::INJURY_FLAG_ON
         end
       end
       context 'allergy_causeが未入力の場合' do
-        it 'allergy_flagに0が登録されること' do
+        it 'allergy_flagにアレルギー無しが登録されること' do
           @person.allergy_cause = ""
           @person.save
-          @person.allergy_flag == 0
+          @person.allergy_flag == Person::ALLERGY_FLAG_OFF
         end
       end
       context 'allergy_causeが入力の場合' do
-        it 'allergy_flagに0が登録されること' do
+        it 'allergy_flagにアレルギー有りが登録されること' do
           @person.allergy_cause = "アレルギー"
           @person.save
-          @person.allergy_flag == 1
+          @person.allergy_flag == Person::ALLERGY_FLAG_ON
         end
       end
       context 'home_stateが未入力 && home_cityが未入力' do
@@ -76,27 +76,27 @@ describe Person do
         end
       end
       context 'home_stateが「宮城県」 && home_cityが「石巻市」' do
-        it 'in_city_flagに1が登録されること' do
+        it 'in_city_flagに市内が登録されること' do
           @person.home_state = "宮城県"
           @person.home_city = "石巻市"
           @person.save
-          @person.in_city_flag == 1
+          @person.in_city_flag == Person::IN_CITY_FLAG_ON
         end
       end
       context 'home_stateが「宮城県」以外 && home_cityが「石巻市」' do
-        it 'in_city_flagに0が登録されること' do
+        it 'in_city_flagに市外が登録されること' do
           @person.home_state = "東京都"
           @person.home_city = "石巻市"
           @person.save
-          @person.in_city_flag == 0
+          @person.in_city_flag == Person::IN_CITY_FLAG_OFF
         end
       end
       context 'home_stateが「宮城県」 && home_cityが「石巻市」以外' do
-        it 'in_city_flagに0が登録されること' do
+        it 'in_city_flagに市外が登録されること' do
           @person.home_state = "東京都"
           @person.home_city = "仙台市"
           @person.save
-          @person.in_city_flag == 0
+          @person.in_city_flag == Person::IN_CITY_FLAG_OFF
         end
       end
 
