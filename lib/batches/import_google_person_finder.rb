@@ -14,11 +14,10 @@ Net::HTTP.version_1_2
 class Batches::ImportGooglePersonFinder
   def self.execute
     p " #{Time.now.to_s} ===== START ===== "
-    
-    # テスト用API
-    # https://google.org/personfinder/test-nokey/feeds/person
-    # https://google.org/personfinder/test-nokey/feeds/note
-    
+
+    # APIキーの読み込み
+    @settings = YAML.load_file("#{Rails.root}/config/settings.yml")
+
     # GooglePersonFinderの情報を取得する
     # XML形式
     https              = Net::HTTP.new("google.org", 443)
@@ -38,8 +37,12 @@ class Batches::ImportGooglePersonFinder
     while (Time.now - start) < 30.minutes
       # 5分間レスポンスがない場合はタイムアウト
       timeout(5.minutes.to_i){
-        response = https.get("/personfinder/test-nokey/feeds/person?max_results=200&skip=" +
-            skip.to_s + "&min_entry_date=" + last_start_time.try(:utc).try(:strftime, "%Y-%m-%dT%H:%M:%SZ").to_s)
+        url = "/personfinder/" + @settings["gpf"]["repository"] +
+          "/feeds/person?key=" + @settings["gpf"]["api_key"] +
+          "&max_results=200&skip=" + skip.to_s +
+          "&min_entry_date=" + last_start_time.try(:utc).try(:strftime, "%Y-%m-%dT%H:%M:%SZ").to_s
+
+        response = https.get(url)
       }
       # 取得したXMLをParseする
       doc = REXML::Document.new(response.body)
@@ -50,7 +53,9 @@ class Batches::ImportGooglePersonFinder
           # person_record_idが重複する場合は取り込まない
           person_record_id = e.elements["pfif:person_record_id"].try(:text)
           local_person = Person.find_by_person_record_id(person_record_id)
-          next if local_person.present?
+          # LGDPFからuploadしたデータは取り込まない
+          domain = person_record_id.split("/")
+          next if local_person.present? || domain[0] == @settings["gpf"]["domain"]
           # LGDPFに取り込む
           person = Person.new
           person = Person.exec_insert_person(person, e)
@@ -76,8 +81,12 @@ class Batches::ImportGooglePersonFinder
     while (Time.now - start) < 30.minutes
       # 5分間レスポンスがない場合はタイムアウト
       timeout(5.minutes.to_i){
-        response = https.get("/personfinder/test-nokey/feeds/note?max_results=200&skip=" +
-            skip.to_s + "&min_entry_date=" + last_start_time.try(:utc).try(:strftime, "%Y-%m-%dT%H:%M:%SZ").to_s)
+        url = "/personfinder/" + @settings["gpf"]["repository"] +
+          "/feeds/note?key=" + @settings["gpf"]["api_key"] +
+          "&max_results=200&skip=" + skip.to_s +
+          "&min_entry_date=" + last_start_time.try(:utc).try(:strftime, "%Y-%m-%dT%H:%M:%SZ").to_s
+
+        response = https.get(url)
       }
       # 取得したXMLをParseする
       doc = REXML::Document.new(response.body)
@@ -88,7 +97,9 @@ class Batches::ImportGooglePersonFinder
           # note_record_idが重複する場合は取り込まない
           note_record_id = e.elements["pfif:note_record_id"].try(:text)
           local_note = Note.find_by_note_record_id(note_record_id)
-          next if local_note.present?
+          # LGDPFからuploadしたデータは取り込まない
+          domain = note_record_id.split("/")
+          next if local_note.present? || domain[0] == @settings["gpf"]["domain"]
           # LGDPFに取り込む
           note = Note.new
           note = Note.exec_insert_note(note, e)

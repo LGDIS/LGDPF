@@ -24,4 +24,7 @@ ldgpf:
     password: 
     host: 
     from: 
-    
+gpf:
+  api_key:
+  repository:
+  domain:
