@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 # LGDPF ActiveResource settings
-ldgpf:
+lgdpf:
   development:
     site: 
     user: 

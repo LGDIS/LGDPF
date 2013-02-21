@@ -23,14 +23,14 @@ Lgdpf::Application.configure do
     settings = YAML.load_file("#{Rails.root}/config/settings.yml")
     config.action_mailer.smtp_settings = {
       :enable_starttls_auto => true,
-      :address            => settings["ldgpf"]["mail"]["address"],
-      :port               => settings["ldgpf"]["mail"]["port"],
-      :domain             => settings["ldgpf"]["mail"]["domain"],
+      :address            => settings["lgdpf"]["mail"]["address"],
+      :port               => settings["lgdpf"]["mail"]["port"],
+      :domain             => settings["lgdpf"]["mail"]["domain"],
       :authentication     => :plain,
-      :user_name          => settings["ldgpf"]["mail"]["user_name"],
-      :password           => settings["ldgpf"]["mail"]["password"]
+      :user_name          => settings["lgdpf"]["mail"]["user_name"],
+      :password           => settings["lgdpf"]["mail"]["password"]
     }
-    config.action_mailer.default_url_options = { :host => settings["ldgpf"]["mail"]["host"] }
+    config.action_mailer.default_url_options = { :host => settings["lgdpf"]["mail"]["host"] }
   end
 
   # Print deprecation notices to the Rails logger
