@@ -94,12 +94,15 @@ class Batches::ImportGooglePersonFinder
         p " #{Time.now.to_s} ===== Note   #{skip}件目 ====="
         skip = skip + 200
         doc.elements.each("feed/entry/pfif:note") do |e|
+          # 紐付くPersonがないNoteは取り込まない
+          person_record_id = e.elements["pfif:person_record_id"].try(:text)
+          local_person = Person.find_by_person_record_id(person_record_id)
           # note_record_idが重複する場合は取り込まない
           note_record_id = e.elements["pfif:note_record_id"].try(:text)
           local_note = Note.find_by_note_record_id(note_record_id)
           # LGDPFからuploadしたデータは取り込まない
           domain = note_record_id.split("/")
-          next if local_note.present? || domain[0] == @settings["gpf"]["domain"]
+          next if local_person.blank? || local_note.present? || domain[0] == @settings["gpf"]["domain"]
           # LGDPFに取り込む
           note = Note.new
           note = Note.exec_insert_note(note, e)

@@ -29,7 +29,7 @@ ja:
         email_invalid: 登録されているメールアドレスに問題があり、送信できませんでした。
         profile_invalid: 入力したURLの形式が不正です。プロフィールURLをコピーして貼り付けてください。
         disagree: 利用規約に同意していただかないと、情報を登録することはできません。
-
+        dual_boot: 他の人がこのバッチを起動しています。
   recaptcha:
     errors:
       verification_failed: 正しくありません。もう一度やり直してください。

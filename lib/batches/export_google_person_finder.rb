@@ -12,7 +12,7 @@ class Batches::ExportGooglePersonFinder
   def self.execute
     # 2重起動防止
     if File.exist?("tmp/ExportGooglePersonFinder")
-      p "他の人がこのバッチを起動中です。"
+      p I18n.t("activerecord.errors.messages.dual_boot")
     else
       f = File.open("tmp/ExportGooglePersonFinder", "w")
       
