@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+<title>class PeopleController - Rails Application Documentation</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>app/controllers/people_controller.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link"><a href="ApplicationController.html">ApplicationController</a>
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-i-complete">#complete</a>
+    
+    <li><a href="#method-i-create">#create</a>
+    
+    <li><a href="#method-i-delete">#delete</a>
+    
+    <li><a href="#method-i-dup_merge">#dup_merge</a>
+    
+    <li><a href="#method-i-extend_days">#extend_days</a>
+    
+    <li><a href="#method-i-index">#index</a>
+    
+    <li><a href="#method-i-multiviews">#multiviews</a>
+    
+    <li><a href="#method-i-new">#new</a>
+    
+    <li><a href="#method-i-note_invalid">#note_invalid</a>
+    
+    <li><a href="#method-i-note_invalid_apply">#note_invalid_apply</a>
+    
+    <li><a href="#method-i-note_valid">#note_valid</a>
+    
+    <li><a href="#method-i-note_valid_apply">#note_valid_apply</a>
+    
+    <li><a href="#method-i-personal_info">#personal_info</a>
+    
+    <li><a href="#method-i-provide">#provide</a>
+    
+    <li><a href="#method-i-restore">#restore</a>
+    
+    <li><a href="#method-i-seek">#seek</a>
+    
+    <li><a href="#method-i-spam">#spam</a>
+    
+    <li><a href="#method-i-spam_cancel">#spam_cancel</a>
+    
+    <li><a href="#method-i-subscribe_email">#subscribe_email</a>
+    
+    <li><a href="#method-i-unsubscribe_email">#unsubscribe_email</a>
+    
+    <li><a href="#method-i-update">#update</a>
+    
+    <li><a href="#method-i-view">#view</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./doc/README_FOR_APP.html">README_FOR_APP</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./Batches.html">Batches</a>
+  
+    <li><a href="./Batches/ExportGooglePersonFinder.html">Batches::ExportGooglePersonFinder</a>
+  
+    <li><a href="./Batches/PeopleDestroy.html">Batches::PeopleDestroy</a>
+  
+    <li><a href="./ActiveResourceController.html">ActiveResourceController</a>
+  
+    <li><a href="./ApiActionLog.html">ApiActionLog</a>
+  
+    <li><a href="./ApplicationController.html">ApplicationController</a>
+  
+    <li><a href="./ApplicationHelper.html">ApplicationHelper</a>
+  
+    <li><a href="./ConsentError.html">ConsentError</a>
+  
+    <li><a href="./Constant.html">Constant</a>
+  
+    <li><a href="./CountryCode.html">CountryCode</a>
+  
+    <li><a href="./DateValidator.html">DateValidator</a>
+  
+    <li><a href="./EmailBlankError.html">EmailBlankError</a>
+  
+    <li><a href="./LgdpfMailer.html">LgdpfMailer</a>
+  
+    <li><a href="./Note.html">Note</a>
+  
+    <li><a href="./PeopleController.html">PeopleController</a>
+  
+    <li><a href="./PersonHelper.html">PersonHelper</a>
+  
+    <li><a href="./PhotoUrlUploader.html">PhotoUrlUploader</a>
+  
+    <li><a href="./TimeValidator.html">TimeValidator</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class PeopleController</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-complete" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">complete</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>完了画面</p>
+
+<h3 id="method-i-complete-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>id</em> 
+<dd>
+<p>Person.id</p>
+</dd><dt><em>complete</em> 
+<dd>
+<p>設定種別</p>
+</dd></dl>
+
+<h3 id="method-i-complete-label-Return">Return</h3>
+
+<h3 id="method-i-complete-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="complete-source">
+            <pre><span class="ruby-comment"># File app/controllers/people_controller.rb, line 708</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">complete</span>
+  <span class="ruby-ivar">@key</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:complete</span>][<span class="ruby-value">:key</span>]
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@key</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;delete&quot;</span>
+    <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">with_deleted</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- complete-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- complete-method -->
+
+    
+      <div id="method-i-create" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>新規情報登録</p>
+
+<h3 id="method-i-create-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>person</em>    
+<dd>
+<p>Person</p>
+</dd><dt><em>note</em>      
+<dd>
+<p><a href="Note.html">Note</a></p>
+</dd><dt><em>subscribe</em> 
+<dd>
+<p>新着情報受信のチェック有無</p>
+</dd><dt><em>consent</em>   
+<dd>
+<p>利用規約に同意するのチェック有無</p>
+</dd><dt><em>clone</em>     
+<dd>
+<p>新規か複製か</p>
+</dd><dt><em>kana</em>      
+<dd>
+<p>よみがな</p>
+</dd><dt><em>clickable_map</em> 
+<dd>
+<p>最後に見かけた場所</p>
+</dd></dl>
+
+<h3 id="method-i-create-label-Return">Return</h3>
+
+<h3 id="method-i-create-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="create-source">
+            <pre><span class="ruby-comment"># File app/controllers/people_controller.rb, line 189</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
+  <span class="ruby-ivar">@error_message</span> = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&quot;activerecord.errors.messages.profile_invalid&quot;</span>)
+  <span class="ruby-comment"># Person, Noteの登録</span>
+  <span class="ruby-constant">Person</span>.<span class="ruby-identifier">transaction</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-comment"># 遷移元確認フラグ</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:note</span>].<span class="ruby-identifier">blank?</span>
+      <span class="ruby-ivar">@from_seek</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-comment"># 画面入力値を加工</span>
+
+    <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:person</span>])
+    <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">expiry_date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">advance</span>(<span class="ruby-value">:days</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:person</span>][<span class="ruby-value">:expiry_date</span>].<span class="ruby-identifier">to_i</span>)  <span class="ruby-comment"># 削除予定日時</span>
+    <span class="ruby-ivar">@consent</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:consent</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;true&quot;</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span><span class="ruby-keyword">false</span>
+    <span class="ruby-ivar">@subscribe</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:subscribe</span>]<span class="ruby-operator">==</span> <span class="ruby-string">&quot;true&quot;</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
+    <span class="ruby-ivar">@clone_clone_input</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:clone</span>][<span class="ruby-value">:clone_input</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;no&quot;</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@clone_clone_input</span>
+      <span class="ruby-ivar">@person</span>[<span class="ruby-value">:source_name</span>] = <span class="ruby-value">%xhostname`</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-ivar">@person</span>[<span class="ruby-value">:profile_urls</span>] = <span class="ruby-identifier">set_profile_urls</span>
+
+    <span class="ruby-comment"># source_dateの入力が日付までの場合datetime型に変換する</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">source_date_before_type_cast</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r^(\d{4})(?:\/|-|.)?(\d{1,2})(?:\/|-|.)?(\d{1,2})$/</span>
+      <span class="ruby-identifier">datetime_str</span> = <span class="ruby-ivar">@person</span>[<span class="ruby-value">:source_date</span>].<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d %H:%M:%S %Z&quot;</span>)
+      <span class="ruby-ivar">@person</span>[<span class="ruby-value">:source_date</span>] = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">datetime_str</span>)
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-comment"># 読み仮名登録用</span>
+    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:kana</span>].<span class="ruby-identifier">blank?</span>
+      <span class="ruby-ivar">@person</span>[<span class="ruby-value">:alternate_names</span>] = <span class="ruby-identifier">params</span>[<span class="ruby-value">:kana</span>][<span class="ruby-value">:family_name</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&quot; &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:kana</span>][<span class="ruby-value">:given_name</span>]
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-comment"># 読み仮名画面再表示用</span>
+    <span class="ruby-ivar">@kana</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:kana</span>]
+
+    <span class="ruby-comment"># provideから遷移してきた場合</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:note</span>].<span class="ruby-identifier">present?</span>
+      <span class="ruby-ivar">@note</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:note</span>])
+      <span class="ruby-ivar">@note</span>[<span class="ruby-value">:last_known_location</span>]  = <span class="ruby-identifier">params</span>[<span class="ruby-value">:clickable_map</span>][<span class="ruby-value">:location_field</span>]
+      <span class="ruby-comment"># Noteの投稿者情報を入力する</span>
+      <span class="ruby-ivar">@note</span>[<span class="ruby-value">:author_name</span>]  = <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">author_name</span>
+      <span class="ruby-ivar">@note</span>[<span class="ruby-value">:author_email</span>] = <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">author_email</span>
+      <span class="ruby-ivar">@note</span>[<span class="ruby-value">:author_phone</span>] = <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">author_phone</span>
+      <span class="ruby-ivar">@note</span>[<span class="ruby-value">:source_date</span>]  = <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">source_date</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">save</span>
+
+    <span class="ruby-comment"># noteをpersonに紐付ける</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:note</span>].<span class="ruby-identifier">present?</span>
+      <span class="ruby-ivar">@note</span>[<span class="ruby-value">:person_record_id</span>] = <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">id</span>
+      <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">save!</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-comment"># personの入力にエラーが合った場合</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">messages</span>.<span class="ruby-identifier">present?</span>
+      <span class="ruby-identifier">raise</span> <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">RecordNotFound</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-comment"># 新規情報の場合</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@clone_clone_input</span>
+      <span class="ruby-ivar">@person</span>[<span class="ruby-value">:source_url</span>] = <span class="ruby-identifier">url_for</span>(<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:view</span>, <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">id</span>, <span class="ruby-value">:only_path</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">false</span>)
+      <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">save</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-comment"># 利用規約のチェック判定</span>
+    <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@consent</span>
+      <span class="ruby-identifier">raise</span> <span class="ruby-constant">ConsentError</span>
+    <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">end</span>
+ 
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@subscribe</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;subscribe_email&quot;</span>, <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;view&quot;</span>, <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>
+  <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">RecordNotFound</span>, <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">RecordInvalid</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;new&quot;</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">ConsentError</span>
+  <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:error</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&quot;activerecord.errors.messages.disagree&quot;</span>)
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;new&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- create-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- create-method -->
+
+    
+      <div id="method-i-delete" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">delete</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>避難者情報削除画面</p>
+
+<h3 id="method-i-delete-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>id</em>     
+<dd>
+<p>Person.id</p>
+</dd><dt><em>commit</em> 
+<dd>
+<p>ボタン種別</p>
+</dd></dl>
+
+<h3 id="method-i-delete-label-Return">Return</h3>
+
+<h3 id="method-i-delete-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="delete-source">
+            <pre><span class="ruby-comment"># File app/controllers/people_controller.rb, line 511</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">delete</span>
+  <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:commit</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">verify_recaptcha</span>(<span class="ruby-value">:model</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>)
+      <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">destroy</span>
+      <span class="ruby-constant">LgdpfMailer</span>.<span class="ruby-identifier">send_delete_notice</span>(<span class="ruby-ivar">@person</span>).<span class="ruby-identifier">deliver</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:complete</span>,
+        <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>,
+        <span class="ruby-value">:complete</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:key</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;delete&quot;</span>}
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">SMTPFatalError</span>
+  <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:error</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&quot;activerecord.errors.messages.email_invalid&quot;</span>)
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:delete</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- delete-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- delete-method -->
+
+    
+      <div id="method-i-dup_merge" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">dup_merge</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>重複した避難者をまとめる</p>
+
+<h3 id="method-i-dup_merge-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>person</em>    
+<dd>
+<p>Person</p>
+</dd><dt><em>note</em>      
+<dd>
+<p><a href="Note.html">Note</a></p>
+</dd><dt><em>count</em>     
+<dd>
+<p>重複件数</p>
+</dd><dt><em>subscribe</em> 
+<dd>
+<p>新着情報受信のチェック有無</p>
+</dd><dt><em>consent</em>   
+<dd>
+<p>利用規約に同意するのチェック有無</p>
+</dd></dl>
+
+<h3 id="method-i-dup_merge-label-Return">Return</h3>
+
+<h3 id="method-i-dup_merge-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="dup_merge-source">
+            <pre><span class="ruby-comment"># File app/controllers/people_controller.rb, line 94</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">dup_merge</span>
+  <span class="ruby-comment"># エラー時に入力値を保持する</span>
+  <span class="ruby-ivar">@count</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:count</span>].<span class="ruby-identifier">to_i</span>
+  <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:person</span>][<span class="ruby-value">:id</span>])
+  <span class="ruby-ivar">@person2</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:person2</span>][<span class="ruby-value">:id</span>])
+  <span class="ruby-ivar">@person3</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:person3</span>][<span class="ruby-value">:id</span>]) <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:person3</span>][<span class="ruby-value">:id</span>].<span class="ruby-identifier">present?</span>
+  <span class="ruby-ivar">@subscribe</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:subscribe</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;true&quot;</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
+  <span class="ruby-ivar">@consent</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:consent</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;true&quot;</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span><span class="ruby-keyword">false</span>
+
+  <span class="ruby-ivar">@note</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:note</span>])
+  <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">person_record_id</span>  =  <span class="ruby-identifier">params</span>[<span class="ruby-value">:person</span>][<span class="ruby-value">:id</span>]
+  <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">linked_person_record_id</span>  =  <span class="ruby-identifier">params</span>[<span class="ruby-value">:person2</span>][<span class="ruby-value">:id</span>]
+  <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">linked_person_record_id</span>  =  <span class="ruby-identifier">params</span>[<span class="ruby-value">:person3</span>][<span class="ruby-value">:id</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:person3</span>][<span class="ruby-value">:id</span>].<span class="ruby-identifier">present?</span>
+  <span class="ruby-ivar">@note2</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:note</span>])
+  <span class="ruby-ivar">@note2</span>.<span class="ruby-identifier">person_record_id</span>  =  <span class="ruby-identifier">params</span>[<span class="ruby-value">:person2</span>][<span class="ruby-value">:id</span>]
+  <span class="ruby-ivar">@note2</span>.<span class="ruby-identifier">linked_person_record_id</span>  =  <span class="ruby-identifier">params</span>[<span class="ruby-value">:person</span>][<span class="ruby-value">:id</span>]
+  <span class="ruby-ivar">@note2</span>.<span class="ruby-identifier">linked_person_record_id</span>  =  <span class="ruby-identifier">params</span>[<span class="ruby-value">:person3</span>][<span class="ruby-value">:id</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:person3</span>][<span class="ruby-value">:id</span>].<span class="ruby-identifier">present?</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:person3</span>][<span class="ruby-value">:id</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-ivar">@note3</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:note</span>])
+    <span class="ruby-ivar">@note3</span>.<span class="ruby-identifier">person_record_id</span>  =  <span class="ruby-identifier">params</span>[<span class="ruby-value">:person3</span>][<span class="ruby-value">:id</span>]
+    <span class="ruby-ivar">@note3</span>.<span class="ruby-identifier">linked_person_record_id</span> =  <span class="ruby-identifier">params</span>[<span class="ruby-value">:person</span>][<span class="ruby-value">:id</span>]
+    <span class="ruby-ivar">@note3</span>.<span class="ruby-identifier">linked_person_record_id</span> =  <span class="ruby-identifier">params</span>[<span class="ruby-value">:person2</span>][<span class="ruby-value">:id</span>]
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-constant">Note</span>.<span class="ruby-identifier">transaction</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">save!</span>
+    <span class="ruby-ivar">@note2</span>.<span class="ruby-identifier">save!</span>
+    <span class="ruby-ivar">@note3</span>.<span class="ruby-identifier">save!</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:person3</span>][<span class="ruby-value">:id</span>].<span class="ruby-identifier">blank?</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-comment"># 利用規約のチェック判定</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@consent</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">ConsentError</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># 新着メールを送るアドレスを抽出</span>
+  <span class="ruby-identifier">to</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">subscribe_email_address</span>(<span class="ruby-ivar">@person</span>, <span class="ruby-ivar">@note</span>)
+  <span class="ruby-comment"># Personに新着メールを送信する</span>
+  <span class="ruby-identifier">to</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">address</span><span class="ruby-operator">|</span>
+    <span class="ruby-constant">LgdpfMailer</span>.<span class="ruby-identifier">send_add_note</span>(<span class="ruby-identifier">address</span>).<span class="ruby-identifier">deliver</span>
+    <span class="ruby-constant">LgdpfMailer</span>.<span class="ruby-identifier">send_add_note</span>(<span class="ruby-identifier">address</span>).<span class="ruby-identifier">deliver</span>
+    <span class="ruby-constant">LgdpfMailer</span>.<span class="ruby-identifier">send_add_note</span>(<span class="ruby-identifier">address</span>).<span class="ruby-identifier">deliver</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:person3</span>][<span class="ruby-value">:id</span>].<span class="ruby-identifier">blank?</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@subscribe</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;subscribe_email&quot;</span>,
+      <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>,
+      <span class="ruby-value">:id2</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person2</span>,
+      <span class="ruby-value">:id3</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person3</span>,
+      <span class="ruby-value">:note_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@note</span>,
+      <span class="ruby-value">:note_id2</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@note2</span>,
+      <span class="ruby-value">:note_id3</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@note3</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:view</span>, <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">SMTPFatalError</span>
+  <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:error</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&quot;activerecord.errors.messages.email_invalid&quot;</span>)
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:multiviews</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">ConsentError</span>
+  <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:error</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&quot;activerecord.errors.messages.disagree&quot;</span>)
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:multiviews</span>
+<span class="ruby-keyword">rescue</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:multiviews</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- dup_merge-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- dup_merge-method -->
+
+    
+      <div id="method-i-extend_days" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extend_days</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>避難者情報保持期間延長画面</p>
+
+<h3 id="method-i-extend_days-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>id</em>     
+<dd>
+<p>Person.id</p>
+</dd><dt><em>commit</em> 
+<dd>
+<p>ボタン種別</p>
+</dd></dl>
+
+<h3 id="method-i-extend_days-label-Return">Return</h3>
+
+<h3 id="method-i-extend_days-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="extend_days-source">
+            <pre><span class="ruby-comment"># File app/controllers/people_controller.rb, line 389</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">extend_days</span>
+  <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:commit</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-comment"># 削除予定日を60日延長する</span>
+    <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">expiry_date</span> = <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">expiry_date</span> <span class="ruby-operator">+</span> <span class="ruby-value">60</span>.<span class="ruby-identifier">days</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">verify_recaptcha</span>(<span class="ruby-value">:model</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">save!</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:complete</span>,
+        <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>,
+        <span class="ruby-value">:complete</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:key</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;extend_days&quot;</span>}
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- extend_days-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- extend_days-method -->
+
+    
+      <div id="method-i-index" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">index</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>トップ画面</p>
+
+<h3 id="method-i-index-label-Args">Args</h3>
+
+<h3 id="method-i-index-label-Return">Return</h3>
+
+<h3 id="method-i-index-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="index-source">
+            <pre><span class="ruby-comment"># File app/controllers/people_controller.rb, line 13</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- index-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- index-method -->
+
+    
+      <div id="method-i-multiviews" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">multiviews</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>避難者情報重複確認画面</p>
+
+<h3 id="method-i-multiviews-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>id1</em> 
+<dd>
+<p>検索一覧で選択されたPerson.id</p>
+</dd><dt><em>id2</em> 
+<dd>
+<p>検索一覧で選択されたPerson.id</p>
+</dd><dt><em>id3</em> 
+<dd>
+<p>検索一覧で選択されたPerson.id</p>
+</dd></dl>
+
+<h3 id="method-i-multiviews-label-Return">Return</h3>
+
+<h3 id="method-i-multiviews-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="multiviews-source">
+            <pre><span class="ruby-comment"># File app/controllers/people_controller.rb, line 75</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">multiviews</span>
+  <span class="ruby-ivar">@count</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:id3</span>].<span class="ruby-identifier">blank?</span> <span class="ruby-operator">?</span> <span class="ruby-value">3</span> <span class="ruby-operator">:</span> <span class="ruby-value">4</span>  <span class="ruby-comment"># 重複件数が2件 or 3件</span>
+  <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id1</span>])
+  <span class="ruby-ivar">@person2</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id2</span>])
+  <span class="ruby-ivar">@person3</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id3</span>]) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id3</span>].<span class="ruby-identifier">blank?</span>
+  <span class="ruby-ivar">@note</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-ivar">@subscribe</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-identifier">session</span>[<span class="ruby-value">:action</span>] = <span class="ruby-identifier">action_name</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- multiviews-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- multiviews-method -->
+
+    
+      <div id="method-i-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>新規作成画面</p>
+
+<h3 id="method-i-new-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>family_name</em> 
+<dd>
+<p>安否情報対象者入力画面で入力した値</p>
+</dd><dt><em>given_name</em>  
+<dd>
+<p>安否情報対象者入力画面で入力した値</p>
+</dd></dl>
+
+<h3 id="method-i-new-label-Return">Return</h3>
+
+<h3 id="method-i-new-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File app/controllers/people_controller.rb, line 163</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
+  <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">family_name</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:family_name</span>]
+  <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">given_name</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:given_name</span>]
+  <span class="ruby-ivar">@note</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-ivar">@kana</span> = {<span class="ruby-value">:family_name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;&quot;</span>, <span class="ruby-value">:given_name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;&quot;</span>}
+  <span class="ruby-ivar">@subscribe</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-ivar">@clone_clone_input</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-ivar">@error_message</span> =  <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&quot;activerecord.errors.messages.profile_invalid&quot;</span>)
+  <span class="ruby-comment"># 遷移元確認フラグ</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:family_name</span>].<span class="ruby-identifier">blank?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:given_name</span>].<span class="ruby-identifier">blank?</span>
+    <span class="ruby-ivar">@from_seek</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+      <div id="method-i-note_invalid" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">note_invalid</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>安否情報登録無効画面</p>
+
+<h3 id="method-i-note_invalid-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>id</em>     
+<dd>
+<p>Person.id</p>
+</dd><dt><em>commit</em> 
+<dd>
+<p>ボタン種別</p>
+</dd></dl>
+
+<h3 id="method-i-note_invalid-label-Return">Return</h3>
+
+<h3 id="method-i-note_invalid-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="note_invalid-source">
+            <pre><span class="ruby-comment"># File app/controllers/people_controller.rb, line 581</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">note_invalid</span>
+  <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:commit</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">notes_disabled</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">save!</span>
+      <span class="ruby-constant">LgdpfMailer</span>.<span class="ruby-identifier">send_note_invalid</span>(<span class="ruby-ivar">@person</span>).<span class="ruby-identifier">deliver</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:view</span>, <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">SMTPFatalError</span>
+  <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:error</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&quot;activerecord.errors.messages.email_invalid&quot;</span>)
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:note_invalid</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- note_invalid-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- note_invalid-method -->
+
+    
+      <div id="method-i-note_invalid_apply" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">note_invalid_apply</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>安否情報登録無効申請画面</p>
+
+<h3 id="method-i-note_invalid_apply-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>id</em>     
+<dd>
+<p>Person.id</p>
+</dd><dt><em>commit</em> 
+<dd>
+<p>ボタン種別</p>
+</dd></dl>
+
+<h3 id="method-i-note_invalid_apply-label-Return">Return</h3>
+
+<h3 id="method-i-note_invalid_apply-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="note_invalid_apply-source">
+            <pre><span class="ruby-comment"># File app/controllers/people_controller.rb, line 560</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">note_invalid_apply</span>
+  <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:commit</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">verify_recaptcha</span>(<span class="ruby-value">:model</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>)
+      <span class="ruby-constant">LgdpfMailer</span>.<span class="ruby-identifier">send_note_invalid_apply</span>(<span class="ruby-ivar">@person</span>).<span class="ruby-identifier">deliver</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:complete</span>,
+        <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>,
+        <span class="ruby-value">:complete</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:key</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;note_invalid_apply&quot;</span>}
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">SMTPFatalError</span>
+  <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:error</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&quot;activerecord.errors.messages.email_invalid&quot;</span>)
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:note_invalid_apply</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- note_invalid_apply-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- note_invalid_apply-method -->
+
+    
+      <div id="method-i-note_valid" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">note_valid</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>安否情報登録有効画面</p>
+
+<h3 id="method-i-note_valid-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>id</em> 
+<dd>
+<p>Person.id</p>
+</dd></dl>
+
+<h3 id="method-i-note_valid-label-Return">Return</h3>
+
+<h3 id="method-i-note_valid-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="note_valid-source">
+            <pre><span class="ruby-comment"># File app/controllers/people_controller.rb, line 621</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">note_valid</span>
+  <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">notes_disabled</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">save!</span>
+    <span class="ruby-constant">LgdpfMailer</span>.<span class="ruby-identifier">send_note_valid</span>(<span class="ruby-ivar">@person</span>).<span class="ruby-identifier">deliver</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:view</span>, <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">SMTPFatalError</span>
+  <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:error</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&quot;activerecord.errors.messages.email_invalid&quot;</span>)
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:note_valid</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- note_valid-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- note_valid-method -->
+
+    
+      <div id="method-i-note_valid_apply" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">note_valid_apply</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>安否情報登録有効申請画面</p>
+
+<h3 id="method-i-note_valid_apply-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>id</em>     
+<dd>
+<p>Person.id</p>
+</dd><dt><em>commit</em> 
+<dd>
+<p>ボタン種別</p>
+</dd></dl>
+
+<h3 id="method-i-note_valid_apply-label-Return">Return</h3>
+
+<h3 id="method-i-note_valid_apply-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="note_valid_apply-source">
+            <pre><span class="ruby-comment"># File app/controllers/people_controller.rb, line 601</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">note_valid_apply</span>
+  <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:commit</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">verify_recaptcha</span>(<span class="ruby-value">:model</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>)
+      <span class="ruby-constant">LgdpfMailer</span>.<span class="ruby-identifier">send_note_valid_apply</span>(<span class="ruby-ivar">@person</span>).<span class="ruby-identifier">deliver</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:complete</span>,
+        <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>,
+        <span class="ruby-value">:complete</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:key</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;note_valid_apply&quot;</span>}
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">SMTPFatalError</span>
+  <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:error</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&quot;activerecord.errors.messages.email_invalid&quot;</span>)
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:note_valid_apply</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- note_valid_apply-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- note_valid_apply-method -->
+
+    
+      <div id="method-i-personal_info" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">personal_info</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>個人情報表示許可画面</p>
+
+<h3 id="method-i-personal_info-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>id</em>      
+<dd>
+<p>Person.id</p>
+</dd><dt><em>id2</em>     
+<dd>
+<p>Person.id(重複)</p>
+</dd><dt><em>id3</em>     
+<dd>
+<p>Person.id(重複)</p>
+</dd><dt><em>note_id</em> 
+<dd>
+<p>Note.id</p>
+</dd><dt><em>commit</em>  
+<dd>
+<p>ボタン種別</p>
+</dd></dl>
+
+<h3 id="method-i-personal_info-label-Return">Return</h3>
+
+<h3 id="method-i-personal_info-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="personal_info-source">
+            <pre><span class="ruby-comment"># File app/controllers/people_controller.rb, line 680</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">personal_info</span>
+  <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-ivar">@note</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:note_id</span>]) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:note_id</span>].<span class="ruby-identifier">blank?</span>
+  <span class="ruby-ivar">@id2</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:id2</span>]
+  <span class="ruby-ivar">@id3</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:id3</span>]
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:commit</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">verify_recaptcha</span>(<span class="ruby-value">:model</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>)
+      <span class="ruby-identifier">session</span>[<span class="ruby-value">:pi_view</span>] = <span class="ruby-keyword">true</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-value">:action</span>] <span class="ruby-operator">==</span> (<span class="ruby-string">&quot;spam&quot;</span> <span class="ruby-operator">||</span> <span class="ruby-string">&quot;spam_cancel&quot;</span>)
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">session</span>[<span class="ruby-value">:action</span>], <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>, <span class="ruby-value">:note_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@note</span>
+      <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">session</span>[<span class="ruby-value">:action</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;multiviews&quot;</span>
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">session</span>[<span class="ruby-value">:action</span>], <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>, <span class="ruby-value">:note_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@note</span>,
+          <span class="ruby-value">:id1</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">id</span>, <span class="ruby-value">:id2</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@id2</span>, <span class="ruby-value">:id3</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@id3</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">session</span>[<span class="ruby-value">:action</span>], <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- personal_info-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- personal_info-method -->
+
+    
+      <div id="method-i-provide" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">provide</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>安否情報対象者入力画面</p>
+
+<h3 id="method-i-provide-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>family_name</em> 
+<dd>
+<p>画面入力された検索条件(姓)</p>
+</dd><dt><em>given_name</em>  
+<dd>
+<p>画面入力された検索条件(名)</p>
+</dd><dt><em>role</em> 
+<dd>
+<p>画面種別</p>
+</dd></dl>
+
+<h3 id="method-i-provide-label-Return">Return</h3>
+
+<h3 id="method-i-provide-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="provide-source">
+            <pre><span class="ruby-comment"># File app/controllers/people_controller.rb, line 45</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">provide</span>
+  <span class="ruby-comment"># 検索条件を保持</span>
+  <span class="ruby-ivar">@query</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-ivar">@query_family</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:family_name</span>]
+  <span class="ruby-ivar">@query_given</span>  = <span class="ruby-identifier">params</span>[<span class="ruby-value">:given_name</span>]
+  <span class="ruby-ivar">@action</span> = <span class="ruby-identifier">action_name</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:role</span>]
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:family_name</span>].<span class="ruby-identifier">present?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:given_name</span>].<span class="ruby-identifier">present?</span>
+      <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find_for_provide</span>(<span class="ruby-identifier">params</span>)
+      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">present?</span>
+        <span class="ruby-identifier">render</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;provide&quot;</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;new&quot;</span>,
+          <span class="ruby-value">:family_name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:family_name</span>],
+          <span class="ruby-value">:given_name</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:given_name</span>]
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:error</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&quot;activerecord.errors.messages.provide_blank&quot;</span>)
+      <span class="ruby-identifier">render</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;provide&quot;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- provide-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- provide-method -->
+
+    
+      <div id="method-i-restore" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">restore</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>削除データ復元画面</p>
+
+<h3 id="method-i-restore-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>id</em>     
+<dd>
+<p>Person.id</p>
+</dd><dt><em>commit</em> 
+<dd>
+<p>ボタン種別</p>
+</dd></dl>
+
+<h3 id="method-i-restore-label-Return">Return</h3>
+
+<h3 id="method-i-restore-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="restore-source">
+            <pre><span class="ruby-comment"># File app/controllers/people_controller.rb, line 533</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">restore</span>
+  <span class="ruby-comment"># 削除されたデータも含め全件から抽出する</span>
+  <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">with_deleted</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:commit</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-comment"># POST</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">verify_recaptcha</span>(<span class="ruby-value">:model</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>)
+      <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">recover</span>
+      <span class="ruby-constant">LgdpfMailer</span>.<span class="ruby-identifier">send_restore_notice</span>(<span class="ruby-ivar">@person</span>).<span class="ruby-identifier">deliver</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:view</span>, <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-comment"># GET</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">deleted_at</span>.<span class="ruby-identifier">blank?</span>  <span class="ruby-comment"># 復元されている場合</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:view</span>, <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">SMTPFatalError</span>
+  <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:error</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&quot;activerecord.errors.messages.email_invalid&quot;</span>)
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:restore</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- restore-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- restore-method -->
+
+    
+      <div id="method-i-seek" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">seek</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>検索画面</p>
+
+<h3 id="method-i-seek-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>name</em> 
+<dd>
+<p>画面入力された検索条件</p>
+</dd><dt><em>role</em> 
+<dd>
+<p>画面種別</p>
+</dd></dl>
+
+<h3 id="method-i-seek-label-Return">Return</h3>
+
+<h3 id="method-i-seek-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="seek-source">
+            <pre><span class="ruby-comment"># File app/controllers/people_controller.rb, line 23</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">seek</span>
+  <span class="ruby-comment"># 検索条件を保持</span>
+  <span class="ruby-ivar">@query</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:name</span>]
+  <span class="ruby-ivar">@query_family</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-ivar">@query_given</span>  = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-ivar">@action</span> = <span class="ruby-identifier">action_name</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:role</span>]
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:name</span>].<span class="ruby-identifier">present?</span>
+      <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find_for_seek</span>(<span class="ruby-identifier">params</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:error</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&quot;activerecord.errors.messages.seek_blank&quot;</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- seek-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- seek-method -->
+
+    
+      <div id="method-i-spam" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">spam</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>スパム報告画面</p>
+
+<h3 id="method-i-spam-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>id</em>      
+<dd>
+<p>Person.id</p>
+</dd><dt><em>note_id</em> 
+<dd>
+<p>Note.id</p>
+</dd><dt><em>commit</em>  
+<dd>
+<p>ボタン種別</p>
+</dd></dl>
+
+<h3 id="method-i-spam-label-Return">Return</h3>
+
+<h3 id="method-i-spam-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="spam-source">
+            <pre><span class="ruby-comment"># File app/controllers/people_controller.rb, line 640</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">spam</span>
+  <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-ivar">@note</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:note_id</span>])
+  <span class="ruby-identifier">session</span>[<span class="ruby-value">:action</span>] = <span class="ruby-identifier">action_name</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:commit</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">spam_flag</span> = <span class="ruby-keyword">true</span>  <span class="ruby-comment"># 認定:true, 取消:false</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">save!</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:view</span>, <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- spam-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- spam-method -->
+
+    
+      <div id="method-i-spam_cancel" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">spam_cancel</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>スパム報告取消画面</p>
+
+<h3 id="method-i-spam_cancel-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>id</em>      
+<dd>
+<p>Person.id</p>
+</dd><dt><em>note_id</em> 
+<dd>
+<p>Note.id</p>
+</dd><dt><em>commit</em>  
+<dd>
+<p>ボタン種別</p>
+</dd></dl>
+
+<h3 id="method-i-spam_cancel-label-Return">Return</h3>
+
+<h3 id="method-i-spam_cancel-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="spam_cancel-source">
+            <pre><span class="ruby-comment"># File app/controllers/people_controller.rb, line 659</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">spam_cancel</span>
+  <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-ivar">@note</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:note_id</span>])
+  <span class="ruby-identifier">session</span>[<span class="ruby-value">:action</span>] = <span class="ruby-identifier">action_name</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:commit</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">spam_flag</span> = <span class="ruby-keyword">false</span>  <span class="ruby-comment"># 認定:true, 取消:false</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">verify_recaptcha</span>(<span class="ruby-value">:model</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">save!</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:view</span>, <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- spam_cancel-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- spam_cancel-method -->
+
+    
+      <div id="method-i-subscribe_email" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">subscribe_email</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>新着情報受信許可画面</p>
+
+<h3 id="method-i-subscribe_email-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>id</em>       
+<dd>
+<p>Person.id</p>
+</dd><dt><em>id2</em>      
+<dd>
+<p>Person.id(重複)</p>
+</dd><dt><em>id3</em>      
+<dd>
+<p>Person.id(重複)</p>
+</dd><dt><em>note_id</em>  
+<dd>
+<p>Note.id</p>
+</dd><dt><em>note_id2</em> 
+<dd>
+<p>Note.id(重複)</p>
+</dd><dt><em>note_id3</em> 
+<dd>
+<p>Note.id(重複)</p>
+</dd><dt><em>success</em>  
+<dd>
+<p>ボタン種別(アップデートする)</p>
+</dd><dt><em>cancel</em>   
+<dd>
+<p>ボタン種別(キャンセル)</p>
+</dd></dl>
+
+<h3 id="method-i-subscribe_email-label-Return">Return</h3>
+
+<h3 id="method-i-subscribe_email-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="subscribe_email-source">
+            <pre><span class="ruby-comment"># File app/controllers/people_controller.rb, line 414</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">subscribe_email</span>
+  <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])  <span class="ruby-comment"># ウォッチする避難者</span>
+  <span class="ruby-ivar">@person2</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id2</span>]) <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id2</span>].<span class="ruby-identifier">present?</span> <span class="ruby-comment"># ウォッチする避難者</span>
+  <span class="ruby-ivar">@person3</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id3</span>]) <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id3</span>].<span class="ruby-identifier">present?</span> <span class="ruby-comment"># ウォッチする避難者</span>
+  <span class="ruby-ivar">@note</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:note_id</span>]) <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:note_id</span>].<span class="ruby-identifier">present?</span>
+  <span class="ruby-ivar">@note2</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:note_id2</span>]) <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:note_id2</span>].<span class="ruby-identifier">present?</span>
+  <span class="ruby-ivar">@note3</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:note_id3</span>]) <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:note_id3</span>].<span class="ruby-identifier">present?</span>
+
+  <span class="ruby-comment"># アップデートを受け取るボタン押下</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:success</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:note</span>].<span class="ruby-identifier">blank?</span>  <span class="ruby-comment"># personで新着受取チェック</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:person</span>][<span class="ruby-value">:author_email</span>].<span class="ruby-identifier">blank?</span>
+        <span class="ruby-identifier">raise</span> <span class="ruby-constant">EmailBlankError</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">email_flag</span> = <span class="ruby-keyword">true</span>
+      <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">author_email</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:person</span>][<span class="ruby-value">:author_email</span>]
+      <span class="ruby-comment"># author_emailに重複がある場合は受取フラグを消す</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-constant">Note</span>.<span class="ruby-identifier">check_for_author_email</span>(<span class="ruby-ivar">@person</span>)
+        <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">email_flag</span> = <span class="ruby-keyword">false</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">save!</span>
+    <span class="ruby-keyword">else</span>  <span class="ruby-comment"># noteで新着受取チェック</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:note</span>][<span class="ruby-value">:author_email</span>].<span class="ruby-identifier">blank?</span>
+        <span class="ruby-identifier">raise</span> <span class="ruby-constant">EmailBlankError</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-constant">Note</span>.<span class="ruby-identifier">transaction</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">author_email</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:note</span>][<span class="ruby-value">:author_email</span>]
+        <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">email_flag</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">check_for_author_email</span>(<span class="ruby-ivar">@person</span>) <span class="ruby-operator">?</span> <span class="ruby-keyword">false</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>
+        <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">save!</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@note2</span>.<span class="ruby-identifier">present?</span>
+          <span class="ruby-ivar">@note2</span>.<span class="ruby-identifier">author_email</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:note</span>][<span class="ruby-value">:author_email</span>]
+          <span class="ruby-ivar">@note2</span>.<span class="ruby-identifier">email_flag</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">check_for_author_email</span>(<span class="ruby-ivar">@person2</span>) <span class="ruby-operator">?</span> <span class="ruby-keyword">false</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>
+          <span class="ruby-ivar">@note2</span>.<span class="ruby-identifier">save!</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@note3</span>.<span class="ruby-identifier">present?</span>
+          <span class="ruby-ivar">@note3</span>.<span class="ruby-identifier">author_email</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:note</span>][<span class="ruby-value">:author_email</span>]
+          <span class="ruby-ivar">@note3</span>.<span class="ruby-identifier">email_flag</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">check_for_author_email</span>(<span class="ruby-ivar">@person3</span>) <span class="ruby-operator">?</span> <span class="ruby-keyword">false</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>
+          <span class="ruby-ivar">@note3</span>.<span class="ruby-identifier">save!</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">verify_recaptcha</span>(<span class="ruby-value">:model</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>)
+      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">blank?</span>
+        <span class="ruby-constant">LgdpfMailer</span>.<span class="ruby-identifier">send_new_information</span>(<span class="ruby-ivar">@person</span>, <span class="ruby-keyword">nil</span>).<span class="ruby-identifier">deliver</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-constant">LgdpfMailer</span>.<span class="ruby-identifier">send_new_information</span>(<span class="ruby-ivar">@person</span>, <span class="ruby-ivar">@note</span>).<span class="ruby-identifier">deliver</span>
+        <span class="ruby-constant">LgdpfMailer</span>.<span class="ruby-identifier">send_new_information</span>(<span class="ruby-ivar">@person2</span>, <span class="ruby-ivar">@note2</span>).<span class="ruby-identifier">deliver</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@note2</span>.<span class="ruby-identifier">present?</span>
+        <span class="ruby-constant">LgdpfMailer</span>.<span class="ruby-identifier">send_new_information</span>(<span class="ruby-ivar">@person3</span>, <span class="ruby-ivar">@note3</span>).<span class="ruby-identifier">deliver</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@note3</span>.<span class="ruby-identifier">present?</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:complete</span>,
+        <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>,
+        <span class="ruby-value">:complete</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:key</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;subscribe_email&quot;</span>}
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-comment"># キャンセルボタン押下</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:cancel</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:view</span>, <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">EmailBlankError</span>
+  <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:error</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&quot;activerecord.errors.messages.email_blank&quot;</span>)
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:subscribe_email</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">SMTPFatalError</span>
+  <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:error</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&quot;activerecord.errors.messages.email_invalid&quot;</span>)
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:subscribe_email</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">RecordInvalid</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:subscribe_email</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- subscribe_email-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- subscribe_email-method -->
+
+    
+      <div id="method-i-unsubscribe_email" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">unsubscribe_email</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>新着情報受信拒否</p>
+
+<h3 id="method-i-unsubscribe_email-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>id</em>      
+<dd>
+<p>Person.id</p>
+</dd><dt><em>note_id</em> 
+<dd>
+<p>Note.id</p>
+</dd></dl>
+
+<h3 id="method-i-unsubscribe_email-label-Return">Return</h3>
+
+<h3 id="method-i-unsubscribe_email-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="unsubscribe_email-source">
+            <pre><span class="ruby-comment"># File app/controllers/people_controller.rb, line 487</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">unsubscribe_email</span>
+  <span class="ruby-ivar">@person</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>].<span class="ruby-identifier">present?</span>
+  <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:note_id</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-comment"># noteへの新着メールを停止する</span>
+    <span class="ruby-ivar">@note</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:note_id</span>])
+    <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">email_flag</span> = <span class="ruby-keyword">false</span>
+    <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">save!</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-comment"># personへの新着メールを停止する</span>
+    <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">email_flag</span> = <span class="ruby-keyword">false</span>
+    <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">save!</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:complete</span>,
+    <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>,
+    <span class="ruby-value">:complete</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:key</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;unsubscribe_email&quot;</span>}
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- unsubscribe_email-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- unsubscribe_email-method -->
+
+    
+      <div id="method-i-update" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>安否情報を追加する</p>
+
+<h3 id="method-i-update-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>id</em>                 
+<dd>
+<p>Person.id</p>
+</dd><dt><em><a href="PeopleController.html#method-i-extend_days">#extend_days</a></em>        
+<dd>
+<p>ボタン種別(有効期限を60日延長する)</p>
+</dd><dt><em><a href="PeopleController.html#method-i-subscribe_email">#subscribe_email</a></em>    
+<dd>
+<p>ボタン種別(この方の新着情報をメールで受け取る)</p>
+</dd><dt><em>delete</em>             
+<dd>
+<p>ボタン種別(このレコードを削除する)</p>
+</dd><dt><em><a href="PeopleController.html#method-i-note_invalid_apply">#note_invalid_apply</a></em> 
+<dd>
+<p>ボタン種別(この記録へのメモの書き込みを禁止する)</p>
+</dd><dt><em><a href="PeopleController.html#method-i-note_valid_apply">#note_valid_apply</a></em>   
+<dd>
+<p>ボタン種別(この記録へのメモの書き込みを許可する)</p>
+</dd><dt><em>note</em>               
+<dd>
+<p><a href="Note.html">Note</a></p>
+</dd><dt><em>subscribe</em>          
+<dd>
+<p>新着情報受信のチェック有無</p>
+</dd><dt><em>consent</em>            
+<dd>
+<p>利用規約に同意するのチェック有無</p>
+</dd><dt><em>clone</em>              
+<dd>
+<p>新規か複製か</p>
+</dd><dt><em>clickable_map</em>      
+<dd>
+<p>最後に見かけた場所</p>
+</dd><dt><em>duplication</em>        
+<dd>
+<p>重複Noteの表示有無</p>
+</dd></dl>
+
+<h3 id="method-i-update-label-Return">Return</h3>
+
+<h3 id="method-i-update-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="update-source">
+            <pre><span class="ruby-comment"># File app/controllers/people_controller.rb, line 321</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
+  <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+
+  <span class="ruby-comment"># 登録以外のボタンを押されたら別画面に遷移する</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:extend_days</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;extend_days&quot;</span>, <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>
+    <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:subscribe_email</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;subscribe_email&quot;</span>, <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>
+    <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:delete</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;delete&quot;</span>, <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>
+    <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:note_invalid_apply</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;note_invalid_apply&quot;</span>, <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>
+    <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:note_valid_apply</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;note_valid_apply&quot;</span>, <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>
+    <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@note</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:note</span>])
+  <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">person_record_id</span>     = <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">id</span>
+  <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">last_known_location</span>  = <span class="ruby-identifier">params</span>[<span class="ruby-value">:clickable_map</span>][<span class="ruby-value">:location_field</span>]
+  <span class="ruby-ivar">@consent</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:consent</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;true&quot;</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span><span class="ruby-keyword">false</span>
+  <span class="ruby-ivar">@subscribe</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:subscribe</span>]<span class="ruby-operator">==</span> <span class="ruby-string">&quot;true&quot;</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:duplication</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-ivar">@notes</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:person_record_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">id</span>).<span class="ruby-identifier">order</span>(<span class="ruby-string">&quot;entry_date ASC&quot;</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@notes</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">no_duplication</span>(<span class="ruby-ivar">@person</span>.<span class="ruby-identifier">id</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-constant">Note</span>.<span class="ruby-identifier">transaction</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">save!</span>
+      <span class="ruby-comment"># 利用規約のチェック判定</span>
+      <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@consent</span>
+        <span class="ruby-identifier">raise</span> <span class="ruby-constant">ConsentError</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-comment"># 新着メールを送るアドレスを抽出</span>
+      <span class="ruby-identifier">to</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">subscribe_email_address</span>(<span class="ruby-ivar">@person</span>, <span class="ruby-ivar">@note</span>)
+      <span class="ruby-comment"># Personに新着メールを送信する</span>
+      <span class="ruby-identifier">to</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">address</span><span class="ruby-operator">|</span>
+        <span class="ruby-constant">LgdpfMailer</span>.<span class="ruby-identifier">send_add_note</span>(<span class="ruby-identifier">address</span>).<span class="ruby-identifier">deliver</span>
+      <span class="ruby-keyword">end</span>
+
+      <span class="ruby-comment"># 新規登録したnoteが新着メールを受け取るか</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@subscribe</span>
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:subscribe_email</span>, <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">id</span>, <span class="ruby-value">:note_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">id</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:view</span>, <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">RecordInvalid</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:view</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">SMTPFatalError</span>
+  <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:error</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&quot;activerecord.errors.messages.email_invalid&quot;</span>)
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:view</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">ConsentError</span>
+  <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:error</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&quot;activerecord.errors.messages.disagree&quot;</span>)
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:view</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- update-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- update-method -->
+
+    
+      <div id="method-i-view" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">view</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>詳細画面</p>
+
+<h3 id="method-i-view-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>id</em> 
+<dd>
+<p>Person.id</p>
+</dd><dt><em>role</em> 
+<dd>
+<p>画面種別</p>
+</dd><dt><em>name</em> 
+<dd>
+<p>検索画面の検索条件</p>
+</dd><dt><em>family_name</em> 
+<dd>
+<p>安否情報対象者入力画面の検索条件</p>
+</dd><dt><em>given_name</em>  
+<dd>
+<p>安否情報対象者入力画面の検索条件</p>
+</dd><dt><em>duplication</em> 
+<dd>
+<p>重複Noteの表示有無</p>
+</dd></dl>
+
+<h3 id="method-i-view-label-Return">Return</h3>
+
+<h3 id="method-i-view-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="view-source">
+            <pre><span class="ruby-comment"># File app/controllers/people_controller.rb, line 283</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">view</span>
+  <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-ivar">@note</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">session</span>[<span class="ruby-value">:action</span>] = <span class="ruby-identifier">action_name</span>
+
+  <span class="ruby-comment"># 検索画面に戻る用</span>
+  <span class="ruby-ivar">@action</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:role</span>].<span class="ruby-identifier">present?</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:role</span>] <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
+  <span class="ruby-ivar">@query</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:name</span>]
+  <span class="ruby-ivar">@query_family</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:family_name</span>]
+  <span class="ruby-ivar">@query_given</span>  = <span class="ruby-identifier">params</span>[<span class="ruby-value">:given_name</span>]
+
+  <span class="ruby-ivar">@dup_flag</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">check_dup</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])  <span class="ruby-comment"># 重複の有無</span>
+  <span class="ruby-ivar">@dup_people</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">duplication</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]) <span class="ruby-comment"># personと重複するperson</span>
+  <span class="ruby-ivar">@subscribe</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-comment"># 重複メモを表示するか</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:duplication</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-ivar">@notes</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:person_record_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">id</span>).<span class="ruby-identifier">order</span>(<span class="ruby-string">&quot;entry_date ASC&quot;</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@notes</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">no_duplication</span>(<span class="ruby-ivar">@person</span>.<span class="ruby-identifier">id</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- view-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- view-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

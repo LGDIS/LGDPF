@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+<title>class ActiveResourceController - Rails Application Documentation</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>app/controllers/active_resource_controller.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link"><a href="ApplicationController.html">ApplicationController</a>
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-i-notes">#notes</a>
+    
+    <li><a href="#method-i-notes_create">#notes_create</a>
+    
+    <li><a href="#method-i-notes_update">#notes_update</a>
+    
+    <li><a href="#method-i-people">#people</a>
+    
+    <li><a href="#method-i-people_create">#people_create</a>
+    
+    <li><a href="#method-i-people_update">#people_update</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./doc/README_FOR_APP.html">README_FOR_APP</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./Batches.html">Batches</a>
+  
+    <li><a href="./Batches/ExportGooglePersonFinder.html">Batches::ExportGooglePersonFinder</a>
+  
+    <li><a href="./Batches/PeopleDestroy.html">Batches::PeopleDestroy</a>
+  
+    <li><a href="./ActiveResourceController.html">ActiveResourceController</a>
+  
+    <li><a href="./ApiActionLog.html">ApiActionLog</a>
+  
+    <li><a href="./ApplicationController.html">ApplicationController</a>
+  
+    <li><a href="./ApplicationHelper.html">ApplicationHelper</a>
+  
+    <li><a href="./ConsentError.html">ConsentError</a>
+  
+    <li><a href="./Constant.html">Constant</a>
+  
+    <li><a href="./CountryCode.html">CountryCode</a>
+  
+    <li><a href="./DateValidator.html">DateValidator</a>
+  
+    <li><a href="./EmailBlankError.html">EmailBlankError</a>
+  
+    <li><a href="./LgdpfMailer.html">LgdpfMailer</a>
+  
+    <li><a href="./Note.html">Note</a>
+  
+    <li><a href="./PeopleController.html">PeopleController</a>
+  
+    <li><a href="./PersonHelper.html">PersonHelper</a>
+  
+    <li><a href="./PhotoUrlUploader.html">PhotoUrlUploader</a>
+  
+    <li><a href="./TimeValidator.html">TimeValidator</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class ActiveResourceController</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-notes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">notes</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>ActiveResource[LGDPF &lt;=&gt; LGDPM] Note取得処理</p>
+
+<h4 id="method-i-notes-label-Args">Args</h4>
+<dl class="rdoc-list note-list"><dt><em>person_record_id</em> 
+<dd>
+<p>避難者ID</p>
+</dd></dl>
+
+<h4 id="method-i-notes-label-Return">Return</h4>
+
+<h4 id="method-i-notes-label-Raise">Raise</h4>
+          
+
+          
+          <div class="method-source-code" id="notes-source">
+            <pre><span class="ruby-comment"># File app/controllers/active_resource_controller.rb, line 62</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">notes</span>
+  <span class="ruby-ivar">@notes</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:person_record_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:person_record_id</span>], <span class="ruby-value">:link_flag</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">false</span>).<span class="ruby-identifier">order</span>(<span class="ruby-string">&quot;created_at DESC&quot;</span>)
+    
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@notes</span>.<span class="ruby-identifier">to_json</span> }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- notes-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- notes-method -->
+
+    
+      <div id="method-i-notes_create" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">notes_create</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>ActiveResource[LGDPF &lt;=&gt; LGDPM] Note登録処理</p>
+
+<h4 id="method-i-notes_create-label-Args">Args</h4>
+<dl class="rdoc-list note-list"><dt><em>note</em> 
+<dd>
+<p>安否情報</p>
+</dd></dl>
+
+<h4 id="method-i-notes_create-label-Return">Return</h4>
+
+<h4 id="method-i-notes_create-label-Raise">Raise</h4>
+          
+
+          
+          <div class="method-source-code" id="notes_create-source">
+            <pre><span class="ruby-comment"># File app/controllers/active_resource_controller.rb, line 76</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">notes_create</span>
+  <span class="ruby-ivar">@note</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:note</span>])
+  
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">save</span>
+    <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">to_json</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">to_json</span>, <span class="ruby-value">:status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:internal_server_error</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- notes_create-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- notes_create-method -->
+
+    
+      <div id="method-i-notes_update" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">notes_update</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>ActiveResource[LGDPF &lt;=&gt; LGDPM] Note更新処理</p>
+
+<h4 id="method-i-notes_update-label-Args">Args</h4>
+<dl class="rdoc-list note-list"><dt><em>id</em> 
+<dd>
+<p>安否情報ID</p>
+</dd></dl>
+
+<h4 id="method-i-notes_update-label-Return">Return</h4>
+
+<h4 id="method-i-notes_update-label-Raise">Raise</h4>
+          
+
+          
+          <div class="method-source-code" id="notes_update-source">
+            <pre><span class="ruby-comment"># File app/controllers/active_resource_controller.rb, line 96</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">notes_update</span>
+  <span class="ruby-ivar">@note</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-value">:link_flag</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>)
+    <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">to_json</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@note</span>.<span class="ruby-identifier">to_json</span>, <span class="ruby-value">:status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:internal_server_error</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- notes_update-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- notes_update-method -->
+
+    
+      <div id="method-i-people" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">people</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>ActiveResource[LGDPF &lt;=&gt; LGDPM] People取得処理</p>
+
+<h4 id="method-i-people-label-Args">Args</h4>
+
+<h4 id="method-i-people-label-Return">Return</h4>
+
+<h4 id="method-i-people-label-Raise">Raise</h4>
+          
+
+          
+          <div class="method-source-code" id="people-source">
+            <pre><span class="ruby-comment"># File app/controllers/active_resource_controller.rb, line 8</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">people</span>
+  <span class="ruby-ivar">@people</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:link_flag</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">false</span>)
+  
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@people</span>.<span class="ruby-identifier">to_json</span> }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- people-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- people-method -->
+
+    
+      <div id="method-i-people_create" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">people_create</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>ActiveResource[LGDPF &lt;=&gt; LGDPM] Person登録処理</p>
+
+<h4 id="method-i-people_create-label-Args">Args</h4>
+<dl class="rdoc-list note-list"><dt><em>person</em> 
+<dd>
+<p>避難者情報</p>
+</dd></dl>
+
+<h4 id="method-i-people_create-label-Return">Return</h4>
+
+<h4 id="method-i-people_create-label-Raise">Raise</h4>
+          
+
+          
+          <div class="method-source-code" id="people_create-source">
+            <pre><span class="ruby-comment"># File app/controllers/active_resource_controller.rb, line 22</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">people_create</span>
+  <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:person</span>])
+  
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">save</span>
+    <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">to_json</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">to_json</span>, <span class="ruby-value">:status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:internal_server_error</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- people_create-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- people_create-method -->
+
+    
+      <div id="method-i-people_update" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">people_update</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>ActiveResource[LGDPF &lt;=&gt; LGDPM] People更新処理</p>
+
+<h4 id="method-i-people_update-label-Args">Args</h4>
+<dl class="rdoc-list note-list"><dt><em>id</em> 
+<dd>
+<p>避難者ID</p>
+</dd></dl>
+
+<h4 id="method-i-people_update-label-Return">Return</h4>
+
+<h4 id="method-i-people_update-label-Raise">Raise</h4>
+          
+
+          
+          <div class="method-source-code" id="people_update-source">
+            <pre><span class="ruby-comment"># File app/controllers/active_resource_controller.rb, line 42</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">people_update</span>
+  <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-value">:link_flag</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>)
+    <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">to_json</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">to_json</span>, <span class="ruby-value">:status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:internal_server_error</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- people_update-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- people_update-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

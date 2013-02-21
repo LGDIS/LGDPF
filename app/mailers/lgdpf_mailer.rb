@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 class LgdpfMailer < Jpmobile::Mailer::Base
   @@settings = YAML.load_file("#{Rails.root}/config/settings.yml")
-  default from: @@settings["ldgpf"]["mail"]["from"]
+  default from: @@settings["lgdpf"]["mail"]["from"]
 
   # 新着情報を受け取るように設定したことを確認するメールを送信する
   # === Args
@@ -12,8 +12,8 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     # ユニークキーの設定
     aal = ApiActionLog.create
     @person = person
-    @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
-    @unsubscribe_email_path = @@settings["ldgpf"][Rails.env]["site"] +
+    @view_path = @@settings["lgdpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
+    @unsubscribe_email_path = @@settings["lgdpf"][Rails.env]["site"] +
       "person/unsubscribe_email&id=" + @person.id.to_s + "&token=" + aal.unique_key
     subject = "[パーソンファインダー]" + person.full_name + "さんについての新着情報を受け取るように設定しました"
     if note.blank?
@@ -44,12 +44,12 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     @note = target[1]
     record_type = target[2]
     @note_const = Constant.get_const(Note.table_name)
-    @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
+    @view_path = @@settings["lgdpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
     # Noteに送る場合
     if record_type.is_a? Note
       note_id = record_type.id
     end
-    @unsubscribe_email_path = @@settings["ldgpf"][Rails.env]["site"] +
+    @unsubscribe_email_path = @@settings["lgdpf"][Rails.env]["site"] +
       "person/unsubscribe_email?id=" + @person.id.to_s +
       "&note_id=" + note_id.to_s + "&token=" + aal.unique_key
     address = record_type.author_email
@@ -67,8 +67,8 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   def send_delete_notice(person)
     aal = ApiActionLog.create
     @person = person
-    @root_path = @@settings["ldgpf"][Rails.env]["site"]
-    @restore_path = @@settings["ldgpf"][Rails.env]["site"] +
+    @root_path = @@settings["lgdpf"][Rails.env]["site"]
+    @restore_path = @@settings["lgdpf"][Rails.env]["site"] +
       "person/restore?id="+ @person.id.to_s + "&token=" + aal.unique_key
     subject = "[パーソンファインダー]" + person.full_name + "さんの削除の通知"
 
@@ -85,7 +85,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   # === Raise
   def send_restore_notice(person)
     @person = person
-    @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
+    @view_path = @@settings["lgdpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
     subject = "[パーソンファインダー]" + person.full_name + "さんの記録の復元の通知"
 
     # 受信フラグがtrueの場合にメールを送信する
@@ -102,7 +102,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   def send_note_invalid_apply(person)
     aal = ApiActionLog.create
     @person = person
-    @invalid_path = @@settings["ldgpf"][Rails.env]["site"] +
+    @invalid_path = @@settings["lgdpf"][Rails.env]["site"] +
       "person/note_invalid?id="+ @person.id.to_s + "&token=" + aal.unique_key
 
     subject = "[パーソンファインダー]「" + person.full_name + "」さんに関するメモを無効にしますか? "
@@ -120,7 +120,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   # === Raise
   def send_note_invalid(person)
     @person = person
-    @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
+    @view_path = @@settings["lgdpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
     subject = "[パーソンファインダー]「" + person.full_name + "」さんに関するメモが無効になりました "
 
     # 受信フラグがtrueの場合にメールを送信する
@@ -137,7 +137,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   def send_note_valid_apply(person)
     aal = ApiActionLog.create
     @person = person
-    @valid_path = @@settings["ldgpf"][Rails.env]["site"] +
+    @valid_path = @@settings["lgdpf"][Rails.env]["site"] +
       "person/note_valid?id="+ @person.id.to_s + "&token=" + aal.unique_key
     subject = "[パーソンファインダー]「" + person.full_name + "」さんに関するメモを有効にしますか? "
 
@@ -154,7 +154,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   # === Raise
   def send_note_valid(person)
     @person = person
-    @view_path = @@settings["ldgpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
+    @view_path = @@settings["lgdpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
     subject = "[パーソンファインダー]「" + person.full_name + "」さんに関するメモが有効になりました "
 
     # 受信フラグがtrueの場合にメールを送信する

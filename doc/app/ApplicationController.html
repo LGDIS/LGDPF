@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+<title>class ApplicationController - Rails Application Documentation</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>app/controllers/application_controller.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">ActionController::Base
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-i-autocomplete_city">#autocomplete_city</a>
+    
+    <li><a href="#method-i-autocomplete_street">#autocomplete_street</a>
+    
+    <li><a href="#method-i-cancel_personal_info">#cancel_personal_info</a>
+    
+    <li><a href="#method-i-expiry_date">#expiry_date</a>
+    
+    <li><a href="#method-i-get_cache">#get_cache</a>
+    
+    <li><a href="#method-i-init">#init</a>
+    
+    <li><a href="#method-i-terms_of_service">#terms_of_service</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./doc/README_FOR_APP.html">README_FOR_APP</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./Batches.html">Batches</a>
+  
+    <li><a href="./Batches/ExportGooglePersonFinder.html">Batches::ExportGooglePersonFinder</a>
+  
+    <li><a href="./Batches/PeopleDestroy.html">Batches::PeopleDestroy</a>
+  
+    <li><a href="./ActiveResourceController.html">ActiveResourceController</a>
+  
+    <li><a href="./ApiActionLog.html">ApiActionLog</a>
+  
+    <li><a href="./ApplicationController.html">ApplicationController</a>
+  
+    <li><a href="./ApplicationHelper.html">ApplicationHelper</a>
+  
+    <li><a href="./ConsentError.html">ConsentError</a>
+  
+    <li><a href="./Constant.html">Constant</a>
+  
+    <li><a href="./CountryCode.html">CountryCode</a>
+  
+    <li><a href="./DateValidator.html">DateValidator</a>
+  
+    <li><a href="./EmailBlankError.html">EmailBlankError</a>
+  
+    <li><a href="./LgdpfMailer.html">LgdpfMailer</a>
+  
+    <li><a href="./Note.html">Note</a>
+  
+    <li><a href="./PeopleController.html">PeopleController</a>
+  
+    <li><a href="./PersonHelper.html">PersonHelper</a>
+  
+    <li><a href="./PhotoUrlUploader.html">PhotoUrlUploader</a>
+  
+    <li><a href="./TimeValidator.html">TimeValidator</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class ApplicationController</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-autocomplete_city" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">autocomplete_city</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>オートコンプリート市区町村取得処理</p>
+
+<h4 id="method-i-autocomplete_city-label-Args">Args</h4>
+<dl class="rdoc-list note-list"><dt><em>term</em> 
+<dd>
+<p>ユーザ入力値</p>
+</dd><dt><em>state</em> 
+<dd>
+<p>都道府県</p>
+</dd></dl>
+
+<h4 id="method-i-autocomplete_city-label-Return">Return</h4>
+
+<p>市区町村jsonオブジェクト</p>
+
+<h4 id="method-i-autocomplete_city-label-Raise">Raise</h4>
+          
+
+          
+          <div class="method-source-code" id="autocomplete_city-source">
+            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 85</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">autocomplete_city</span>
+  <span class="ruby-ivar">@city</span> = <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">cache</span>.<span class="ruby-identifier">read</span>(<span class="ruby-string">&quot;city&quot;</span>)
+  <span class="ruby-ivar">@city</span>.<span class="ruby-identifier">delete_if</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">key</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">!~</span> <span class="ruby-node">%r#{params[&quot;term&quot;]}/</span>}
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> (<span class="ruby-ivar">@city</span>.<span class="ruby-identifier">present?</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@city</span>.<span class="ruby-identifier">values</span>.<span class="ruby-identifier">to_json</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>) }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- autocomplete_city-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- autocomplete_city-method -->
+
+    
+      <div id="method-i-autocomplete_street" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">autocomplete_street</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>オートコンプリート町名取得処理</p>
+
+<h4 id="method-i-autocomplete_street-label-Args">Args</h4>
+<dl class="rdoc-list note-list"><dt><em>term</em> 
+<dd>
+<p>ユーザ入力値</p>
+</dd><dt><em>state</em> 
+<dd>
+<p>都道府県</p>
+</dd></dl>
+
+<h4 id="method-i-autocomplete_street-label-Return">Return</h4>
+
+<p>町名jsonオブジェクト</p>
+
+<h4 id="method-i-autocomplete_street-label-Raise">Raise</h4>
+          
+
+          
+          <div class="method-source-code" id="autocomplete_street-source">
+            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 101</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">autocomplete_street</span>
+  <span class="ruby-ivar">@street</span> = <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">cache</span>.<span class="ruby-identifier">read</span>(<span class="ruby-string">&quot;street&quot;</span>)
+  <span class="ruby-ivar">@street</span>.<span class="ruby-identifier">delete_if</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">key</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">!~</span> <span class="ruby-node">%r#{params[&quot;term&quot;]}/</span>}
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> (<span class="ruby-ivar">@street</span>.<span class="ruby-identifier">present?</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@street</span>.<span class="ruby-identifier">values</span>.<span class="ruby-identifier">to_json</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>) }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- autocomplete_street-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- autocomplete_street-method -->
+
+    
+      <div id="method-i-cancel_personal_info" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">cancel_personal_info</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>個人情報表示を無効にする submitしたときに個人情報を非表示にする</p>
+
+<h3 id="method-i-cancel_personal_info-label-Args">Args</h3>
+
+<h3 id="method-i-cancel_personal_info-label-Return">Return</h3>
+
+<h3 id="method-i-cancel_personal_info-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="cancel_personal_info-source">
+            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 43</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">cancel_personal_info</span>
+  <span class="ruby-comment"># submitボタン押下</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:commit</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-identifier">session</span>[<span class="ruby-value">:pi_view</span>] = <span class="ruby-keyword">false</span>  <span class="ruby-comment"># 個人情報表示を無効にする</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- cancel_personal_info-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- cancel_personal_info-method -->
+
+    
+      <div id="method-i-expiry_date" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">expiry_date</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>有効期限の確認</p>
+
+<h3 id="method-i-expiry_date-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>token</em> 
+<dd>
+<p>ユニークキー</p>
+</dd></dl>
+
+<h3 id="method-i-expiry_date-label-Return">Return</h3>
+
+<h3 id="method-i-expiry_date-label-Raise">Raise</h3>
+
+<p>ActiveRecord::RecordNotFound</p>
+          
+
+          
+          <div class="method-source-code" id="expiry_date-source">
+            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 27</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">expiry_date</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:token</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-identifier">aal</span> = <span class="ruby-constant">ApiActionLog</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:unique_key</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:token</span>])
+    <span class="ruby-comment"># tokenが空か、作成してから３日より経過していたら例外</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">aal</span>.<span class="ruby-identifier">blank?</span> <span class="ruby-operator">||</span> (<span class="ruby-identifier">aal</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">entry_date</span> <span class="ruby-operator">+</span> <span class="ruby-value">3</span>.<span class="ruby-identifier">days</span>) <span class="ruby-operator">&lt;</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+      <span class="ruby-identifier">raise</span> <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">RecordNotFound</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- expiry_date-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- expiry_date-method -->
+
+    
+      <div id="method-i-get_cache" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_cache</span><span
+            class="method-args">(key_name)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>memcacheされた値を取得・加工</p>
+
+<h3 id="method-i-get_cache-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>key_name</em> 
+<dd>
+<p>キャッシュされているハッシュのキー名</p>
+</dd></dl>
+
+<h3 id="method-i-get_cache-label-Return">Return</h3>
+<dl class="rdoc-list note-list"><dt><em>constant_list</em> 
+<dd>
+<p>{code =&gt; name}</p>
+</dd></dl>
+
+<h4 id="method-i-get_cache-label-Raise">Raise</h4>
+          
+
+          
+          <div class="method-source-code" id="get_cache-source">
+            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 68</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_cache</span>(<span class="ruby-identifier">key_name</span>)
+  <span class="ruby-identifier">constant_list</span> = {}
+  <span class="ruby-identifier">constant</span> = <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">cache</span>.<span class="ruby-identifier">read</span>(<span class="ruby-identifier">key_name</span>)
+  <span class="ruby-identifier">constant</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">constant_list</span>[<span class="ruby-identifier">c</span>[<span class="ruby-value">0</span>]] = <span class="ruby-identifier">c</span>[<span class="ruby-value">1</span>][<span class="ruby-string">&quot;name&quot;</span>]
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">constant_list</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_cache-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_cache-method -->
+
+    
+      <div id="method-i-init" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">init</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>コンスタントマスタの読み込み</p>
+
+<h3 id="method-i-init-label-Args">Args</h3>
+
+<h3 id="method-i-init-label-Return">Return</h3>
+
+<h3 id="method-i-init-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="init-source">
+            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 10</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">init</span>
+  <span class="ruby-comment"># セレクトボックスの表示に使用するコンスタントテーブルの取得</span>
+  <span class="ruby-ivar">@person_const</span> = <span class="ruby-constant">Constant</span>.<span class="ruby-identifier">get_const</span>(<span class="ruby-constant">Person</span>.<span class="ruby-identifier">table_name</span>)
+  <span class="ruby-ivar">@note_const</span>   = <span class="ruby-constant">Constant</span>.<span class="ruby-identifier">get_const</span>(<span class="ruby-constant">Note</span>.<span class="ruby-identifier">table_name</span>)
+  <span class="ruby-ivar">@country_code</span> = <span class="ruby-constant">CountryCode</span>.<span class="ruby-identifier">hash_for_selectbox</span>
+  <span class="ruby-comment"># memcacheからマスタを取得</span>
+  <span class="ruby-comment"># @area = get_cache(&quot;area&quot;)</span>
+  <span class="ruby-comment"># @address = Rails.cache.read(&quot;address&quot;)</span>
+  <span class="ruby-comment"># @shelter = get_cache(&quot;shelter&quot;)</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- init-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- init-method -->
+
+    
+      <div id="method-i-terms_of_service" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">terms_of_service</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>利用規約画面 config/terms_message.txt に記述された内容を表示する</p>
+
+<h3 id="method-i-terms_of_service-label-Args">Args</h3>
+
+<h3 id="method-i-terms_of_service-label-Return">Return</h3>
+
+<h3 id="method-i-terms_of_service-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="terms_of_service-source">
+            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 55</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">terms_of_service</span>
+  <span class="ruby-identifier">f</span> = <span class="ruby-identifier">open</span>(<span class="ruby-node">&quot;#{Rails.root}/config/terms_message.txt&quot;</span>)
+  <span class="ruby-ivar">@terms_message</span> =  <span class="ruby-identifier">f</span>.<span class="ruby-identifier">read</span>
+  <span class="ruby-identifier">f</span>.<span class="ruby-identifier">close</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- terms_of_service-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- terms_of_service-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+
