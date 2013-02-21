@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+<title>class Note - Rails Application Documentation</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>app/models/note.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">ActiveRecord::Base
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-check_for_author_email">::check_for_author_email</a>
+    
+    <li><a href="#method-c-duplication">::duplication</a>
+    
+    <li><a href="#method-c-exec_insert_note">::exec_insert_note</a>
+    
+    <li><a href="#method-c-no_duplication">::no_duplication</a>
+    
+    <li><a href="#method-i-note_author_valid">#note_author_valid</a>
+    
+    <li><a href="#method-i-set_attributes">#set_attributes</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./doc/README_FOR_APP.html">README_FOR_APP</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./Batches.html">Batches</a>
+  
+    <li><a href="./Batches/ExportGooglePersonFinder.html">Batches::ExportGooglePersonFinder</a>
+  
+    <li><a href="./Batches/PeopleDestroy.html">Batches::PeopleDestroy</a>
+  
+    <li><a href="./ActiveResourceController.html">ActiveResourceController</a>
+  
+    <li><a href="./ApiActionLog.html">ApiActionLog</a>
+  
+    <li><a href="./ApplicationController.html">ApplicationController</a>
+  
+    <li><a href="./ApplicationHelper.html">ApplicationHelper</a>
+  
+    <li><a href="./ConsentError.html">ConsentError</a>
+  
+    <li><a href="./Constant.html">Constant</a>
+  
+    <li><a href="./CountryCode.html">CountryCode</a>
+  
+    <li><a href="./DateValidator.html">DateValidator</a>
+  
+    <li><a href="./EmailBlankError.html">EmailBlankError</a>
+  
+    <li><a href="./LgdpfMailer.html">LgdpfMailer</a>
+  
+    <li><a href="./Note.html">Note</a>
+  
+    <li><a href="./PeopleController.html">PeopleController</a>
+  
+    <li><a href="./PersonHelper.html">PersonHelper</a>
+  
+    <li><a href="./PhotoUrlUploader.html">PhotoUrlUploader</a>
+  
+    <li><a href="./TimeValidator.html">TimeValidator</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class Note</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <!-- Constants -->
+    <section id="constants-list" class="section">
+      <h3 class="section-header">Constants</h3>
+      <dl>
+      
+        <dt id="STATUS_BELIEVED_ALIVE">STATUS_BELIEVED_ALIVE
+        
+        <dd class="description">
+        
+      
+        <dt id="STATUS_BELIEVED_MISSING">STATUS_BELIEVED_MISSING
+        
+        <dd class="description">
+        
+      
+        <dt id="STATUS_INFORMATION_SOUGHT">STATUS_INFORMATION_SOUGHT
+        
+        <dd class="description">
+        
+      
+        <dt id="STATUS_IS_NOTE_AUTHOR">STATUS_IS_NOTE_AUTHOR
+        
+        <dd class="description">
+        
+      
+        <dt id="STATUS_UNSPECIFIED">STATUS_UNSPECIFIED
+        
+        <dd class="description"><p>–<strong>–</strong>– 定数 –<strong>–</strong>– 状況</p>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-check_for_author_email" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">check_for_author_email</span><span
+            class="method-args">(person)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Personとそれに紐付くNoteに重複するauthor_emailがあるか？</p>
+
+<h3 id="method-c-check_for_author_email-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>person</em> 
+<dd>
+<p>Personオブジェクト</p>
+</dd></dl>
+
+<h3 id="method-c-check_for_author_email-label-Return">Return</h3>
+
+<p>boolean</p>
+
+<h3 id="method-c-check_for_author_email-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="check_for_author_email-source">
+            <pre><span class="ruby-comment"># File app/models/note.rb, line 96</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">check_for_author_email</span>(<span class="ruby-identifier">person</span>)
+  <span class="ruby-identifier">dup</span> = <span class="ruby-identifier">where</span>(<span class="ruby-value">:person_record_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">id</span>, <span class="ruby-value">:author_email</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">author_email</span>).<span class="ruby-identifier">all</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">dup</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- check_for_author_email-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- check_for_author_email-method -->
+
+    
+      <div id="method-c-duplication" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">duplication</span><span
+            class="method-args">(pid)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>対象Personの重複確認用のNoteを抽出する</p>
+
+<h3 id="method-c-duplication-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>pid</em> 
+<dd>
+<p>Person.id</p>
+</dd></dl>
+
+<h3 id="method-c-duplication-label-Return">Return</h3>
+
+<p>Noteオブジェクト配列</p>
+
+<h3 id="method-c-duplication-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="duplication-source">
+            <pre><span class="ruby-comment"># File app/models/note.rb, line 74</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">duplication</span>(<span class="ruby-identifier">pid</span>)
+  <span class="ruby-identifier">find</span>(<span class="ruby-value">:all</span>, <span class="ruby-value">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-string">&quot;linked_person_record_id IS NOT NULL AND person_record_id = ?&quot;</span>, <span class="ruby-identifier">pid</span>])
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- duplication-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- duplication-method -->
+
+    
+      <div id="method-c-exec_insert_note" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">exec_insert_note</span><span
+            class="method-args">(note, e)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>pfifをNoteレコードに格納する</p>
+
+<h3 id="method-c-exec_insert_note-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>note</em> 
+<dd>
+<p>Noteオブジェクト</p>
+</dd><dt><em>e</em>    
+<dd>
+<p>pfif形式のNoteエレメント</p>
+</dd></dl>
+
+<h3 id="method-c-exec_insert_note-label-Return">Return</h3>
+
+<p>Noteオブジェクト</p>
+
+<h3 id="method-c-exec_insert_note-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="exec_insert_note-source">
+            <pre><span class="ruby-comment"># File app/models/note.rb, line 108</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">exec_insert_note</span>(<span class="ruby-identifier">note</span>, <span class="ruby-identifier">e</span>)
+  <span class="ruby-identifier">note</span>.<span class="ruby-identifier">note_record_id</span>         = <span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:note_record_id&quot;</span>].<span class="ruby-identifier">try</span>(<span class="ruby-value">:text</span>)
+  <span class="ruby-identifier">person_record</span>               = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find_by_person_record_id</span>(<span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:person_record_id&quot;</span>].<span class="ruby-identifier">try</span>(<span class="ruby-value">:text</span>))
+  <span class="ruby-identifier">note</span>.<span class="ruby-identifier">person_record_id</span>       = <span class="ruby-identifier">person_record</span>.<span class="ruby-identifier">id</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">person_record</span>.<span class="ruby-identifier">present?</span>
+  <span class="ruby-identifier">linked_person_record</span>        = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find_by_person_record_id</span>(<span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:linked_person_record_id&quot;</span>].<span class="ruby-identifier">text</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:linked_person_record_id&quot;</span>].<span class="ruby-identifier">present?</span>
+  <span class="ruby-identifier">note</span>.<span class="ruby-identifier">linked_person_record_id</span>       = <span class="ruby-identifier">linked_person_record</span>.<span class="ruby-identifier">id</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">linked_person_record</span>.<span class="ruby-identifier">present?</span>
+  <span class="ruby-identifier">entry_date</span>                  = <span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:entry_date&quot;</span>].<span class="ruby-identifier">try</span>(<span class="ruby-value">:text</span>)
+  <span class="ruby-identifier">note</span>.<span class="ruby-identifier">entry_date</span>             = <span class="ruby-identifier">entry_date</span>.<span class="ruby-identifier">to_time</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">entry_date</span>.<span class="ruby-identifier">present?</span>
+  <span class="ruby-identifier">note</span>.<span class="ruby-identifier">author_name</span>            = <span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:author_name&quot;</span>].<span class="ruby-identifier">try</span>(<span class="ruby-value">:text</span>)
+  <span class="ruby-identifier">note</span>.<span class="ruby-identifier">author_email</span>           = <span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:author_email&quot;</span>].<span class="ruby-identifier">try</span>(<span class="ruby-value">:text</span>)
+  <span class="ruby-identifier">note</span>.<span class="ruby-identifier">author_phone</span>           = <span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:author_phone&quot;</span>].<span class="ruby-identifier">try</span>(<span class="ruby-value">:text</span>)
+  <span class="ruby-identifier">source_date</span>                 = <span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:source_date&quot;</span>].<span class="ruby-identifier">try</span>(<span class="ruby-value">:text</span>)
+  <span class="ruby-identifier">note</span>.<span class="ruby-identifier">source_date</span>            = <span class="ruby-identifier">source_date</span>.<span class="ruby-identifier">to_time</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">source_date</span>.<span class="ruby-identifier">present?</span>
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:author_made_contact&quot;</span>].<span class="ruby-identifier">try</span>(<span class="ruby-value">:text</span>)
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;true&quot;</span>
+    <span class="ruby-identifier">author_made_contact</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;false&quot;</span>
+    <span class="ruby-identifier">author_made_contact</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">author_made_contact</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">note</span>.<span class="ruby-identifier">author_made_contact</span>    = <span class="ruby-identifier">author_made_contact</span>
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:status&quot;</span>].<span class="ruby-identifier">try</span>(<span class="ruby-value">:text</span>)
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;information_sought&quot;</span>     <span class="ruby-comment"># 情報を探している</span>
+    <span class="ruby-identifier">status</span> = <span class="ruby-constant">STATUS_INFORMATION_SOUGHT</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;is_note_author&quot;</span>         <span class="ruby-comment"># 私が本人である</span>
+    <span class="ruby-identifier">status</span> = <span class="ruby-constant">STATUS_IS_NOTE_AUTHOR</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;believed_alive&quot;</span>         <span class="ruby-comment"># この人が生きているという情報を入手した</span>
+    <span class="ruby-identifier">status</span> = <span class="ruby-constant">STATUS_BELIEVED_ALIVE</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;believed_missing&quot;</span>       <span class="ruby-comment"># この人を行方不明と判断した理由がある</span>
+    <span class="ruby-identifier">status</span> = <span class="ruby-constant">STATUS_BELIEVED_MISSING</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">status</span> = <span class="ruby-constant">STATUS_UNSPECIFIED</span> <span class="ruby-comment"># 指定無し</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">note</span>.<span class="ruby-identifier">status</span>                 = <span class="ruby-identifier">status</span>
+  <span class="ruby-identifier">note</span>.<span class="ruby-identifier">email_of_found_person</span>  = <span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:email_of_found_person&quot;</span>].<span class="ruby-identifier">try</span>(<span class="ruby-value">:text</span>)
+  <span class="ruby-identifier">note</span>.<span class="ruby-identifier">phone_of_found_person</span>  = <span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:phone_of_found_person&quot;</span>].<span class="ruby-identifier">try</span>(<span class="ruby-value">:text</span>)
+  <span class="ruby-identifier">note</span>.<span class="ruby-identifier">last_known_location</span>    = <span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:last_known_location&quot;</span>].<span class="ruby-identifier">try</span>(<span class="ruby-value">:text</span>)
+  <span class="ruby-identifier">note</span>.<span class="ruby-identifier">text</span>                   = <span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:text&quot;</span>].<span class="ruby-identifier">try</span>(<span class="ruby-value">:text</span>)
+  <span class="ruby-identifier">note</span>.<span class="ruby-identifier">remote_photo_url_url</span>   = <span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:photo_url&quot;</span>].<span class="ruby-identifier">try</span>(<span class="ruby-value">:text</span>)
+
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">note</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- exec_insert_note-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- exec_insert_note-method -->
+
+    
+      <div id="method-c-no_duplication" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">no_duplication</span><span
+            class="method-args">(pid)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>対象Personの重複確認用のNote以外を抽出する</p>
+
+<h3 id="method-c-no_duplication-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>pid</em> 
+<dd>
+<p>Person.id</p>
+</dd></dl>
+
+<h3 id="method-c-no_duplication-label-Return">Return</h3>
+
+<p>Noteオブジェクト配列</p>
+
+<h3 id="method-c-no_duplication-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="no_duplication-source">
+            <pre><span class="ruby-comment"># File app/models/note.rb, line 84</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">no_duplication</span>(<span class="ruby-identifier">pid</span>)
+  <span class="ruby-identifier">find</span>(<span class="ruby-value">:all</span>, 
+    <span class="ruby-value">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-string">&quot;linked_person_record_id IS NULL AND person_record_id = ?&quot;</span>, <span class="ruby-identifier">pid</span>],
+    <span class="ruby-value">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;entry_date ASC&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- no_duplication-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- no_duplication-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-note_author_valid" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">note_author_valid</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>statusとauthor_made_contactの相互validation</p>
+<ul><li>
+<p>status = 3                  : 状況「私が本人である」</p>
+</li><li>
+<p>author_made_contact = false : 連絡の有無「いいえ」</p>
+</li></ul>
+
+<h3 id="method-i-note_author_valid-label-Args">Args</h3>
+
+<h3 id="method-i-note_author_valid-label-Return">Return</h3>
+
+<p>errorメッセージ</p>
+
+<h3 id="method-i-note_author_valid-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="note_author_valid-source">
+            <pre><span class="ruby-comment"># File app/models/note.rb, line 62</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">note_author_valid</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-constant">STATUS_IS_NOTE_AUTHOR</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">author_made_contact</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
+    <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:author_made_contact</span>, <span class="ruby-string">&quot;&quot;</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- note_author_valid-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- note_author_valid-method -->
+
+    
+      <div id="method-i-set_attributes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_attributes</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>before_createで設定する項目</p>
+
+<h3 id="method-i-set_attributes-label-Args">Args</h3>
+
+<h3 id="method-i-set_attributes-label-Return">Return</h3>
+
+<h3 id="method-i-set_attributes-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="set_attributes-source">
+            <pre><span class="ruby-comment"># File app/models/note.rb, line 50</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_attributes</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">entry_date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">source_date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">source_date</span>.<span class="ruby-identifier">blank?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- set_attributes-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- set_attributes-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

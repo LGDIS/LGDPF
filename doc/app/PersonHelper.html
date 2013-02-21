@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+<title>module PersonHelper - Rails Application Documentation</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="module">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>app/helpers/person_helper.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-i-create_address">#create_address</a>
+    
+    <li><a href="#method-i-create_result_data_title">#create_result_data_title</a>
+    
+    <li><a href="#method-i-icon_image_tag">#icon_image_tag</a>
+    
+    <li><a href="#method-i-parse_br">#parse_br</a>
+    
+    <li><a href="#method-i-url_name">#url_name</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./doc/README_FOR_APP.html">README_FOR_APP</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./Batches.html">Batches</a>
+  
+    <li><a href="./Batches/ExportGooglePersonFinder.html">Batches::ExportGooglePersonFinder</a>
+  
+    <li><a href="./Batches/PeopleDestroy.html">Batches::PeopleDestroy</a>
+  
+    <li><a href="./ActiveResourceController.html">ActiveResourceController</a>
+  
+    <li><a href="./ApiActionLog.html">ApiActionLog</a>
+  
+    <li><a href="./ApplicationController.html">ApplicationController</a>
+  
+    <li><a href="./ApplicationHelper.html">ApplicationHelper</a>
+  
+    <li><a href="./ConsentError.html">ConsentError</a>
+  
+    <li><a href="./Constant.html">Constant</a>
+  
+    <li><a href="./CountryCode.html">CountryCode</a>
+  
+    <li><a href="./DateValidator.html">DateValidator</a>
+  
+    <li><a href="./EmailBlankError.html">EmailBlankError</a>
+  
+    <li><a href="./LgdpfMailer.html">LgdpfMailer</a>
+  
+    <li><a href="./Note.html">Note</a>
+  
+    <li><a href="./PeopleController.html">PeopleController</a>
+  
+    <li><a href="./PersonHelper.html">PersonHelper</a>
+  
+    <li><a href="./PhotoUrlUploader.html">PhotoUrlUploader</a>
+  
+    <li><a href="./TimeValidator.html">TimeValidator</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="module">module PersonHelper</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-create_address" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_address</span><span
+            class="method-args">(person)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>検索結果に表示する住所文字列を生成する</p>
+
+<h2 id="method-i-create_address-label-Args">Args</h2>
+<dl class="rdoc-list note-list"><dt>_person 
+<dd>
+<p>Person</p>
+</dd></dl>
+
+<h2 id="method-i-create_address-label-Return">Return</h2>
+
+<p>住所文字列</p>
+          
+
+          
+          <div class="method-source-code" id="create_address-source">
+            <pre><span class="ruby-comment"># File app/helpers/person_helper.rb, line 20</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_address</span>(<span class="ruby-identifier">person</span>)
+  <span class="ruby-identifier">address_ary</span> = []
+  <span class="ruby-identifier">join_str</span> = <span class="ruby-string">&quot;&amp;nbsp;&amp;nbsp;&amp;nbsp;&quot;</span>
+
+  <span class="ruby-comment"># 郵便番号</span>
+  <span class="ruby-identifier">address_ary</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">home_postal_code</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">home_postal_code</span>.<span class="ruby-identifier">present?</span>
+  <span class="ruby-comment"># 都道府県</span>
+  <span class="ruby-identifier">address_ary</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">home_state</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">home_state</span>.<span class="ruby-identifier">present?</span>
+  <span class="ruby-comment"># 市</span>
+  <span class="ruby-identifier">address_ary</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">home_city</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">home_city</span>.<span class="ruby-identifier">present?</span>
+  <span class="ruby-comment"># 町名</span>
+  <span class="ruby-identifier">address_ary</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">home_street</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">home_street</span>.<span class="ruby-identifier">present?</span>
+  <span class="ruby-comment"># 近隣の場所</span>
+  <span class="ruby-identifier">address_ary</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">home_neighborhood</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">home_neighborhood</span>.<span class="ruby-identifier">present?</span>
+  
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">address_ary</span>.<span class="ruby-identifier">present?</span>
+    <span class="ruby-comment"># 住所文字列をHTMLエスケープする</span>
+    <span class="ruby-identifier">address_ary</span>.<span class="ruby-identifier">map!</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">adr</span><span class="ruby-operator">|</span> <span class="ruby-constant">ERB</span><span class="ruby-operator">::</span><span class="ruby-constant">Util</span>.<span class="ruby-identifier">html_escape</span>(<span class="ruby-identifier">adr</span>) }
+    <span class="ruby-keyword">return</span> (<span class="ruby-string">&quot;自宅住所: &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">address_ary</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">join_str</span>)).<span class="ruby-identifier">html_safe</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- create_address-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- create_address-method -->
+
+    
+      <div id="method-i-create_result_data_title" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_result_data_title</span><span
+            class="method-args">(person)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>検索結果に表示する姓名文字列を生成する</p>
+
+<h2 id="method-i-create_result_data_title-label-Args">Args</h2>
+<dl class="rdoc-list note-list"><dt><em>person</em> 
+<dd>
+<p>Person</p>
+</dd></dl>
+
+<h2 id="method-i-create_result_data_title-label-Return">Return</h2>
+
+<p>姓名文字列</p>
+          
+
+          
+          <div class="method-source-code" id="create_result_data_title-source">
+            <pre><span class="ruby-comment"># File app/helpers/person_helper.rb, line 7</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_result_data_title</span>(<span class="ruby-identifier">person</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">alternate_names</span>.<span class="ruby-identifier">present?</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;#{person.full_name} (#{person.alternate_names})&quot;</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">full_name</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- create_result_data_title-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- create_result_data_title-method -->
+
+    
+      <div id="method-i-icon_image_tag" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">icon_image_tag</span><span
+            class="method-args">(url)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>アイコンのイメージを挿入する</p>
+
+<h3 id="method-i-icon_image_tag-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>url</em> 
+<dd>
+<p>URL</p>
+</dd></dl>
+          
+
+          
+          <div class="method-source-code" id="icon_image_tag-source">
+            <pre><span class="ruby-comment"># File app/helpers/person_helper.rb, line 56</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">icon_image_tag</span>(<span class="ruby-identifier">url</span>)
+  <span class="ruby-keyword">if</span>  <span class="ruby-identifier">url</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r^http:\/\/(www\.)?(facebook)\.com\/*/</span>
+    <span class="ruby-identifier">tag</span> = <span class="ruby-string">&quot;&lt;img class='icon' src='/assets/facebook-16x16.png' alt='Facebook-16x16' /&gt;&quot;</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">url</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r^http:\/\/(www\.)?(twitter)\.com\/*/</span>
+    <span class="ruby-identifier">tag</span> = <span class="ruby-string">&quot;&lt;img class='icon' src='/assets/twitter-16x16.png' alt='Twitter-16x16' /&gt;&quot;</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">url</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r^http:\/\/(www\.)?(linkedin)\.com\/*/</span>
+    <span class="ruby-identifier">tag</span> = <span class="ruby-string">&quot;&lt;img class='icon' src='/assets/linkedin-16x16.png' alt='Linkedin-16x16' /&gt;&quot;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">tag</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- icon_image_tag-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- icon_image_tag-method -->
+
+    
+      <div id="method-i-parse_br" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_br</span><span
+            class="method-args">(str)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>改行コードをHTMLの改行タグに変換する</p>
+
+<h3 id="method-i-parse_br-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>str</em> 
+<dd>
+<p>変換する文字列</p>
+</dd></dl>
+          
+
+          
+          <div class="method-source-code" id="parse_br-source">
+            <pre><span class="ruby-comment"># File app/helpers/person_helper.rb, line 48</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_br</span>(<span class="ruby-identifier">str</span>)
+  <span class="ruby-identifier">str</span> = <span class="ruby-identifier">html_escape</span>(<span class="ruby-identifier">str</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">str</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">%r(\r\n|\r|\n)/</span>, <span class="ruby-string">&quot;&lt;br /&gt;&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- parse_br-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- parse_br-method -->
+
+    
+      <div id="method-i-url_name" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">url_name</span><span
+            class="method-args">(url)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>URLの通称を返す</p>
+
+<h3 id="method-i-url_name-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>url</em> 
+<dd>
+<p>URL</p>
+</dd></dl>
+          
+
+          
+          <div class="method-source-code" id="url_name-source">
+            <pre><span class="ruby-comment"># File app/helpers/person_helper.rb, line 70</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">url_name</span>(<span class="ruby-identifier">url</span>)
+  <span class="ruby-keyword">if</span>  <span class="ruby-identifier">url</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r^http:\/\/(www\.)?(facebook)\.com\/*/</span>
+    <span class="ruby-identifier">name</span> = <span class="ruby-string">&quot;Facebook&quot;</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">url</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r^http:\/\/(www\.)?(twitter)\.com\/*/</span>
+    <span class="ruby-identifier">name</span> = <span class="ruby-string">&quot;Twitter&quot;</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">url</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r^http:\/\/(www\.)?(linkedin)\.com\/*/</span>
+    <span class="ruby-identifier">name</span> = <span class="ruby-string">&quot;Linkedin&quot;</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">name</span> = <span class="ruby-identifier">url</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&quot;/&quot;</span>)[<span class="ruby-value">2</span>]
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">name</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- url_name-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- url_name-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+
