@@ -24,14 +24,15 @@ class Batches::ExportGooglePersonFinder
       # アップロード対象のレコードがなくなるまで
       while Person.find_for_export_gpf.size > 0
         # 書き込み専用でファイルを開く（新規作成）
-        file_name = "tmp/lgdpf#{Time.now.utc.xmlschema.gsub(":","")}.xml"
-        output_file = File.open(file_name, "w")
-        output_file.write(create_pfif)    # ファイルにデータ書き込み
-
+        binding.pry
+        file_path = Rails.root + "tmp/lgdpf#{Time.now.utc.xmlschema.gsub(":","")}.xml"
+        File.open(file_path, "w") do |output_file|
+          output_file.write(create_pfif)    # ファイルにデータ書き込み
+        end
+        
         # GooglePersonFinderにexport
-        puts `curl -X POST -H 'Content-type: application/xml' --data-binary @#{file_name} https://www.google.org/personfinder/#{@settings["gpf"]["repository"]}/api/write?key=#{@settings["gpf"]["api_key"]} `
+        puts `curl -X POST -H 'Content-type: application/xml' --data-binary @#{file_path} https://www.google.org/personfinder/#{@settings["gpf"]["repository"]}/api/write?key=#{@settings["gpf"]["api_key"]} `
 
-        output_file.close
         File.delete(file_name)  # 送信済みXMLファイルの削除
       end
       
