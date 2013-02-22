@@ -100,10 +100,15 @@ class Batches::ExportGooglePersonFinder
         node_note.add_element("pfif:last_known_location").add_text("#{note.last_known_location}") if note.last_known_location.present?
         node_note.add_element("pfif:text").add_text("#{note.text}")
         node_note.add_element("pfif:photo_url").add_text("#{@settings["lgdpf"][Rails.env]["site"]}#{note.photo_url}") if note.photo_url.present?
+     
+        # GooglePersonFinderに送ったnote_record_idを保持する
+        note.note_record_id = "#{@settings["gpf"]["domain"]}/note.#{note.id}"
+        note.save
       end
 
-      # 公開フラグを消す
-      person.public_flag = Person::PUBLIC_FLAG_OFF
+      # GooglePersonFinderに送ったperson_record_idを保持する
+      person.person_record_id = "#{@settings["gpf"]["domain"]}/person.#{person.id}"
+      person.public_flag = Person::PUBLIC_FLAG_OFF  # 公開フラグを消す
       person.save
     end
     return doc.to_s

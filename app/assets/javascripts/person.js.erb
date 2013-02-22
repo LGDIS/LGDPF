@@ -258,7 +258,7 @@ function validate_fields() {
       if (url && website && website.url_regexp &&
         !url.match(website.url_regexp)) {
         show(document.getElementById('invalid_profile_url'));
-        $("h1 + div.error").remove();
+        $("h1 + div.error").hide();
         scrollTo(0,0);
         return false;
       }
