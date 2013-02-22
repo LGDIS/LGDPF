@@ -24,7 +24,6 @@ class Batches::ExportGooglePersonFinder
       # アップロード対象のレコードがなくなるまで
       while Person.find_for_export_gpf.size > 0
         # 書き込み専用でファイルを開く（新規作成）
-        binding.pry
         file_path = Rails.root + "tmp/lgdpf#{Time.now.utc.xmlschema.gsub(":","")}.xml"
         File.open(file_path, "w") do |output_file|
           output_file.write(create_pfif)    # ファイルにデータ書き込み
