@@ -96,7 +96,7 @@ function mark_dup() {
 
 // Dynamic behavior for the image URL / upload entry fields.
 $(document).ready(function() {
-  $("input[name=person_photo_input]").bind("change", function(){
+  $("input[name=person_photo_input]").bind("change click", function(){
     var check = $(this).val();
     if (check == "url") {
       $('#person_remote_photo_url_url').removeAttr("disabled").focus()
@@ -110,7 +110,7 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-  $("input[name=note_photo_input]").bind("change", function(){
+  $("input[name=note_photo_input]").bind("change click", function(){
     var check = $(this).val();
     if (check == "url") {
       $('#note_remote_photo_url_url').removeAttr("disabled").focus()
