@@ -32,7 +32,7 @@ class Batches::ExportGooglePersonFinder
         # GooglePersonFinderにexport
         puts `curl -X POST -H 'Content-type: application/xml' --data-binary @#{file_path} https://www.google.org/personfinder/#{@settings["gpf"]["repository"]}/api/write?key=#{@settings["gpf"]["api_key"]} `
 
-        File.delete(file_name)  # 送信済みXMLファイルの削除
+        File.delete(file_path)  # 送信済みXMLファイルの削除
       end
       
 
