@@ -266,6 +266,7 @@ class Person < ActiveRecord::Base
     # CarrierWaveの記述に合わせてremote_XXX_urlの書式にしてある
     person.remote_photo_url_url = e.elements["pfif:photo_url"].try(:text)
     person.profile_urls      = e.elements["pfif:profile_urls"].try(:text)
+    person.public_flag       = PUBLIC_FLAG_ON
     return person
   end
 

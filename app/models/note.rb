@@ -43,6 +43,7 @@ class Note < ActiveRecord::Base
   STATUS_IS_NOTE_AUTHOR     = 3 # 私が本人である
   STATUS_BELIEVED_ALIVE     = 4 # この人が生きているという情報を入手した
   STATUS_BELIEVED_MISSING   = 5 # この人を行方不明と判断した理由がある
+  STATUS_BELIEVED_DEAD      = 6 # この人物が死亡したという情報を入手した
 
   # before_createで設定する項目
   # === Args
@@ -137,6 +138,8 @@ class Note < ActiveRecord::Base
       status = STATUS_BELIEVED_ALIVE
     when "believed_missing"       # この人を行方不明と判断した理由がある
       status = STATUS_BELIEVED_MISSING
+    when "believed_dead"          # この人物が死亡したという情報を入手した
+      status = STATUS_BELIEVED_DEAD
     else
       status = STATUS_UNSPECIFIED # 指定無し
     end

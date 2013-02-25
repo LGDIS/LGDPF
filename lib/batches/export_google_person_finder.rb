@@ -20,9 +20,11 @@ class Batches::ExportGooglePersonFinder
 
       # APIキーの読み込み
       @settings = YAML.load_file("#{Rails.root}/config/settings.yml")
+      export_record_size = Person.where(:public_flag => Person::PUBLIC_FLAG_ON).size
 
       # アップロード対象のレコードがなくなるまで
-      while Person.find_for_export_gpf.size > 0
+      while export_record_size > 0
+        export_record_size = export_record_size - Person.find_for_export_gpf.size
         # 書き込み専用でファイルを開く（新規作成）
         file_path = Rails.root + "tmp/lgdpf#{Time.now.utc.xmlschema.gsub(":","")}.xml"
         File.open(file_path, "w") do |output_file|
@@ -94,7 +96,7 @@ class Batches::ExportGooglePersonFinder
         node_note.add_element("pfif:author_phone").add_text("#{note.author_phone}") if note.author_phone.present?
         node_note.add_element("pfif:source_date").add_text("#{note.source_date.utc.xmlschema}") if note.source_date.present?
         node_note.add_element("pfif:author_made_contact").add_text("#{note.author_made_contact}") if note.author_made_contact.present?
-        node_note.add_element("pfif:status").add_text("#{note.status}") if note.status.present?
+        node_note.add_element("pfif:status").add_text("#{status_parse_for_gpf(note.status)}") if note.status.present?
         node_note.add_element("pfif:email_of_found_person").add_text("#{note.email_of_found_person}") if note.email_of_found_person.present?
         node_note.add_element("pfif:phone_of_found_person").add_text("#{note.phone_of_found_person}") if note.phone_of_found_person.present?
         node_note.add_element("pfif:last_known_location").add_text("#{note.last_known_location}") if note.last_known_location.present?
@@ -108,7 +110,6 @@ class Batches::ExportGooglePersonFinder
 
       # GooglePersonFinderに送ったperson_record_idを保持する
       person.person_record_id = "#{@settings["gpf"]["domain"]}/person.#{person.id}"
-      person.public_flag = Person::PUBLIC_FLAG_OFF  # 公開フラグを消す
       person.save
     end
     return doc.to_s
@@ -140,6 +141,29 @@ class Batches::ExportGooglePersonFinder
       "other"
     else
       nil
+    end
+  end
+
+  # 状況をGooglePersonFinderの形式に変換する
+  # === Args
+  # _status_ :: Note.status
+  # === Return
+  # "information_sought" | "is_note_author" | "believed_alive" | "believed_missing" | "believed_dead"
+  # === Raise
+  def self.status_parse_for_gpf(status)
+    case status.to_i
+    when Note::STATUS_INFORMATION_SOUGHT  # 情報を探している
+      "information_sought"
+    when Note::STATUS_IS_NOTE_AUTHOR      # 私が本人である
+      "is_note_author"
+    when Note::STATUS_BELIEVED_ALIVE      # この人が生きているという情報を入手した
+      "believed_alive"
+    when Note::STATUS_BELIEVED_MISSING    # この人を行方不明と判断した理由がある
+      "believed_missing"
+    when Note::STATUS_BELIEVED_DEAD       # この人物が死亡したという情報を入手した
+      "believed_dead"
+    else
+      nil                  # 指定無し
     end
   end
 
