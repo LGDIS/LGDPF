@@ -51,8 +51,9 @@ class Batches::ImportGooglePersonFinder
         skip = skip + 200
         doc.elements.each("feed/entry/pfif:person") do |e|
           # person_record_idが重複する場合は取り込まない
+          # 削除されているデータも確認する
           person_record_id = e.elements["pfif:person_record_id"].try(:text)
-          local_person = Person.find_by_person_record_id(person_record_id)
+          local_person = Person.with_deleted.find_by_person_record_id(person_record_id)
           # LGDPFからuploadしたデータは取り込まない
           domain = person_record_id.split("/")
           next if local_person.present? || domain[0] == @settings["gpf"]["domain"]
@@ -95,8 +96,9 @@ class Batches::ImportGooglePersonFinder
         skip = skip + 200
         doc.elements.each("feed/entry/pfif:note") do |e|
           # 紐付くPersonがないNoteは取り込まない
+          # 削除されているPersonも確認する
           person_record_id = e.elements["pfif:person_record_id"].try(:text)
-          local_person = Person.find_by_person_record_id(person_record_id)
+          local_person = Person.with_deleted.find_by_person_record_id(person_record_id)
 
           # note_record_idが重複する場合は取り込まない
           note_record_id = e.elements["pfif:note_record_id"].try(:text)
