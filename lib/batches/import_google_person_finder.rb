@@ -54,8 +54,11 @@ class Batches::ImportGooglePersonFinder
           # 削除されているデータも確認する
           person_record_id = e.elements["pfif:person_record_id"].try(:text)
           local_person = Person.with_deleted.find_by_person_record_id(person_record_id)
+          local_person.try(:recover)  # 削除されていたPersonを復元
+
           # LGDPFからuploadしたデータは取り込まない
           domain = person_record_id.split("/")
+
           next if local_person.present? || domain[0] == @settings["gpf"]["domain"]
           # LGDPFに取り込む
           person = Person.new
@@ -99,6 +102,7 @@ class Batches::ImportGooglePersonFinder
           # 削除されているPersonも確認する
           person_record_id = e.elements["pfif:person_record_id"].try(:text)
           local_person = Person.with_deleted.find_by_person_record_id(person_record_id)
+          local_person.try(:recover)  # 削除されていたPersonを復元
 
           # note_record_idが重複する場合は取り込まない
           note_record_id = e.elements["pfif:note_record_id"].try(:text)
