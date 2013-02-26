@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+
 class Note < ActiveRecord::Base
   attr_accessible :person_record_id, :liked_person_record_id, :entry_date,
     :author_name, :author_email, :author_phone, :source_date,
@@ -9,6 +10,18 @@ class Note < ActiveRecord::Base
   belongs_to :person, :foreign_key => "person_record_id"
   before_create :set_attributes
   mount_uploader :photo_url, PhotoUrlUploader
+
+  # --*--*-- 定数 --*--*--
+  # 状況
+  STATUS_UNSPECIFIED        = 1 # 指定なし
+  STATUS_INFORMATION_SOUGHT = 2 # 情報を探している
+  STATUS_IS_NOTE_AUTHOR     = 3 # 私が本人である
+  STATUS_BELIEVED_ALIVE     = 4 # この人が生きているという情報を入手した
+  STATUS_BELIEVED_MISSING   = 5 # この人を行方不明と判断した理由がある
+  STATUS_BELIEVED_DEAD      = 6 # この人物が死亡したという情報を入手した
+  # 写真の最大サイズ
+  MAX_PHOTO_SIZE            = 3.5.megabytes.to_i
+
 
   # maxlength validation
   validates :note_record_id,          :length => {:maximum => 500}
@@ -35,15 +48,9 @@ class Note < ActiveRecord::Base
   # author_made_contact validation
   validate :author_made_contact, :note_author_valid
 
+  # file_size validation
+  validates :photo_url,   :file_size => { :maximum => MAX_PHOTO_SIZE }
 
-  # --*--*-- 定数 --*--*--
-  # 状況
-  STATUS_UNSPECIFIED        = 1 # 指定なし
-  STATUS_INFORMATION_SOUGHT = 2 # 情報を探している
-  STATUS_IS_NOTE_AUTHOR     = 3 # 私が本人である
-  STATUS_BELIEVED_ALIVE     = 4 # この人が生きているという情報を入手した
-  STATUS_BELIEVED_MISSING   = 5 # この人を行方不明と判断した理由がある
-  STATUS_BELIEVED_DEAD      = 6 # この人物が死亡したという情報を入手した
 
   # before_createで設定する項目
   # === Args

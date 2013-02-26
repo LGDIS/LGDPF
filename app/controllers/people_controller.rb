@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+require "net/smtp"
 
 # 利用規約の同意しない場合に発生するエラー
 class ConsentError < StandardError; end

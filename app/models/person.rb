@@ -22,6 +22,30 @@ class Person < ActiveRecord::Base
   # 画像のアップロード
   mount_uploader :photo_url, PhotoUrlUploader
 
+
+  # --*--*-- 定数 --*--*--
+  # 市内・市外区分
+  IN_CITY_FLAG_INSIDE  = 1 # 市内
+  IN_CITY_FLAG_OUTSIDE = 0 # 市外
+  # 負傷
+  INJURY_FLAG_ON      = 1 # 有
+  INJURY_FLAG_OFF      = 0 # 無
+  # アレルギー
+  ALLERGY_FLAG_ON     = 1 # アレルギー有
+  ALLERGY_FLAG_OFF     = 0 # アレルギー無
+  # 公開フラグ
+  PUBLIC_FLAG_ON      = 1 # 公開
+  PUBLIC_FLAG_OFF      = 0 # 非公開
+  # 家族も無事
+  FAMILY_WELL_YES     = "1" # 無事
+  FAMILY_WELL_NO       = "0" # 無事であるか未確認
+  # GooglePersonFinderに1度にアップロードする件数
+  GPF_UPLOAD_MAX_RECORD = 100
+  # 写真の最大サイズ
+  MAX_PHOTO_SIZE      = 3.5.megabytes.to_i
+
+
+
   # maxlength validation
   validates :person_record_id,                :length => {:maximum => 500}
   validates :full_name,                       :length => {:maximum => 500}
@@ -73,24 +97,8 @@ class Person < ActiveRecord::Base
   # profile_urls validation
   validate :profile_urls,        :url_validater # プロフィール
 
-  # --*--*-- 定数 --*--*--
-  # 市内・市外区分
-  IN_CITY_FLAG_INSIDE  = 1 # 市内
-  IN_CITY_FLAG_OUTSIDE = 0 # 市外
-  # 負傷
-  INJURY_FLAG_ON  = 1 # 有
-  INJURY_FLAG_OFF = 0 # 無
-  # アレルギー
-  ALLERGY_FLAG_ON  = 1 # アレルギー有
-  ALLERGY_FLAG_OFF = 0 # アレルギー無
-  # 公開フラグ
-  PUBLIC_FLAG_ON  = 1 # 公開
-  PUBLIC_FLAG_OFF = 0 # 非公開
-  # 家族も無事
-  FAMILY_WELL_YES = "1" # 無事
-  FAMILY_WELL_NO  = "0" # 無事であるか未確認
-  # GooglePersonFinderに1度にアップロードする件数
-  GPF_UPLOAD_MAX_RECORD = 100
+  # file_size validation
+  validates :photo_url,   :file_size => { :maximum => MAX_PHOTO_SIZE }
 
 
   # before_createで設定する項目
