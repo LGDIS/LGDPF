@@ -12,8 +12,22 @@ require 'timeout'
 Net::HTTP.version_1_2
 
 class Batches::ImportGooglePersonFinder
+
+  # 定数
+  # GooglePersonFinderからfeedデータを取得する時間
+  REST_GET_TIME = 5.minutes.to_i
+  # バッチの起動時間
+  BATCH_BOOT_TIME =  30.minutes
+  # GooglePersonFinderから1度に取得できるレコード数
+  MAX_RESULTS = 200
+
+
+  # GoogePersonFinderから未連携のデータを取込処理
+  # === Args
+  # === Return
+  # === Raise
   def self.execute
-    p " #{Time.now.to_s} ===== START ===== "
+    puts " #{Time.now.to_s} ===== START ===== "
 
     # APIキーの読み込み
     @settings = YAML.load_file("#{Rails.root}/config/settings.yml")
@@ -33,10 +47,10 @@ class Batches::ImportGooglePersonFinder
     last_start_time = Person.where("person_record_id IS NOT NULL").order(:source_date).try(:last).try(:source_date)
     response = nil
     start = Time.now
-    # 30分でタイムアウト
-    while (Time.now - start) < 30.minutes
-      # 5分間レスポンスがない場合はタイムアウト
-      timeout(5.minutes.to_i){
+    # タイムアウト
+    while (Time.now - start) < BATCH_BOOT_TIME
+      # レスポンスがない場合はタイムアウト
+      timeout(REST_GET_TIME){
         url = "/personfinder/" + @settings["gpf"]["repository"] +
           "/feeds/person?key=" + @settings["gpf"]["api_key"] +
           "&max_results=200&skip=" + skip.to_s +
@@ -47,19 +61,26 @@ class Batches::ImportGooglePersonFinder
       # 取得したXMLをParseする
       doc = REXML::Document.new(response.body)
       if doc.elements["feed/entry/pfif:person"].present?
-        p " #{Time.now.to_s} ===== Person #{skip}件目 ====="
-        skip = skip + 200
+        puts " #{Time.now.to_s} ===== Person #{skip}件目 ====="
+        skip = skip + MAX_RESULTS
         doc.elements.each("feed/entry/pfif:person") do |e|
+          # 石巻市以外のデータは取り込まない
+          next unless (e.elements["pfif:home_state"].try(:text) =~ /^(宮城)県?$/ &&
+            e.elements["pfif:home_city"].try(:text) =~ /^(石巻)市?$/)
+
           # person_record_idが重複する場合は取り込まない
           # 削除されているデータも確認する
           person_record_id = e.elements["pfif:person_record_id"].try(:text)
           local_person = Person.with_deleted.find_by_person_record_id(person_record_id)
-          local_person.try(:recover)  # 削除されていたPersonを復元
-
+          # 削除されていたPersonを復元
+          if local_person.present? && local_person.deleted_at.present?
+            local_person.recover
+          end
+          
           # LGDPFからuploadしたデータは取り込まない
           domain = person_record_id.split("/")
-
           next if local_person.present? || domain[0] == @settings["gpf"]["domain"]
+
           # LGDPFに取り込む
           person = Person.new
           person = Person.exec_insert_person(person, e)
@@ -95,8 +116,8 @@ class Batches::ImportGooglePersonFinder
       # 取得したXMLをParseする
       doc = REXML::Document.new(response.body)
       if doc.elements["feed/entry/pfif:note"].present?
-        p " #{Time.now.to_s} ===== Note   #{skip}件目 ====="
-        skip = skip + 200
+        puts " #{Time.now.to_s} ===== Note   #{skip}件目 ====="
+        skip = skip + MAX_RESULTS
         doc.elements.each("feed/entry/pfif:note") do |e|
           # 紐付くPersonがないNoteは取り込まない
           # 削除されているPersonも確認する
@@ -124,7 +145,7 @@ class Batches::ImportGooglePersonFinder
       end
 
     end
-    p " #{Time.now.to_s} ===== END   ===== "
+    puts " #{Time.now.to_s} ===== END   ===== "
 
   end
 

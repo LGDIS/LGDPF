@@ -12,7 +12,7 @@ class Person < ActiveRecord::Base
     :bedridden_elderly, :elderly_dementia, :rehabilitation_certificate,
     :physical_disability_certificate, :photo_url, :profile_urls, :remote_photo_url_url,
     :public_flag, :link_flag, :house_number, :notes_disabled, :email_flag, :deleted_at,
-    :profile_urls, :family_well
+    :profile_urls, :family_well, :export_flag
 
   has_many :notes
   # newレコードをsaveした場合の処理
@@ -286,7 +286,7 @@ class Person < ActiveRecord::Base
   # Personオブジェクト配列
   # === Raise
   def self.find_for_export_gpf
-    where(:public_flag => PUBLIC_FLAG_ON).limit(GPF_UPLOAD_MAX_RECORD)
+    where(:public_flag => PUBLIC_FLAG_ON, :export_flag => false).limit(GPF_UPLOAD_MAX_RECORD)
   end
 
 end

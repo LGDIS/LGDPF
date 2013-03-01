@@ -54,6 +54,7 @@ class Person < ActiveRecord::Migration
       t.column "link_flag",                       :boolean, :default => false
       t.column "notes_disabled",                  :boolean, :default => false
       t.column "email_flag",                      :boolean, :default => false
+      t.column "export_flag",                     :boolean, :default => false
       t.column "deleted_at",                      :datetime
 
       t.timestamps
@@ -114,6 +115,7 @@ class Person < ActiveRecord::Migration
       t.set_column_comment "link_flag",              "この対象者情報を LGDPF/LGDPM 以外の安否確認システムとの間で連携することを、対象者情報の作成者が許容する場合を True とするフラグ"
       t.set_column_comment "notes_disabled",         "メモ無効フラグ"
       t.set_column_comment "email_flag",             "この対象者に関連する情報に変化が生じた場合にメッセージを送る事を、対象者情報の作成者が希望する場合を True とするフラグ"
+      t.set_column_comment "export_flag",            "この対象者に関連する情報を連携した場合を True とするフラグ"
       t.set_column_comment "deleted_at",             "この対象者情報の削除日時"
       t.set_column_comment "created_at",             "このレコードの作成日時"
       t.set_column_comment "updated_at",             "このレコードの更新日時"

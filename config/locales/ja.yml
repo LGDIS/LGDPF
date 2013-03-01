@@ -224,7 +224,6 @@ ja:
         email_invalid: 登録されているメールアドレスに問題があり、送信できませんでした。
         profile_invalid: 入力したURLの形式が不正です。プロフィールURLをコピーして貼り付けてください。
         disagree: 利用規約に同意していただかないと、情報を登録することはできません。
-        dual_boot: 他の人がこのバッチを起動しています。
   recaptcha:
     errors:
       verification_failed: 正しくありません。もう一度やり直してください。
@@ -234,3 +233,4 @@ ja:
       wrong_size: "is the wrong size (should be %{file_size})"
       size_too_small: "is too small (should be at least %{file_size})"
       size_too_big: "のサイズが大きすぎます。 (%{file_size}以下にしてください)"
+      dual_boot: 他の人がこのバッチを起動しています。

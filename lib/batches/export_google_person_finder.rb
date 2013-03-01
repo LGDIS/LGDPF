@@ -12,11 +12,11 @@ class Batches::ExportGooglePersonFinder
   def self.execute
     # 2重起動防止
     if File.exist?("tmp/ExportGooglePersonFinder")
-      p I18n.t("activerecord.errors.messages.dual_boot")
+      puts I18n.t("errors.messages.dual_boot")
     else
       f = File.open("tmp/ExportGooglePersonFinder", "w")
       
-      p " #{Time.now.to_s} ===== START ===== "
+      puts " #{Time.now.to_s} ===== START ===== "
 
       # APIキーの読み込み
       @settings = YAML.load_file("#{Rails.root}/config/settings.yml")
@@ -24,7 +24,8 @@ class Batches::ExportGooglePersonFinder
 
       # アップロード対象のレコードがなくなるまで
       while export_record_size > 0
-        export_record_size = export_record_size - Person.find_for_export_gpf.size
+        target_records = Person.find_for_export_gpf
+        export_record_size = export_record_size - target_records.size
         # 書き込み専用でファイルを開く（新規作成）
         file_path = Rails.root + "tmp/lgdpf#{Time.now.utc.xmlschema.gsub(":","")}.xml"
         File.open(file_path, "w") do |output_file|
@@ -34,13 +35,13 @@ class Batches::ExportGooglePersonFinder
         # GooglePersonFinderにexport
         puts `curl -X POST -H 'Content-type: application/xml' --data-binary @#{file_path} https://www.google.org/personfinder/#{@settings["gpf"]["repository"]}/api/write?key=#{@settings["gpf"]["api_key"]} `
 
-        File.delete(file_path)  # 送信済みXMLファイルの削除
+       # File.delete(file_path)  # 送信済みXMLファイルの削除
       end
       
-
-      p " #{Time.now.to_s} =====  END  ===== "
+      puts " #{Time.now.to_s} =====  END  ===== "
       f.close
       File.delete("tmp/ExportGooglePersonFinder")  # lockファイルの削除
+      Person.update_all(:export_flag => false)
     end
   end
 
@@ -110,6 +111,7 @@ class Batches::ExportGooglePersonFinder
 
       # GooglePersonFinderに送ったperson_record_idを保持する
       person.person_record_id = "#{@settings["gpf"]["domain"]}/person.#{person.id}"
+      person.export_flag = true
       person.save
     end
     return doc.to_s
