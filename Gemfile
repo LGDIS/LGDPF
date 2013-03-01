@@ -1,4 +1,4 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
 gem 'rails', '3.2.11'
 
@@ -7,24 +7,24 @@ gem 'rails', '3.2.11'
 
 # Pg is the Ruby interface to the PostgreSQL RDBMS.
 # It works with PostgreSQL 8.3 and later.
-gem 'pg', '0.14.1'
+gem 'pg'
 
 # ActiveRecord extension to get more from PostgreSQL.
-gem 'pg_power', '1.3.0'
+gem 'pg_power'
 
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails', '3.2.6'
-  gem 'coffee-rails', '3.2.2'
+  gem 'sass-rails',   '~> 3.2.3'
+  gem 'coffee-rails', '~> 3.2.1'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem 'therubyracer', '0.11.3', :platforms => :ruby
+  gem 'therubyracer', :platforms => :ruby
 
-  gem 'uglifier', '1.3.0'
+  gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'jquery-rails', '2.2.0'
+gem 'jquery-rails'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
@@ -33,7 +33,7 @@ gem 'jquery-rails', '2.2.0'
 # gem 'jbuilder'
 
 # Use unicorn as the app server. LGDPF default Rack HTTP Server.
-gem 'unicorn', '4.5.0'
+gem 'unicorn'
 
 # Deploy with Capistrano
 # gem 'capistrano'
@@ -43,36 +43,49 @@ gem 'unicorn', '4.5.0'
 
 # CarrierWave is Upload files in your Ruby applications, map them
 # to a range of ORMs, store them on different backends.
-gem 'carrierwave', '0.8.0'
+gem 'carrierwave'
 
 # If you're uploading images by CarrierWave, you'll probably want to
 # manipulate them in some way, you might want to create thumbnail images
 # for example. CarrierWave comes with a small library to make manipulating
 # images with RMagick easier.
-gem 'rmagick', '2.13.1'
+gem 'rmagick'
 
 # recaptcha adds helpers for the reCAPTCHA API.
-gem 'recaptcha', '0.3.4', :require => 'recaptcha/rails'
+gem 'recaptcha', :require => 'recaptcha/rails'
 
 # Dalli is a high performance pure Ruby client for accessing memcached servers.
-gem 'dalli', '2.6.0'
+gem 'dalli'
 
 # jpmobile is Rails plugin for Japanese mobile-phones.
-gem 'jpmobile', '3.0.7'
+gem 'jpmobile'
 
 # Devise is Flexible authentication solution for Rails with Warden.
-gem 'devise', '2.2.2'
+gem 'devise'
 
 # Devise extension to allow authentication via LDAP.
-gem 'devise_ldap_authenticatable', '0.6.1'
+gem 'devise_ldap_authenticatable'
 
 # acts_as_paranoid is Active Record (~>3.2) plugin which allows you to
 # hide and restore records without actually deleting them.
-gem 'acts_as_paranoid', '0.4.1'
+gem 'acts_as_paranoid'
 
 group :test do
-  gem 'rspec', '2.12.0'
-  gem 'factory_girl_rails', '4.2.0'
+  # Rspec-2 meta-gem that depends on the other components.
+  gem 'rspec'
+
+  # factory_girl is a fixtures replacement with a straightforward
+  # definition syntax, support for multiple build strategies (saved
+  # instances, unsaved instances, attribute hashes, and stubbed objects),
+  # and support for multiple factories for the same class (user,
+  # admin_user, and so on), including factory inheritance.
+  gem 'factory_girl_rails'
+end
+
+# Iconv is a wrapper class for the UNIX 95 iconv() function family,
+# which translates string between various encoding systems.
+platforms :mri_20 do
+  gem "iconv"
 end
 
 # Load Local Gemfile
@@ -87,4 +100,3 @@ Dir.glob File.expand_path("../plugins/*/Gemfile", __FILE__) do |file|
   puts "Loading #{file} ..." if $DEBUG # `ruby -d` or `bundle -v`
   instance_eval File.read(file)
 end
-
