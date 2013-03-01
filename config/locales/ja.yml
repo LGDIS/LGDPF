@@ -224,6 +224,7 @@ ja:
         email_invalid: 登録されているメールアドレスに問題があり、送信できませんでした。
         profile_invalid: 入力したURLの形式が不正です。プロフィールURLをコピーして貼り付けてください。
         disagree: 利用規約に同意していただかないと、情報を登録することはできません。
+        record_invalid: の入力形式が不正です。ファイルをダウンロードすることができませんでした。
   recaptcha:
     errors:
       verification_failed: 正しくありません。もう一度やり直してください。

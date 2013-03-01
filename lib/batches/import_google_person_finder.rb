@@ -103,9 +103,9 @@ class Batches::ImportGooglePersonFinder
     response = nil
     start = Time.now
     # 30分でタイムアウト
-    while (Time.now - start) < 30.minutes
+    while (Time.now - start) < BATCH_BOOT_TIME
       # 5分間レスポンスがない場合はタイムアウト
-      timeout(5.minutes.to_i){
+      timeout(REST_GET_TIME){
         url = "/personfinder/" + @settings["gpf"]["repository"] +
           "/feeds/note?key=" + @settings["gpf"]["api_key"] +
           "&max_results=200&skip=" + skip.to_s +
