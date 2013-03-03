@@ -114,7 +114,7 @@ GEM
       json (~> 1.4)
     recaptcha (0.3.5)
     ref (1.0.2)
-    rmagick (2.13.2)
+    rmagick (2.12.2)
     rspec (2.13.0)
       rspec-core (~> 2.13.0)
       rspec-expectations (~> 2.13.0)
@@ -177,7 +177,7 @@ DEPENDENCIES
   pg_power
   rails (= 3.2.11)
   recaptcha
-  rmagick
+  rmagick (~> 2.12.2)
   rspec
   sass-rails (~> 3.2.3)
   therubyracer

@@ -49,7 +49,7 @@ gem 'carrierwave'
 # manipulate them in some way, you might want to create thumbnail images
 # for example. CarrierWave comes with a small library to make manipulating
 # images with RMagick easier.
-gem 'rmagick'
+gem 'rmagick', '~> 2.12.2'
 
 # recaptcha adds helpers for the reCAPTCHA API.
 gem 'recaptcha', :require => 'recaptcha/rails'
