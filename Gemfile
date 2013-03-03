@@ -84,9 +84,7 @@ end
 
 # Iconv is a wrapper class for the UNIX 95 iconv() function family,
 # which translates string between various encoding systems.
-platforms :mri_20 do
-  gem "iconv"
-end
+gem "iconv"
 
 # Load Local Gemfile
 local_gemfile = File.join(File.dirname(__FILE__), "Gemfile.local")
