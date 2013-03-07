@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 class CountryCode < ActiveRecord::Base
   attr_accessible :name, :code
 

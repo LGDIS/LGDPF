@@ -1,4 +1,6 @@
 # -*- coding:utf-8 -*-
+# コンスタントテーブル
+Constant.destroy_all
 
 # 性別
 Constant.create(kind1: 'TD', kind2: 'people', kind3: 'sex', text: '男性',  value: '1', _order: '1')

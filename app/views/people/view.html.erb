@@ -93,14 +93,16 @@
                 <div class="field">
                   <span class="label">指定避難所等:</span>
                   <span class="value">
-                    <%= @person_const["shelter_name"]["#{@person.shelter_name}"] %>
-  <%#= @shelter["#{@person.shelter_name}"] %>
+                    <%= @shelter["#{@person.shelter_name}"] %>
                   </span>
                 </div>
 
                 <div class="field">
                   <span class="label">避難理由:</span>
-                  <span class="value"><%= @person.refuge_reason %></span>
+                  <span class="value">
+                    <%= text_area :person, :refuge_reason,
+                      :cols => "17", :rows => "3", :readonly => true %>
+                  </span>
                 </div>
 
                 <div class="field">
@@ -139,7 +141,7 @@
                   <div class="field">
                     <span>
                       <%= text_area :person, :description,
-                        :cols => "40", :rows => "5", :disabled => true %>
+                        :cols => "40", :rows => "5", :readonly => true %>
                     </span>
                   </div>
                   <div class="end-multi-columns"></div>

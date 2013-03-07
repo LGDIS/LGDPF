@@ -1,13 +1,17 @@
 # -*- coding:utf-8 -*-
 require "csv"
 
-CSV.foreach("#{Rails.root}/db/seeds/shelters.csv") do |row|
+Shelter.delete_all
+
+reader = CSV.open(File.join(Rails.root,"lib", "batches", "work_shelter.csv"), "r", :encoding => "utf8")
+header = reader.take(1)[0]
+reader.each do |row|
   Shelter.create(
     :name => row[0],
-    :name_kana => row[1],
-    :area => row[2],
-    :address => row[3],
-    :shelter_type => row[4],
-    :shelter_sort => row[5]
+    :area => row[1],
+    :address => row[2],
+    :shelter_type => row[3],
+    :shelter_sort => row[4],
+    :shelter_code => row[5]
   )
 end

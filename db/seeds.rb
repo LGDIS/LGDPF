@@ -11,5 +11,6 @@ load("#{seeds_dir_path}/country_codes.rb")
 # 避難所
 load("#{seeds_dir_path}/shelters.rb")
 
-
+# 住所
+load("#{seeds_dir_path}/address.rb")
 

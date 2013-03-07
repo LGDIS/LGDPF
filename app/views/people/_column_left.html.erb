@@ -1,38 +1,36 @@
 <%= javascript_tag do %>
   $(function(){
-  $( "#person_home_city" ).autocomplete({
-  source: function(request, response) {
-  $.ajax({
-  url: <%= raw "\"#{autocomplete_city_path}\"" %>,
-  dataType: "json",
-  data: {
-  term: request.term,
-  state: $('#person_home_state').val()
-  },
-  success: function(data) {
-  response(data);
-  }
-  });
-  },
-  minLength: 1
-  });
+    $( "#person_home_city" ).autocomplete({
+      source: function(request, response) {
+        $.ajax({
+          url: <%= raw "\"#{autocomplete_city_path}\"" %>,
+          dataType: "json",
+          data: {
+            term: request.term
+          },
+          success: function(data) {
+            response(data);
+          }
+        });
+      },
+      minLength: 1
+    });
 
-  $( "#person_home_street" ).autocomplete({
-  source: function(request, response) {
-  $.ajax({
-  url: <%= raw "\"#{autocomplete_street_path}\"" %>,
-  dataType: "json",
-  data: {
-  term: request.term,
-  state: $('#person_home_state').val()
-  },
-  success: function(data) {
-  response(data);
-  }
-  });
-  },
-  minLength: 1
-  });
+    $( "#person_home_street" ).autocomplete({
+      source: function(request, response) {
+        $.ajax({
+          url: <%= raw "\"#{autocomplete_street_path}\"" %>,
+          dataType: "json",
+          data: {
+            term: request.term
+          },
+          success: function(data) {
+            response(data);
+          }
+        });
+      },
+      minLength: 1
+    });
   });
 <% end %>
 
@@ -323,12 +321,9 @@
         <label for="person_shelter_name">指定避難所等:</label>
       </span>
       <span class="value">
-<%#= select(:person, :shelter_name,
-options_for_select(@shelter.invert, @person.shelter_name),
-{ :include_blank => true }) %>
         <%= select(:person, :shelter_name,
-          options_for_select(@person_const["shelter_name"].invert, @person.shelter_name),
-          { :include_blank => true }) %>
+             options_for_select(@shelter.invert, @person.shelter_name),
+             { :include_blank => true }) %>
       </span>
     </div>
     <div class="field">

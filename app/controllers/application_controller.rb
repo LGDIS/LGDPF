@@ -13,10 +13,7 @@ class ApplicationController < ActionController::Base
     @person_const = Constant.get_const(Person.table_name)
     @note_const   = Constant.get_const(Note.table_name)
     @country_code = CountryCode.hash_for_selectbox
-    # memcacheからマスタを取得
-    # @area = get_cache("area")
-    # @address = Rails.cache.read("address")
-    # @shelter = get_cache("shelter")
+    @shelter      = Shelter.hash_for_selectbox
   end
 
   # 有効期限の確認
@@ -79,32 +76,26 @@ class ApplicationController < ActionController::Base
   # オートコンプリート市区町村取得処理
   # ==== Args
   # _term_ :: ユーザ入力値
-  # _state_ :: 都道府県
   # ==== Return
   # 市区町村jsonオブジェクト
   # ==== Raise
   def autocomplete_city
-    @city = Rails.cache.read("city")
-    @city.delete_if{|key,value| value !~ /#{params["term"]}/}
-
+    @city = City.hash_for_table(params["term"])
     respond_to do |format|
-      format.json { render :json => (@city.present? ? @city.values.to_json : Hash.new) }
+      format.json { render :json => @city.values.to_json }
     end
   end
 
   # オートコンプリート町名取得処理
   # ==== Args
   # _term_ :: ユーザ入力値
-  # _state_ :: 都道府県
   # ==== Return
   # 町名jsonオブジェクト
   # ==== Raise
   def autocomplete_street
-    @street = Rails.cache.read("street")
-    @street.delete_if{|key,value| value !~ /#{params["term"]}/}
-
+    @street = Street.hash_for_table(params["term"])
     respond_to do |format|
-      format.json { render :json => (@street.present? ? @street.values.to_json : Hash.new) }
+      format.json { render :json => @street.values.to_json }
     end
   end
 
