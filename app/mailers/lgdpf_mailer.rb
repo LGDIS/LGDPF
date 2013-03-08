@@ -14,7 +14,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     @person = person
     @view_path = @@settings["lgdpf"][Rails.env]["site"] + "people/view/"+ @person.id.to_s
     @unsubscribe_email_path = @@settings["lgdpf"][Rails.env]["site"] +
-      "person/unsubscribe_email&id=" + @person.id.to_s + "&token=" + aal.unique_key
+      "person/unsubscribe_email?id=" + @person.id.to_s + "&token=" + aal.unique_key
     subject = "[パーソンファインダー]" + person.full_name + "さんについての新着情報を受け取るように設定しました"
     if note.blank?
       address = @person.author_email
