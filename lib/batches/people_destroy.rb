@@ -7,10 +7,11 @@
 
 class Batches::PeopleDestroy
   def self.execute
-    Rails.logger.info(" #{Time.now.to_s} ===== #{self.name} START ===== ")
+    puts(" #{Time.now.to_s} ===== #{self.name} START ===== ")
 
-    Person.destroy_all(["expiry_date > ?", Time.now])
+    # 現在日時より削除予定日時のほうが過去の場合削除する
+    Person.destroy_all(["expiry_date < ?", Time.now])
 
-    Rails.logger.info(" #{Time.now.to_s} ===== #{self.name} END ===== ")
+    puts(" #{Time.now.to_s} ===== #{self.name} END ===== ")
   end
 end
