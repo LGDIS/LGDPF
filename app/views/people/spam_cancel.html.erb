@@ -110,6 +110,7 @@
         <%= render :partial =>'recaptcha', :locals => {:captcha => true} %>
 
         <br/>
+        <%= hidden_field :complete, :key, :value => "spam_cancel" %>
         <%= submit_tag 'メモを更新する' %>
         <input type="button" value="キャンセル" onclick="history.go(-1);" />
       <% end %>

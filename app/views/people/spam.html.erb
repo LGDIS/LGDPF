@@ -124,6 +124,7 @@
         <br/><br/>
 
         <br/>
+        <%= hidden_field :complete, :key, :value => "spam" %>
         <%= submit_tag 'メモを更新する' %>
         <input type="button" value="キャンセル" onclick="history.go(-1);" />
       <% end %>

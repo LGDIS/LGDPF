@@ -429,9 +429,9 @@
 
 
   <div class="profile section">
-    <h3>Profile Pages</h3>
+    <h3>プロフィール</h3>
     <div class="hint">
-      Does this person have profile pages at other websites?
+      この人のプロフィールを入力してください。
     </div>
     <table class="fields">
 
@@ -444,8 +444,7 @@
         <td>
           <input type="hidden" id="profile_website_index1" />
           <input type="text" id="profile_url1"
-                 name="profile_url1" size="30"
-                 placeholder="Link to profile page" />
+                 name="profile_url1" size="30" />
         </td>
         <td>
           <a href="javascript:remove_profile_entry(1)"
@@ -461,8 +460,7 @@
         <td>
           <input type="hidden" id="profile_website_index2" />
           <input type="text" id="profile_url2"
-                 name="profile_url2" size="30"
-                 placeholder="Link to profile page" />
+                 name="profile_url2" size="30" />
         </td>
         <td>
           <a href="javascript:remove_profile_entry(2)"
@@ -478,8 +476,7 @@
         <td>
           <input type="hidden" id="profile_website_index3" />
           <input type="text" id="profile_url3"
-                 name="profile_url3" size="30"
-                 placeholder="Link to profile page" />
+                 name="profile_url3" size="30" />
         </td>
         <td>
           <a href="javascript:remove_profile_entry(3)"
@@ -491,7 +488,7 @@
         <td colspan="3">
           <select id="add_profile_entry_select"
                   onchange="add_profile_entry(this)">
-            <option>Select a website to add a profile page...</option>
+            <option>プロフィールサイトを選んでください</option>
 
             <option>Facebook</option>
 
@@ -499,7 +496,7 @@
 
             <option>LinkedIn</option>
 
-            <option>Other website</option>
+            <option>その他</option>
           </select>
         </td>
       </tr>
@@ -522,7 +519,7 @@
   </div>
 
   <div class="section">
-    <h3 class="mandatory">この人の情報をローカルパーソンファインダーの外部に公開しますか？（必須）</h3>
+    <h3 class="mandatory">この人の情報を石巻市パーソンファインダーの外部に公開しますか？（必須）</h3>
     <div class="field">
       <%= radio_button :person, :public_flag, Person::PUBLIC_FLAG_ON, {} %>
       <label class="option" for="person_public_flag_<%= Person::PUBLIC_FLAG_ON %>">はい</label>
@@ -651,7 +648,7 @@
         <%= check_box_tag "consent", true, false, {:checked => @consent} %>
         <%= link_to "ご利用規約", :action => :terms_of_service %>
       </div>
-      <%= submit_tag "この記録を保存", :onclick =>"return validate_fields()" %>
+      <%= submit_tag "この記録を登録", :onclick =>"return validate_fields()", :name => "complete" %>
     </div>
   <% end %>
 </div>

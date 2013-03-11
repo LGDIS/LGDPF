@@ -24,20 +24,11 @@
               </tr>
 
               <tr>
-                <td class="label">姓:</td>
-                <td class="field"><%= @person.family_name %></td>
-                <td class="field"><%= @person2.family_name %></td>
+                <td class="label">名前:</td>
+                <td class="field"><%= @person.full_name %></td>
+                <td class="field"><%= @person2.full_name %></td>
                 <% if @person3.present? %>
-                  <td class="field"><%= @person3.family_name %></td>
-                <% end %>
-              </tr>
-
-              <tr>
-                <td class="label">名:</td>
-                <td class="field"><%= @person.given_name %></td>
-                <td class="field"><%= @person2.given_name %></td>
-                <% if @person3.present? %>
-                  <td class="field"><%= @person3.given_name %></td>
+                  <td class="field"><%= @person3.full_name %></td>
                 <% end %>
               </tr>
 
@@ -73,7 +64,7 @@
                 <% end %>
               </tr>
 
-              <tr class="sectionbottom">
+              <tr>
                 <td class="label">年齢:</td>
                 <td class="field"><%= @person.age %></td>
                 <td class="field"><%= @person2.age %></td>
@@ -82,19 +73,20 @@
                 <% end %>
               </tr>
 
+              <tr class="sectionbottom">
+                <td class="label">出身国:</td>
+                <td class="field"><%= @country_code["#{@person.home_country}"] %></td>
+                <td class="field"><%= @country_code["#{@person2.home_country}"] %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @country_code["#{@person3.home_country}"] %></td>
+                <% end %>
+              </tr>
+
+
               <tr>
                 <td colspan="<%= @count %>" class="address sectiontop">
                   <h3>自宅住所</h3>
                 </td>
-              </tr>
-
-              <tr>
-                <td class="label">出身国:</td>
-                <td class="field"><%= @person.home_country %></td>
-                <td class="field"><%= @person2.home_country %></td>
-                <% if @person3.present? %>
-                  <td class="field"><%= @person3.home_country %></td>
-                <% end %>
               </tr>
 
               <tr>
@@ -144,10 +136,131 @@
 
               <tr class="sectionbottom">
                 <td class="label">市内・市外区分:</td>
-                <td class="field"><%= @person_const["in_city_flag"]["#{@person.in_city_flag}"] %></td>
-                <td class="field"><%= @person_const["in_city_flag"]["#{@person2.in_city_flag}"] %></td>
+                <td class="field">
+                  <% if @person.in_city_flag.present? %>
+                    <%= @person_const["in_city_flag"]["#{@person.in_city_flag}"] %>
+                  <% end %>
+                </td>
+                <td class="field">
+                  <% if @person2.in_city_flag.present? %>
+                    <%= @person_const["in_city_flag"]["#{@person2.in_city_flag}"] %>
+                  <% end %>
+                </td>
                 <% if @person3.present? %>
-                  <td class="field"><%= @person_const["in_city_flag"]["#{@person3.in_city_flag}"] %></td>
+                  <td class="field">
+                    <% if @person3.in_city_flag.present? %>
+                      <%= @person_const["in_city_flag"]["#{@person3.in_city_flag}"] %>
+                    <% end %>
+                  </td>
+                <% end %>
+              </tr>
+
+
+              <tr>
+                <td colspan="<%= @count %>" class="sectiontop">
+                  <h3>避難所</h3>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="label">避難状況:</td>
+                <td class="field">
+                  <%= @person_const["refuge_status"]["#{@person.refuge_status}"] %>
+                </td>
+                <td class="field">
+                  <%= @person_const["refuge_status"]["#{@person2.refuge_status}"] %>
+                </td>
+                <% if @person3.present? %>
+                  <td class="field">
+                    <%= @person_const["refuge_status"]["#{@person3.refuge_status}"] %>
+                  </td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">指定避難所等:</td>
+                <td class="field">
+                  <%= @person_const["shelter_name"]["#{@person.shelter_name}"] %>
+  <%#= @shelter["#{@person.shelter_name}"] %>
+                </td>
+                <td class="field">
+                  <%= @person_const["shelter_name"]["#{@person2.shelter_name}"] %>
+  <%#= @shelter["#{@person2.shelter_name}"] %>
+                </td>
+                <% if @person3.present? %>
+                  <td class="field">
+                    <%= @person_const["shelter_name"]["#{@person3.shelter_name}"] %>
+    <%#= @shelter["#{@person3.shelter_name}"] %>
+                  </td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label" style="vertical-align:middle">避難理由:</td>
+                <td class="field">
+                  <span class="value">
+                    <%= text_area :person, :refuge_reason,
+                      :cols => "30", :rows => "3", :readonly => true %>
+                  </span>
+                </td>
+                <td class="field">
+                  <span class="value">
+                    <%= text_area :person2, :refuge_reason,
+                      :cols => "30", :rows => "3", :readonly => true %>
+                  </span>
+                </td>
+                <% if @person3.present? %>
+                  <td class="field">
+                    <span class="value">
+                      <%= text_area :person3, :refuge_reason,
+                        :cols => "30", :rows => "3", :readonly => true %>
+                    </span>
+                  </td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">避難所入所年月日:</td>
+                <td class="field"><%= @person.shelter_entry_date %></td>
+                <td class="field"><%= @person2.shelter_entry_date %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person3.shelter_entry_date %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">避難所退所年月日:</td>
+                <td class="field"><%= @person.shelter_leave_date %></td>
+                <td class="field"><%= @person2.shelter_leave_date %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person3.shelter_leave_date %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">避難所を退所した後どこへ行ったか:</td>
+                <td class="field"><%= @person.next_place %></td>
+                <td class="field"><%= @person2.next_place %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person3.next_place %></td>
+                <% end %>
+              </tr>
+
+              <tr>
+                <td class="label">避難所を退所した後の電話番号:</td>
+                <td class="field"><%= @person.next_place_phone %></td>
+                <td class="field"><%= @person2.next_place_phone %></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person3.next_place_phone %></td>
+                <% end %>
+              </tr>
+
+              <tr class="sectionbottom">
+                <td class="label">家族も無事か:</td>
+                <td class="field"><%= @person_const["family_well"]["#{@person.family_well}"]%></td>
+                <td class="field"><%= @person_const["family_well"]["#{@person2.family_well}"]%></td>
+                <% if @person3.present? %>
+                  <td class="field"><%= @person_const["family_well"]["#{@person3.family_well}"]%></td>
                 <% end %>
               </tr>
 
@@ -210,6 +323,60 @@
                   <% end %>
                 </tr>
               <% end %>
+
+              <% if @person.profile_urls.present? || @person2.profile_urls.present? || @person3.try(:profile_urls).present?%>
+                <tr>
+                  <td colspan="<%= @count %>" class="profile sectiontop">
+                    <h3>プロフィール</h3>
+                  </td>
+                </tr>
+                <tr class="sectionbottom">
+                  <td class="label">&nbsp;</td>
+                  <td class="field">
+                    <% if @person.profile_urls.present? %>
+                      <% @person.profile_urls.split("\n").each_with_index do |url, i| %>
+                        <div>
+                          プロフィール <%= i+1 %>:
+                          <%= raw icon_image_tag(url) %>
+                          <a target="_blank" href=<%= url %> >
+                            <%= url_name(url) %>
+                          </a>
+                        </div>
+                      <% end %>
+                    <% end %>
+                  </td>
+                  <td class="field">
+                    <% if @person2.profile_urls.present? %>
+                      <% @person2.profile_urls.split("\n").each_with_index do |url, i| %>
+                        <div>
+                          プロフィール <%= i+1 %>:
+                          <%= raw icon_image_tag(url) %>
+                          <a target="_blank" href=<%= url %> >
+                            <%= url_name(url) %>
+                          </a>
+                        </div>
+                      <% end %>
+                    <% end %>
+                  </td>
+                  <% if @person3.present? %>
+                    <td class="field">
+                      <% if @person3.profile_urls.present? %>
+                        <% @person3.profile_urls.split("\n").each_with_index do |url, i| %>
+                          <div>
+                            プロフィール <%= i+1 %>:
+                            <%= raw icon_image_tag(url) %>
+                            <a target="_blank" href=<%= url %> >
+                              <%= url_name(url) %>
+                            </a>
+                          </div>
+                        <% end %>
+                      <% end %>
+                      <div class="end-multi-columns"></div>
+                    </td>
+                  <% end %>
+                </tr>
+              <% end %>
+
               <tr>
                 <td colspan="<%= @count %>" class="source sectiontop">
                   <h3>この記録の情報源</h3>
@@ -252,7 +419,7 @@
                       <%= @person3.author_phone %>
                     <% else %>
                       <% unless @person3.author_phone.blank? %>
-                      <%= link_to "（クリックして表示）", :action => :personal_info, :id => @person, :id2 => @person2, :id3 => @person3 %>
+                        <%= link_to "（クリックして表示）", :action => :personal_info, :id => @person, :id2 => @person2, :id3 => @person3 %>
                       <% end %>
                     <% end %>
                   </td>
@@ -285,7 +452,7 @@
                       <%= @person3.author_email %>
                     <% else %>
                       <% unless @person3.author_email.blank? %>
-                      <%= link_to "（クリックして表示）", :action => :personal_info, :id => @person, :id2 => @person2, :id3 => @person3 %>
+                        <%= link_to "（クリックして表示）", :action => :personal_info, :id => @person, :id2 => @person2, :id3 => @person3 %>
                       <% end %>
                     <% end %>
                   </td>
@@ -423,7 +590,7 @@
             <%= link_to "ご利用規約", :action => :terms_of_service %>
           </div>
 
-          <%= submit_tag "はい、同一人物です。" %>
+          <%= submit_tag "はい、同一人物です。", :name => "complete" %>
           <input type="button" value="キャンセル" onclick="history.go(-1)" />
         </div>
       </div>
