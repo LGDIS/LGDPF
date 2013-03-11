@@ -19,19 +19,16 @@ Lgdpf::Application.configure do
   config.action_mailer.delivery_method = :smtp
 
   # smtpの設定
-  if File.exists?("#{Rails.root}/config/settings.yml")
-    settings = YAML.load_file("#{Rails.root}/config/settings.yml")
     config.action_mailer.smtp_settings = {
       :enable_starttls_auto => true,
-      :address            => settings["lgdpf"]["mail"]["address"],
-      :port               => settings["lgdpf"]["mail"]["port"],
-      :domain             => settings["lgdpf"]["mail"]["domain"],
+      :address            => SETTINGS["lgdpf"]["mail"]["address"],
+      :port               => SETTINGS["lgdpf"]["mail"]["port"],
+      :domain             => SETTINGS["lgdpf"]["mail"]["domain"],
       :authentication     => :plain,
-      :user_name          => settings["lgdpf"]["mail"]["user_name"],
-      :password           => settings["lgdpf"]["mail"]["password"]
+      :user_name          => SETTINGS["lgdpf"]["mail"]["user_name"],
+      :password           => SETTINGS["lgdpf"]["mail"]["password"]
     }
-    config.action_mailer.default_url_options = { :host => settings["lgdpf"]["mail"]["host"] }
-  end
+    config.action_mailer.default_url_options = { :host => SETTINGS["lgdpf"]["mail"]["host"] }
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log

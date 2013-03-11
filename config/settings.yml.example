@@ -23,7 +23,9 @@ lgdpf:
     user_name: 
     password: 
     host: 
-    from: 
+    from:
+  banner:
+    img:
 gpf:
   api_key:
   repository:

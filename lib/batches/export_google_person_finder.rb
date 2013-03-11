@@ -3,12 +3,20 @@
 # rails runner Batches::ExportGooglePersonFinder.execute
 # ==== options
 # 実行環境の指定 :: -e production
+# 二重起動防止のためにロックファイルを作成します。
+# 処理が異常終了した場合はロックファイルが残ってしまうので、
+# Rails.root/tmp/ExportGooglePersonFinderを手動で削除してください。
 require 'net/http'
 require 'net/https'
 require "rexml/document"
 Net::HTTP.version_1_2
 
 class Batches::ExportGooglePersonFinder
+
+  # GoogePersonFinderへ未連携データのアップロード処理
+  # === Args
+  # === Return
+  # === Raise
   def self.execute
     # 2重起動防止
     if File.exist?("tmp/ExportGooglePersonFinder")
@@ -18,8 +26,6 @@ class Batches::ExportGooglePersonFinder
       
       puts " #{Time.now.to_s} ===== START ===== "
 
-      # APIキーの読み込み
-      @settings = YAML.load_file("#{Rails.root}/config/settings.yml")
       export_record_size = Person.where(:public_flag => Person::PUBLIC_FLAG_ON).size
 
       # アップロード対象のレコードがなくなるまで
@@ -29,13 +35,13 @@ class Batches::ExportGooglePersonFinder
         # 書き込み専用でファイルを開く（新規作成）
         file_path = Rails.root + "tmp/lgdpf#{Time.now.utc.xmlschema.gsub(":","")}.xml"
         File.open(file_path, "w") do |output_file|
-          output_file.write(create_pfif)    # ファイルにデータ書き込み
+          output_file.write(create_pfif(target_records))    # ファイルにデータ書き込み
         end
         
         # GooglePersonFinderにexport
-        puts `curl -X POST -H 'Content-type: application/xml' --data-binary @#{file_path} https://www.google.org/personfinder/#{@settings["gpf"]["repository"]}/api/write?key=#{@settings["gpf"]["api_key"]} `
+        puts `curl -X POST -H 'Content-type: application/xml' --data-binary @#{file_path} https://www.google.org/personfinder/#{SETTINGS["gpf"]["repository"]}/api/write?key=#{SETTINGS["gpf"]["api_key"]} `
 
-       # File.delete(file_path)  # 送信済みXMLファイルの削除
+        # File.delete(file_path)  # 送信済みXMLファイルの削除
       end
       
       puts " #{Time.now.to_s} =====  END  ===== "
@@ -47,19 +53,23 @@ class Batches::ExportGooglePersonFinder
 
   # GooglePersonFinderへアップロードするデータの作成処理
   # ==== Args
+  # _target_records_ :: エクスポートするレコード
   # ==== Return
   # PFIF形式の文字列
   # ==== Raise
-  def self.create_pfif
+  def self.create_pfif(target_records)
     doc =  REXML::Document.new
     doc << REXML::XMLDecl.new('1.0', 'UTF-8')
     doc.add_element("pfif:pfif").add_namespace("pfif", "http://zesty.ca/pfif/1.4")
 
     # export対象を抽出する
-    people = Person.find_for_export_gpf
-    people.each do |person|
+    target_records.each do |person|
       node_person = doc.root.add_element("pfif:person")
-      node_person.add_element("pfif:person_record_id").add_text("#{@settings["gpf"]["domain"]}/person.#{person.id}")  # LGDPFはドメイン名に変えるかも
+      if person.person_record_id.blank?
+        node_person.add_element("pfif:person_record_id").add_text("#{SETTINGS["gpf"]["domain"]}/person.#{person.id}")  # LGDPFはドメイン名に変えるかも
+      else
+        node_person.add_element("pfif:person_record_id").add_text("#{person.person_record_id}")
+      end
       node_person.add_element("pfif:entry_date").add_text("#{person.entry_date.utc.xmlschema}")
       node_person.add_element("pfif:expiry_date").add_text("#{person.expiry_date.utc.xmlschema}")
       node_person.add_element("pfif:author_name").add_text("#{person.author_name}")
@@ -82,15 +92,29 @@ class Batches::ExportGooglePersonFinder
       node_person.add_element("pfif:home_state").add_text("#{person.home_state}") if person.home_state.present?
       node_person.add_element("pfif:home_postal_code").add_text("#{person.home_postal_code}") if person.home_postal_code.present?
       node_person.add_element("pfif:home_country").add_text("#{person.home_country}") if person.home_country.present?
-      node_person.add_element("pfif:photo_url").add_text("#{@settings["lgdpf"][Rails.env]["site"]}#{person.photo_url}") if person.photo_url.present?
+      node_person.add_element("pfif:photo_url").add_text("#{SETTINGS["lgdpf"][Rails.env]["site"]}#{person.photo_url}") if person.photo_url.present?
       node_person.add_element("pfif:profile_urls").add_text("#{person.profile_urls}") if person.profile_urls.present?
 
       notes = Note.find_all_by_person_record_id(person.id)
       notes.each do |note|
         node_note = node_person.add_element("pfif:note")
-        node_note.add_element("pfif:note_record_id").add_text("#{@settings["gpf"]["domain"]}/note.#{note.id}")
-        node_note.add_element("pfif:person_record_id").add_text("#{@settings["gpf"]["domain"]}/person.#{note.person_record_id}")
-        node_note.add_element("pfif:linked_person_record_id").add_text("#{@settings["gpf"]["domain"]}/person.#{note.linked_person_record_id}") if note.linked_person_record_id.present?
+        if note.note_record_id.blank?
+          node_note.add_element("pfif:note_record_id").add_text("#{SETTINGS["gpf"]["domain"]}/note.#{note.id}")
+        else
+          node_note.add_element("pfif:note_record_id").add_text("#{note.note_record_id}")
+        end
+
+        if note.person_record_id =~ /^\d+$/
+          node_note.add_element("pfif:person_record_id").add_text("#{SETTINGS["gpf"]["domain"]}/person.#{note.person_record_id}")
+        else
+          node_note.add_element("pfif:person_record_id").add_text("#{note.person_record_id}")
+        end
+
+        if note.linked_person_record_id.present? && note.linked_person_record_id =~ /^\d+$/
+          node_note.add_element("pfif:linked_person_record_id").add_text("#{SETTINGS["gpf"]["domain"]}/person.#{note.linked_person_record_id}")
+        else
+          node_note.add_element("pfif:linked_person_record_id").add_text("#{note.linked_person_record_id}")
+        end
         node_note.add_element("pfif:entry_date").add_text("#{note.entry_date.utc.xmlschema}")
         node_note.add_element("pfif:author_name").add_text("#{note.author_name}")
         node_note.add_element("pfif:author_email").add_text("#{note.author_email}") if note.author_email.present?
@@ -102,15 +126,19 @@ class Batches::ExportGooglePersonFinder
         node_note.add_element("pfif:phone_of_found_person").add_text("#{note.phone_of_found_person}") if note.phone_of_found_person.present?
         node_note.add_element("pfif:last_known_location").add_text("#{note.last_known_location}") if note.last_known_location.present?
         node_note.add_element("pfif:text").add_text("#{note.text}")
-        node_note.add_element("pfif:photo_url").add_text("#{@settings["lgdpf"][Rails.env]["site"]}#{note.photo_url}") if note.photo_url.present?
+        node_note.add_element("pfif:photo_url").add_text("#{SETTINGS["lgdpf"][Rails.env]["site"]}#{note.photo_url}") if note.photo_url.present?
      
         # GooglePersonFinderに送ったnote_record_idを保持する
-        note.note_record_id = "#{@settings["gpf"]["domain"]}/note.#{note.id}"
+        if note.note_record_id.blank?
+          note.note_record_id = "#{SETTINGS["gpf"]["domain"]}/note.#{note.id}"
+        end
         note.save
       end
 
       # GooglePersonFinderに送ったperson_record_idを保持する
-      person.person_record_id = "#{@settings["gpf"]["domain"]}/person.#{person.id}"
+      if person.person_record_id.blank?
+        person.person_record_id = "#{SETTINGS["gpf"]["domain"]}/person.#{person.id}"
+      end
       person.export_flag = true
       person.save
     end
