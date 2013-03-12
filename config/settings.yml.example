@@ -1,5 +1,4 @@
 # -*- coding:utf-8 -*-
-# LGDPF ActiveResource settings
 lgdpf:
   development:
     site: 
@@ -25,7 +24,8 @@ lgdpf:
     host: 
     from:
   banner:
-    img:
+    img:  # Rails.root/app/assets/imagesに参照する画像ファイルを置く
+    desc:
 gpf:
   api_key:
   repository:
