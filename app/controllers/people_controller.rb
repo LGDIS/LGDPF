@@ -102,32 +102,67 @@ class PeopleController < ApplicationController
     @subscribe = params[:subscribe] == "true" ? true : false
     @consent = params[:consent] == "true" ? true :false
 
-    @note = Note.new(params[:note])
-    @note.person_record_id  =  params[:person][:id]
-    @note.linked_person_record_id  =  params[:person2][:id]
-    @note.linked_person_record_id  =  params[:person3][:id] if params[:person3][:id].present?
-    @note2 = Note.new(params[:note])
-    @note2.person_record_id  =  params[:person2][:id]
-    @note2.linked_person_record_id  =  params[:person][:id]
-    @note2.linked_person_record_id  =  params[:person3][:id] if params[:person3][:id].present?
+    # 重複可能性のあるperson_record_id
+    save_format = []
     if params[:person3][:id].present?
-      @note3 = Note.new(params[:note])
-      @note3.person_record_id  =  params[:person3][:id]
-      @note3.linked_person_record_id =  params[:person][:id]
-      @note3.linked_person_record_id =  params[:person2][:id]
+      dup_ids = [@person.id, @person2.id, @person3.id]
+    else
+      dup_ids = [@person.id, @person2.id]
     end
 
-    Note.transaction do
-      @note.save!
-      @note2.save!
-      @note3.save! unless params[:person3][:id].blank?
+    session[:person] = dup_ids
+
+      # [親id, [重複id1(,重複id2)]]を作成する
+    dup_ids.each_with_index do |id, i|
+      tmp = dup_ids.dup
+      save_format << [tmp.delete_at(i), tmp]
     end
+
+    # 重複Noteの登録
+    session[:note] = []
+    Note.transaction do
+      save_format.each do |row|
+        # 紐付くNoteを作成
+        note = Note.new(params[:note])
+        note.person_record_id = row[0]
+        row[1].each do |dup_id|
+          # 重複idを設定
+          note_cp = note.dup
+          note_cp.linked_person_record_id = dup_id
+          note_cp.save!
+          session[:note] << note_cp.id
+        end
+      end
+    end
+
+    #
+    #    @note = Note.new(params[:note])
+    #    @note.person_record_id  =  params[:person][:id]
+    #    @note.linked_person_record_id  =  params[:person2][:id]
+    #    @note.linked_person_record_id  =  params[:person3][:id] if params[:person3][:id].present?
+    #    @note2 = Note.new(params[:note])
+    #    @note2.person_record_id  =  params[:person2][:id]
+    #    @note2.linked_person_record_id  =  params[:person][:id]
+    #    @note2.linked_person_record_id  =  params[:person3][:id] if params[:person3][:id].present?
+    #    if params[:person3][:id].present?
+    #      @note3 = Note.new(params[:note])
+    #      @note3.person_record_id  =  params[:person3][:id]
+    #      @note3.linked_person_record_id =  params[:person][:id]
+    #      @note3.linked_person_record_id =  params[:person2][:id]
+    #    end
+    #
+    #    Note.transaction do
+    #      @note.save!
+    #      @note2.save!
+    #      @note3.save! unless params[:person3][:id].blank?
+    #    end
     # 利用規約のチェック判定
     unless @consent
       raise ConsentError
     end
 
     # 新着メールを送るアドレスを抽出
+    #    to = Person.subscribe_email_address(@person, @note)
     to = Person.subscribe_email_address(@person, @note)
     # Personに新着メールを送信する
     to.each do |address|
@@ -136,13 +171,14 @@ class PeopleController < ApplicationController
       LgdpfMailer.send_add_note(address).deliver unless params[:person3][:id].blank?
     end
     if @subscribe
-      redirect_to :action => "subscribe_email",
-        :id => @person,
-        :id2 => @person2,
-        :id3 => @person3,
-        :note_id => @note,
-        :note_id2 => @note2,
-        :note_id3 => @note3
+#      redirect_to :action => "subscribe_email",
+#        :id => @person,
+#        :id2 => @person2,
+#        :id3 => @person3,
+#        :note_id => @note,
+#        :note_id2 => @note2,
+#        :note_id3 => @note3
+      redirect_to :action => :subscribe_email
     else
       redirect_to :action => :view, :id => @person
     end
@@ -211,7 +247,7 @@ class PeopleController < ApplicationController
 
       # source_dateの入力が日付までの場合datetime型に変換する
       if @person.source_date_before_type_cast =~ /^(\d{4})(?:\/|-|.)?(\d{1,2})(?:\/|-|.)?(\d{1,2})$/
-        datetime_str = @person[:source_date].strftime("%Y-%m-%d %H:%M:%S %Z")
+        datetime_str = @person[:source_date].strftime("%Y/%m/%d %H:%M:%S %Z")
         @person[:source_date] = Time.parse(datetime_str)
       end
 
@@ -385,12 +421,12 @@ class PeopleController < ApplicationController
   # 避難者情報保持期間延長画面
   # === Args
   # _id_     :: Person.id
-  # _commit_ :: ボタン種別
+  # _complete_ :: submitした場合渡されるパラメータ
   # === Return
   # === Raise
   def extend_days
     @person = Person.find(params[:id])
-    if params[:commit].present?
+    if params[:complete].present?
       # 削除予定日を60日延長する
       @person.expiry_date = @person.expiry_date + 60.days
       if verify_recaptcha(:model => @person) && @person.save!
@@ -507,12 +543,12 @@ class PeopleController < ApplicationController
   # 避難者情報削除画面
   # === Args
   # _id_     :: Person.id
-  # _commit_ :: ボタン種別
+  # _complete_ :: submitした場合渡されるパラメータ
   # === Return
   # === Raise
   def delete
     @person = Person.find(params[:id])
-    if params[:commit].present?
+    if params[:complete].present?
       if verify_recaptcha(:model => @person)
         @person.destroy
         LgdpfMailer.send_delete_notice(@person).deliver
@@ -529,13 +565,13 @@ class PeopleController < ApplicationController
   # 削除データ復元画面
   # === Args
   # _id_     :: Person.id
-  # _commit_ :: ボタン種別
+  # _complete_ :: submitした場合渡されるパラメータ
   # === Return
   # === Raise
   def restore
     # 削除されたデータも含め全件から抽出する
     @person = Person.with_deleted.find(params[:id])
-    if params[:commit].present?
+    if params[:complete].present?
       # POST
       if verify_recaptcha(:model => @person)
         @person.recover
@@ -556,12 +592,12 @@ class PeopleController < ApplicationController
   # 安否情報登録無効申請画面
   # === Args
   # _id_     :: Person.id
-  # _commit_ :: ボタン種別
+  # _complete_ :: submitした場合渡されるパラメータ
   # === Return
   # === Raise
   def note_invalid_apply
     @person = Person.find(params[:id])
-    if params[:commit].present?
+    if params[:complete].present?
       if verify_recaptcha(:model => @person)
         LgdpfMailer.send_note_invalid_apply(@person).deliver
         redirect_to :action => :complete,
@@ -577,12 +613,12 @@ class PeopleController < ApplicationController
   # 安否情報登録無効画面
   # === Args
   # _id_     :: Person.id
-  # _commit_ :: ボタン種別
+  # _complete_ :: ボタン種別
   # === Return
   # === Raise
   def note_invalid
     @person = Person.find(params[:id])
-    if params[:commit].present?
+    if params[:complete].present?
       @person.notes_disabled = true
       if @person.save!
         LgdpfMailer.send_note_invalid(@person).deliver
@@ -597,12 +633,12 @@ class PeopleController < ApplicationController
   # 安否情報登録有効申請画面
   # === Args
   # _id_     :: Person.id
-  # _commit_ :: ボタン種別
+  # _complete_ :: submitした場合渡されるパラメータ
   # === Return
   # === Raise
   def note_valid_apply
     @person = Person.find(params[:id])
-    if params[:commit].present?
+    if params[:complete].present?
       if verify_recaptcha(:model => @person)
         LgdpfMailer.send_note_valid_apply(@person).deliver
         redirect_to :action => :complete,
@@ -636,14 +672,14 @@ class PeopleController < ApplicationController
   # === Args
   # _id_      :: Person.id
   # _note_id_ :: Note.id
-  # _commit_  :: ボタン種別
+  # _complete_  :: ボタン種別
   # === Return
   # === Raise
   def spam
     @person = Person.find(params[:id])
     @note = Note.find(params[:note_id])
     session[:action] = action_name
-    if params[:commit].present?
+    if params[:complete].present?
       @note.spam_flag = true  # 認定:true, 取消:false
       if @note.save!
         redirect_to :action => :view, :id => @person
@@ -655,14 +691,14 @@ class PeopleController < ApplicationController
   # === Args
   # _id_      :: Person.id
   # _note_id_ :: Note.id
-  # _commit_  :: ボタン種別
+  # _complete_  :: ボタン種別
   # === Return
   # === Raise
   def spam_cancel
     @person = Person.find(params[:id])
     @note = Note.find(params[:note_id])
     session[:action] = action_name
-    if params[:commit].present?
+    if params[:complete].present?
       @note.spam_flag = false  # 認定:true, 取消:false
       if verify_recaptcha(:model => @person) && @note.save!
         redirect_to :action => :view, :id => @person
@@ -676,7 +712,7 @@ class PeopleController < ApplicationController
   # _id2_     :: Person.id(重複)
   # _id3_     :: Person.id(重複)
   # _note_id_ :: Note.id
-  # _commit_  :: ボタン種別
+  # _complete_ :: submitした場合渡されるパラメータ
   # === Return
   # === Raise
   def personal_info
@@ -685,7 +721,7 @@ class PeopleController < ApplicationController
     @id2 = params[:id2]
     @id3 = params[:id3]
 
-    if params[:commit].present?
+    if params[:complete].present?
       if verify_recaptcha(:model => @person)
         session[:pi_view] = true
         if session[:action] == ("spam" || "spam_cancel")

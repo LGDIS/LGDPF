@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
   # === Raise
   def cancel_personal_info
     # submitボタン押下
-    if params[:commit].present?
+    if params[:complete].present?
       session[:pi_view] = false  # 個人情報表示を無効にする
     end
   end

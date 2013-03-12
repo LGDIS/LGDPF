@@ -218,7 +218,7 @@
                 </div>
                 <div class="field">
                   <span class="label">情報元の投稿日:</span>
-                  <span class="value"><%= @person.source_date.strftime("%Y-%m-%d %H:%M %Z") if @person.source_date.present?  %></span>
+                  <span class="value"><%= @person.source_date.strftime("%Y/%m/%d %H:%M:%S") if @person.source_date.present?  %></span>
                 </div>
                 <div class="field">
                   <span class="label">情報元のサイト名:</span>
@@ -226,7 +226,7 @@
                 </div>
                 <div class="field">
                   <span class="label">この記録の有効期限:</span>
-                  <span class="value"><%= @person.expiry_date.strftime("%Y-%m-%d %H:%M %Z") if @person.expiry_date.present? %></span>
+                  <span class="value"><%= @person.expiry_date.strftime("%Y/%m/%d %H:%M:%S") if @person.expiry_date.present? %></span>
                 </div>
                 <div class="end-multi-columns"></div>
               </div>
@@ -295,8 +295,8 @@
             <div class="view note">
               <div class="source">
                 投稿者:<span class="author"><%= note.author_name %></span>
-                日付:<span class="date"><%= note.entry_date.strftime("%Y-%m-%d") if note.entry_date.present? %></span>
-                時刻:<span class="time"><%= note.entry_date.strftime("%H:%M:%S %Z") if note.entry_date.present? %></span>
+                日付:<span class="date"><%= note.entry_date.strftime("%Y/%m/%d") if note.entry_date.present? %></span>
+                時刻:<span class="time"><%= note.entry_date.strftime("%H:%M:%S") if note.entry_date.present? %></span>
 
       <%# スパム認定:true, スパム解除:false %>
                 <% if note.spam_flag == true %>

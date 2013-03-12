@@ -483,14 +483,14 @@
               <tr>
                 <td class="label">情報元の投稿日:</td>
                 <td class="field">
-                  <%= @person.source_date.strftime("%Y-%m-%d %H:%M %Z") if @person.source_date.present?  %>
+                  <%= @person.source_date.strftime("%Y/%m/%d %H:%M:%S") if @person.source_date.present?  %>
                 </td>
                 <td class="field">
-                  <%= @person2.source_date.strftime("%Y-%m-%d %H:%M %Z") if @person2.source_date.present?  %>
+                  <%= @person2.source_date.strftime("%Y/%m/%d %H:%M:%S") if @person2.source_date.present?  %>
                 </td>
                 <% if @person3.present? %>
                   <td class="field">
-                    <%= @person3.source_date.strftime("%Y-%m-%d %H:%M %Z") if @person3.source_date.present?  %>
+                    <%= @person3.source_date.strftime("%Y/%m/%d %H:%M:%S") if @person3.source_date.present?  %>
                   </td>
                 <% end %>
               </tr>
@@ -525,8 +525,8 @@
 
 
         <div class="source section">
-          <h3 class="mandatory">
-            あなたについて（必須）
+          <h3>
+            あなたについて
           </h3>
           <div class="hint">
             この人を探している人があなたと連絡を取る手段を指定してください
@@ -535,7 +535,7 @@
             <span class="label">
               <label for="author_name" class="mandatory"
                      id="author_name_original">
-                あなたの名前:
+                あなたの名前（必須）:
               </label>
             </span>
             <span class="value">

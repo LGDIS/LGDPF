@@ -41,11 +41,11 @@
     <h2>この人を特定できる情報を入力してください</h2>
   <% end %>
   <div class="name section">
-    <h3 class="mandatory">名前（必須）</h3>
+    <h3>名前</h3>
     <div class="hint">この人の名前を入力してください。</div>
     <div class="field">
       <div class="label">
-        <label for="person_family_name" class="mandatory">姓:</label>
+        <label for="person_family_name" class="mandatory">姓（必須）:</label>
       </div>
       <div class="value">
         <%= text_field :person, :family_name,
@@ -54,7 +54,7 @@
     </div>
     <div class="field">
       <span class="label">
-        <label for="person_given_name" class="mandatory">名:</label>
+        <label for="person_given_name" class="mandatory">名（必須）:</label>
       </span>
       <span class="value">
         <%= text_field :person, :given_name,
@@ -100,7 +100,7 @@
     <div class="field">
       <span class="label">
         <label for="person_date_of_birth">生年月日:</label>
-        <div class="hint">YYYY-MM-DD の形式で入力してください</div>
+        <div class="hint">YYYY/MM/DD の形式で入力してください</div>
       </span>
       <span class="value">
         <%= text_field :person, :date_of_birth, :value => @person.date_of_birth,
@@ -533,7 +533,7 @@
 
 
   <div class="source section">
-    <h3 class="mandatory">この記録の情報源（必須）</h3>
+    <h3>この記録の情報源</h3>
     <div class="hint">この記録の情報源を指定してください。</div>
     <div class="field">
       <div class="instructions">
@@ -556,10 +556,10 @@
     <div class="field">
       <span class="label">
         <label for="person_author_name" class="mandatory" id="author_name_original">
-          あなたの名前:
+          あなたの名前（必須）:
         </label>
         <label for="person_author_name" class="mandatory" id="author_name_clone" style="display: none">
-          元の情報提供者の名前:
+          元の情報提供者の名前（必須）:
         </label>
       </span>
       <span class="value">
@@ -611,7 +611,7 @@
         <label for="person_source_date">
           情報元の投稿日:
         </label>
-        <div class="hint">YYYY-MM-DD の形式で入力してください</div>
+        <div class="hint">YYYY/MM/DD の形式で入力してください</div>
       </span>
       <span class="value">
         <%= text_field :person, :source_date, :value => @person.source_date,

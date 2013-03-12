@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="content-language" content="ja" />
-    <title> 石巻パーソンファインダー </title>
+    <title> 石巻市パーソンファインダー </title>
     <%= stylesheet_link_tag "application", :media => "all" %>
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&language=ja"></script>
     <%= javascript_include_tag "application" %>
@@ -15,7 +15,7 @@
         <tbody>
           <tr>
             <td style="padding:0">
-              <%= link_to (image_tag 'sub_banner.jpg',:size => '265x75',:alt => 'banner'),
+              <%= link_to (image_tag SETTINGS["lgdpf"]["banner"]["img"],:size => '265x75',:alt => 'banner'),
                 :action => :index %>
             </td>
           </tr>
@@ -25,7 +25,7 @@
         </tbody>
       </table>
     </div>
-    <h1> 石巻パーソンファインダー </h1>
+    <h1><%= SETTINGS["lgdpf"]["banner"]["desc"] %> </h1>
 
 
 

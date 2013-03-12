@@ -5,14 +5,14 @@
       <%= form_tag :action => :spam_cancel do %>
         <h2>本当にスパムではありませんか?</h2>
 
-        <p>スパムとしてこのノートをマーク解除することで、デフォルトでそれが見えるようになります。</p>
+        <p>以下に表示されている文字を入力し、「登録情報を更新」ボタンを押下することで、スパム登録を解除します。</p>
 
         <div style="width: 462px;">
           <div class="view note">
             <div class="source">
               投稿者:<span class="author"><%= @note.author_name %></span>
-              日付:<span class="date"><%= @note.entry_date.strftime("%Y-%m-%d") if @note.entry_date.present? %></span>
-              時刻:<span class="time"><%= @note.entry_date.strftime("%H:%M:%S %Z") if @note.entry_date.present? %></span>
+              日付:<span class="date"><%= @note.entry_date.strftime("%Y/%m/%d") if @note.entry_date.present? %></span>
+              時刻:<span class="time"><%= @note.entry_date.strftime("%H:%M:%S") if @note.entry_date.present? %></span>
               <% unless @note.author_email.blank? %>
                 <div class="contact">
                   <% if session[:pi_view] %>
@@ -111,7 +111,7 @@
 
         <br/>
         <%= hidden_field :complete, :key, :value => "spam_cancel" %>
-        <%= submit_tag 'メモを更新する' %>
+        <%= submit_tag '登録情報を更新' %>
         <input type="button" value="キャンセル" onclick="history.go(-1);" />
       <% end %>
     </div>
