@@ -11,7 +11,7 @@
           あなたのメールアドレス
         </span>
 
-        <% if @note.blank? %>
+        <% if session[:action] == ("new" || "view") %>
           <%= text_field :person, :author_email, :value => @person.author_email %>
         <% else %>
           <%= text_field :note, :author_email, :value => @note.try(:author_email) %>
@@ -27,11 +27,11 @@
           <%= submit_tag "アップデートを受け取る" ,:name => "success" %>
           <%= submit_tag "キャンセル", :name => "cancel" %>
         </div>
-        <%= hidden_field_tag :id2, @person2.try(:id) %>
-        <%= hidden_field_tag :id3, @person3.try(:id) %>
-        <%= hidden_field_tag :note_id, @note.try(:id) %>
-        <%= hidden_field_tag :note_id2, @note2.try(:id) %>
-        <%= hidden_field_tag :note_id3, @note3.try(:id) %>
+  <%#= hidden_field_tag :id2, @person2.try(:id) %>
+  <%#= hidden_field_tag :id3, @person3.try(:id) %>
+  <%#= hidden_field_tag :note_id, @note.try(:id) %>
+  <%#= hidden_field_tag :note_id2, @note2.try(:id) %>
+  <%#= hidden_field_tag :note_id3, @note3.try(:id) %>
 
       <% end %>
     </div>

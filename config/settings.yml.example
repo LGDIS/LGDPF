@@ -24,7 +24,7 @@ lgdpf:
     host: 
     from:
   banner:
-    img:  # Rails.root/app/assets/imagesに参照する画像ファイルを置く
+    img:  # Rails.root/app/assets/imagesに参照する画像ファイルを置き、ファイル名を指定する
     desc:
 gpf:
   api_key:

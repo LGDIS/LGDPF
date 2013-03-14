@@ -215,12 +215,13 @@ class Person < ActiveRecord::Base
     notes = Note.where(:person_record_id => person.id, :email_flag => true).where("author_email <> ?","").select("DISTINCT author_email, id")
     
     # Personが紐付くNoteのemailと重複するか判定
+    # 受取フラグ有のpersonに送信する
+    if person.email_flag == true
+      to << [person, new_note, person]
+    end
+    # 受取フラグ有のnoteに送信する
     notes.each do |note|
-      if person.author_email == note.author_email && person.email_flag == true
-        to << [person, new_note, person]
-      else
-        to << [person, new_note, note]
-      end
+      to << [person, new_note, note]
     end
 
     return to

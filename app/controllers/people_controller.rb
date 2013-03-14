@@ -110,16 +110,17 @@ class PeopleController < ApplicationController
       dup_ids = [@person.id, @person2.id]
     end
 
-    session[:person] = dup_ids
+    # 新着情報
+    session[:person_id] = dup_ids
 
-      # [親id, [重複id1(,重複id2)]]を作成する
+    # [親id, [重複id1(,重複id2)]]を作成する
     dup_ids.each_with_index do |id, i|
       tmp = dup_ids.dup
       save_format << [tmp.delete_at(i), tmp]
     end
 
     # 重複Noteの登録
-    session[:note] = []
+    session[:note_id] = []
     Note.transaction do
       save_format.each do |row|
         # 紐付くNoteを作成
@@ -130,54 +131,40 @@ class PeopleController < ApplicationController
           note_cp = note.dup
           note_cp.linked_person_record_id = dup_id
           note_cp.save!
-          session[:note] << note_cp.id
+          session[:note_id] << note_cp.id
         end
       end
     end
 
-    #
-    #    @note = Note.new(params[:note])
-    #    @note.person_record_id  =  params[:person][:id]
-    #    @note.linked_person_record_id  =  params[:person2][:id]
-    #    @note.linked_person_record_id  =  params[:person3][:id] if params[:person3][:id].present?
-    #    @note2 = Note.new(params[:note])
-    #    @note2.person_record_id  =  params[:person2][:id]
-    #    @note2.linked_person_record_id  =  params[:person][:id]
-    #    @note2.linked_person_record_id  =  params[:person3][:id] if params[:person3][:id].present?
-    #    if params[:person3][:id].present?
-    #      @note3 = Note.new(params[:note])
-    #      @note3.person_record_id  =  params[:person3][:id]
-    #      @note3.linked_person_record_id =  params[:person][:id]
-    #      @note3.linked_person_record_id =  params[:person2][:id]
-    #    end
-    #
-    #    Note.transaction do
-    #      @note.save!
-    #      @note2.save!
-    #      @note3.save! unless params[:person3][:id].blank?
-    #    end
     # 利用規約のチェック判定
     unless @consent
       raise ConsentError
     end
 
-    # 新着メールを送るアドレスを抽出
-    #    to = Person.subscribe_email_address(@person, @note)
-    to = Person.subscribe_email_address(@person, @note)
-    # Personに新着メールを送信する
-    to.each do |address|
-      LgdpfMailer.send_add_note(address).deliver
-      LgdpfMailer.send_add_note(address).deliver
-      LgdpfMailer.send_add_note(address).deliver unless params[:person3][:id].blank?
+    # 重複するPerson全てにメールを送信する
+    session[:person_id].each do |person_id|
+      person = Person.find_by_id(person_id)
+      # 新着メールを送るアドレスを抽出
+      to = Person.subscribe_email_address(person, Note.find_by_id(session[:note_id].first))
+      # Personに新着メールを送信する
+      to.each do |address|
+        LgdpfMailer.send_add_note(address).deliver
+      end
     end
+
+
+
+#
+#    # 新着メールを送るアドレスを抽出
+#    to = Person.subscribe_email_address(@person, Note.find_by_id(session[:note_id].first))
+#    # Personに新着メールを送信する
+#    binding.pry
+#    to.each do |address|
+#      LgdpfMailer.send_add_note(address).deliver
+#      LgdpfMailer.send_add_note(address).deliver
+#      LgdpfMailer.send_add_note(address).deliver unless params[:person3][:id].blank?
+#    end
     if @subscribe
-#      redirect_to :action => "subscribe_email",
-#        :id => @person,
-#        :id2 => @person2,
-#        :id3 => @person3,
-#        :note_id => @note,
-#        :note_id2 => @note2,
-#        :note_id3 => @note3
       redirect_to :action => :subscribe_email
     else
       redirect_to :action => :view, :id => @person
@@ -188,7 +175,7 @@ class PeopleController < ApplicationController
   rescue ConsentError
     flash.now[:error] = I18n.t("activerecord.errors.messages.disagree")
     render :action => :multiviews
-  rescue
+  rescue ActiveRecord::RecordNotFound, ActiveRecord::RecordInvalid
     render :action => :multiviews
   end
 
@@ -211,6 +198,7 @@ class PeopleController < ApplicationController
     if params[:family_name].blank? && params[:given_name].blank?
       @from_seek = true
     end
+    session[:action] = action_name
   end
 
   # 新規情報登録
@@ -296,7 +284,9 @@ class PeopleController < ApplicationController
     end
    
     if @subscribe
-      redirect_to :action => "subscribe_email", :id => @person
+      session[:person_id] = [@person.id]
+      session[:note_id] = [@note.try(:id)]
+      redirect_to :action => "subscribe_email"
     else
       redirect_to :action => "view", :id => @person
     end
@@ -358,13 +348,15 @@ class PeopleController < ApplicationController
   # === Raise
   def update
     @person = Person.find(params[:id])
-
     # 登録以外のボタンを押されたら別画面に遷移する
     if params[:extend_days].present?
       redirect_to :action => "extend_days", :id => @person
       return
     elsif params[:subscribe_email].present?
-      redirect_to :action => "subscribe_email", :id => @person
+      session[:person_id] = [@person.id]
+      session[:note_id] = []
+      session[:action] = "view"
+      redirect_to :action => "subscribe_email"
       return
     elsif params[:delete].present?
       redirect_to :action => "delete", :id => @person
@@ -402,7 +394,10 @@ class PeopleController < ApplicationController
 
         # 新規登録したnoteが新着メールを受け取るか
         if @subscribe
-          redirect_to :action => :subscribe_email, :id => @person.id, :note_id => @note.id
+          session[:person_id] = [@person.id]
+          session[:note_id] = [@note.id]
+          session[:action] = action_name
+          redirect_to :action => :subscribe_email
         else
           redirect_to :action => :view, :id => @person
         end
@@ -450,53 +445,63 @@ class PeopleController < ApplicationController
   # === Return
   # === Raise
   def subscribe_email
-    @person = Person.find(params[:id])  # ウォッチする避難者
-    @person2 = Person.find(params[:id2]) if params[:id2].present? # ウォッチする避難者
-    @person3 = Person.find(params[:id3]) if params[:id3].present? # ウォッチする避難者
-    @note = Note.find_by_id(params[:note_id]) if params[:note_id].present?
-    @note2 = Note.find_by_id(params[:note_id2]) if params[:note_id2].present?
-    @note3 = Note.find_by_id(params[:note_id3]) if params[:note_id3].present?
+    @person = Person.find(session[:person_id].first)  # ウォッチする避難者
+    @note = Note.find_by_id(session[:note_id].first)
 
     # アップデートを受け取るボタン押下
     if params[:success].present?
-      if params[:note].blank?  # personで新着受取チェック
-        if params[:person][:author_email].blank?
-          raise EmailBlankError
-        end
-        @person.email_flag = true
-        @person.author_email = params[:person][:author_email]
-        # author_emailに重複がある場合は受取フラグを消す
-        if Note.check_for_author_email(@person)
-          @person.email_flag = false
-        end
-        @person.save!
-      else  # noteで新着受取チェック
-        if params[:note][:author_email].blank?
-          raise EmailBlankError
-        end
-        Note.transaction do
-          @note.author_email = params[:note][:author_email]
-          @note.email_flag = Note.check_for_author_email(@person) ? false : true
-          @note.save!
-          if @note2.present?
-            @note2.author_email = params[:note][:author_email]
-            @note2.email_flag = Note.check_for_author_email(@person2) ? false : true
-            @note2.save!
-          end
-          if @note3.present?
-            @note3.author_email = params[:note][:author_email]
-            @note3.email_flag = Note.check_for_author_email(@person3) ? false : true
-            @note3.save!
-          end
-        end
-      end
       if verify_recaptcha(:model => @person)
-        if @note.blank?
+        if session[:action] == ("new" || "view") # personで新着受取チェック
+          if params[:person][:author_email].blank?
+            raise EmailBlankError
+          end
+          @person.email_flag = true
+          @person.author_email = params[:person][:author_email]
+          # author_emailに重複がある場合は受取フラグを消す
+          if  Note.where(
+              :person_record_id => @person.id,
+              :author_email     => @person.author_email,
+              :email_flag       => true
+            ).size > 0
+            @person.email_flag = false
+          end
+          @person.save!
+        else  # noteで新着受取チェック
+          if params[:note][:author_email].blank?
+            raise EmailBlankError
+          end
+
+          Note.transaction do
+            session[:note_id].each do |note_id|
+              note = Note.find_by_id(note_id)
+             
+              parent_person = Person.find_by_id(note.person_record_id)
+              note.author_email = params[:note][:author_email]
+              # 親Personに重複するアドレスがあるか
+              # 紐付くNoteに重複するアドレスがあるか
+              note.email_flag = true
+              if parent_person.author_email ==  note.author_email ||
+                  Note.where(
+                  :person_record_id => parent_person.id,
+                  :author_email => note.author_email,
+                  :email_flag => true
+                ).size > 0
+                note.email_flag = false
+              end
+
+              note.save!
+            end
+          end
+        end
+
+        if session[:action] == ("new" || "view")
           LgdpfMailer.send_new_information(@person, nil).deliver
         else
-          LgdpfMailer.send_new_information(@person, @note).deliver
-          LgdpfMailer.send_new_information(@person2, @note2).deliver if @note2.present?
-          LgdpfMailer.send_new_information(@person3, @note3).deliver if @note3.present?
+          session[:note_id].each do |note_id|
+            note = Note.find_by_id(note_id)
+            parent_person = Person.find_by_id(note.person_record_id)
+            LgdpfMailer.send_new_information(parent_person, note).deliver
+          end
         end
         redirect_to :action => :complete,
           :id => @person,
