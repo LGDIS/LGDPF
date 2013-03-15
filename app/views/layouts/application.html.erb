@@ -15,7 +15,7 @@
         <tbody>
           <tr>
             <td style="padding:0">
-              <%= link_to (image_tag SETTINGS["lgdpf"]["banner"]["img"],:size => '265x75',:alt => 'banner'),
+              <%= link_to (image_tag SETTINGS["banner"]["image_file"],:size => '265x75',:alt => 'banner'),
                 :action => :index %>
             </td>
           </tr>
@@ -25,7 +25,7 @@
         </tbody>
       </table>
     </div>
-    <h1><%= SETTINGS["lgdpf"]["banner"]["desc"] %> </h1>
+    <h1><%= SETTINGS["banner"]["description"] %> </h1>
 
 
 

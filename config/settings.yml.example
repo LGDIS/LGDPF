@@ -1,32 +1,67 @@
 # -*- coding:utf-8 -*-
-lgdpf:
-  development:
-    site: 
-    user: 
-    password: 
-    proxy: 
-  test:
-    site: 
-    user: 
-    password: 
-    proxy: 
-  production:
-    site: 
-    user: 
-    password: 
-    proxy:
+development:
+  site:
+  # smtpの設定
   mail:
-    address: 
-    port: 
-    domain: 
-    user_name: 
-    password: 
-    host: 
+    address:
+    port:
+    domain:
+    user_name:
+    password:
+    host:
     from:
+  # 画面のHeaderに表示するバナーの設定
   banner:
-    img:  # Rails.root/app/assets/imagesに参照する画像ファイルを置き、ファイル名を指定する
-    desc:
-gpf:
-  api_key:
-  repository:
-  domain:
+    # Rails.root/app/assets/imagesに参照する画像ファイルを置く
+    image_file:
+    description:
+  # GooglePersonFinderのDBと同期させるための設定
+  # 災害ごとにAPIキーが発行されるのでその都度、Googleに申請し変更する
+  google_person_finder:
+    api_key:
+    repository:
+    registered_domain:
+test:
+  site:
+  # smtpの設定
+  mail:
+    address:
+    port:
+    domain:
+    user_name:
+    password:
+    host:
+    from:
+  # 画面のHeaderに表示するバナーの設定
+  banner:
+    # Rails.root/app/assets/imagesに参照する画像ファイルを置く
+    image_file:
+    description:
+  # GooglePersonFinderのDBと同期させるための設定
+  # 災害ごとにAPIキーが発行されるのでその都度、Googleに申請し変更する
+  google_person_finder:
+    api_key:
+    repository:
+    registered_domain:
+production:
+  site:
+  # smtpの設定
+  mail:
+    address:
+    port:
+    domain:
+    user_name:
+    password:
+    host:
+    from:
+  # 画面のHeaderに表示するバナーの設定
+  banner:
+    # Rails.root/app/assets/imagesに参照する画像ファイルを置く
+    image_file:
+    description:
+  # GooglePersonFinderのDBと同期させるための設定
+  # 災害ごとにAPIキーが発行されるのでその都度、Googleに申請し変更する
+  google_person_finder:
+    api_key:
+    repository:
+    registered_domain:

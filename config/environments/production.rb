@@ -57,14 +57,14 @@ Lgdpf::Application.configure do
 
     config.action_mailer.smtp_settings = {
       :enable_starttls_auto => true,
-      :address            => SETTINGS["lgdpf"]["mail"]["address"],
-      :port               => SETTINGS["lgdpf"]["mail"]["port"],
-      :domain             => SETTINGS["lgdpf"]["mail"]["domain"],
+      :address            => SETTINGS["mail"]["address"],
+      :port               => SETTINGS["mail"]["port"],
+      :domain             => SETTINGS["mail"]["domain"],
       :authentication     => :plain,
-      :user_name          => SETTINGS["lgdpf"]["mail"]["user_name"],
-      :password           => SETTINGS["lgdpf"]["mail"]["password"]
+      :user_name          => SETTINGS["mail"]["user_name"],
+      :password           => SETTINGS["mail"]["password"]
     }
-    config.action_mailer.default_url_options = { :host => SETTINGS["lgdpf"]["mail"]["host"] }
+    config.action_mailer.default_url_options = { :host => SETTINGS["mail"]["host"] }
 
 
   # Enable threaded mode
