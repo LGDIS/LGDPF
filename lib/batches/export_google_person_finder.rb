@@ -19,35 +19,39 @@ class Batches::ExportGooglePersonFinder
   # === Raise
   def self.execute
     # 2重起動防止
-    if File.exist?("tmp/ExportGooglePersonFinder")
-      puts I18n.t("errors.messages.dual_boot")
+    if File.exist?("tmp/synchro")
+      raise I18n.t("errors.messages.dual_boot")
     else
-      f = File.open("tmp/ExportGooglePersonFinder", "w")
+      Dir::mkdir(Rails.root + "tmp/synchro")
+      f = File.open("tmp/synchro/ExportGooglePersonFinder", "w")
       
       puts " #{Time.now.to_s} ===== START ===== "
 
-      export_record_size = Person.where(:public_flag => Person::PUBLIC_FLAG_ON).size
+      begin
+        export_record_size = Person.where(:public_flag => Person::PUBLIC_FLAG_ON).size
 
-      # アップロード対象のレコードがなくなるまで
-      while export_record_size > 0
-        target_records = Person.find_for_export_gpf
-        export_record_size = export_record_size - target_records.size
-        # 書き込み専用でファイルを開く（新規作成）
-        file_path = Rails.root + "tmp/lgdpf#{Time.now.utc.xmlschema.gsub(":","")}.xml"
-        File.open(file_path, "w") do |output_file|
-          output_file.write(create_pfif(target_records))    # ファイルにデータ書き込み
+        # アップロード対象のレコードがなくなるまで
+        while export_record_size > 0
+          target_records = Person.find_for_export_gpf
+          export_record_size = export_record_size - target_records.size
+          # 書き込み専用でファイルを開く（新規作成）
+          file_path = Rails.root + "tmp/synchro/lgdpf#{Time.now.utc.xmlschema.gsub(":","")}.xml"
+          File.open(file_path, "w") do |output_file|
+            output_file.write(create_pfif(target_records))    # ファイルにデータ書き込み
+          end
+
+          # GooglePersonFinderにexport
+          puts `curl -X POST -H 'Content-type: application/xml' --data-binary @#{file_path} https://www.google.org/personfinder/#{SETTINGS["google_person_finder"]["repository"]}/api/write?key=#{SETTINGS["google_person_finder"]["api_key"]} `
+
         end
-        
-        # GooglePersonFinderにexport
-        puts `curl -X POST -H 'Content-type: application/xml' --data-binary @#{file_path} https://www.google.org/personfinder/#{SETTINGS["google_person_finder"]["repository"]}/api/write?key=#{SETTINGS["google_person_finder"]["api_key"]} `
-
-        # File.delete(file_path)  # 送信済みXMLファイルの削除
-      end
       
-      puts " #{Time.now.to_s} =====  END  ===== "
-      f.close
-      File.delete("tmp/ExportGooglePersonFinder")  # lockファイルの削除
-      Person.update_all(:export_flag => false)
+        puts " #{Time.now.to_s} =====  END  ===== "
+ 
+      ensure
+        f.close
+        Person.update_all(:export_flag => false)
+        FileUtils.rm_r(Dir.glob(Rails.root + 'tmp/synchro'))
+      end
     end
   end
 
