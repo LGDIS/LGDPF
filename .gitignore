@@ -13,6 +13,7 @@ coverage/
 spec/tmp/*
 config/database.yml
 config/settings.yml
+config/api_key.yml
 config/terms_message.txt
 config/unicorn.rb
 config/initializers/recaptcha.rb

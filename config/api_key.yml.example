@@ -1,0 +1,19 @@
+# Google Map API key
+# * 有償版を利用する場合は、購入したclient_idを設定する
+# * 無償版を利用する場合は、空文字を設定する
+google_map:
+  client_id: ""
+
+# Google Person Finder API key
+# 災害ごとにAPIキーが発行されるのでその都度、Googleに申請し変更する
+google_person_finder:
+  api_key: ""
+  repository: ""
+  registered_domain: ""
+
+# reCAPTCHA API key
+# http://www.google.com/recaptcha からAPIキーを取得する
+recaptcha:
+  public_key: ""
+  private_key: ""
+

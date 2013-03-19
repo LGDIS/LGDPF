@@ -41,7 +41,7 @@ class Batches::ExportGooglePersonFinder
           end
 
           # GooglePersonFinderにexport
-          puts `curl -X POST -H 'Content-type: application/xml' --data-binary @#{file_path} https://www.google.org/personfinder/#{SETTINGS["google_person_finder"]["repository"]}/api/write?key=#{SETTINGS["google_person_finder"]["api_key"]} `
+          puts `curl -X POST -H 'Content-type: application/xml' --data-binary @#{file_path} https://www.google.org/personfinder/#{API_KEY["google_person_finder"]["repository"]}/api/write?key=#{API_KEY["google_person_finder"]["api_key"]} `
 
         end
       
@@ -67,10 +67,12 @@ class Batches::ExportGooglePersonFinder
     doc.add_element("pfif:pfif").add_namespace("pfif", "http://zesty.ca/pfif/1.4")
 
     # export対象を抽出する
+    # Google(作)のデータはcurl実行時に権限なしでskipされるが
+    # LGDPFで追加したNoteを同期するために、PFIF作成時にskipしていない
     target_records.each do |person|
       node_person = doc.root.add_element("pfif:person")
       if person.person_record_id.blank?
-        node_person.add_element("pfif:person_record_id").add_text("#{SETTINGS["google_person_finder"]["registered_domain"]}/person.#{person.id}")
+        node_person.add_element("pfif:person_record_id").add_text("#{API_KEY["google_person_finder"]["registered_domain"]}/person.#{person.id}")
       else
         node_person.add_element("pfif:person_record_id").add_text("#{person.person_record_id}")
       end
@@ -103,19 +105,19 @@ class Batches::ExportGooglePersonFinder
       notes.each do |note|
         node_note = node_person.add_element("pfif:note")
         if note.note_record_id.blank?
-          node_note.add_element("pfif:note_record_id").add_text("#{SETTINGS["google_person_finder"]["registered_domain"]}/note.#{note.id}")
+          node_note.add_element("pfif:note_record_id").add_text("#{API_KEY["google_person_finder"]["registered_domain"]}/note.#{note.id}")
         else
           node_note.add_element("pfif:note_record_id").add_text("#{note.note_record_id}")
         end
 
         if note.person_record_id =~ /^\d+$/
-          node_note.add_element("pfif:person_record_id").add_text("#{SETTINGS["google_person_finder"]["registered_domain"]}/person.#{note.person_record_id}")
+          node_note.add_element("pfif:person_record_id").add_text("#{API_KEY["google_person_finder"]["registered_domain"]}/person.#{note.person_record_id}")
         else
           node_note.add_element("pfif:person_record_id").add_text("#{note.person_record_id}")
         end
 
         if note.linked_person_record_id.present? && note.linked_person_record_id =~ /^\d+$/
-          node_note.add_element("pfif:linked_person_record_id").add_text("#{SETTINGS["google_person_finder"]["registered_domain"]}/person.#{note.linked_person_record_id}")
+          node_note.add_element("pfif:linked_person_record_id").add_text("#{API_KEY["google_person_finder"]["registered_domain"]}/person.#{note.linked_person_record_id}")
         else
           node_note.add_element("pfif:linked_person_record_id").add_text("#{note.linked_person_record_id}")
         end
@@ -134,14 +136,14 @@ class Batches::ExportGooglePersonFinder
      
         # GooglePersonFinderに送ったnote_record_idを保持する
         if note.note_record_id.blank?
-          note.note_record_id = "#{SETTINGS["google_person_finder"]["registered_domain"]}/note.#{note.id}"
+          note.note_record_id = "#{API_KEY["google_person_finder"]["registered_domain"]}/note.#{note.id}"
         end
         note.save
       end
 
       # GooglePersonFinderに送ったperson_record_idを保持する
       if person.person_record_id.blank?
-        person.person_record_id = "#{SETTINGS["google_person_finder"]["registered_domain"]}/person.#{person.id}"
+        person.person_record_id = "#{API_KEY["google_person_finder"]["registered_domain"]}/person.#{person.id}"
       end
       person.export_flag = true
       person.save

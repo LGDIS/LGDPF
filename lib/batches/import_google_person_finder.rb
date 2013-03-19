@@ -48,8 +48,8 @@ class Batches::ImportGooglePersonFinder
       last_start_time = Person.where("person_record_id IS NOT NULL").order(:source_date).try(:last).try(:source_date)
       # レスポンスがない場合はタイムアウト
       timeout(REST_GET_TIME){
-        url = "/personfinder/" + SETTINGS["google_person_finder"]["repository"] +
-          "/feeds/person?key=" + SETTINGS["google_person_finder"]["api_key"] +
+        url = "/personfinder/" + API_KEY["google_person_finder"]["repository"] +
+          "/feeds/person?key=" + API_KEY["google_person_finder"]["api_key"] +
           "&max_results=" + MAX_RESULTS.to_s + "&skip=" + skip.to_s +
           "&min_entry_date=" + last_start_time.try(:utc).try(:strftime, "%Y-%m-%dT%H:%M:%SZ").to_s
 
@@ -76,7 +76,7 @@ class Batches::ImportGooglePersonFinder
           
           # LGDPFからuploadしたデータは取り込まない
           domain = person_record_id.split("/")
-          next if local_person.present? || domain[0] == SETTINGS["google_person_finder"]["registered_domain"]
+          next if local_person.present? || domain[0] == API_KEY["google_person_finder"]["registered_domain"]
 
           # LGDPFに取り込む
           person = Person.new
@@ -102,8 +102,8 @@ class Batches::ImportGooglePersonFinder
       last_start_time = Note.where("note_record_id IS NOT NULL").order(:source_date).try(:last).try(:source_date)
       # 5分間レスポンスがない場合はタイムアウト
       timeout(REST_GET_TIME){
-        url = "/personfinder/" + SETTINGS["google_person_finder"]["repository"] +
-          "/feeds/note?key=" + SETTINGS["google_person_finder"]["api_key"] +
+        url = "/personfinder/" + API_KEY["google_person_finder"]["repository"] +
+          "/feeds/note?key=" + API_KEY["google_person_finder"]["api_key"] +
           "&max_results=" + MAX_RESULTS.to_s + "&skip=" + skip.to_s +
           "&min_entry_date=" + last_start_time.try(:utc).try(:strftime, "%Y-%m-%dT%H:%M:%SZ").to_s
 
@@ -128,7 +128,7 @@ class Batches::ImportGooglePersonFinder
           # LGDPFからuploadしたデータは取り込まない
           domain = note_record_id.split("/")
 
-          next if local_person.blank? || local_note.present? || domain[0] == SETTINGS["google_person_finder"]["registered_domain"]
+          next if local_person.blank? || local_note.present? || domain[0] == API_KEY["google_person_finder"]["registered_domain"]
           # LGDPFに取り込む
           note = Note.new
           note = Note.exec_insert_note(note, e)

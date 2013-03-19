@@ -15,12 +15,6 @@ development:
     # Rails.root/app/assets/imagesに参照する画像ファイルを置く
     image_file:
     description:
-  # GooglePersonFinderのDBと同期させるための設定
-  # 災害ごとにAPIキーが発行されるのでその都度、Googleに申請し変更する
-  google_person_finder:
-    api_key:
-    repository:
-    registered_domain:
 test:
   site:
   # smtpの設定
@@ -37,12 +31,6 @@ test:
     # Rails.root/app/assets/imagesに参照する画像ファイルを置く
     image_file:
     description:
-  # GooglePersonFinderのDBと同期させるための設定
-  # 災害ごとにAPIキーが発行されるのでその都度、Googleに申請し変更する
-  google_person_finder:
-    api_key:
-    repository:
-    registered_domain:
 production:
   site:
   # smtpの設定
@@ -59,9 +47,3 @@ production:
     # Rails.root/app/assets/imagesに参照する画像ファイルを置く
     image_file:
     description:
-  # GooglePersonFinderのDBと同期させるための設定
-  # 災害ごとにAPIキーが発行されるのでその都度、Googleに申請し変更する
-  google_person_finder:
-    api_key:
-    repository:
-    registered_domain:
