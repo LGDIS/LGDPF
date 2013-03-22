@@ -15,6 +15,10 @@ development:
     # Rails.root/app/assets/imagesに参照する画像ファイルを置く
     image_file:
     description:
+  # sheltersテーブルの同期元情報
+  shelter_source:
+    uri: http://localhost:3000/exportdata/
+    timeout: 60
 test:
   site:
   # smtpの設定
@@ -31,6 +35,10 @@ test:
     # Rails.root/app/assets/imagesに参照する画像ファイルを置く
     image_file:
     description:
+  # sheltersテーブルの同期元情報
+  shelter_source:
+    uri: http://localhost:3000/exportdata/
+    timeout: 60
 production:
   site:
   # smtpの設定
@@ -47,3 +55,7 @@ production:
     # Rails.root/app/assets/imagesに参照する画像ファイルを置く
     image_file:
     description:
+  # sheltersテーブルの同期元情報
+  shelter_source:
+    uri: https://redmine.example.com/exportdata/
+    timeout: 60
