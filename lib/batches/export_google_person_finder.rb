@@ -18,6 +18,8 @@ class Batches::ExportGooglePersonFinder
   # === Return
   # === Raise
   def self.execute
+    puts " #{Time.now.to_s} ===== START ===== "
+
     # 2重起動防止
     if File.exist?("tmp/synchro")
       raise I18n.t("errors.messages.dual_boot")
@@ -25,8 +27,6 @@ class Batches::ExportGooglePersonFinder
       Dir::mkdir(Rails.root + "tmp/synchro")
       f = File.open("tmp/synchro/ExportGooglePersonFinder", "w")
       
-      puts " #{Time.now.to_s} ===== START ===== "
-
       begin
         export_record_size = Person.where(:public_flag => Person::PUBLIC_FLAG_ON).size
 

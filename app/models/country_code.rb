@@ -5,7 +5,7 @@ class CountryCode < ActiveRecord::Base
   # コンスタントマスタからデータを取得する
   # === Args
   # === Return
-  # CountryCodeハッシュ
+  # CountryCodeハッシュオブジェクト {:code=>:name, :code=>:name}
   def self.hash_for_selectbox
     country_list = {}
     countries = CountryCode.all

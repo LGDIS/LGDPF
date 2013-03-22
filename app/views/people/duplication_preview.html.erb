@@ -1,0 +1,103 @@
+<div class="container">
+  <div class="content" role="main">
+    <div>
+      <%= form_tag :action => :dup_merge do %>
+        <%= hidden_field :person, :id %>
+        <%= hidden_field :person2, :id %>
+        <%= hidden_field :person3, :id %>
+        <%= hidden_field_tag :count, @count  %>
+
+        <h2>
+          <% if @person3 %>
+            「<%= @person.full_name %>」さんと
+            「<%= @person2.full_name %>」さんと
+            「<%= @person3.full_name %>」さん
+            の情報が重複しているというメモを追加します。よろしいですか？
+          <% else %>
+            「<%= @person.full_name %>」さんと
+            「<%= @person2.full_name %>」さん
+            の情報が重複しているというメモを追加します。よろしいですか？
+          <% end %>
+        </h2>
+
+        <div class="view preview">
+
+          <div class="fields-table person">
+            <h2>避難者の重複情報</h2>
+
+            <div class="text section">
+              <h3>メッセージ</h3>
+              <div class="field">
+                <%= text_area :note, :text, { :rows => 5, :class => "long-text-input", :readonly => true } %>
+              </div>
+              <div class="end-multi-columns"></div>
+            </div>
+
+            <div class="source section">
+              <h3>メモの投稿者について</h3>
+              <div class="field">
+                <%= hidden_field :clone, :clone_input, :value => @clone_clone_input %>
+                <span class="label">
+                  <label>投稿者の名前:</label>
+                </span>
+                <span class="value">
+                  <%= @note.author_name %>
+                  <%= hidden_field :note, :author_name %>
+                </span>
+              </div>
+              <div class="field">
+                <span class="label">
+                  <label>投稿者の電話番号:</label>
+                </span>
+                <span class="value">
+                  <%= @note.author_phone %>
+                  <%= hidden_field :note, :author_phone %>
+                </span>
+              </div>
+              <div class="field">
+                <span class="label">
+                  <label>投稿者のメール アドレス:</label>
+                </span>
+                <span class="value">
+                  <%= @note.author_email %>
+                  <%= hidden_field :note, :author_email %>
+                </span>
+              </div>
+              <div class="field">
+                <span class="label">
+                  <label>
+                    この方の新着情報をメールで受け取る:
+                  </label>
+                </span>
+                <span class="value">
+                  <% if @subscribe %>
+                    <label>希望する</label>
+                  <% else %>
+                    <label>希望しない</label>
+                  <% end %>
+                  <%= hidden_field_tag :subscribe, @subscribe %>
+                </span>
+              </div>
+
+              <div class="end-multi-columns"></div>
+            </div>
+
+            <div class="submit">
+              <div class="consent">
+                <label for="consent"class="mandatory">システムの利用規約に同意します。</label>
+                <%= check_box_tag "consent", true, false, {:checked => @consent} %>
+                <%= link_to "ご利用規約", :action => :terms_of_service %>
+              </div>
+            </div>
+          </div>
+
+          <%= submit_tag "はい", :name => "ok" %>
+          <input type="button" value="いいえ" onclick="history.go(-1);" />
+        <% end %>
+      </div>
+      <br/><br/>
+
+    </div>
+  </div>
+</div>
+<p><%= link_to "<< 最初のページに戻る ", :action => :index %></p>

@@ -1,0 +1,25 @@
+<div class="container">
+  <div class="content" role="main">
+    <div>
+      <%= form_tag :action => :create, :id => @person do %>
+        <h2>
+          「<%= @person.family_name + " "+ @person.given_name %>」さんに関する記録を作成します。よろしいですか？
+        </h2>
+        <div class="view preview">
+
+          <%= render :partial => "person_preview" %>
+
+          <% unless @from_seek %>
+            <%= render :partial => "note_preview" %>
+          <% end %>
+
+          <%= submit_tag "はい", :name => "ok" %>
+          <input type="button" value="いいえ" onclick="history.go(-1);" />
+        <% end %>
+      </div>
+      <br/><br/>
+
+    </div>
+  </div>
+</div>
+<p><%= link_to "<< 最初のページに戻る ", :action => :index %></p>

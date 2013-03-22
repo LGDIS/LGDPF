@@ -67,6 +67,7 @@ class PeopleController < ApplicationController
     end
   end
 
+
   # 避難者情報重複確認画面
   # === Args
   # _id1_ :: 検索一覧で選択されたPerson.id
@@ -83,6 +84,31 @@ class PeopleController < ApplicationController
     @subscribe = false
     session[:action] = action_name
   end
+
+  # 重複安否情報登録のプレビュー画面
+  # === Args
+  # === Return
+  # === Raise
+  def duplication_preview
+   # エラー時に入力値を保持する
+    @count = params[:count].to_i
+    @person = Person.find_by_id(params[:person][:id])
+    @person2 = Person.find_by_id(params[:person2][:id])
+    @person3 = Person.find_by_id(params[:person3][:id]) if params[:person3][:id].present?
+    @subscribe = params[:subscribe] == "true" ? true : false
+    @consent = params[:consent] == "true" ? true :false
+
+    @note = Note.new(params[:note])
+
+    # 入力値チェック
+    if @note.invalid?
+      raise
+    end
+
+  rescue
+    render :action => "multiviews"
+  end
+
 
   # 重複した避難者をまとめる
   # === Args
@@ -101,6 +127,7 @@ class PeopleController < ApplicationController
     @person3 = Person.find_by_id(params[:person3][:id]) if params[:person3][:id].present?
     @subscribe = params[:subscribe] == "true" ? true : false
     @consent = params[:consent] == "true" ? true :false
+    @note = Note.new(params[:note])  # saveしてはいけない(再表示用)
 
     # 重複可能性のあるperson_record_id
     save_format = []
@@ -152,18 +179,6 @@ class PeopleController < ApplicationController
       end
     end
 
-
-
-#
-#    # 新着メールを送るアドレスを抽出
-#    to = Person.subscribe_email_address(@person, Note.find_by_id(session[:note_id].first))
-#    # Personに新着メールを送信する
-#    binding.pry
-#    to.each do |address|
-#      LgdpfMailer.send_add_note(address).deliver
-#      LgdpfMailer.send_add_note(address).deliver
-#      LgdpfMailer.send_add_note(address).deliver unless params[:person3][:id].blank?
-#    end
     if @subscribe
       redirect_to :action => :subscribe_email
     else
@@ -171,12 +186,12 @@ class PeopleController < ApplicationController
     end
   rescue Net::SMTPFatalError
     flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
-    render :action => :multiviews
+    render :action => :duplication_preview
   rescue ConsentError
     flash.now[:error] = I18n.t("activerecord.errors.messages.disagree")
-    render :action => :multiviews
+    render :action => :duplication_preview
   rescue ActiveRecord::RecordNotFound, ActiveRecord::RecordInvalid
-    render :action => :multiviews
+    render :action => :duplication_preview
   end
 
   # 新規作成画面
@@ -201,6 +216,79 @@ class PeopleController < ApplicationController
     session[:action] = action_name
   end
 
+  # 新規登録のプレビュー画面
+  # === Args
+  # _person_    :: Person
+  # _note_      :: Note
+  # _subscribe_ :: 新着情報受信のチェック有無
+  # _clone_     :: 新規か複製か
+  # _kana_      :: よみがな
+  # _clickable_map_ :: 最後に見かけた場所
+  # === Return
+  # === Raise
+  def new_preview
+
+    # 遷移元確認フラグ
+    if params[:note].blank?
+      @from_seek = true
+    end
+    @kana = params[:kana]
+    @clone_clone_input = (params[:clone][:clone_input] == "no" ? true : false)
+    @subscribe = (params[:subscribe] == "true" ? true : false)
+
+
+    @person = Person.new(params[:person])
+
+    # 入力値をDBに格納できる形式に加工する
+    # Person
+    # よみがな
+    unless params[:kana].blank?
+      @person.alternate_names = params[:kana][:family_name] + " " + params[:kana][:given_name]
+    end
+    # プロフィール
+    @person.profile_urls = set_profile_urls
+    # 削除予定日時
+    @person.expiry_date = Time.now.advance(:days => params[:person][:expiry_date].to_i)
+    # 情報元のサイト名
+    if @clone_clone_input
+      @person.source_name = `hostname`
+    end
+    # 情報元の投稿日の入力が日付までの場合datetime型に変換する
+    if @person.source_date_before_type_cast =~ /^(\d{4})(?:\/|-|.)?(\d{1,2})(?:\/|-|.)?(\d{1,2})$/
+      datetime_str = @person.source_date.strftime("%Y/%m/%d %H:%M:%S %Z")
+      @person.source_date = Time.parse(datetime_str)
+    end
+    # 入力値チェック
+    if @person.invalid?
+      raise
+    end
+    # 写真の実体を一時的に保管しているパスを格納する
+    session[:photo_person] = @person.photo_url
+
+    # Note
+    if params[:note].present?
+      @note = Note.new(params[:note])
+      @note.last_known_location  = params[:clickable_map][:location_field]
+      # Noteの投稿者情報を入力する
+      @note.author_name  = @person.author_name
+      @note.author_email = @person.author_email
+      @note.author_phone = @person.author_phone
+      @note.source_date  = @person.source_date
+    
+      # 入力値チェック
+      if @note.invalid?
+        raise
+      end
+      # 写真の実体を一時的に保管しているパスを格納する
+      session[:photo_note]   = @note.photo_url
+    end
+    
+  rescue
+    render :action => "new"
+  end
+
+
+
   # 新規情報登録
   # === Args
   # _person_    :: Person
@@ -214,88 +302,53 @@ class PeopleController < ApplicationController
   # === Raise
   def create
     @error_message = I18n.t("activerecord.errors.messages.profile_invalid")
+    # 遷移元確認フラグ
+    if params[:note].blank?
+      @from_seek = true
+    end
+    @kana      = params[:kana]
+    @clone_clone_input = params[:clone][:clone_input] == "no" ? true : false
+    @subscribe = params[:subscribe] == "true" ? true : false
+    @consent   = params[:consent]   == "true" ? true : false
+
     # Person, Noteの登録
     Person.transaction do
-      # 遷移元確認フラグ
-      if params[:note].blank?
-        @from_seek = true
-      end
-
-      # 画面入力値を加工
-
+      # Personの登録
       @person = Person.new(params[:person])
-      @person.expiry_date = Time.now.advance(:days => params[:person][:expiry_date].to_i)  # 削除予定日時
-      @consent = params[:consent] == "true" ? true :false
-      @subscribe = params[:subscribe]== "true" ? true : false
-      @clone_clone_input = params[:clone][:clone_input] == "no" ? true : false
-      if @clone_clone_input
-        @person[:source_name] = `hostname`
-      end
-      @person[:profile_urls] = set_profile_urls
-
-      # source_dateの入力が日付までの場合datetime型に変換する
-      if @person.source_date_before_type_cast =~ /^(\d{4})(?:\/|-|.)?(\d{1,2})(?:\/|-|.)?(\d{1,2})$/
-        datetime_str = @person[:source_date].strftime("%Y/%m/%d %H:%M:%S %Z")
-        @person[:source_date] = Time.parse(datetime_str)
-      end
-
-      # 読み仮名登録用
-      unless params[:kana].blank?
-        @person[:alternate_names] = params[:kana][:family_name] + " " + params[:kana][:given_name]
-      end
-      # 読み仮名画面再表示用
-      @kana = params[:kana]
-
-      # provideから遷移してきた場合
-      if params[:note].present?
-        @note = Note.new(params[:note])
-        @note[:last_known_location]  = params[:clickable_map][:location_field]
-        # Noteの投稿者情報を入力する
-        @note[:author_name]  = @person.author_name
-        @note[:author_email] = @person.author_email
-        @note[:author_phone] = @person.author_phone
-        @note[:source_date]  = @person.source_date
-      end
-
+      @person.photo_url = session[:photo_person]
       @person.save
-
-      # noteをpersonに紐付ける
-      if params[:note].present?
-        @note[:person_record_id] = @person.id
-        @note.save!
-      end
-
-      # personの入力にエラーが合った場合
-      if @person.errors.messages.present?
-        raise ActiveRecord::RecordNotFound
-      end
 
       # 新規情報の場合
       if @clone_clone_input
-        @person[:source_url] = url_for(:action => :view, :id => @person.id, :only_path => false)
+        @person.source_url = url_for(:action => :view, :id => @person.id, :only_path => false)
         @person.save
+      end
+
+      # Noteの登録
+      if params[:note].present?
+        @note = Note.new(params[:note])
+        @note.person_record_id = @person.id
+        @note.photo_url = session[:photo_note]
+        @note.save!
       end
 
       # 利用規約のチェック判定
       unless @consent
         raise ConsentError
       end
-
     end
    
     if @subscribe
       session[:person_id] = [@person.id]
-      session[:note_id] = [@note.try(:id)]
+      session[:note_id]   = [@note.try(:id)]
       redirect_to :action => "subscribe_email"
     else
       redirect_to :action => "view", :id => @person
     end
 
-  rescue ActiveRecord::RecordNotFound, ActiveRecord::RecordInvalid
-    render :action => "new"
   rescue ConsentError
     flash.now[:error] = I18n.t("activerecord.errors.messages.disagree")
-    render :action => "new"
+    render :action => "new_preview"
   end
 
   # 詳細画面
@@ -329,6 +382,39 @@ class PeopleController < ApplicationController
       @notes = Note.no_duplication(@person.id)
     end
   end
+
+  # 安否情報登録のプレビュー画面
+  # === Args
+  # === Return
+  # === Raise
+  def update_preview
+    @person = Person.find_by_id(params[:id])
+    @consent     = params[:consent]   == "true" ? true : false
+    @subscribe   = params[:subscribe] == "true" ? true : false
+    @duplication = params[:duplication]
+    # 重複メモを表示するか
+    if params[:duplication].present?
+      @notes = Note.where(:person_record_id => @person.id).order("entry_date ASC")
+    else
+      @notes = Note.no_duplication(@person.id)
+    end
+    
+    @note = Note.new(params[:note])
+    @note.last_known_location  = params[:clickable_map][:location_field]
+    
+    # 入力値チェック
+    if @note.invalid?
+      raise
+    end
+
+    # 写真の実体を一時的に保管しているパスを格納する
+    session[:photo_note]   = @note.photo_url
+
+  rescue
+    render :action => "view"
+  end
+
+
 
   # 安否情報を追加する
   # === Args
@@ -368,9 +454,6 @@ class PeopleController < ApplicationController
       redirect_to :action => "note_valid_apply", :id => @person
       return
     end
-    @note = Note.new(params[:note])
-    @note.person_record_id     = @person.id
-    @note.last_known_location  = params[:clickable_map][:location_field]
     @consent = params[:consent] == "true" ? true :false
     @subscribe = params[:subscribe]== "true" ? true : false
     if params[:duplication].present?
@@ -380,6 +463,9 @@ class PeopleController < ApplicationController
     end
 
     Note.transaction do
+      @note = Note.new(params[:note])
+      @note.person_record_id = @person.id
+      @note.photo_url        = session[:photo_note]
       if @note.save!
         # 利用規約のチェック判定
         unless @consent
@@ -404,13 +490,14 @@ class PeopleController < ApplicationController
       end
     end
   rescue ActiveRecord::RecordInvalid
-    render :action => :view
+    render :action => :update_preview
   rescue Net::SMTPFatalError
     flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
-    render :action => :view
+    render :action => :update_preview
   rescue ConsentError
     flash.now[:error] = I18n.t("activerecord.errors.messages.disagree")
-    render :action => :view
+    render :action => :update_preview
+
   end
 
   # 避難者情報保持期間延長画面

@@ -47,3 +47,30 @@ div.terms_of_service textarea.terms_message{
 .index .action-outer.bottom {
   background: none repeat scroll 0 0 #BBEEAA;
 }
+
+.preview {
+  width: 600px;
+  margin: 0 auto;
+}
+
+.preview .fields-table .label {
+  width: 230px;
+}
+
+.preview .fields-table .value {
+  float: left;
+  margin-left: 10px;
+  width: 320px;
+}
+
+.preview textarea {
+  font-size: 13px;
+}
+
+.preview .fields-table .medium-text-input {
+  width: 310px;
+}
+
+.preview .fields-table .long-text-input {
+  width: 550px;
+}

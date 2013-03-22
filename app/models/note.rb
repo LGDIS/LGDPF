@@ -11,14 +11,20 @@ class Note < ActiveRecord::Base
   before_create :set_attributes
   mount_uploader :photo_url, PhotoUrlUploader
 
-  # --*--*-- 定数 --*--*--
+
   # 状況
-  STATUS_UNSPECIFIED        = 1 # 指定なし
-  STATUS_INFORMATION_SOUGHT = 2 # 情報を探している
-  STATUS_IS_NOTE_AUTHOR     = 3 # 私が本人である
-  STATUS_BELIEVED_ALIVE     = 4 # この人が生きているという情報を入手した
-  STATUS_BELIEVED_MISSING   = 5 # この人を行方不明と判断した理由がある
-  STATUS_BELIEVED_DEAD      = 6 # この人物が死亡したという情報を入手した
+  # 指定なし
+  STATUS_UNSPECIFIED        = 1
+  # 情報を探している
+  STATUS_INFORMATION_SOUGHT = 2
+  # 私が本人である
+  STATUS_IS_NOTE_AUTHOR     = 3
+  # この人が生きているという情報を入手した
+  STATUS_BELIEVED_ALIVE     = 4
+  # この人を行方不明と判断した理由がある
+  STATUS_BELIEVED_MISSING   = 5
+  # この人物が死亡したという情報を入手した
+  STATUS_BELIEVED_DEAD      = 6
   # 写真の最大サイズ
   MAX_PHOTO_SIZE            = 3.5.megabytes.to_i
 
@@ -62,8 +68,8 @@ class Note < ActiveRecord::Base
   end
 
   # statusとauthor_made_contactの相互validation
-  # * status = 3                  : 状況「私が本人である」
-  # * author_made_contact = false : 連絡の有無「いいえ」
+  # * status = STATUS_IS_NOTE_AUTHOR : 状況「私が本人である」
+  # * author_made_contact = false    : 連絡の有無「いいえ」
   # === Args
   # === Return
   # errorメッセージ

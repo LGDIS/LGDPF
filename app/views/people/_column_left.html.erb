@@ -643,11 +643,6 @@
   </div>
   <% if @from_seek %>
     <div class="submit">
-      <div class="consent">
-        <label for="consent"class="mandatory">システムの利用規約に同意します。</label>
-        <%= check_box_tag "consent", true, false, {:checked => @consent} %>
-        <%= link_to "ご利用規約", :action => :terms_of_service %>
-      </div>
       <%= submit_tag "この記録を登録", :onclick =>"return validate_fields()", :name => "complete" %>
     </div>
   <% end %>

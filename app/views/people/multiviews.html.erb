@@ -2,7 +2,7 @@
 
 <div class="container">
   <div class="content" role="main">
-    <%= form_tag :action => :dup_merge do %>
+    <%= form_tag :action => :duplication_preview do %>
       <%= hidden_field :person, :id %>
       <%= hidden_field :person2, :id %>
       <%= hidden_field :person3, :id %>
@@ -180,17 +180,14 @@
               <tr>
                 <td class="label">指定避難所等:</td>
                 <td class="field">
-                  <%= @person_const["shelter_name"]["#{@person.shelter_name}"] %>
-  <%#= @shelter["#{@person.shelter_name}"] %>
+                  <%= @shelter["#{@person.shelter_name}"] %>
                 </td>
                 <td class="field">
-                  <%= @person_const["shelter_name"]["#{@person2.shelter_name}"] %>
-  <%#= @shelter["#{@person2.shelter_name}"] %>
+                  <%= @shelter["#{@person2.shelter_name}"] %>
                 </td>
                 <% if @person3.present? %>
                   <td class="field">
-                    <%= @person_const["shelter_name"]["#{@person3.shelter_name}"] %>
-    <%#= @shelter["#{@person3.shelter_name}"] %>
+                    <%= @shelter["#{@person3.shelter_name}"] %>
                   </td>
                 <% end %>
               </tr>
@@ -584,12 +581,6 @@
         </div>
 
         <div class="submit">
-          <div class="consent">
-            <label for="consent"class="mandatory">システムの利用規約に同意します。</label>
-            <%= check_box_tag "consent", true, false, {:checked => @consent} %>
-            <%= link_to "ご利用規約", :action => :terms_of_service %>
-          </div>
-
           <%= submit_tag "はい、同一人物です。", :name => "complete" %>
           <input type="button" value="キャンセル" onclick="history.go(-1)" />
         </div>

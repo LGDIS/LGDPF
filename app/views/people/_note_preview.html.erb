@@ -1,0 +1,157 @@
+<div class="fields-table person">
+  <h2>避難者の安否情報</h2>
+
+  <div class="status section">
+    <h3>この人の状況</h3>
+    <div class="field">
+      <span class="label">状況:</span>
+      <span class="value">
+        <%= @note_const["status"]["#{@note.status}"] %>
+        <%= hidden_field :note, :status %>
+      </span>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="text section">
+    <h3>メッセージ</h3>
+    <div class="field">
+      <%= text_area :note, :text, { :rows => 5, :class => "long-text-input", :readonly => true } %>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="location section">
+    <h3>最後に見かけた場所</h3>
+    <div class="field">
+      <%= text_area :clickable_map, :location_field,
+        { :rows => 2, :class => "long-text-input",
+        :readonly => true, :value => @note.last_known_location} %>
+      <%= hidden_field :note, :last_known_location %>
+    </div>
+    <div class="end-multi-columns"></div>
+    <div>
+      <%= content_tag(:div, :id => "set_map_0_show_link", :style => "display:none") do -%>
+        <a href='#' onclick="toggleMarkeredMap('set_map_0'); return false;">
+          地図を表示</a>
+      <% end -%>
+      <%= content_tag(:div, :id => "set_map_0_hide_link", :style => "display:none") do -%>
+        <a href='#' onclick="toggleMarkeredMap('set_map_0'); return false;">
+          地図を隠す</a>
+      <% end -%>
+      <%= content_tag(:div, :id => "set_map_0", :class => "map" , :style => "display:none") do -%><% end -%>
+      <%= javascript_tag do %>
+        parseLatLngOrGeocodeAndStore('<%= @note.last_known_location %>', 'set_map_0');
+      <% end %>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <% if @note.photo_url.present? %>
+    <div class="photo section">
+      <h3><label>写真</label></h3>
+      <div class="field">
+        <%= image_tag(@note.photo_url, :class => "photo") %>
+        <%= hidden_field :note, :photo_url, :value => @note.photo_url %>
+      </div>
+      <div class="end-multi-columns"></div>
+    </div>
+  <% end %>
+
+  <div class="author_made_contact section">
+    <h3>この人と災害発生後に連絡が取れましたか？</h3>
+    <div class="field">
+      <span class="value">
+        <% if @note.author_made_contact == true %>
+          <label>連絡が取れた</label>
+        <% else %>
+          <label>連絡が取れない</label>
+        <% end %>
+      </span>
+      <%= hidden_field :note, :author_made_contact %>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <% if @note.author_made_contact == true %>
+    <div class="contact section">
+      <h3> 行方不明者の現在の連絡先情報 </h3>
+      <div class="field">
+        <span class="label">
+          <label>電話番号: </label>
+        </span>
+        <span class="value">
+          <%= @note.phone_of_found_person %>
+          <%= hidden_field :note, :phone_of_found_person %>
+        </span>
+      </div>
+      <div class="field">
+        <span class="label">
+          <label> メール アドレス: </label>
+        </span>
+        <span class="value">
+          <%= @note.email_of_found_person %>
+          <%= hidden_field :note, :email_of_found_person %>
+        </span>
+      </div>
+      <div class="end-multi-columns"></div>
+    </div>
+  <% end %>
+
+  <div class="source section">
+    <h3>メモの投稿者について</h3>
+    <div class="field">
+      <%= hidden_field :clone, :clone_input, :value => @clone_clone_input %>
+      <span class="label">
+        <label>投稿者の名前:</label>
+      </span>
+      <span class="value">
+        <%= @note.author_name %>
+        <%= hidden_field :note, :author_name %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>投稿者の電話番号:</label>
+      </span>
+      <span class="value">
+        <%= @note.author_phone %>
+        <%= hidden_field :note, :author_phone %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>投稿者のメール アドレス:</label>
+      </span>
+      <span class="value">
+        <%= @note.author_email %>
+        <%= hidden_field :note, :author_email %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>
+          この方の新着情報をメールで受け取る:
+        </label>
+      </span>
+      <span class="value">
+        <% if @subscribe %>
+          <label>希望する</label>
+        <% else %>
+          <label>希望しない</label>
+        <% end %>
+        <%= hidden_field_tag :subscribe, @subscribe %>
+      </span>
+    </div>
+
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="submit">
+    <div class="consent">
+      <label for="consent"class="mandatory">システムの利用規約に同意します。</label>
+      <%= check_box_tag "consent", true, false, {:checked => @consent} %>
+      <%= link_to "ご利用規約", :action => :terms_of_service %>
+    </div>
+  </div>
+</div>

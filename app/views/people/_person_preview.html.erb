@@ -1,0 +1,464 @@
+<div class="fields-table person">
+  <h2>避難者情報</h2>
+  <div class="name section">
+    <h3>名前</h3>
+    <div class="field">
+      <div class="label">
+        <label>姓:</label>
+      </div>
+      <div class="value">
+        <%= @person.family_name %>
+        <%= hidden_field :person, :family_name %>
+      </div>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>名:</label>
+      </span>
+      <span class="value">
+        <%= @person.given_name %>
+        <%= hidden_field :person, :given_name %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>姓（よみがな）:</label>
+      </span>
+      <span class="value">
+        <%= @kana[:family_name] %>
+        <%= hidden_field_tag 'kana[family_name]', @kana[:family_name] %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>名（よみがな）:</label>
+      </span>
+      <span class="value">
+        <%= @kana[:given_name] %>
+        <%= hidden_field_tag 'kana[given_name]', @kana[:given_name] %>
+      </span>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="physical section">
+    <h3>身体の特徴</h3>
+    <div class="field">
+      <span class="label">
+        <label>性別:</label>
+      </span>
+      <span class="value">
+        <%= @person_const["sex"]["#{@person.sex}"] %>
+        <%= hidden_field :person, :sex %>
+      </span>
+    </div>
+
+    <div class="field">
+      <span class="label">
+        <label>生年月日:</label>
+      </span>
+      <span class="value">
+        <%= @person.date_of_birth %>
+        <%= hidden_field :person, :date_of_birth %>
+      </span>
+    </div>
+
+    <div class="field">
+      <span class="label">
+        <label>年齢:</label>
+      </span>
+      <span class="value">
+        <%= @person.age %>
+        <%= hidden_field :person, :age %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>出身国:</label>
+      </span>
+      <span class="value">
+        <%= @country_code["#{@person.home_country}"] %>
+        <%= hidden_field :person, :home_country %>
+      </span>
+    </div>
+
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="physical section">
+    <h3>身体の詳細な特徴</h3>
+    <div class="field">
+      <span class="label">
+        <label>災害等による負傷の内容:</label>
+      </span>
+      <span class="value">
+        <%= text_area :person, :injury_condition,
+          { :rows => "3", :readonly => "readonly",
+          :class => "medium-text-input" } %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>アレルギーの詳細:</label>
+      </span>
+      <span class="value">
+        <%= text_area :person, :allergy_cause,
+          { :rows => "3", :readonly => "readonly",
+          :class => "medium-text-input" } %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>妊婦である:</label>
+      </span>
+      <span class="value">
+        <%= @person_const["pregnancy"]["#{@person.pregnancy}"] %>
+        <%= hidden_field :person, :pregnancy %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>乳幼児である:</label>
+      </span>
+      <span class="value">
+        <%= @person_const["baby"]["#{@person.baby}"] %>
+        <%= hidden_field :person, :baby %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>要介護者である:</label>
+      </span>
+      <span class="value">
+        <%= @person_const["upper_care_level_three"]["#{@person.upper_care_level_three}"] %>
+        <%= hidden_field :person, :upper_care_level_three %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>一人暮らし高齢者（６５歳以上）である:</label>
+      </span>
+      <span class="value">
+        <%= @person_const["elderly_alone"]["#{@person.elderly_alone}"] %>
+        <%= hidden_field :person, :elderly_alone %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>高齢者世帯（夫婦共に６５歳以上）である:</label>
+      </span>
+      <span class="value">
+        <%= @person_const["elderly_couple"]["#{@person.elderly_couple}"] %>
+        <%= hidden_field :person, :elderly_couple %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>寝たきり高齢者である:</label>
+      </span>
+      <span class="value">
+        <%= @person_const["bedridden_elderly"]["#{@person.bedridden_elderly}"] %>
+        <%= hidden_field :person, :bedridden_elderly %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>認知症高齢者である:</label>
+      </span>
+      <span class="value">
+        <%= @person_const["elderly_dementia"]["#{@person.elderly_dementia}"] %>
+        <%= hidden_field :person, :elderly_dementia %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>療育手帳保持者である:</label>
+      </span>
+      <span class="value">
+        <%= @person_const["rehabilitation_certificate"]["#{@person.rehabilitation_certificate}"] %>
+        <%= hidden_field :person, :rehabilitation_certificate %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>身体障害者手帳保持者である:</label>
+      </span>
+      <span class="value">
+        <%= @person_const["physical_disability_certificate"]["#{@person.physical_disability_certificate}"] %>
+        <%= hidden_field :person, :physical_disability_certificate %>
+      </span>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="address section">
+    <h3>自宅住所</h3>
+    <div class="field">
+      <span class="label">
+        <label>郵便番号:</label>
+      </span>
+      <span class="value">
+        <%= @person.home_postal_code %>
+        <%= hidden_field :person, :home_postal_code %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>都道府県:</label>
+      </span>
+      <span class="value">
+        <%= @person.home_state %>
+        <%= hidden_field :person, :home_state %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>市区町村:</label>
+      </span>
+      <span class="value">
+        <%= @person.home_city %>
+        <%= hidden_field :person, :home_city %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>町名:</label>
+      </span>
+      <span class="value">
+        <%= @person.home_street %>
+        <%= hidden_field :person, :home_street %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>近隣の場所:</label>
+      </span>
+      <span class="value">
+        <%= @person.home_neighborhood %>
+        <%= hidden_field :person, :home_neighborhood %>
+      </span>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="section">
+    <h3>避難所</h3>
+    <div class="field">
+      <span class="label">
+        <label>避難状況:</label>
+      </span>
+      <span class="value">
+        <%= @person_const["refuge_status"]["#{@person.refuge_status}"] %>
+        <%= hidden_field :person, :refuge_status %>
+      </span>
+    </div>
+
+    <div class="field">
+      <span class="label">
+        <label>指定避難所等:</label>
+      </span>
+      <span class="value">
+        <%= @shelter["#{@person.shelter_name}"] %>
+        <%= hidden_field :person, :shelter_name %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>避難理由:</label>
+      </span>
+      <span class="value">
+        <%= text_area :person, :refuge_reason,
+          { :rows => "3", :readonly => true,
+          :class => "medium-text-input" } %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>避難所入所年月日:</label>
+      </span>
+      <span class="value">
+        <%= @person.shelter_entry_date %>
+        <%= hidden_field :person, :shelter_entry_date %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>避難所退所年月日:</label>
+      </span>
+      <span class="value">
+        <%= @person.shelter_leave_date %>
+        <%= hidden_field :person, :shelter_leave_date %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>避難所を退所した後どこへ行ったか:</label>
+      </span>
+      <span class="value">
+        <%= @person.next_place %>
+        <%= hidden_field :person, :next_place %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>避難所を退所した後の電話番号: </label>
+      </span>
+      <span class="value">
+        <%= @person.next_place_phone %>
+        <%= hidden_field :person, :next_place_phone %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>家族も無事ですか？</label>
+      </span>
+      <span class="value">
+        <%= @person_const["family_well"]["#{@person.family_well}"]%>
+        <%= hidden_field :person, :family_well %>
+      </span>
+    </div>
+    <div class="end-multi-columns"></div>
+
+  </div>
+
+
+  <div class="description section">
+    <h3><label>説明</label></h3>
+    <div class="field">
+      <%= text_area :person, :description,
+        { :rows => "5", :readonly => true,
+        :class => "long-text-input" } %>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <% if @person.photo_url.present? %>
+    <div class="photo section">
+      <h3><label>写真</label></h3>
+      <div class="field">
+        <%= image_tag(@person.photo_url, :class => "photo") %>
+        <%= hidden_field :person, :photo_url, :value => @person.photo_url %>
+      </div>
+      <div class="end-multi-columns"></div>
+    </div>
+  <% end %>
+
+
+  <% if @person.profile_urls.present? %>
+    <div class="profile section">
+      <h3>プロフィール</h3>
+      <% @person.profile_urls.split("\n").each_with_index do |url, i| %>
+        <div class="field">
+          <span class="label">プロフィール <%= i+1 %>:</span>
+          <span class="value">
+            <%= raw icon_image_tag(url) %>
+            <%= url %>
+          </span>
+        </div>
+      <% end %>
+      <%= hidden_field :person, :profile_urls %>
+      <div class="end-multi-columns"></div>
+    </div>
+  <% end %>
+
+  <div class="expiry section">
+    <h3><label>記録の期限</label></h3>
+    <div class="field">
+      <span class="value">
+        <%= @person.expiry_date.strftime("%Y/%m/%d %H:%M:%S") %>
+      </span>
+      <%= hidden_field :person, :expiry_date %>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="section">
+    <h3>この人の情報を石巻市パーソンファインダーの外部に公開しますか？</h3>
+    <div class="field">
+      <span class="value">
+        <% if @person.public_flag == Person::PUBLIC_FLAG_ON %>
+          <label>公開する</label>
+        <% else %>
+          <label>公開しない</label>
+        <% end %>
+      </span>
+      <%= hidden_field :person, :public_flag %>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="source section">
+    <h3>この記録の情報源</h3>
+    <%= hidden_field :clone, :clone_input, :value => @clone_clone_input %>
+    <div class="field">
+      <span class="label">情報提供者の名前:</span>
+      <span class="value">
+        <%= @person.author_name %>
+        <%= hidden_field :person, :author_name %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">情報提供者の電話番号:</span>
+      <span class="value">
+        <%= @person.author_phone %>
+        <%= hidden_field :person, :author_phone %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">情報提供者のメールアドレス:</span>
+      <span class="value">
+        <%= @person.author_email %>
+        <%= hidden_field :person, :author_email %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">情報元の URL:</span>
+      <span class="value">
+        <%= @person.source_url %>
+        <%= hidden_field :person, :source_url %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">情報元の投稿日:</span>
+      <span class="value">
+        <%= @person.source_date.strftime("%Y/%m/%d %H:%M:%S") if @person.source_date.present?  %>
+        <%= hidden_field :person, :source_date %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">情報元のサイト名:</span>
+      <span class="value">
+        <%= @person.source_name %>
+        <%= hidden_field :person, :source_name %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label>
+          この方の新着情報をメールで受け取る:
+        </label>
+      </span>
+      <span class="value">
+        <% if @subscribe %>
+          <label>希望する</label>
+        <% else %>
+          <label>希望しない</label>
+        <% end %>
+        <%= hidden_field_tag :subscribe, @subscribe %>
+      </span>
+    </div>
+
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <% if @from_seek %>
+    <div class="submit">
+      <div class="consent">
+        <label for="consent"class="mandatory">システムの利用規約に同意します。</label>
+        <%= check_box_tag "consent", true, false, {:checked => @consent} %>
+        <%= link_to "ご利用規約", :action => :terms_of_service %>
+      </div>
+    </div>
+  <% end %>
+
+</div>

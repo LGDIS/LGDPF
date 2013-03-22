@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="content" role="main">
+    <div>
+      <%= form_tag :action => :update, :id => @person do %>
+        <h2>
+          「<%= @person.full_name %>」さんに関するメモを追加します。よろしいですか？
+        </h2>
+        <div class="view preview">
+
+            <%= render :partial => "note_preview" %>
+
+          <%= submit_tag "はい", :name => "ok" %>
+          <input type="button" value="いいえ" onclick="history.go(-1);" />
+        <% end %>
+      </div>
+      <br/><br/>
+
+    </div>
+  </div>
+</div>
+<p><%= link_to "<< 最初のページに戻る ", :action => :index %></p>

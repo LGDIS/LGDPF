@@ -5,8 +5,12 @@ Lgdpf::Application.routes.draw do
   match "people/seek"                       => "people#seek",               :via => :get
   match "people/seek"                       => "people#seek",               :via => :post
   match "person"                            => "people#new",                :via => :get
+  match "person/preview"                    => "people#new_preview",        :via => :get
+  match "person/preview"                    => "people#new_preview",        :via => :post
   match "person"                            => "people#create",             :via => :post
   match "people/view/:id"                   => "people#view",               :via => :get, :as => "people_view"
+  match "people/update/:id/preview"         => "people#update_preview",     :via => :get
+  match "people/update/:id/preview"         => "people#update_preview",     :via => :post
   match "people/update/:id"                 => "people#update",             :via => :post
   match "people/create"                     => "people#create",             :via => :get
   match "people/provide"                    => "people#provide",            :via => :get
@@ -38,6 +42,8 @@ Lgdpf::Application.routes.draw do
   match "person/complete"                   => "people#complete",           :via => :get
   match "people/multiviews"                 => "people#multiviews",         :via => :get
   match "people/multiviews"                 => "people#multiviews",         :via => :post
+  match "people/multiviews/preview"         => "people#duplication_preview",:via => :get
+  match "people/multiviews/preview"         => "people#duplication_preview",:via => :post
   match "people/dup_merge"                  => "people#dup_merge",          :via => :post
   
   ### -*- ActiveResource -*-

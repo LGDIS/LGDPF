@@ -23,24 +23,39 @@ class Person < ActiveRecord::Base
   mount_uploader :photo_url, PhotoUrlUploader
 
 
-  # --*--*-- 定数 --*--*--
   # 市内・市外区分
-  IN_CITY_FLAG_INSIDE  = 1 # 市内
-  IN_CITY_FLAG_OUTSIDE = 0 # 市外
+  #  市内
+  IN_CITY_FLAG_INSIDE  = 1
+  # 市外
+  IN_CITY_FLAG_OUTSIDE = 0 
+
   # 負傷
-  INJURY_FLAG_ON      = 1 # 有
-  INJURY_FLAG_OFF      = 0 # 無
+  # 有
+  INJURY_FLAG_ON      = 1
+  # 無
+  INJURY_FLAG_OFF      = 0
+ 
   # アレルギー
-  ALLERGY_FLAG_ON     = 1 # アレルギー有
-  ALLERGY_FLAG_OFF     = 0 # アレルギー無
+  # アレルギー有
+  ALLERGY_FLAG_ON     = 1
+  # アレルギー無
+  ALLERGY_FLAG_OFF     = 0 
+
   # 公開フラグ
-  PUBLIC_FLAG_ON      = 1 # 公開
-  PUBLIC_FLAG_OFF      = 0 # 非公開
+  # 公開
+  PUBLIC_FLAG_ON      = 1
+  # 非公開
+  PUBLIC_FLAG_OFF      = 0
+  
   # 家族も無事
-  FAMILY_WELL_YES     = "1" # 無事
-  FAMILY_WELL_NO       = "0" # 無事であるか未確認
+  # 無事
+  FAMILY_WELL_YES     = "1"
+  # 無事であるか未確認
+  FAMILY_WELL_NO       = "0"
+
   # GooglePersonFinderに1度にアップロードする件数
   GPF_UPLOAD_MAX_RECORD = 100
+
   # 写真の最大サイズ
   MAX_PHOTO_SIZE      = 3.5.megabytes.to_i
 
