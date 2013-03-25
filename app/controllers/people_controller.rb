@@ -90,7 +90,7 @@ class PeopleController < ApplicationController
   # === Return
   # === Raise
   def duplication_preview
-   # エラー時に入力値を保持する
+    # エラー時に入力値を保持する
     @count = params[:count].to_i
     @person = Person.find_by_id(params[:person][:id])
     @person2 = Person.find_by_id(params[:person2][:id])
@@ -99,13 +99,14 @@ class PeopleController < ApplicationController
     @consent = params[:consent] == "true" ? true :false
 
     @note = Note.new(params[:note])
-
     # 入力値チェック
-    if @note.invalid?
-      raise
+    @note.invalid?
+
+    if @note.errors.messages.present?
+      raise ActiveRecord::RecordInvalid.new(@note)
     end
 
-  rescue
+  rescue ActiveRecord::RecordInvalid
     render :action => "multiviews"
   end
 
@@ -259,9 +260,8 @@ class PeopleController < ApplicationController
       @person.source_date = Time.parse(datetime_str)
     end
     # 入力値チェック
-    if @person.invalid?
-      raise
-    end
+    @person.invalid?
+
     # 写真の実体を一時的に保管しているパスを格納する
     session[:photo_person] = @person.photo_url
 
@@ -274,16 +274,20 @@ class PeopleController < ApplicationController
       @note.author_email = @person.author_email
       @note.author_phone = @person.author_phone
       @note.source_date  = @person.source_date
-    
       # 入力値チェック
-      if @note.invalid?
-        raise
-      end
+      @note.invalid?
+
       # 写真の実体を一時的に保管しているパスを格納する
       session[:photo_note]   = @note.photo_url
     end
-    
-  rescue
+
+    if @person.errors.messages.present?
+      raise ActiveRecord::RecordInvalid.new(@person)
+    elsif @note.errors.messages.present?
+      raise ActiveRecord::RecordInvalid.new(@note)
+    end
+
+  rescue ActiveRecord::RecordInvalid
     render :action => "new"
   end
 
@@ -401,16 +405,17 @@ class PeopleController < ApplicationController
     
     @note = Note.new(params[:note])
     @note.last_known_location  = params[:clickable_map][:location_field]
-    
     # 入力値チェック
-    if @note.invalid?
-      raise
+    @note.invalid?
+
+    if @note.errors.messages.present?
+      raise ActiveRecord::RecordInvalid.new(@note)
     end
 
     # 写真の実体を一時的に保管しているパスを格納する
     session[:photo_note]   = @note.photo_url
 
-  rescue
+  rescue ActiveRecord::RecordInvalid
     render :action => "view"
   end
 
