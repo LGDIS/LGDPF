@@ -59,3 +59,6 @@ production:
   shelter_source:
     uri: https://redmine.example.com/exportdata/
     timeout: 60
+    basic_auth:
+      username:
+      password:

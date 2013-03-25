@@ -3,7 +3,6 @@
 # rails runner Batches::ImportShelters.execute
 
 require 'csv'
-require 'open3'
 
 class Batches::ImportShelters < ActiveRecord::Base
 
@@ -13,6 +12,8 @@ class Batches::ImportShelters < ActiveRecord::Base
     puts "environment: #{Rails.env}"
     remote_uri = SETTINGS["shelter_source"]["uri"]
     remote_timeout = SETTINGS["shelter_source"]["timeout"].to_i
+    basic_auth_username = SETTINGS["shelter_source"]["basic_auth"]["username"]
+    basic_auth_password = SETTINGS["shelter_source"]["basic_auth"]["password"]
     if remote_uri.blank?
       puts " no shelter_source supplied."
       return
@@ -22,15 +23,11 @@ class Batches::ImportShelters < ActiveRecord::Base
       # retrieve csv-data
       input_data = ""
       timeout(remote_timeout) do
-        Open3.popen3("curl --silent #{remote_uri + input_file}", :chdir => Rails.root) do |stdin, stdout, stderr|
-          stdin.close
-          input_data = stdout.read.chomp
-          stderr_message = stderr.read.chomp
-          puts stderr_message if stderr_message.present?
-        end
+        basic_auth = "--basic --user #{basic_auth_username}:#{basic_auth_password}" if basic_auth_username.present?
+        input_data = `curl --silent #{basic_auth} #{remote_uri + input_file}`
       end
       # import to database
-      if input_data.empty?
+      if !$?.success? || input_data.empty?
         puts " no rows retrieved."
       else
         Shelter.transaction do
