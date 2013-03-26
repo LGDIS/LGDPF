@@ -16,7 +16,7 @@
           <tr>
             <td style="padding:0">
               <%= link_to (image_tag SETTINGS["banner"]["image_file"],:size => '265x75',:alt => 'banner'),
-                :action => :index %>
+                :controller => :people, :action => :index %>
             </td>
           </tr>
           <tr>
@@ -36,4 +36,7 @@
     <% end %>
     <%= yield %>
   </body>
+  <div class="footer right">
+    <%= SETTINGS["version"] %>
+  </div>
 </html>
