@@ -283,7 +283,7 @@ class PeopleController < ApplicationController
 
     if @person.errors.messages.present?
       raise ActiveRecord::RecordInvalid.new(@person)
-    elsif @note.errors.messages.present?
+    elsif @note && @note.errors.messages.present?
       raise ActiveRecord::RecordInvalid.new(@note)
     end
 
