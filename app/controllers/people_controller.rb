@@ -236,6 +236,7 @@ class PeopleController < ApplicationController
     @kana = params[:kana]
     @clone_clone_input = (params[:clone][:clone_input] == "no" ? true : false)
     @subscribe = (params[:subscribe] == "true" ? true : false)
+    @error_message = I18n.t("activerecord.errors.messages.profile_invalid")
 
 
     @person = Person.new(params[:person])
@@ -305,7 +306,6 @@ class PeopleController < ApplicationController
   # === Return
   # === Raise
   def create
-    @error_message = I18n.t("activerecord.errors.messages.profile_invalid")
     # 遷移元確認フラグ
     if params[:note].blank?
       @from_seek = true
