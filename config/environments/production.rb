@@ -56,11 +56,11 @@ Lgdpf::Application.configure do
   config.action_mailer.delivery_method = :smtp
 
     config.action_mailer.smtp_settings = {
-      :enable_starttls_auto => true,
+      :enable_starttls_auto => SETTINGS["mail"]["enable_starttls_auto"],
       :address            => SETTINGS["mail"]["address"],
       :port               => SETTINGS["mail"]["port"],
       :domain             => SETTINGS["mail"]["domain"],
-      :authentication     => :plain,
+      :authentication     => SETTINGS["mail"]["authentication"],
       :user_name          => SETTINGS["mail"]["user_name"],
       :password           => SETTINGS["mail"]["password"]
     }
