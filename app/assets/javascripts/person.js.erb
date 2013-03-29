@@ -255,10 +255,13 @@ function validate_fields() {
       var url = input.value;
       var website_index = parseInt(document.getElementById('profile_website_index' + i).value);
       var website = profile_websites[website_index];
+      // プロフィールURLが不正の場合
       if (url && website && website.url_regexp &&
         !url.match(website.url_regexp)) {
         show(document.getElementById('invalid_profile_url'));
-        $("h1 + div.error").hide();
+        if ($("div.error > ul > li").text() !== ''){
+          $("h1 + div.error").hide();
+        }
         scrollTo(0,0);
         return false;
       }

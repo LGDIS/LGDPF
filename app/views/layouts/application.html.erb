@@ -35,8 +35,8 @@
       <div class="error"> <%= flash[:error] %> </div>
     <% end %>
     <%= yield %>
+    <div class="footer right">
+      <%= SETTINGS["version"] %>
+    </div>
   </body>
-  <div class="footer right">
-    <%= SETTINGS["version"] %>
-  </div>
 </html>

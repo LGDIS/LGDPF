@@ -238,7 +238,6 @@ class PeopleController < ApplicationController
     @subscribe = (params[:subscribe] == "true" ? true : false)
     @error_message = I18n.t("activerecord.errors.messages.profile_invalid")
 
-
     @person = Person.new(params[:person])
 
     # 入力値をDBに格納できる形式に加工する
@@ -393,6 +392,26 @@ class PeopleController < ApplicationController
   # === Raise
   def update_preview
     @person = Person.find_by_id(params[:id])
+        if params[:extend_days].present?
+      redirect_to :action => "extend_days", :id => @person
+      return
+    elsif params[:subscribe_email].present?
+      session[:person_id] = [@person.id]
+      session[:note_id] = []
+      session[:action] = "view"
+      redirect_to :action => "subscribe_email"
+      return
+    elsif params[:delete].present?
+      redirect_to :action => "delete", :id => @person
+      return
+    elsif params[:note_invalid_apply].present?
+      redirect_to :action => "note_invalid_apply", :id => @person
+      return
+    elsif params[:note_valid_apply].present?
+      redirect_to :action => "note_valid_apply", :id => @person
+      return
+    end
+
     @consent     = params[:consent]   == "true" ? true : false
     @subscribe   = params[:subscribe] == "true" ? true : false
     @duplication = params[:duplication]
@@ -440,25 +459,6 @@ class PeopleController < ApplicationController
   def update
     @person = Person.find(params[:id])
     # 登録以外のボタンを押されたら別画面に遷移する
-    if params[:extend_days].present?
-      redirect_to :action => "extend_days", :id => @person
-      return
-    elsif params[:subscribe_email].present?
-      session[:person_id] = [@person.id]
-      session[:note_id] = []
-      session[:action] = "view"
-      redirect_to :action => "subscribe_email"
-      return
-    elsif params[:delete].present?
-      redirect_to :action => "delete", :id => @person
-      return
-    elsif params[:note_invalid_apply].present?
-      redirect_to :action => "note_invalid_apply", :id => @person
-      return
-    elsif params[:note_valid_apply].present?
-      redirect_to :action => "note_valid_apply", :id => @person
-      return
-    end
     @consent = params[:consent] == "true" ? true :false
     @subscribe = params[:subscribe]== "true" ? true : false
     if params[:duplication].present?
