@@ -164,7 +164,7 @@
       <span class="value">
         <%= select(:person, :pregnancy,
           options_for_select(@person_const["pregnancy"].invert, @person.pregnancy),
-          { :include_blank => true }) %>
+          ) %>
       </span>
     </div>
     <div class="field">
@@ -174,7 +174,7 @@
       <span class="value">
         <%= select(:person, :baby,
           options_for_select(@person_const["baby"].invert, @person.baby),
-          { :include_blank => true }) %>
+          ) %>
       </span>
     </div>
     <div class="field">
@@ -184,7 +184,7 @@
       <span class="value">
         <%= select(:person, :upper_care_level_three,
           options_for_select(@person_const["upper_care_level_three"].invert, @person.upper_care_level_three),
-          { :include_blank => true }) %>
+          ) %>
       </span>
     </div>
     <div class="field">
@@ -194,7 +194,7 @@
       <span class="value">
         <%= select(:person, :elderly_alone,
           options_for_select(@person_const["elderly_alone"].invert, @person.elderly_alone),
-          { :include_blank => true }) %>
+          ) %>
       </span>
     </div>
     <div class="field">
@@ -204,7 +204,7 @@
       <span class="value">
         <%= select(:person, :elderly_couple,
           options_for_select(@person_const["elderly_couple"].invert, @person.elderly_couple),
-          { :include_blank => true }) %>
+          ) %>
       </span>
     </div>
     <div class="field">
@@ -214,7 +214,7 @@
       <span class="value">
         <%= select(:person, :bedridden_elderly,
           options_for_select(@person_const["bedridden_elderly"].invert, @person.bedridden_elderly),
-          { :include_blank => true }) %>
+          ) %>
       </span>
     </div>
     <div class="field">
@@ -224,7 +224,7 @@
       <span class="value">
         <%= select(:person, :elderly_dementia,
           options_for_select(@person_const["elderly_dementia"].invert, @person.elderly_dementia),
-          { :include_blank => true }) %>
+          ) %>
       </span>
     </div>
     <div class="field">
@@ -234,7 +234,7 @@
       <span class="value">
         <%= select(:person, :rehabilitation_certificate,
           options_for_select(@person_const["rehabilitation_certificate"].invert, @person.rehabilitation_certificate),
-          { :include_blank => true }) %>
+          ) %>
       </span>
     </div>
     <div class="field">
@@ -244,7 +244,7 @@
       <span class="value">
         <%= select(:person, :physical_disability_certificate,
           options_for_select(@person_const["physical_disability_certificate"].invert, @person.physical_disability_certificate),
-          { :include_blank => true }) %>
+          ) %>
       </span>
     </div>
     <div class="end-multi-columns"></div>
