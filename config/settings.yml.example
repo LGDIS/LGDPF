@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 development:
   site:
-  version: "Ver1.0.0.a"
+  version: "v1.0.0.b"
   # smtpの設定
   mail:
     address: smtp.example.com
@@ -24,7 +24,7 @@ development:
     timeout: 60
 test:
   site:
-  version: "Ver1.0.0.a"
+  version: "v1.0.0.b"
   # smtpの設定
   mail:
     address:
@@ -47,7 +47,7 @@ test:
     timeout: 60
 production:
   site:
-  version: "Ver1.0.0.a"
+  version: "ver1.0.0.b"
   # smtpの設定
   mail:
     address: smtp.example.com
