@@ -16,20 +16,6 @@ Lgdpf::Application.configure do
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = true
 
-  config.action_mailer.delivery_method = :smtp
-
-  # smtpの設定
-    config.action_mailer.smtp_settings = {
-      :enable_starttls_auto => SETTINGS["mail"]["enable_starttls_auto"],
-      :address            => SETTINGS["mail"]["address"],
-      :port               => SETTINGS["mail"]["port"],
-      :domain             => SETTINGS["mail"]["domain"],
-      :authentication     => SETTINGS["mail"]["authentication"],
-      :user_name          => SETTINGS["mail"]["user_name"],
-      :password           => SETTINGS["mail"]["password"]
-    }
-    config.action_mailer.default_url_options = { :host => SETTINGS["mail"]["host"] }
-
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
 
@@ -48,4 +34,17 @@ Lgdpf::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  config.action_mailer.default_url_options = { :host => SETTINGS["mail"]["host"] }
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+  :address              => SETTINGS["mail"]["address"],
+  :port                 => SETTINGS["mail"]["port"],
+  :authentication       => SETTINGS["mail"]["authentication"],
+  :user_name            => SETTINGS["mail"]["user_name"],
+  :password             => SETTINGS["mail"]["password"],
+  :enable_starttls_auto => SETTINGS["mail"]["enable_starttls_auto"],
+  :domain               => SETTINGS["mail"]["domain"]
+  }
 end

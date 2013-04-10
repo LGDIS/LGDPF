@@ -2,17 +2,6 @@
 development:
   site:
   version: "Ver1.0.0.a"
-  # smtpの設定
-  mail:
-    address: smtp.example.com
-    port: 587
-    domain: smtp.example.com
-    user_name: username
-    password: password
-    host: localhost:3000
-    enable_starttls_auto: true
-    authentication: :plain
-    from:
   # 画面のHeaderに表示するバナーの設定
   banner:
     # Rails.root/app/assets/imagesに参照する画像ファイルを置く
@@ -22,20 +11,21 @@ development:
   shelter_source:
     uri: http://localhost:3000/exportdata/
     timeout: 60
+  # SMTPサーバの設定
+  mail:
+    address: smtp.example.com
+    port: 587
+    authentication: :plain
+    user_name: username
+    password: password
+    domain: smtp.example.com
+    enable_starttls_auto: true
+    sender: saitai@example.com
+    host: localhost:3000
+
 test:
   site:
   version: "Ver1.0.0.a"
-  # smtpの設定
-  mail:
-    address:
-    port:
-    domain:
-    user_name:
-    password:
-    host:
-    enable_starttls_auto:
-    authentication:
-    from:
   # 画面のHeaderに表示するバナーの設定
   banner:
     # Rails.root/app/assets/imagesに参照する画像ファイルを置く
@@ -45,20 +35,21 @@ test:
   shelter_source:
     uri: http://localhost:3000/exportdata/
     timeout: 60
-production:
-  site:
-  version: "Ver1.0.0.a"
-  # smtpの設定
+  # SMTPサーバの設定
   mail:
     address: smtp.example.com
     port: 587
-    domain: smtp.example.com
+    authentication: :plain
     user_name: username
     password: password
-    host: localhost:3000
+    domain: smtp.example.com
     enable_starttls_auto: true
-    authentication: :plain
-    from:
+    sender: saitai@example.com
+    host: localhost:3000
+
+production:
+  site:
+  version: "Ver1.0.0.a"
   # 画面のHeaderに表示するバナーの設定
   banner:
     # Rails.root/app/assets/imagesに参照する画像ファイルを置く
@@ -71,3 +62,14 @@ production:
     basic_auth:
       username:
       password:
+  # SMTPサーバの設定
+  mail:
+    address: smtp.example.com
+    port: 587
+    authentication: :plain
+    user_name: username
+    password: password
+    domain: smtp.example.com
+    enable_starttls_auto: true
+    sender: saitai@example.com
+    host: localhost:3000

@@ -13,7 +13,7 @@ describe LgdpfMailer do
         mail = LgdpfMailer.send_new_information(@person, nil)
         mail.deliver
         mail.subject.should == "[パーソンファインダー]" + @person.full_name + "さんについての新着情報を受け取るように設定しました"
-        mail.from[0].should == SETTINGS["mail"]["from"]
+        mail.from[0].should == SETTINGS["mail"]["sender"]
         mail.to[0].should == @person.author_email
         ActionMailer::Base.deliveries.size.should == 1
       end
@@ -24,7 +24,7 @@ describe LgdpfMailer do
         mail = LgdpfMailer.send_new_information(@person, @note)
         mail.deliver
         mail.subject.should == "[パーソンファインダー]" + @person.full_name + "さんについての新着情報を受け取るように設定しました"
-        mail.from[0].should == SETTINGS["mail"]["from"]
+        mail.from[0].should == SETTINGS["mail"]["sender"]
         mail.to[0].should == @note.author_email
         ActionMailer::Base.deliveries.size.should == 1
       end
@@ -40,7 +40,7 @@ describe LgdpfMailer do
         mail = LgdpfMailer.send_add_note([@person, @new_note, @person])
         mail.deliver
         mail.subject.should == "[パーソンファインダー]" + @person.full_name + "さんについての新着情報"
-        mail.from[0].should == SETTINGS["mail"]["from"]
+        mail.from[0].should == SETTINGS["mail"]["sender"]
         mail.to[0].should == @person.author_email
         ActionMailer::Base.deliveries.size.should == 1
       end
@@ -51,7 +51,7 @@ describe LgdpfMailer do
         mail = LgdpfMailer.send_add_note([@person, @new_note, @note])
         mail.deliver
         mail.subject.should == "[パーソンファインダー]" + @person.full_name + "さんについての新着情報"
-        mail.from[0].should == SETTINGS["mail"]["from"]
+        mail.from[0].should == SETTINGS["mail"]["sender"]
         mail.to[0].should == @note.author_email
         ActionMailer::Base.deliveries.size.should == 1
       end
@@ -63,7 +63,7 @@ describe LgdpfMailer do
       mail = LgdpfMailer.send_delete_notice(@person)
       mail.deliver
       mail.subject.should == "[パーソンファインダー]" + @person.full_name + "さんの削除の通知"
-      mail.from[0].should == SETTINGS["mail"]["from"]
+      mail.from[0].should == SETTINGS["mail"]["sender"]
       mail.to[0].should == @person.author_email
       ActionMailer::Base.deliveries.size.should == 1
     end
@@ -74,7 +74,7 @@ describe LgdpfMailer do
       mail = LgdpfMailer.send_restore_notice(@person)
       mail.deliver
       mail.subject.should == "[パーソンファインダー]" + @person.full_name + "さんの記録の復元の通知"
-      mail.from[0].should == SETTINGS["mail"]["from"]
+      mail.from[0].should == SETTINGS["mail"]["sender"]
       mail.to[0].should == @person.author_email
       ActionMailer::Base.deliveries.size.should == 1
     end
@@ -85,7 +85,7 @@ describe LgdpfMailer do
       mail = LgdpfMailer.send_note_invalid_apply(@person)
       mail.deliver
       mail.subject.should == "[パーソンファインダー]「" + @person.full_name + "」さんに関するメモを無効にしますか? "
-      mail.from[0].should == SETTINGS["mail"]["from"]
+      mail.from[0].should == SETTINGS["mail"]["sender"]
       mail.to[0].should == @person.author_email
       ActionMailer::Base.deliveries.size.should == 1
     end
@@ -96,7 +96,7 @@ describe LgdpfMailer do
       mail = LgdpfMailer.send_note_invalid(@person)
       mail.deliver
       mail.subject.should == "[パーソンファインダー]「" + @person.full_name + "」さんに関するメモが無効になりました "
-      mail.from[0].should == SETTINGS["mail"]["from"]
+      mail.from[0].should == SETTINGS["mail"]["sender"]
       mail.to[0].should == @person.author_email
       ActionMailer::Base.deliveries.size.should == 1
     end
@@ -107,7 +107,7 @@ describe LgdpfMailer do
       mail = LgdpfMailer.send_note_valid_apply(@person)
       mail.deliver
       mail.subject.should == "[パーソンファインダー]「" + @person.full_name + "」さんに関するメモを有効にしますか? "
-      mail.from[0].should == SETTINGS["mail"]["from"]
+      mail.from[0].should == SETTINGS["mail"]["sender"]
       mail.to[0].should == @person.author_email
       ActionMailer::Base.deliveries.size.should == 1
     end
@@ -118,7 +118,7 @@ describe LgdpfMailer do
       mail = LgdpfMailer.send_note_valid(@person)
       mail.deliver
       mail.subject.should == "[パーソンファインダー]「" + @person.full_name + "」さんに関するメモが有効になりました "
-      mail.from[0].should == SETTINGS["mail"]["from"]
+      mail.from[0].should == SETTINGS["mail"]["sender"]
       mail.to[0].should == @person.author_email
       ActionMailer::Base.deliveries.size.should == 1
     end

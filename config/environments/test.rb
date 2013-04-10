@@ -38,4 +38,17 @@ Lgdpf::Application.configure do
   # Dalli memcache client library settings
   # config.cache_store = :dalli_store, 'cache-1.example.com', 'cache-2.example.com',
   #   { :namespace => LGDPF_test, :expires_in => 1.day, :compress => true }
+
+  config.action_mailer.default_url_options = { :host => SETTINGS["mail"]["host"] }
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+  :address              => SETTINGS["mail"]["address"],
+  :port                 => SETTINGS["mail"]["port"],
+  :authentication       => SETTINGS["mail"]["authentication"],
+  :user_name            => SETTINGS["mail"]["user_name"],
+  :password             => SETTINGS["mail"]["password"],
+  :enable_starttls_auto => SETTINGS["mail"]["enable_starttls_auto"],
+  :domain               => SETTINGS["mail"]["domain"]
+  }
 end

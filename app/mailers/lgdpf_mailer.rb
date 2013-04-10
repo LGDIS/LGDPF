@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 class LgdpfMailer < Jpmobile::Mailer::Base
-  default from: SETTINGS["mail"]["from"]
+  default from: SETTINGS["mail"]["sender"]
 
   # 新着情報を受け取るように設定したことを確認するメールを送信する
   # === Args
