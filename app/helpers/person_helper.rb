@@ -55,13 +55,12 @@ module PersonHelper
   # === Args
   # _url_ :: URL
   def icon_image_tag(url)
-    prefix = ENV['RAILS_RELATIVE_URL_ROOT'].to_s
     if  url =~ /^http:\/\/(www\.)?(facebook)\.com\/*/
-      tag = "<img class='icon' src='#{prefix}/assets/facebook-16x16.png' alt='Facebook-16x16' />"
+      tag = "<img class='icon' src='/assets/facebook-16x16.png' alt='Facebook-16x16' />"
     elsif url =~ /^http:\/\/(www\.)?(twitter)\.com\/*/
-      tag = "<img class='icon' src='#{prefix}/assets/twitter-16x16.png' alt='Twitter-16x16' />"
+      tag = "<img class='icon' src='/assets/twitter-16x16.png' alt='Twitter-16x16' />"
     elsif url =~ /^http:\/\/(www\.)?(linkedin)\.com\/*/
-      tag = "<img class='icon' src='#{prefix}/assets/linkedin-16x16.png' alt='Linkedin-16x16' />"
+      tag = "<img class='icon' src='/assets/linkedin-16x16.png' alt='Linkedin-16x16' />"
     end
     return tag
   end
