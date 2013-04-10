@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 development:
   site:
-  version: "Ver1.0.0.a"
+  version: "v1.0.0.b"
   # 画面のHeaderに表示するバナーの設定
   banner:
     # Rails.root/app/assets/imagesに参照する画像ファイルを置く
@@ -11,6 +11,9 @@ development:
   shelter_source:
     uri: http://localhost:3000/exportdata/
     timeout: 60
+    basic_auth:
+      username:
+      password:
   # SMTPサーバの設定
   mail:
     address: smtp.example.com
@@ -25,7 +28,7 @@ development:
 
 test:
   site:
-  version: "Ver1.0.0.a"
+  version: "v1.0.0.b"
   # 画面のHeaderに表示するバナーの設定
   banner:
     # Rails.root/app/assets/imagesに参照する画像ファイルを置く
@@ -35,6 +38,9 @@ test:
   shelter_source:
     uri: http://localhost:3000/exportdata/
     timeout: 60
+    basic_auth:
+      username:
+      password:
   # SMTPサーバの設定
   mail:
     address: smtp.example.com
@@ -49,7 +55,7 @@ test:
 
 production:
   site:
-  version: "Ver1.0.0.a"
+  version: "v1.0.0.b"
   # 画面のHeaderに表示するバナーの設定
   banner:
     # Rails.root/app/assets/imagesに参照する画像ファイルを置く
