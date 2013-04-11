@@ -2,6 +2,8 @@
 development:
   site:
   version: "v1.0.0.b"
+  # 動作種別(0=通常モード, 1=災害訓練モード, 2=通信試験モード)
+  run_mode: 0
   # 画面のHeaderに表示するバナーの設定
   banner:
     # Rails.root/app/assets/imagesに参照する画像ファイルを置く
@@ -29,6 +31,8 @@ development:
 test:
   site:
   version: "v1.0.0.b"
+  # 動作種別(0=通常モード, 1=災害訓練モード, 2=通信試験モード)
+  run_mode: 0
   # 画面のHeaderに表示するバナーの設定
   banner:
     # Rails.root/app/assets/imagesに参照する画像ファイルを置く
@@ -56,6 +60,8 @@ test:
 production:
   site:
   version: "v1.0.0.b"
+  # 動作種別(0=通常モード, 1=災害訓練モード, 2=通信試験モード)
+  run_mode: 0
   # 画面のHeaderに表示するバナーの設定
   banner:
     # Rails.root/app/assets/imagesに参照する画像ファイルを置く

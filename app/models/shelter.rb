@@ -1,5 +1,8 @@
 # -*- coding:utf-8 -*-
 class Shelter < ActiveRecord::Base
+
+  acts_as_mode_switchable # 動作種別の有効化
+
   attr_accessible :name, :name_kana, :area, :address, :phone, :fax,
    :e_mail, :person_responsible, :shelter_type, :shelter_type_detail,
    :shelter_sort, :opened_at, :closed_at, :capacity, :status, :head_count,
@@ -11,8 +14,8 @@ class Shelter < ActiveRecord::Base
    :elderly_couple_count, :bedridden_elderly_count, :elderly_dementia_count,
    :rehabilitation_certificate_count, :physical_disability_certificate_count,
    :note, :deleted_at, :created_by, :updated_by
-
   attr_accessible :id, :created_at, :updated_at
+  attr_accessible :record_mode
 
   # 定数
   # 開設状況
@@ -28,7 +31,7 @@ class Shelter < ActiveRecord::Base
   # Shelterハッシュ
   def self.hash_for_selectbox
     shelter_list = {}
-    shelters = Shelter.where(:shelter_sort => [SHELTER_SORT_KAISETSU, SHELTER_SORT_JOSETSU])
+    shelters = Shelter.mode_in().where(:shelter_sort => [SHELTER_SORT_KAISETSU, SHELTER_SORT_JOSETSU])
     shelters.each do |s|
       shelter_list[s.shelter_code] = s.name
     end
