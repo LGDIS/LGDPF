@@ -8,6 +8,7 @@
        <%= render :partial =>'recaptcha', :locals => {:captcha => true} %>
 
         <br/>
+        <%= hidden_field :complete, :key, :value => "restore" %>
         <%= submit_tag 'はい、この記録を復元します。' %>
       <% end %>
     </div>
