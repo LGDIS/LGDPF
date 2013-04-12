@@ -98,7 +98,7 @@ class Batches::ExportGooglePersonFinder
       node_person.add_element("pfif:home_state").add_text("#{person.home_state}") if person.home_state.present?
       node_person.add_element("pfif:home_postal_code").add_text("#{person.home_postal_code}") if person.home_postal_code.present?
       node_person.add_element("pfif:home_country").add_text("#{person.home_country}") if person.home_country.present?
-      node_person.add_element("pfif:photo_url").add_text("#{SETTINGS["site"]}#{person.photo_url}") if person.photo_url.present?
+      node_person.add_element("pfif:photo_url").add_text("#{SETTINGS["mail"]["host"]}#{person.photo_url}") if person.photo_url.present?
       node_person.add_element("pfif:profile_urls").add_text("#{person.profile_urls}") if person.profile_urls.present?
 
       notes = Note.find_all_by_person_record_id(person.id)
@@ -132,7 +132,7 @@ class Batches::ExportGooglePersonFinder
         node_note.add_element("pfif:phone_of_found_person").add_text("#{note.phone_of_found_person}") if note.phone_of_found_person.present?
         node_note.add_element("pfif:last_known_location").add_text("#{note.last_known_location}") if note.last_known_location.present?
         node_note.add_element("pfif:text").add_text("#{note.text}")
-        node_note.add_element("pfif:photo_url").add_text("#{SETTINGS["site"]}#{note.photo_url}") if note.photo_url.present?
+        node_note.add_element("pfif:photo_url").add_text("#{SETTINGS["mail"]["host"]}#{note.photo_url}") if note.photo_url.present?
      
         # GooglePersonFinderに送ったnote_record_idを保持する
         if note.note_record_id.blank?

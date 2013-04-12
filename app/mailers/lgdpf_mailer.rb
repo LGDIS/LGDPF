@@ -11,9 +11,8 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     # ユニークキーの設定
     aal = ApiActionLog.create
     @person = person
-    @view_path = SETTINGS["site"] + "people/view/"+ @person.id.to_s
-    @unsubscribe_email_path = SETTINGS["site"] +
-      "person/unsubscribe_email?id=" + @person.id.to_s + "&token=" + aal.unique_key
+    @view_path = SETTINGS["mail"]["host"] + "/people/view/" + @person.id.to_s
+    @unsubscribe_email_path = SETTINGS["mail"]["host"] + "/person/unsubscribe_email?id=" + @person.id.to_s + "&token=" + aal.unique_key
     subject = "[パーソンファインダー]" + person.full_name + "さんについての新着情報を受け取るように設定しました"
     if note.blank?
       address = @person.author_email
@@ -43,19 +42,17 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     @note = target[1]
     record_type = target[2]
     @note_const = Constant.get_const(Note.table_name)
-    @view_path = SETTINGS["site"] + "people/view/"+ @person.id.to_s
+    @view_path = SETTINGS["mail"]["host"] + "/people/view/" + @person.id.to_s
     # Noteに送る場合
     if record_type.is_a? Note
       note_id = record_type.id
     end
-    @unsubscribe_email_path = SETTINGS["site"] +
-      "person/unsubscribe_email?id=" + @person.id.to_s +
+    @unsubscribe_email_path = SETTINGS["mail"]["host"] + "/person/unsubscribe_email?id=" + @person.id.to_s +
       "&note_id=" + note_id.to_s + "&token=" + aal.unique_key
     address = record_type.author_email
     subject = "[パーソンファインダー]" + @person.full_name + "さんについての新着情報"
 
     mail(:to => address, :subject => subject)
-
   end
 
   # 避難者のレコードが削除されたことを通知するメールを送信する
@@ -66,9 +63,8 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   def send_delete_notice(person)
     aal = ApiActionLog.create
     @person = person
-    @root_path = SETTINGS["site"]
-    @restore_path = SETTINGS["site"] +
-      "person/restore?id="+ @person.id.to_s + "&token=" + aal.unique_key
+    @root_path = SETTINGS["mail"]["host"]
+    @restore_path = SETTINGS["mail"]["host"] + "/person/restore?id=" + @person.id.to_s + "&token=" + aal.unique_key
     subject = "[パーソンファインダー]" + person.full_name + "さんの削除の通知"
 
     # 受信フラグがtrueの場合にメールを送信する
@@ -84,7 +80,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   # === Raise
   def send_restore_notice(person)
     @person = person
-    @view_path = SETTINGS["site"] + "people/view/"+ @person.id.to_s
+    @view_path = SETTINGS["mail"]["host"] + "/people/view/" + @person.id.to_s
     subject = "[パーソンファインダー]" + person.full_name + "さんの記録の復元の通知"
 
     # 受信フラグがtrueの場合にメールを送信する
@@ -101,8 +97,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   def send_note_invalid_apply(person)
     aal = ApiActionLog.create
     @person = person
-    @invalid_path = SETTINGS["site"] +
-      "person/note_invalid?id="+ @person.id.to_s + "&token=" + aal.unique_key
+    @invalid_path = SETTINGS["mail"]["host"] + "/person/note_invalid?id=" + @person.id.to_s + "&token=" + aal.unique_key
 
     subject = "[パーソンファインダー]「" + person.full_name + "」さんに関するメモを無効にしますか? "
 
@@ -119,7 +114,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   # === Raise
   def send_note_invalid(person)
     @person = person
-    @view_path = SETTINGS["site"] + "people/view/"+ @person.id.to_s
+    @view_path = SETTINGS["mail"]["host"] + "/people/view/" + @person.id.to_s
     subject = "[パーソンファインダー]「" + person.full_name + "」さんに関するメモが無効になりました "
 
     # 受信フラグがtrueの場合にメールを送信する
@@ -136,8 +131,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   def send_note_valid_apply(person)
     aal = ApiActionLog.create
     @person = person
-    @valid_path = SETTINGS["site"] +
-      "person/note_valid?id="+ @person.id.to_s + "&token=" + aal.unique_key
+    @valid_path = SETTINGS["mail"]["host"] + "/person/note_valid?id=" + @person.id.to_s + "&token=" + aal.unique_key
     subject = "[パーソンファインダー]「" + person.full_name + "」さんに関するメモを有効にしますか? "
 
     # 受信フラグがtrueの場合にメールを送信する
@@ -153,7 +147,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   # === Raise
   def send_note_valid(person)
     @person = person
-    @view_path = SETTINGS["site"] + "people/view/"+ @person.id.to_s
+    @view_path = SETTINGS["mail"]["host"] + "/people/view/" + @person.id.to_s
     subject = "[パーソンファインダー]「" + person.full_name + "」さんに関するメモが有効になりました "
 
     # 受信フラグがtrueの場合にメールを送信する

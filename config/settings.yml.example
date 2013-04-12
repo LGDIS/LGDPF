@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 development:
-  site:
   version: "v1.0.0.b"
   # 動作種別(0=通常モード, 1=災害訓練モード, 2=通信試験モード)
   run_mode: 0
@@ -29,7 +28,6 @@ development:
     host: localhost:3000
 
 test:
-  site:
   version: "v1.0.0.b"
   # 動作種別(0=通常モード, 1=災害訓練モード, 2=通信試験モード)
   run_mode: 0
@@ -58,7 +56,6 @@ test:
     host: localhost:3000
 
 production:
-  site:
   version: "v1.0.0.b"
   # 動作種別(0=通常モード, 1=災害訓練モード, 2=通信試験モード)
   run_mode: 0
