@@ -14,6 +14,10 @@ class ApplicationController < ActionController::Base
     @note_const   = Constant.get_const(Note.table_name)
     @country_code = CountryCode.hash_for_selectbox
     @shelter      = Shelter.hash_for_selectbox
+    # 通常/訓練/試験モードごとの通知文(全画面)
+    unless CURRENT_IS_NORMAL_MODE
+      @run_mode_announce = I18n.t("announce.header.run_mode_#{CURRENT_RUN_MODE}")
+    end
   end
 
   # 有効期限の確認

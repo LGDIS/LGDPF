@@ -241,3 +241,9 @@ ja:
       run_mode_0: "[パーソンファインダー]"
       run_mode_1: "※訓練1※[パーソンファインダー]"
       run_mode_2: "※訓練2※[パーソンファインダー]"
+
+  announce:
+    header:
+      run_mode_0: ""
+      run_mode_1: "訓練モード実施中"
+      run_mode_2: "通信試験モード実施中"

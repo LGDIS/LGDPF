@@ -16,6 +16,7 @@ RUN_MODE = {
 }.freeze
 # 現在の動作種別
 CURRENT_RUN_MODE = SETTINGS["run_mode"]
+CURRENT_IS_NORMAL_MODE = (RUN_MODE.invert[CURRENT_RUN_MODE] == :normal)
 
 # Initialize the rails application
 Lgdpf::Application.initialize!

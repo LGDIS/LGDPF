@@ -20,17 +20,16 @@
             </td>
           </tr>
           <tr>
-            <td></td>
+            <td class="mode_announce">
+              <% if @run_mode_announce.present? %>
+                <%= @run_mode_announce %>
+              <% end %>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
     <h1><%= SETTINGS["banner"]["description"] %> </h1>
-
-
-
-
-
     <% if flash[:error].present? %>
       <div class="error"> <%= flash[:error] %> </div>
     <% end %>
