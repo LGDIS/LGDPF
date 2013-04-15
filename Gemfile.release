@@ -32,7 +32,7 @@ gem 'jquery-rails'
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
 
-# Use unicorn as the app server. LGDSF default Rack HTTP Server.
+# Use unicorn as the app server. LGDPF default Rack HTTP Server.
 gem 'unicorn'
 
 # Deploy with Capistrano
@@ -40,6 +40,19 @@ gem 'unicorn'
 
 # To use debugger
 # gem 'debugger'
+
+# CarrierWave is Upload files in your Ruby applications, map them
+# to a range of ORMs, store them on different backends.
+gem 'carrierwave'
+
+# If you're uploading images by CarrierWave, you'll probably want to
+# manipulate them in some way, you might want to create thumbnail images
+# for example. CarrierWave comes with a small library to make manipulating
+# images with RMagick easier.
+gem 'rmagick', '~> 2.12.2'
+
+# recaptcha adds helpers for the reCAPTCHA API.
+gem 'recaptcha', :require => 'recaptcha/rails'
 
 # Dalli is a high performance pure Ruby client for accessing memcached servers.
 gem 'dalli'
@@ -53,33 +66,9 @@ gem 'devise'
 # Devise extension to allow authentication via LDAP.
 gem 'devise_ldap_authenticatable'
 
-# omniauth is external-authorize for Devise.
-# A generalized Rack framework for multiple-provider authentication.
-gem 'omniauth'
-
-# OpenID strategy for OmniAuth. Using for Google.
-gem 'omniauth-openid'
-
-# A generic OAuth (1.0/1.0a) strategy for OmniAuth.
-gem 'omniauth-oauth'
-
-# An abstract OAuth2 strategy for OmniAuth. Using for Facebook.
-gem 'omniauth-oauth2'
-
-# A generic SAML strategy for OmniAuth.
-gem 'omniauth-saml', '1.0.0', :git => 'https://github.com/ruvr/omniauth-saml.git'
-
-# OmniAuth strategy for Twitter.
-gem 'omniauth-twitter'
-
-# Facebook strategy for OmniAuth.
-gem 'omniauth-facebook'
-
-# LDAP strategy for OmniAuth.
-gem 'omniauth-ldap'
-
-# TabsOnRails is a simple Rails plugin for creating tabs and navigation menus.
-gem 'tabs_on_rails'
+# acts_as_paranoid is Active Record (~>3.2) plugin which allows you to
+# hide and restore records without actually deleting them.
+gem 'acts_as_paranoid'
 
 group :test do
   # Rspec-2 meta-gem that depends on the other components.
@@ -91,25 +80,11 @@ group :test do
   # and support for multiple factories for the same class (user,
   # admin_user, and so on), including factory inheritance.
   gem 'factory_girl_rails'
-
-  # RSpec matcher for Resque.
-  gem 'resque_spec'
 end
-
-# A Rails generator plugin & gem that generates Rails I18n locale files
-# for almost every known locale.
-gem 'i18n_generators'
-
-# It provides the interface to some LDAP libraries (e.g. OpenLDAP,
-# Netscape SDK and Active Directory). The common API for application
-# development is described in RFC1823 and is supported by Ruby/LDAP.
-gem 'ruby-ldap'
 
 # Iconv is a wrapper class for the UNIX 95 iconv() function family,
 # which translates string between various encoding systems.
-#platforms :mri_20 do
-#  gem "iconv"
-#end
+# gem "iconv"
 
 # Load Local Gemfile
 local_gemfile = File.join(File.dirname(__FILE__), "Gemfile.local")
