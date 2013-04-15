@@ -13,7 +13,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     @person = person
     @view_path = SETTINGS["mail"]["host"] + "/people/view/" + @person.id.to_s
     @unsubscribe_email_path = SETTINGS["mail"]["host"] + "/person/unsubscribe_email?id=" + @person.id.to_s + "&token=" + aal.unique_key
-    subject = "[パーソンファインダー]" + person.full_name + "さんについての新着情報を受け取るように設定しました"
+    subject = person.full_name + "さんについての新着情報を受け取るように設定しました"
     if note.blank?
       address = @person.author_email
       email_flag = @person.email_flag
@@ -50,7 +50,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     @unsubscribe_email_path = SETTINGS["mail"]["host"] + "/person/unsubscribe_email?id=" + @person.id.to_s +
       "&note_id=" + note_id.to_s + "&token=" + aal.unique_key
     address = record_type.author_email
-    subject = "[パーソンファインダー]" + @person.full_name + "さんについての新着情報"
+    subject = @person.full_name + "さんについての新着情報"
 
     mail(:to => address, :subject => subject)
   end
@@ -65,7 +65,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     @person = person
     @root_path = SETTINGS["mail"]["host"]
     @restore_path = SETTINGS["mail"]["host"] + "/person/restore?id=" + @person.id.to_s + "&token=" + aal.unique_key
-    subject = "[パーソンファインダー]" + person.full_name + "さんの削除の通知"
+    subject = person.full_name + "さんの削除の通知"
 
     # 受信フラグがtrueの場合にメールを送信する
     if @person.email_flag
@@ -81,7 +81,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   def send_restore_notice(person)
     @person = person
     @view_path = SETTINGS["mail"]["host"] + "/people/view/" + @person.id.to_s
-    subject = "[パーソンファインダー]" + person.full_name + "さんの記録の復元の通知"
+    subject = person.full_name + "さんの記録の復元の通知"
 
     # 受信フラグがtrueの場合にメールを送信する
     if @person.email_flag
@@ -99,7 +99,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     @person = person
     @invalid_path = SETTINGS["mail"]["host"] + "/person/note_invalid?id=" + @person.id.to_s + "&token=" + aal.unique_key
 
-    subject = "[パーソンファインダー]「" + person.full_name + "」さんに関するメモを無効にしますか? "
+    subject = "「" + person.full_name + "」さんに関するメモを無効にしますか? "
 
     # 受信フラグがtrueの場合にメールを送信する
     if @person.email_flag
@@ -115,7 +115,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   def send_note_invalid(person)
     @person = person
     @view_path = SETTINGS["mail"]["host"] + "/people/view/" + @person.id.to_s
-    subject = "[パーソンファインダー]「" + person.full_name + "」さんに関するメモが無効になりました "
+    subject = "「" + person.full_name + "」さんに関するメモが無効になりました "
 
     # 受信フラグがtrueの場合にメールを送信する
     if @person.email_flag
@@ -132,7 +132,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     aal = ApiActionLog.create
     @person = person
     @valid_path = SETTINGS["mail"]["host"] + "/person/note_valid?id=" + @person.id.to_s + "&token=" + aal.unique_key
-    subject = "[パーソンファインダー]「" + person.full_name + "」さんに関するメモを有効にしますか? "
+    subject = "「" + person.full_name + "」さんに関するメモを有効にしますか? "
 
     # 受信フラグがtrueの場合にメールを送信する
     if @person.email_flag
@@ -148,7 +148,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   def send_note_valid(person)
     @person = person
     @view_path = SETTINGS["mail"]["host"] + "/people/view/" + @person.id.to_s
-    subject = "[パーソンファインダー]「" + person.full_name + "」さんに関するメモが有効になりました "
+    subject = "「" + person.full_name + "」さんに関するメモが有効になりました "
 
     # 受信フラグがtrueの場合にメールを送信する
     if @person.email_flag
@@ -156,4 +156,17 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     end
   end
 
+  # ActionMailer::Base#mailメソッド
+  # 送信メールの件名先頭に固定文字列を追加する
+  # === Args
+  # _headers_ :: headers in an email message
+  # _block_ ::  render specific templates if you do pass a block
+  # === Return
+  # === Raise
+  def mail(headers={}, &block)
+    if headers.has_key?(:subject)
+      headers[:subject] = I18n.t("mail.subject_prefix.run_mode_#{CURRENT_RUN_MODE}") + headers[:subject].to_s
+    end
+    super
+  end
 end

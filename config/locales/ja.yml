@@ -235,3 +235,9 @@ ja:
       size_too_small: "is too small (should be at least %{file_size})"
       size_too_big: "のサイズが大きすぎます。 (%{file_size}以下にしてください)"
       dual_boot: 他の人がこのバッチを起動しています。
+
+  mail:
+    subject_prefix:
+      run_mode_0: "[パーソンファインダー]"
+      run_mode_1: "※訓練1※[パーソンファインダー]"
+      run_mode_2: "※訓練2※[パーソンファインダー]"
