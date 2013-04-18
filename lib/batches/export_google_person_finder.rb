@@ -5,13 +5,20 @@
 # 実行環境の指定 :: -e production
 # 二重起動防止のためにロックファイルを作成します。
 # 処理が異常終了した場合はロックファイルが残ってしまうので、
-# Rails.root/tmp/ExportGooglePersonFinderを手動で削除してください。
+# Rails.root/tmp/ExportGooglePersonFinder.lockを手動で削除してください。
 require 'net/http'
 require 'net/https'
 require "rexml/document"
 Net::HTTP.version_1_2
 
 class Batches::ExportGooglePersonFinder
+
+  # 定数
+  # 同時実行を禁止するためのロックファイル
+  LOCKFILENAME = "#{Rails.root}/tmp/ExportGooglePersonFinder.lock"
+  # 作業用一時ディレクトリ。処理中のみ存在する。
+  WORK_DIR = "#{Rails.root}/tmp/ExportGooglePersonFinder"
+
 
   # GoogePersonFinderへ未連携データのアップロード処理
   # === Args
@@ -20,38 +27,40 @@ class Batches::ExportGooglePersonFinder
   def self.execute
     puts " #{Time.now.to_s} ===== START ===== "
 
-    # 2重起動防止
-    if File.exist?("tmp/synchro")
-      raise I18n.t("errors.messages.dual_boot")
+    # 通常モード(訓練/試験モード以外)であれば処理を行う
+    unless CURRENT_IS_NORMAL_MODE
+      puts " #{Time.now.to_s} process exit for communication/test mode."
     else
-      Dir::mkdir(Rails.root + "tmp/synchro")
-      f = File.open("tmp/synchro/ExportGooglePersonFinder", "w")
-      
-      begin
-        export_record_size = Person.where(:public_flag => Person::PUBLIC_FLAG_ON).size
 
-        # アップロード対象のレコードがなくなるまで
-        while export_record_size > 0
-          target_records = Person.find_for_export_gpf
-          export_record_size = export_record_size - target_records.size
-          # 書き込み専用でファイルを開く（新規作成）
-          file_path = Rails.root + "tmp/synchro/lgdpf#{Time.now.utc.xmlschema.gsub(":","")}.xml"
-          File.open(file_path, "w") do |output_file|
-            output_file.write(create_pfif(target_records))    # ファイルにデータ書き込み
+      # 2重起動防止
+      if File.exist?(LOCKFILENAME)
+        raise I18n.t("errors.messages.dual_boot")
+      else
+        begin
+          File.open(LOCKFILENAME, "w").close
+          Dir.mkdir(WORK_DIR) # 作業用ディレクトリ
+          export_record_size = Person.where(:public_flag => Person::PUBLIC_FLAG_ON).size
+
+          # アップロード対象のレコードがなくなるまで
+          while export_record_size > 0
+            target_records = Person.find_for_export_gpf
+            export_record_size -= target_records.size
+            tmp_file = "#{WORK_DIR}/lgdpf#{Time.now.utc.xmlschema.gsub(":","")}.xml"
+            File.open(tmp_file, "w") do |output_file|
+              output_file.write(create_pfif(target_records))
+            end
+
+            # GooglePersonFinderにexport
+            puts `curl -X POST -H 'Content-type: application/xml' --data-binary @#{tmp_file} https://www.google.org/personfinder/#{API_KEY["google_person_finder"]["repository"]}/api/write?key=#{API_KEY["google_person_finder"]["api_key"]} `
           end
 
-          # GooglePersonFinderにexport
-          puts `curl -X POST -H 'Content-type: application/xml' --data-binary @#{file_path} https://www.google.org/personfinder/#{API_KEY["google_person_finder"]["repository"]}/api/write?key=#{API_KEY["google_person_finder"]["api_key"]} `
-
+        ensure
+          Person.update_all(:export_flag => false)
+          FileUtils.rm_r(WORK_DIR)
+          File.delete(LOCKFILENAME)
         end
-      
-        puts " #{Time.now.to_s} =====  END  ===== "
- 
-      ensure
-        f.close
-        Person.update_all(:export_flag => false)
-        FileUtils.rm_r(Dir.glob(Rails.root + 'tmp/synchro'))
       end
+      puts " #{Time.now.to_s} =====  END  ===== "
     end
   end
 
@@ -133,7 +142,7 @@ class Batches::ExportGooglePersonFinder
         node_note.add_element("pfif:last_known_location").add_text("#{note.last_known_location}") if note.last_known_location.present?
         node_note.add_element("pfif:text").add_text("#{note.text}")
         node_note.add_element("pfif:photo_url").add_text("#{SETTINGS["mail"]["host"]}#{note.photo_url}") if note.photo_url.present?
-     
+
         # GooglePersonFinderに送ったnote_record_idを保持する
         if note.note_record_id.blank?
           note.note_record_id = "#{API_KEY["google_person_finder"]["registered_domain"]}/note.#{note.id}"
@@ -199,9 +208,8 @@ class Batches::ExportGooglePersonFinder
     when Note::STATUS_BELIEVED_DEAD       # この人物が死亡したという情報を入手した
       "believed_dead"
     else
-      nil                  # 指定無し
+      nil # 指定無し
     end
   end
-
 
 end
