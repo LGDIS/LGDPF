@@ -519,7 +519,7 @@
   </div>
 
   <div class="section">
-    <h3 class="mandatory">この人の情報を石巻市パーソンファインダーの外部に公開しますか？（必須）</h3>
+    <h3 class="mandatory">この人の情報を<%= I18n.t("target_municipality") %>パーソンファインダーの外部に公開しますか？（必須）</h3>
     <div class="field">
       <%= radio_button :person, :public_flag, Person::PUBLIC_FLAG_ON, {:checked => true} %>
       <label class="option" for="person_public_flag_<%= Person::PUBLIC_FLAG_ON %>">はい</label>
