@@ -373,7 +373,7 @@
   </div>
 
   <div class="section">
-    <h3>この人の情報を石巻市パーソンファインダーの外部に公開しますか？</h3>
+    <h3>この人の情報を<%= I18n.t("target_municipality") %>パーソンファインダーの外部に公開しますか？</h3>
     <div class="field">
       <span class="value">
         <% if @person.public_flag == Person::PUBLIC_FLAG_ON %>
