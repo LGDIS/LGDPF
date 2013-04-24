@@ -4,6 +4,16 @@ module Acts
 
     def self.included(base)
       base.extend(ClassMethods)
+      base.send(:include, InstanceMethods)
+      base.class_eval do
+        before_create :set_record_mode
+      end
+    end
+
+    module InstanceMethods
+      def set_record_mode
+        self.record_mode = CURRENT_RUN_MODE
+      end
     end
 
     module ClassMethods
