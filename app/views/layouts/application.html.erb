@@ -19,13 +19,13 @@
                 :controller => :people, :action => :index %>
             </td>
           </tr>
-          <tr>
-            <td class="mode_announce">
-              <% if @run_mode_announce.present? %>
+          <% if @run_mode_announce.present? %>
+            <tr>
+              <td class="mode_announce">
                 <%= @run_mode_announce %>
-              <% end %>
-            </td>
-          </tr>
+              </td>
+            </tr>
+          <% end %>
         </tbody>
       </table>
     </div>
