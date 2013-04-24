@@ -5,9 +5,6 @@ module Acts
     def self.included(base)
       base.extend(ClassMethods)
       base.send(:include, InstanceMethods)
-      base.class_eval do
-        before_create :set_record_mode
-      end
     end
 
     module InstanceMethods
@@ -31,6 +28,7 @@ module Acts
       # ==== Return
       # ==== Raise
       def acts_as_mode_switchable
+        before_create :set_record_mode
         self.scope :mode_in, ->(mode = CURRENT_RUN_MODE) {
           where(record_mode:
                 case mode
