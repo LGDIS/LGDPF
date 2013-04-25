@@ -184,10 +184,10 @@ describe PeopleController do
               :count => 3
 
             assigns[:consent].should be_false
-            assigns[:note].should be_present
-            assigns[:note2].should be_present
-            assigns[:note3].should be_blank
-            assigns[:note].errors.messages.should be_present
+            assigns[:person].should be_present
+            assigns[:person2].should be_present
+            assigns[:person3].should be_blank
+            flash[:error].should be_present
             response.should be_success
             response.should render_template("multiviews")
           end
@@ -203,9 +203,9 @@ describe PeopleController do
                 :count => 3
 
               assigns[:consent].should be_false
-              assigns[:note].should be_present
-              assigns[:note2].should be_present
-              assigns[:note3].should be_blank
+              assigns[:person].should be_present
+              assigns[:person2].should be_present
+              assigns[:person3].should be_blank
               flash[:error].should == I18n.t("activerecord.errors.messages.disagree")
               response.should be_success
               response.should render_template("multiviews")

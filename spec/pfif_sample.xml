@@ -24,8 +24,8 @@
             <pfif:home_state>home_state</pfif:home_state>
             <pfif:home_postal_code>home_postal_code</pfif:home_postal_code>
             <pfif:home_country>home_country</pfif:home_country>
-            <pfif:photo_url>https://google.org/personfinder/test-nokey/photo?id=17521253</pfif:photo_url>
-            <pfif:profile_urls>http://aaa</pfif:profile_urls>
+            <pfif:photo_url></pfif:photo_url>
+            <pfif:profile_urls>http://localhost/sns.html</pfif:profile_urls>
             <pfif:note>
                 <pfif:note_record_id>test/note.1</pfif:note_record_id>
                 <pfif:person_record_id>test/person.1</pfif:person_record_id>

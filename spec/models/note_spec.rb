@@ -159,7 +159,7 @@ describe 'Note' do
         FactoryGirl.create(:note, :person_record_id => @person.id, :author_email => "aaa@aaa.com")
         FactoryGirl.create(:note, :person_record_id => @person.id, :author_email => "bbb@aaa.com")
         result = Note.check_for_author_email(@person)
-        result.should == true        
+        result.should == true
       end
     end
 
@@ -183,7 +183,7 @@ describe 'Note' do
       elements = doc.elements["pfif:pfif/pfif:person"]
       person = Person.new
       person = Person.exec_insert_person(person, elements)
-      person.save
+      person.save!
       @note = Note.new
       @elements = doc.elements["pfif:pfif/pfif:person/pfif:note"]
     end
@@ -191,7 +191,6 @@ describe 'Note' do
       Note.exec_insert_note(@note, @elements)
       person_record = Person.find_by_person_record_id(@elements.elements["pfif:person_record_id"].text)
       linked_person_record = Person.find_by_person_record_id(@elements.elements["pfif:linked_person_record_id"].text)
-
       @note.note_record_id.should          == @elements.elements["pfif:note_record_id"].text
       @note.person_record_id.should        == person_record.id
       @note.linked_person_record_id.should == linked_person_record.id if linked_person_record.present?

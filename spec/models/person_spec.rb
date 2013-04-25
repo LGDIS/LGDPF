@@ -12,12 +12,18 @@ describe Person do
         @person.save.should == true
       end
       it 'source_dateが現在時刻' do
+        time_now = Time.zone.now
+        Time.stub!(:now).and_return(time_now)
         @person.save
-        @person.source_date.to_s.should == Time.now.to_s
+        @person.source_date.to_s.should == time_now.to_s
+        Time.rspec_reset
       end
       it 'entry_dateが現在時刻' do
+        time_now = Time.zone.now
+        Time.stub!(:now).and_return(time_now)
         @person.save
-        @person.entry_date.to_s.should == Time.now.to_s
+        @person.entry_date.to_s.should == time_now.to_s
+        Time.rspec_reset
       end
       it 'full_nameがfamily_nameとgiven_nameを半角スペースで結合していること' do
         @person.save
@@ -80,7 +86,7 @@ describe Person do
           @person.home_state = "宮城県"
           @person.home_city = "石巻市"
           @person.save
-          @person.in_city_flag == Person::IN_CITY_FLAG_ON
+          @person.in_city_flag == Person::IN_CITY_FLAG_INSIDE
         end
       end
       context 'home_stateが「宮城県」以外 && home_cityが「石巻市」' do
@@ -88,7 +94,7 @@ describe Person do
           @person.home_state = "東京都"
           @person.home_city = "石巻市"
           @person.save
-          @person.in_city_flag == Person::IN_CITY_FLAG_OFF
+          @person.in_city_flag == Person::IN_CITY_FLAG_OUTSIDE
         end
       end
       context 'home_stateが「宮城県」 && home_cityが「石巻市」以外' do
@@ -96,7 +102,7 @@ describe Person do
           @person.home_state = "東京都"
           @person.home_city = "仙台市"
           @person.save
-          @person.in_city_flag == Person::IN_CITY_FLAG_OFF
+          @person.in_city_flag == Person::IN_CITY_FLAG_OUTSIDE
         end
       end
 

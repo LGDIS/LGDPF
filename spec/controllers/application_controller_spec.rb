@@ -50,17 +50,6 @@ describe ApplicationController do
     end
   end
 
-  describe "#get_cache" do
-    before do
-      @app_controller = ApplicationController.new
-    end
-    it 'memcacheの値が取得できていること' do
-      get_cache = @app_controller.get_cache("shelter")
-      rails_cache = Rails.cache.read("shelter")
-      get_cache.size.should == rails_cache.size
-    end
-  end
-
   describe "#autocomplete_city" do
     subject { get :autocomplete_city }
     before(:each) do
