@@ -61,22 +61,6 @@ class ApplicationController < ActionController::Base
   end
 
 
-  # memcacheされた値を取得・加工
-  # === Args
-  # _key_name_ :: キャッシュされているハッシュのキー名
-  # === Return
-  # _constant_list_ :: {code => name}
-  # ==== Raise
-  def get_cache(key_name)
-    constant_list = {}
-    constant = Rails.cache.read(key_name)
-    constant.each do |c|
-      constant_list[c[0]] = c[1]["name"]
-    end
-    return constant_list
-  end
-
-
   # オートコンプリート市区町村取得処理
   # ==== Args
   # _term_ :: ユーザ入力値
