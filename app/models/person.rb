@@ -127,8 +127,11 @@ class Person < ActiveRecord::Base
     self.injury_flag = self.injury_condition.present? ? INJURY_FLAG_ON : INJURY_FLAG_OFF  # 負傷の有無
     self.allergy_flag = self.allergy_cause.present? ? ALLERGY_FLAG_ON : ALLERGY_FLAG_OFF    # アレルギーの有無
 
+    split_city = I18n.t("target_municipality").split(//n)[0..-2].join
+    split_municipality = I18n.t("target_municipality").split(//n).pop
+    regexp_city = /^(#{split_city})#{split_municipality}?$/
     if self.home_state.present? && self.home_city.present?    # 市内・市外区分
-      if self.home_state =~ /^(宮城)県?$/ && self.home_city =~ /^(石巻)市?$/
+      if self.home_state =~ /^(宮城)県?$/ && self.home_city =~ regexp_city
         self.in_city_flag = IN_CITY_FLAG_INSIDE  # 市内
       else
         self.in_city_flag = IN_CITY_FLAG_OUTSIDE # 市外

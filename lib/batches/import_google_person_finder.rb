@@ -65,10 +65,13 @@ class Batches::ImportGooglePersonFinder
         if doc.elements["feed/entry/pfif:person"].present?
           puts " #{Time.now.to_s} ===== Person #{skip}th ====="
           skip = skip + MAX_RESULTS
+          split_city = I18n.t("target_municipality").split(//n)[0..-2].join
+          split_municipality = I18n.t("target_municipality").split(//n).pop
+          regexp_city = /^(#{split_city})#{split_municipality}?$/
           doc.elements.each("feed/entry/pfif:person") do |e|
-            # 石巻市以外のデータは取り込まない
+            # ××市以外のデータは取り込まない
             next unless (e.elements["pfif:home_state"].try(:text) =~ /^(宮城)県?$/ &&
-                         e.elements["pfif:home_city"].try(:text) =~ /^(石巻)市?$/)
+                         e.elements["pfif:home_city"].try(:text) =~ regexp)
 
             # person_record_idが重複する場合は取り込まない
             # 削除されているデータも確認する

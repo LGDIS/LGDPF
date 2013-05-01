@@ -4,7 +4,7 @@
 # cd /path/to/deploy
 cd /home/apl/develop/lgdpf/LGDPF
 
-#GooglePersonFinderから「石巻市」のデータを取り込む
+#GooglePersonFinderから「××市」のデータを取り込む
 rails runner Batches::ImportGooglePersonFinder.execute -e production >> log/import_google_person_finder.log 2>&1
 
 #GooglePersonFinderへデータをアップロードする
