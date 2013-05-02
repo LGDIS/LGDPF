@@ -8,12 +8,34 @@ class EmailBlankError < StandardError; end
 
 class PeopleController < ApplicationController
 
+  layout :layout_selector
+
+  # レイアウトの選択処理
+  # 各画面で使用するレイアウトを決定する
+  # ==== Args
+  # _action_ :: 画面識別子
+  # ==== Return
+  # レイアウト名
+  # ==== Raise
+  def layout_selector
+    case params[:action]
+    when 'index'
+      request.mobile? ? 'mobile' : 'application'
+    else
+      'application'
+    end
+  end
+
   # トップ画面
   # === Args
   # === Return
   # === Raise
   def index
-
+    if request.mobile?
+      render "index_mobile"
+    else
+      render
+    end
   end
 
   # 検索画面
