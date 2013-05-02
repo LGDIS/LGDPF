@@ -341,6 +341,14 @@ class PeopleController < ApplicationController
       # Personの登録
       @person = Person.new(params[:person])
       @person.photo_url = session[:photo_person]
+
+      # 入力値をDBに格納できる形式に加工する
+      # Person
+      # よみがな
+      if params[:kana].present?
+        @person.alternate_names = params[:kana][:family_name] + " " + params[:kana][:given_name]
+      end
+
       @person.save
 
       # 新規情報の場合
