@@ -8,6 +8,7 @@ class EmailBlankError < StandardError; end
 
 class PeopleController < ApplicationController
 
+  include Jpmobile::ViewSelector # モバイル時のView自動振り分け
   layout :layout_selector
 
   # レイアウトの選択処理
@@ -19,7 +20,7 @@ class PeopleController < ApplicationController
   # ==== Raise
   def layout_selector
     case params[:action]
-    when 'index'
+    when 'index', "new", "new_mobile", "complete"
       request.mobile? ? 'mobile' : 'application'
     else
       'application'
@@ -31,11 +32,7 @@ class PeopleController < ApplicationController
   # === Return
   # === Raise
   def index
-    if request.mobile?
-      render "index_mobile"
-    else
-      render
-    end
+
   end
 
   # 検索画面
@@ -313,7 +310,59 @@ class PeopleController < ApplicationController
     render :action => "new"
   end
 
+  # 新規登録準備処理（モバイル）
+  # === Args
+  # _person_    :: Person
+  # _subscribe_ :: 新着情報受信のチェック有無
+  # _clone_     :: 新規か複製か
+  # _kana_      :: よみがな
+  # _clickable_map_ :: 最後に見かけた場所
+  # === Return
+  # === Raise
+  def new_mobile
 
+    # 遷移元確認フラグ
+    @kana = params[:kana]
+    @clone_clone_input = (params[:clone][:clone_input] == "no" ? true : false)
+    @subscribe = (params[:subscribe] == "true" ? true : false)
+    @error_message = I18n.t("activerecord.errors.messages.profile_invalid")
+
+    @person = Person.new(params[:person])
+
+    # 入力値をDBに格納できる形式に加工する
+    # Person
+    # よみがな
+    unless params[:kana].blank?
+      @person.alternate_names = params[:kana][:family_name] + " " + params[:kana][:given_name]
+    end
+    # プロフィール
+    @person.profile_urls = set_profile_urls
+    # 削除予定日時
+    @person.expiry_date = Time.now.advance(:days => params[:person][:expiry_date].to_i)
+    # 情報元のサイト名
+    if @clone_clone_input
+      @person.source_name = `hostname`
+    end
+    # 情報元の投稿日の入力が日付までの場合datetime型に変換する
+    if @person.source_date_before_type_cast =~ /^(\d{4})(?:\/|-|.)?(\d{1,2})(?:\/|-|.)?(\d{1,2})$/
+      datetime_str = @person.source_date.strftime("%Y/%m/%d %H:%M:%S %Z")
+      @person.source_date = Time.parse(datetime_str)
+    end
+    # 入力値チェック
+    @person.invalid?
+
+    # 写真の実体を一時的に保管しているパスを格納する
+    session[:photo_person] = @person.photo_url
+
+    if @person.errors.messages.present?
+      raise ActiveRecord::RecordInvalid.new(@person)
+    end
+
+  rescue ActiveRecord::RecordInvalid
+    render "new_mobile"
+  else
+    create_mobile
+  end
 
   # 新規情報登録
   # === Args
@@ -382,6 +431,76 @@ class PeopleController < ApplicationController
   rescue ConsentError
     flash.now[:error] = I18n.t("activerecord.errors.messages.disagree")
     render :action => "new_preview"
+  end
+
+  # 新規登録処理（モバイル）
+  # === Args
+  # _person_    :: Person
+  # _note_      :: Note
+  # _subscribe_ :: 新着情報受信のチェック有無
+  # _consent_   :: 利用規約に同意するのチェック有無
+  # _clone_     :: 新規か複製か
+  # _kana_      :: よみがな
+  # _clickable_map_ :: 最後に見かけた場所
+  # === Return
+  # === Raise
+  def create_mobile
+    # 遷移元確認フラグ
+    if params[:note].blank?
+      @from_seek = true
+    end
+    @kana      = params[:kana]
+    @clone_clone_input = params[:clone][:clone_input] == "no" ? true : false
+    @subscribe = params[:subscribe] == "true" ? true : false
+    @consent   = params[:consent]   == "true" ? true : false
+
+    # 新着情報受信時メールアドレスが空でないことをチェック
+    if @subscribe && params[:person][:author_email].blank?
+      raise EmailBlankError
+    end
+
+    # Person, Noteの登録
+    Person.transaction do
+      # Personの登録
+      @person = Person.new(params[:person])
+      @person.photo_url = session[:photo_person]
+
+      # 入力値をDBに格納できる形式に加工する
+      # Person
+      # よみがな
+      if params[:kana].present?
+        @person.alternate_names = params[:kana][:family_name] + " " + params[:kana][:given_name]
+      end
+
+      @person.save
+
+      # 新規情報の場合
+      if @clone_clone_input
+        @person.source_url = url_for(:action => :view, :id => @person.id, :only_path => false)
+        @person.save
+      end
+
+      # Noteの登録
+      if params[:note].present?
+        @note = Note.new(params[:note])
+        @note.person_record_id = @person.id
+        @note.photo_url = session[:photo_note]
+        @note.save!
+      end
+
+    end
+
+    if @subscribe
+      session[:person_id] = [@person.id]
+      session[:note_id]   = [@note.try(:id)]
+      subscribe_email_mobile
+    else
+      redirect_to :action => "view", :id => @person
+    end
+
+  rescue EmailBlankError
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_blank")
+    render :action => :new_mobile
   end
 
   # 詳細画面
@@ -642,7 +761,45 @@ class PeopleController < ApplicationController
   rescue ActiveRecord::RecordInvalid
     render :action => :subscribe_email
   end
-  
+
+  # 新着情報受信許可処理（モバイル）
+  # === Args
+  # _id_       :: Person.id
+  # _id2_      :: Person.id(重複)
+  # _id3_      :: Person.id(重複)
+  # _note_id_  :: Note.id
+  # _note_id2_ :: Note.id(重複)
+  # _note_id3_ :: Note.id(重複)
+  # === Return
+  # === Raise
+  def subscribe_email_mobile
+    @person = Person.find(session[:person_id].first)  # ウォッチする避難者
+
+    @person.email_flag = true
+    @person.author_email = params[:person][:author_email]
+    # author_emailに重複がある場合は受取フラグを消す
+    if  Note.where(
+        :person_record_id => @person.id,
+        :author_email     => @person.author_email,
+        :email_flag       => true
+      ).size > 0
+      @person.email_flag = false
+    end
+    @person.save!
+
+    LgdpfMailer.send_new_information(@person, nil).deliver
+
+    redirect_to :action => :complete,
+      :id => @person,
+      :complete => {:key => "subscribe_email"}
+
+  rescue Net::SMTPFatalError
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
+    render :action => :new_mobile
+  rescue ActiveRecord::RecordInvalid
+    render :action => :new_mobile
+  end
+
   # 新着情報受信拒否
   # === Args
   # _id_      :: Person.id

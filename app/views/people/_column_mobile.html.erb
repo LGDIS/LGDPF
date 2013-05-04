@@ -1,0 +1,483 @@
+<div class="fields-table person">
+  <% if @from_seek %>
+    <h2>探している人を特定できる情報を入力してください</h2>
+  <% else %>
+    <h2>この人を特定できる情報を入力してください</h2>
+  <% end %>
+  <div class="name section">
+    <h3>名前</h3>
+    <div class="hint">この人の名前を入力してください。</div>
+    <div class="field">
+      <div class="label">
+        <label for="person_family_name" style="color: #f00;">姓（必須）:</label>
+      </div>
+      <div class="value">
+        <%= text_field :person, :family_name,
+          :value => @person.family_name, :class => "medium-text-input" %>
+      </div>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="person_given_name" style="color: #f00;">名（必須）:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :given_name,
+          :value => @person.given_name, :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="kana_family_name">姓（よみがな）:</label>
+      </span>
+      <span class="value">
+        <%= text_field :kana, :family_name,
+          :value => @kana[:family_name], :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="kana_given_name">名（よみがな）:</label>
+      </span>
+      <span class="value">
+        <%= text_field :kana, :given_name,
+          :value => @kana[:given_name], :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="physical section">
+    <h3>身体の特徴</h3>
+    <div class="hint">この人の身体の特徴を入力してください。</div>
+
+    <div class="field">
+      <span class="label">
+        <label for="person_sex">性別:</label>
+      </span>
+      <span class="value">
+        <%= select(:person, :sex,
+          options_for_select(@person_const["sex"].invert, @person.sex),
+          { :include_blank => true }) %>
+      </span>
+    </div>
+
+    <div class="field">
+      <span class="label">
+        <label for="person_date_of_birth">生年月日:</label>
+        <div class="hint">YYYY/MM/DD の形式で入力してください</div>
+      </span>
+      <span class="value">
+        <%= text_field :person, :date_of_birth, :value => @person.date_of_birth,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+
+    <div class="field">
+      <span class="label">
+        <label for="person_age">年齢:</label>
+        <div class="hint">半角数字。ハイフンで範囲指定も可（例: 20-30）</div>
+      </span>
+      <span class="value">
+        <%= text_field :person, :age, :value => @person.age,
+          :class => "short-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="person_home_country">出身国:</label>
+      </span>
+      <span class="value">
+        <%= select(:person, :home_country,
+          options_for_select(@country_code.invert, @person.home_country),
+          { :include_blank => true}, :class => "medium-text-input") %>
+      </span>
+    </div>
+
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="address section">
+    <h3>自宅住所</h3>
+    <div class="hint">この人の住所を入力してください。</div>
+    <div class="field">
+      <span class="label">
+        <label for="person_home_postal_code">郵便番号:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :home_postal_code, :value => @person.home_postal_code,
+          :class => "short-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="person_home_state">都道府県:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :home_state, :value => @person.home_state,
+          :class => "short-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="person_home_city">市区町村:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :home_city, :value => @person.home_city,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="person_home_street">町名:</label>
+        <div class="hint">町名のみ（番地は入力しない）</div>
+      </span>
+      <span class="value">
+        <%= text_field :person, :home_street, :value => @person.home_street,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="person_home_neighborhood">近隣の場所:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :home_neighborhood, :value => @person.home_neighborhood,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="section">
+    <h3>避難所</h3>
+    <div class="hint">避難所に関する情報を入力してください。</div>
+    <div class="field">
+      <span class="label">
+        <label for="person_refuge_status">避難状況:</label>
+      </span>
+      <span class="value">
+        <%= select(:person, :refuge_status,
+          options_for_select(@person_const["refuge_status"].invert, @person.refuge_status),
+          { :include_blank => true }) %>
+      </span>
+    </div>
+
+    <div class="field">
+      <span class="label">
+        <label for="person_shelter_name">指定避難所等:</label>
+      </span>
+      <span class="value">
+        <%= select(:person, :shelter_name,
+             options_for_select(@shelter.invert, @person.shelter_name),
+             { :include_blank => true }) %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="person_refuge_reason">避難理由:</label>
+        <div class="hint">「自主避難」・「避難勧告に基づき避難」・「避難指示に基づき避難」等を記述します。</div>
+      </span>
+      <span class="value">
+        <%= text_area :person, :refuge_reason,
+          { :rows => "3", :class => "medium-text-input" } %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="person_shelter_entry_date">避難所入所年月日:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :shelter_entry_date, :value => @person.shelter_entry_date,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="person_shelter_leave_date">避難所退所年月日:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :shelter_leave_date, :value => @person.shelter_leave_date,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="person_next_place">避難所を退所した後どこへ行ったか:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :next_place, :value => @person.next_place,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="person_next_place_phone">避難所を退所した後の電話番号: </label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :next_place_phone, :value => @person.next_place_phone,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="person_family_well">家族も無事ですか？</label>
+      </span>
+      <span class="value">
+        <%= check_box :person, :family_well,
+          {:checked => @person.family_well == Person::FAMILY_WELL_YES},
+          Person::FAMILY_WELL_YES, Person::FAMILY_WELL_NO %>
+      </span>
+    </div>
+
+    <div class="end-multi-columns"></div>
+
+  </div>
+
+
+  <div class="description section">
+    <h3><label for="person_description">説明</label></h3>
+    <div class="hint">この人のその他の特徴を入力してください。</div>
+    <div class="field">
+      <%= text_area :person, :description,
+        { :rows => "5", :class => "long-text-input" } %>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="photo section">
+    <h3><label for="photo_url">写真</label></h3>
+    <div class="hint">
+      この人の写真がある場合は、写真の URL を指定してください。
+    </div>
+    <div class="field" onclick="document.getElementById('person_photo_input_url').click();">
+      <span class="radio">
+        <%= radio_button_tag "person_photo_input","url", true %>
+      </span>
+      <span class="label">URL:</span>
+      <span class="value">
+        <%= text_field :person, :remote_photo_url_url, :value => @person.remote_photo_url_url,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+
+
+  <div class="profile section">
+    <h3>プロフィール</h3>
+    <div class="hint">
+      この人のプロフィールURLを入力してください。
+    </div>
+    <table class="fields">
+
+
+      <tr id="profile_entry1" style="display:none">
+        <td valign="middle">
+          <div style="width:16px;height:16px"
+               id="profile_icon1"></div>
+        </td>
+        <td>
+          <input type="hidden" id="profile_website_index1" />
+          <input type="text" id="profile_url1"
+                 name="profile_url1" size="30" />
+        </td>
+        <td>
+          <a href="javascript:remove_profile_entry(1)"
+             >削除</a>
+        </td>
+      </tr>
+
+      <tr id="profile_entry2" style="display:none">
+        <td valign="middle">
+          <div style="width:16px;height:16px"
+               id="profile_icon2"></div>
+        </td>
+        <td>
+          <input type="hidden" id="profile_website_index2" />
+          <input type="text" id="profile_url2"
+                 name="profile_url2" size="30" />
+        </td>
+        <td>
+          <a href="javascript:remove_profile_entry(2)"
+             >削除</a>
+        </td>
+      </tr>
+
+      <tr id="profile_entry3" style="display:none">
+        <td valign="middle">
+          <div style="width:16px;height:16px"
+               id="profile_icon3"></div>
+        </td>
+        <td>
+          <input type="hidden" id="profile_website_index3" />
+          <input type="text" id="profile_url3"
+                 name="profile_url3" size="30" />
+        </td>
+        <td>
+          <a href="javascript:remove_profile_entry(3)"
+             >削除</a>
+        </td>
+      </tr>
+
+      <tr id="add_profile_entry">
+        <td colspan="3">
+          <select id="add_profile_entry_select"
+                  onchange="add_profile_entry(this)">
+            <option>プロフィールサイトを選んでください</option>
+
+            <option>Facebook</option>
+
+            <option>Twitter</option>
+
+            <option>LinkedIn</option>
+
+            <option>その他</option>
+          </select>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="expiry section">
+    <h3><label for="expiry_date">記録の期限</label></h3>
+    <div class="hint">
+      <div>
+        この記録を自動的に削除するよう設定できます。いつに指定しますか？
+      </div>
+    </div>
+    <div class="field">
+      <%= select(:person, :expiry_date,
+        options_for_select(@person_const["expiry_date"].invert,
+          @person.expiry_date)) %>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="section">
+    <h3  style="color: #f00;">この人の情報を<%= I18n.t("target_municipality") %>パーソンファインダーの外部に公開しますか？（必須）</h3>
+    <div class="field">
+      <%= radio_button :person, :public_flag, Person::PUBLIC_FLAG_ON, {:checked => true} %>
+      <label class="option" for="person_public_flag_<%= Person::PUBLIC_FLAG_ON %>">はい</label>
+    </div>
+    <div class="field">
+      <%= radio_button :person, :public_flag, Person::PUBLIC_FLAG_OFF, {} %>
+      <label class="option" for="person_public_flag_<%= Person::PUBLIC_FLAG_OFF %>">いいえ</label>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+
+  <div class="source section">
+    <h3>この記録の情報源</h3>
+    <div class="hint">この記録の情報源を指定してください。</div>
+    <div class="field">
+      <div class="instructions">
+        <div>
+          <%= radio_button "clone", "clone_input", "no",
+            {:checked => @clone_clone_input} %>
+          <label class="option" for="clone_clone_input_no">
+            これは新しい記録です。
+          </label>
+        </div>
+        <div>
+          <%= radio_button "clone", "clone_input", "yes",
+            {:checked => !@clone_clone_input}%>
+          <label class="option" for="clone_clone_input_yes">
+            この記録は別の情報源からコピーしたものです。
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="person_author_name" style="color: #f00;" id="author_name_original">
+          あなたの名前（必須）:
+        </label>
+        <label for="person_author_name" class="mandatory" id="author_name_clone" style="display: none">
+          元の情報提供者の名前（必須）:
+        </label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :author_name, :value => @person.author_name,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="person_author_phone" id="author_phone_original">
+          あなたの電話番号:
+        </label>
+        <label for="person_author_phone"
+               id="author_phone_clone" style="display: none">
+          情報提供者の電話番号:
+        </label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :author_phone, :value => @person.author_phone,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="person_author_email" id="author_email_original">
+          あなたのメール アドレス:
+        </label>
+        <label for="person_author_email"
+               id="author_email_clone" style="display: none">
+          情報提供者のメールアドレス:
+        </label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :author_email, :value => @person.author_email,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field" id="source_url_row" style="display: none">
+      <span class="label">
+        <label for="person_source_url">元の記録の URL:</label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :source_url, :value => @person.source_url,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field" id="source_date_row" style="display: none">
+      <span class="label">
+        <label for="person_source_date">
+          情報元の投稿日:
+        </label>
+        <div class="hint">YYYY/MM/DD の形式で入力してください</div>
+      </span>
+      <span class="value">
+        <%= text_field :person, :source_date, :value => @person.source_date,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field" id="source_name_row" style="display: none">
+      <span class="label">
+        <label for="person_source_name">
+          情報元のサイト名:
+        </label>
+      </span>
+      <span class="value">
+        <%= text_field :person, :source_name, :value => @person.source_name,
+          :class => "medium-text-input" %>
+      </span>
+    </div>
+    <div class="field">
+      <span class="label">
+        <label for="subscribe">
+          この方の新着情報をメールで受け取る:
+        </label>
+      </span>
+      <span class="value">
+        <%= check_box_tag "subscribe", true, false, {:checked => @subscribe} %>
+      </span>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+  <div class="submit">
+      <%= submit_tag "この記録を登録", :onclick =>"return validate_fields()", :name => "complete" %>
+  </div>
+</div>

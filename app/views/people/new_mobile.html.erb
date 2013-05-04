@@ -1,0 +1,18 @@
+<%= error_messages_for(@person, @note) %>
+<div style="display:none;"> <%= @error_message %> </div>
+
+<div>
+  <div>
+    <%= form_tag :action => :new_mobile do %>
+      <div>
+        <%= render :partial => "column_mobile" %>
+      </div>
+    <% end %>
+  </div>
+
+  <p></p>
+
+  <div>
+    <%= link_to "<< 最初のページに戻る ", :action => :index %>
+  </div>
+</div>

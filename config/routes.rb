@@ -5,6 +5,8 @@ Lgdpf::Application.routes.draw do
   match "people/seek"                       => "people#seek",               :via => :get
   match "people/seek"                       => "people#seek",               :via => :post
   match "person"                            => "people#new",                :via => :get
+  match "person/new"                        => "people#new_mobile",         :via => :get
+  match "person/new"                        => "people#new_mobile",         :via => :post
   match "person/preview"                    => "people#new_preview",        :via => :get
   match "person/preview"                    => "people#new_preview",        :via => :post
   match "person"                            => "people#create",             :via => :post
