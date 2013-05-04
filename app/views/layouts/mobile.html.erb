@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="content-language" content="ja" />
+    <title><%= I18n.t('target_municipality') %>パーソンファインダー </title>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&language=ja&v=3&client=<%= API_KEY["google_map"]["client_id"] %>"></script>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <div>
+      <table style="border-collapse:collapse;background: url(<%= asset_path 'bg_sub.jpg' %>) left top; width:100%">
+        <tbody>
+          <tr>
+            <td style="padding:0">
+              <%= link_to (image_tag SETTINGS["banner"]["image_file"],:size => '265x75',:alt => 'banner'),
+                :controller => :people, :action => :index %>
+            </td>
+          </tr>
+          <% if @run_mode_announce.present? %>
+            <tr>
+              <td>
+                <%= @run_mode_announce %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <h1><%= SETTINGS["banner"]["description"] %> </h1>
+    <% if flash[:error].present? %>
+      <div> <%= flash[:error] %> </div>
+    <% end %>
+    <%= yield %>
+    <div>
+      <%= SETTINGS["version"] %>
+    </div>
+  </body>
+</html>
