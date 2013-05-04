@@ -1,0 +1,20 @@
+<div role="main">
+
+  <%= form_tag :action => :search_results do %>
+    <%= hidden_field_tag "role", "first_step" %>
+    <div role="form">
+      <div>
+        <h3 class="sub_title">人を探している</h3>
+        <div class="">その人の名字か名前、または名字・名前の一部を入力してください。</div>
+        <%= text_field_tag :name, params[:name],
+          :class => "long-text-input", :size => '40' %>
+        <%= submit_tag "この人を探す" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<p></p>
+
+<%= link_to "<< 最初のページに戻る", :action => :index %>
+<br/>

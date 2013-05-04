@@ -1,0 +1,216 @@
+<%= error_messages_for(@note) %>
+
+<div class="container">
+  <div class="content" role="main">
+    <%= form_tag({:action => :update_preview, :id => @person}) do %>
+
+      <div class="view">
+        <div class="column left">
+          <div class="fields-table person">
+            <div>
+              <h2>対象者情報</h2>
+
+              <div class="name section">
+                <h3>名前</h3>
+                <div class="field">
+                  <span class="label">名前:</span>
+                  <span class="value"><%= @person.full_name %></span>
+                </div>
+                <div class="field">
+                  <span class="label">名前（かな）:</span>
+                  <span class="value"><%= @person.alternate_names %></span>
+                </div>
+                <div class="end-multi-columns"></div>
+              </div>
+
+              <div class="physical section">
+                <h3>身体の特徴</h3>
+                <div class="field">
+                  <span class="label">性別:</span>
+                  <span class="value"><%= @person_const["sex"]["#{@person.sex}"] %></span>
+                </div>
+                <div class="field">
+                  <span class="label">生年月日:</span>
+                  <span class="value"><%= @person.date_of_birth %></span>
+                </div>
+                <div class="field">
+                  <span class="label">年齢:</span>
+                  <span class="value"><%= @person.age %></span>
+                </div>
+                <div class="field">
+                  <span class="label">出身国:</span>
+                  <span class="value"><%= @country_code["#{@person.home_country}"] %></span>
+                </div>
+
+                <div class="end-multi-columns"></div>
+              </div>
+
+              <div class="address section">
+                <h3>自宅住所</h3>
+                <div class="field">
+                  <span class="label">郵便番号:</span>
+                  <span class="value"><%= @person.home_postal_code %></span>
+                </div>
+                <div class="field">
+                  <span class="label">都道府県:</span>
+                  <span class="value"><%= @person.home_state %></span>
+                </div>
+                <div class="field">
+                  <span class="label">市区町村:</span>
+                  <span class="value"><%= @person.home_city %></span>
+                </div>
+                <div class="field">
+                  <span class="label">町名:</span>
+                  <span class="value"><%= @person.home_street %></span>
+                </div>
+                <div class="field">
+                  <span class="label">近隣の場所:</span>
+                  <span class="value"><%= @person.home_neighborhood %></span>
+                </div>
+
+                <% if @person.in_city_flag.present? %>
+                  <div class="field">
+                    <span class="label">市内・市外区分:</span>
+                    <span class="value">
+                      <%= @person_const["in_city_flag"]["#{@person.in_city_flag}"] %>
+                    </span>
+                  </div>
+                <% end %>
+
+                <div class="end-multi-columns"></div>
+              </div>
+
+              <% if @person.description.present? %>
+                <div class="description section">
+                  <h3>説明</h3>
+                  <div class="field">
+                    <span>
+                      <%= text_area :person, :description,
+                        :cols => "40", :rows => "5", :readonly => true %>
+                    </span>
+                  </div>
+                  <div class="end-multi-columns"></div>
+                </div>
+              <% end %>
+
+              <% if @person.photo_url.present? %>
+                <div class="photo section">
+                  <h3>写真</h3>
+                  <div class="field">
+                    <span>
+                      <%= image_tag(@person.photo_url, :class => "photo") %>
+                    </span>
+                  </div>
+                  <div class="end-multi-columns"></div>
+                </div>
+              <% end %>
+
+              <% if @person.profile_urls.present? %>
+                <div class="profile section">
+                  <h3>プロフィール</h3>
+                  <% @person.profile_urls.split("\n").each_with_index do |url, i| %>
+                    <div class="field">
+                      <span class="label">プロフィール <%= i+1 %>:</span>
+                      <span class="value">
+                        <%= raw icon_image_tag(url) %>
+                        <a target="_blank" href=<%= url %> >
+                          <%= url_name(url) %>
+                        </a>
+                      </span>
+                    </div>
+                  <% end %>
+                  <div class="end-multi-columns"></div>
+                </div>
+              <% end %>
+
+              <div class="source section">
+                <h3>この記録の情報源</h3>
+                <div class="field">
+                  <span class="label">情報提供者の名前:</span>
+                  <span class="value"><%= @person.author_name %></span>
+                </div>
+                <div class="field">
+                  <span class="label">情報提供者の電話番号:</span>
+                  <span class="value">
+                    <% if session[:pi_view] %>
+                      <%= @person.author_phone %>
+                    <% else %>
+                      <% unless @person.author_phone.blank? %>
+                        <span class="value"><%= @person.author_phone %></span>
+                      <% end %>
+                    <% end %>
+                  </span>
+                </div>
+                <div class="field">
+                  <span class="label">情報提供者のメールアドレス:</span>
+                  <span class="value">
+                    <% if session[:pi_view] %>
+                      <%= @person.author_email %>
+                    <% else %>
+                      <% unless @person.author_email.blank? %>
+                        <span class="value"><%= @person.author_email %></span>
+                      <% end %>
+                    <% end %>
+                  </span>
+                </div>
+                <div class="field">
+                  <span class="label">情報元の URL:</span>
+                  <span class="value">
+                    <% if @person.source_url.present? %>
+                      <%= link_to "リンク", @person.source_url, :target => ["_blank"] %>
+                    <% end %>
+                  </span>
+                </div>
+                <div class="field">
+                  <span class="label">情報元の投稿日:</span>
+                  <span class="value"><%= @person.source_date.strftime("%Y/%m/%d %H:%M:%S") if @person.source_date.present?  %></span>
+                </div>
+                <div class="field">
+                  <span class="label">情報元のサイト名:</span>
+                  <span class="value"><%= @person.source_name %></span>
+                </div>
+                <div class="field">
+                  <span class="label">この記録の有効期限:</span>
+                  <span class="value"><%= @person.expiry_date.strftime("%Y/%m/%d %H:%M:%S") if @person.expiry_date.present? %></span>
+                </div>
+                <div class="end-multi-columns"></div>
+              </div>
+
+              <% if @dup_flag %>
+                <div class="other section">
+                  <h3>重複している可能性のある記録</h3>
+                  <% @dup_people.each do |dup_person| %>
+                    <div class="field">
+                      <span>
+                        <%= link_to dup_person.full_name, :action => :view, :id => dup_person.id %>
+                      </span>
+                    </div>
+                  <% end %>
+                  <div class="field">
+                    <span>
+                      <%= link_to "重複をマークしたメモを表示", :action => :view, :id => @person, :duplication => true %>
+                    </span>
+                  </div>
+                  <div class="end-multi-columns"></div>
+                </div>
+              <% end %>
+
+            </div>
+
+          </div>
+          <% if @action.present? %>
+            <p><%= link_to "<< 結果一覧に戻る ",
+                :action => @action,
+                :family_name => @query_family,
+                :given_name => @query_given,
+                :name => @query,
+                :role => @action%></p>
+          <% else %>
+            <p><%= link_to "<< 最初のページに戻る ", :action => :index %></p>
+          <% end %>
+        </div>
+      </div>
+
+      <% end %>
+    </div>
+  </div>

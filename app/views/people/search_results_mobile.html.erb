@@ -1,0 +1,16 @@
+<% if params[:name].present? %>
+  <% if @person.present? %>
+    <%= render :partial => "person_exist_mobile", 
+      :locals => {:name => params[:name], :person => @person, :role => "seek"} %>
+  <% else %>
+    <%= render :partial => "person_not_exist_mobile", 
+      :locals => {:name => params[:name]} %>
+  <% end %>
+<% end %>
+
+<p></p>
+
+<%= link_to "<< 検索ページに戻る", :action => :seek %>
+<br/>
+<%= link_to "<< 最初のページに戻る", :action => :index %>
+<br/>

@@ -20,7 +20,7 @@ class PeopleController < ApplicationController
   # ==== Raise
   def layout_selector
     case params[:action]
-    when 'index', "new", "new_mobile", "complete"
+    when 'index', "new", "new_mobile", "complete", "view", "seek", "search_results"
       request.mobile? ? 'mobile' : 'application'
     else
       'application'
@@ -42,6 +42,27 @@ class PeopleController < ApplicationController
   # === Return
   # === Raise
   def seek
+    # 検索条件を保持
+    @query = params[:name]
+    @query_family = ""
+    @query_given  = ""
+    @action = action_name
+    if params[:role]
+      if params[:name].present?
+        @person = Person.find_for_seek(params)
+      else
+        flash.now[:error] = I18n.t("activerecord.errors.messages.seek_blank")
+      end
+    end
+  end
+
+  # 検索結果(モバイル)
+  # === Args
+  # _name_ :: 画面入力された検索条件
+  # _role_ :: 画面種別
+  # === Return
+  # === Raise
+  def search_results
     # 検索条件を保持
     @query = params[:name]
     @query_family = ""
