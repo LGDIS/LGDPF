@@ -20,7 +20,7 @@ class PeopleController < ApplicationController
   # ==== Raise
   def layout_selector
     case params[:action]
-    when 'index', "new", "new_mobile", "complete", "view", "seek", "search_results"
+    when "index", "new", "person_create", "complete", "view", "seek", "search_results"
       request.mobile? ? 'mobile' : 'application'
     else
       'application'
@@ -331,24 +331,23 @@ class PeopleController < ApplicationController
     render :action => "new"
   end
 
-  # 新規登録準備処理（モバイル）
+  # 新規登録処理（モバイル）
   # === Args
   # _person_    :: Person
+  # _note_      :: Note
   # _subscribe_ :: 新着情報受信のチェック有無
   # _clone_     :: 新規か複製か
   # _kana_      :: よみがな
   # _clickable_map_ :: 最後に見かけた場所
   # === Return
   # === Raise
-  def new_mobile
+  def person_create
+    @person = Person.new(params[:person])
 
-    # 遷移元確認フラグ
     @kana = params[:kana]
     @clone_clone_input = (params[:clone][:clone_input] == "no" ? true : false)
     @subscribe = (params[:subscribe] == "true" ? true : false)
     @error_message = I18n.t("activerecord.errors.messages.profile_invalid")
-
-    @person = Person.new(params[:person])
 
     # 入力値をDBに格納できる形式に加工する
     # Person
@@ -359,7 +358,8 @@ class PeopleController < ApplicationController
     # プロフィール
     @person.profile_urls = set_profile_urls
     # 削除予定日時
-    @person.expiry_date = Time.now.advance(:days => params[:person][:expiry_date].to_i)
+    time = Time.now.advance(:days => params[:person][:expiry_date].to_i)
+    @person.expiry_date = Time.parse(time.to_s(:db))
     # 情報元のサイト名
     if @clone_clone_input
       @person.source_name = `hostname`
@@ -379,10 +379,54 @@ class PeopleController < ApplicationController
       raise ActiveRecord::RecordInvalid.new(@person)
     end
 
+    # 新着情報受信時メールアドレスが空でないことをチェック
+    if @subscribe && params[:person][:author_email].blank?
+      raise EmailBlankError
+    end
+
+    # Person, Noteの登録
+    Person.transaction do
+      # Personの登録
+      @person.photo_url = session[:photo_person]
+
+      # 入力値をDBに格納できる形式に加工する
+      # Person
+      # よみがな
+      if params[:kana].present?
+        @person.alternate_names = params[:kana][:family_name] + " " + params[:kana][:given_name]
+      end
+
+      @person.save
+
+      # 新規情報の場合
+      if @clone_clone_input
+        @person.source_url = url_for(:action => :view, :id => @person.id, :only_path => false)
+        @person.save
+      end
+
+      # Noteの登録
+      if params[:note].present?
+        @note = Note.new(params[:note])
+        @note.person_record_id = @person.id
+        @note.photo_url = session[:photo_note]
+        @note.save!
+      end
+
+    end
+
+    if @subscribe
+      session[:person_id] = [@person.id]
+      session[:note_id]   = [@note.try(:id)]
+      subscribe_email_mobile
+    else
+      redirect_to :action => "view", :id => @person
+    end
+
   rescue ActiveRecord::RecordInvalid
-    render "new_mobile"
-  else
-    create_mobile
+    render "new"
+  rescue EmailBlankError
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_blank")
+    render "new"
   end
 
   # 新規情報登録
@@ -397,6 +441,7 @@ class PeopleController < ApplicationController
   # === Return
   # === Raise
   def create
+
     # 遷移元確認フラグ
     if params[:note].blank?
       @from_seek = true
@@ -454,76 +499,6 @@ class PeopleController < ApplicationController
     render :action => "new_preview"
   end
 
-  # 新規登録処理（モバイル）
-  # === Args
-  # _person_    :: Person
-  # _note_      :: Note
-  # _subscribe_ :: 新着情報受信のチェック有無
-  # _consent_   :: 利用規約に同意するのチェック有無
-  # _clone_     :: 新規か複製か
-  # _kana_      :: よみがな
-  # _clickable_map_ :: 最後に見かけた場所
-  # === Return
-  # === Raise
-  def create_mobile
-    # 遷移元確認フラグ
-    if params[:note].blank?
-      @from_seek = true
-    end
-    @kana      = params[:kana]
-    @clone_clone_input = params[:clone][:clone_input] == "no" ? true : false
-    @subscribe = params[:subscribe] == "true" ? true : false
-    @consent   = params[:consent]   == "true" ? true : false
-
-    # 新着情報受信時メールアドレスが空でないことをチェック
-    if @subscribe && params[:person][:author_email].blank?
-      raise EmailBlankError
-    end
-
-    # Person, Noteの登録
-    Person.transaction do
-      # Personの登録
-      @person = Person.new(params[:person])
-      @person.photo_url = session[:photo_person]
-
-      # 入力値をDBに格納できる形式に加工する
-      # Person
-      # よみがな
-      if params[:kana].present?
-        @person.alternate_names = params[:kana][:family_name] + " " + params[:kana][:given_name]
-      end
-
-      @person.save
-
-      # 新規情報の場合
-      if @clone_clone_input
-        @person.source_url = url_for(:action => :view, :id => @person.id, :only_path => false)
-        @person.save
-      end
-
-      # Noteの登録
-      if params[:note].present?
-        @note = Note.new(params[:note])
-        @note.person_record_id = @person.id
-        @note.photo_url = session[:photo_note]
-        @note.save!
-      end
-
-    end
-
-    if @subscribe
-      session[:person_id] = [@person.id]
-      session[:note_id]   = [@note.try(:id)]
-      subscribe_email_mobile
-    else
-      redirect_to :action => "view", :id => @person
-    end
-
-  rescue EmailBlankError
-    flash.now[:error] = I18n.t("activerecord.errors.messages.email_blank")
-    render :action => :new_mobile
-  end
-
   # 詳細画面
   # === Args
   # _id_ :: Person.id
@@ -562,7 +537,7 @@ class PeopleController < ApplicationController
   # === Raise
   def update_preview
     @person = Person.find_by_id(params[:id])
-        if params[:extend_days].present?
+    if params[:extend_days].present?
       redirect_to :action => "extend_days", :id => @person
       return
     elsif params[:subscribe_email].present?
@@ -607,8 +582,6 @@ class PeopleController < ApplicationController
   rescue ActiveRecord::RecordInvalid
     render :action => "view"
   end
-
-
 
   # 安否情報を追加する
   # === Args

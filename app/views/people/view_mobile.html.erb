@@ -8,8 +8,9 @@
         <div class="column left">
           <div class="fields-table person">
             <div>
-              <h2>対象者情報</h2>
+              <h2>避難者情報</h2>
 
+              <hr />
               <div class="name section">
                 <h3>名前</h3>
                 <div class="field">
@@ -20,9 +21,26 @@
                   <span class="label">名前（かな）:</span>
                   <span class="value"><%= @person.alternate_names %></span>
                 </div>
+
+              <% if @person.photo_url.present? %>
+                <div class="photo section">
+                  <div class="field">
+                    <span>
+                    <% if @person.source_url.present? %>
+                      <%= link_to image_tag(@person.photo_url, :class => "photo", :style => "width: 50px; height: auto;"), @person.source_url, :target => ["_blank"]  %>
+                    <% else %>
+                      <%= image_tag(@person.photo_url, :class => "photo", :style => "width: 50px; height: auto;") %>
+                    <% end %>
+                    </span>
+                  </div>
+                  <div class="end-multi-columns"></div>
+                </div>
+              <% end %>
+
                 <div class="end-multi-columns"></div>
               </div>
 
+              <hr />
               <div class="physical section">
                 <h3>身体の特徴</h3>
                 <div class="field">
@@ -45,6 +63,7 @@
                 <div class="end-multi-columns"></div>
               </div>
 
+              <hr />
               <div class="address section">
                 <h3>自宅住所</h3>
                 <div class="field">
@@ -93,18 +112,6 @@
                 </div>
               <% end %>
 
-              <% if @person.photo_url.present? %>
-                <div class="photo section">
-                  <h3>写真</h3>
-                  <div class="field">
-                    <span>
-                      <%= image_tag(@person.photo_url, :class => "photo") %>
-                    </span>
-                  </div>
-                  <div class="end-multi-columns"></div>
-                </div>
-              <% end %>
-
               <% if @person.profile_urls.present? %>
                 <div class="profile section">
                   <h3>プロフィール</h3>
@@ -123,6 +130,7 @@
                 </div>
               <% end %>
 
+              <hr />
               <div class="source section">
                 <h3>この記録の情報源</h3>
                 <div class="field">
@@ -198,16 +206,17 @@
             </div>
 
           </div>
+          <hr />
           <% if @action.present? %>
-            <p><%= link_to "<< 結果一覧に戻る ",
+            <div><%= link_to "<< 結果一覧に戻る ",
                 :action => @action,
                 :family_name => @query_family,
                 :given_name => @query_given,
                 :name => @query,
-                :role => @action%></p>
-          <% else %>
-            <p><%= link_to "<< 最初のページに戻る ", :action => :index %></p>
+                :role => @action %></div>
           <% end %>
+          <div><%= link_to "<< 最初のページに戻る ", :action => :index %></div>
+          
         </div>
       </div>
 
