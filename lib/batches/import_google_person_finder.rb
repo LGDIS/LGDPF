@@ -71,7 +71,7 @@ class Batches::ImportGooglePersonFinder
           doc.elements.each("feed/entry/pfif:person") do |e|
             # ××市以外のデータは取り込まない
             next unless (e.elements["pfif:home_state"].try(:text) =~ /^(宮城)県?$/ &&
-                         e.elements["pfif:home_city"].try(:text) =~ regexp)
+                         e.elements["pfif:home_city"].try(:text) =~ regexp_city)
 
             # person_record_idが重複する場合は取り込まない
             # 削除されているデータも確認する
