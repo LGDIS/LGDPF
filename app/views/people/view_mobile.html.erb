@@ -26,10 +26,23 @@
                 <div class="photo section">
                   <div class="field">
                     <span>
+<%-
+  @person_photo_mobile = @person.photo_url_url(:mobile_medium)
+  if request.mobile.display && request.mobile.display.width
+    if request.mobile.display.width < 175
+      @person_photo_mobile = @person.photo_url_url(:mobile_small)
+    elsif request.mobile.display.width < 250
+      @person_photo_mobile = @person.photo_url_url(:mobile_medium)
+    elsif request.mobile.display.width < 500
+      @person_photo_mobile = @person.photo_url_url(:mobile_large)
+    end 
+  end 
+  @person_photo_mobile_tag = image_tag(@person_photo_mobile, :class => "photo", :style => "width: 100%; height: auto;")
+-%>
                     <% if @person.source_url.present? %>
-                      <%= link_to image_tag(@person.photo_url, :class => "photo", :style => "width: 50px; height: auto;"), @person.source_url, :target => ["_blank"]  %>
+                      <%= link_to @person_photo_mobile_tag, @person.source_url, :target => ["_blank"]  %>
                     <% else %>
-                      <%= image_tag(@person.photo_url, :class => "photo", :style => "width: 50px; height: auto;") %>
+                      <%= @person_photo_mobile_tag %>
                     <% end %>
                     </span>
                   </div>

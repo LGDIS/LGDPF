@@ -8,8 +8,8 @@ describe PhotoUrlUploader do
 
   include_context "carrier_wave_context"
 
-  let(:testfile_240x320_jpg) { File.join Rails.root, 'spec', 'testdata', 'IMG_1139.JPG' }
-  let(:testfile_715x536_png) { File.join Rails.root, 'spec', 'testdata', '715x536.png' }
+  let(:testfile_240x320_jpg) { File.join Rails.root, 'spec', 'fixtures', 'testdata', 'IMG_1139.JPG' }
+  let(:testfile_715x536_png) { File.join Rails.root, 'spec', 'fixtures', 'testdata', '715x536.png' }
 
   before do
     @person    = FactoryGirl.create(:person)
