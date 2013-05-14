@@ -3,7 +3,7 @@
 class PhotoUrlUploader < CarrierWave::Uploader::Base
 
   # Include RMagick or MiniMagick support:
-  # include CarrierWave::RMagick
+  include CarrierWave::RMagick
   # include CarrierWave::MiniMagick
 
   # Include the Sprockets helpers for Rails 3.1+ asset pipeline compatibility:
@@ -39,6 +39,19 @@ class PhotoUrlUploader < CarrierWave::Uploader::Base
   # version :thumb do
   #   process :scale => [50, 50]
   # end
+
+
+  version :mobile_small do
+    process :resize_to_limit => [160, 160]
+  end
+
+  version :mobile_medium do
+    process :resize_to_limit => [230, 230]
+  end
+
+  version :mobile_large do
+    process :resize_to_limit => [480, 480]
+  end
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
