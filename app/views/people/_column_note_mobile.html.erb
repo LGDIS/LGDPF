@@ -1,0 +1,101 @@
+<div class="fields-table note">
+  <h2>この人の状況について教えてください</h2>
+  <div class="status section">
+    <h3>この人の状況</h3>
+    <div class="field">
+      <%= select(:note, :status,
+        options_for_select(@note_const["status"].invert, @note.status)) %>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+  <div class="mandatory text section">
+    <h3>メッセージ（必須）</h3>
+    <div class="hint">この人やこの人を探している人へのメッセージ</div>
+    <div class="field">
+      <%= text_area :note, :text, { :rows => 5, :class => "long-text-input" } %>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="location section">
+    <h3>最後に見かけた場所</h3>
+    <div class="hint">
+      住所情報を入力してください。
+    </div>
+    <div class="field">
+      <%= text_area :clickable_map, :location_field,
+        { :rows => 2, :class => "long-text-input", :value => @note.last_known_location} %>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+  <div class="author_made_contact section">
+    <h3 class="mandatory">この人と災害発生後に連絡が取れましたか？（必須）</h3>
+    <div class="field">
+      <%= radio_button_tag "note[author_made_contact]", true, @note.author_made_contact %>
+      <label class="option" for="note_author_made_contact_true">はい</label>
+    </div>
+    <div class="field">
+      <%= radio_button_tag "note[author_made_contact]", false, !@note.author_made_contact %>
+      <label class="option" for="note_author_made_contact_false">いいえ</label>
+    </div>
+    <div class="end-multi-columns"></div>
+  </div>
+
+    <div class="source section">
+      <h3>あなたについて</h3>
+      <div class="hint">
+        この人を探している人があなたと連絡を取る手段を指定してください
+      </div>
+      <div class="field">
+        <span class="label">
+          <label for="note_author_name" class="mandatory"
+                 id="author_name_original">
+            あなたの名前（必須）:
+          </label>
+        </span>
+        <span class="value">
+          <%= text_field :note, :author_name, :value => @note.author_name,
+            :class => "medium-text-input" %>
+        </span>
+      </div>
+      <div class="field">
+        <span class="label">
+          <label for="note_author_phone" id="author_phone_original">
+            あなたの電話番号:
+          </label>
+        </span>
+        <span class="value">
+          <%= text_field :note, :author_phone, :value => @note.author_phone,
+            :class => "medium-text-input" %>
+        </span>
+      </div>
+      <div class="field">
+        <span class="label">
+          <label for="note_author_email" id="author_email_original">
+            あなたのメール アドレス:
+          </label>
+        </span>
+        <span class="value">
+          <%= text_field :note, :author_email, :value => @note.author_email,
+            :class => "medium-text-input" %>
+        </span>
+      </div>
+
+      <div class="field">
+        <span class="label">
+          <label for="subscribe">
+            この方の新着情報をメールで受け取る:
+          </label>
+        </span>
+        <span class="value">
+          <%= check_box_tag "subscribe", true, false, {:checked => @subscribe} %>
+        </span>
+      </div>
+      <div class="end-multi-columns"></div>
+    </div>
+
+  <div class="submit">
+    <%= submit_tag "この記録を登録", :onclick =>"return validate_fields()", :name => "complete" %>
+  </div>
+</div>

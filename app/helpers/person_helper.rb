@@ -80,5 +80,14 @@ module PersonHelper
     end
     return name
   end
-  
+
+  # モバイルに対応した形式に変換する
+  # === Args
+  # _str_ :: 文字
+  def reencode_for_mobile(str)
+    if request.mobile?
+      request.mobile.to_external(str, "application/xhtml+xml", request.mobile.default_charset)[0]
+    end
+  end
+
 end

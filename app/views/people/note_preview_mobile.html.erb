@@ -1,0 +1,67 @@
+<%= error_messages_for(@note) %>
+
+<div class="column right">
+  <h2>この人に関するメモ(詳細)</h2>
+  <hr />
+  <div class="view note">
+    <div class="source">
+      投稿者:<span class="author"><%= @note.author_name %></span>
+      日付:<span class="date"><%= @note.entry_date.strftime("%Y/%m/%d") %></span>
+      時刻:<span class="time"><%= @note.entry_date.strftime("%H:%M:%S") %></span>
+
+      <div class="contents" id="768-contents">
+        <span name="note_text">
+          <span><%= @note.text %></span>
+        </span>
+
+        <div class="status">
+          <span class="label">状況:</span>
+          <span class="field believed_missing">
+            <% if @note.status    == Note::STATUS_UNSPECIFIED %>
+            指定なし
+            <% elsif @note.status == Note::STATUS_INFORMATION_SOUGHT %>
+            情報を探している
+            <% elsif @note.status == Note::STATUS_IS_NOTE_AUTHOR %>
+            私が本人である
+            <% elsif @note.status == Note::STATUS_BELIEVED_ALIVE %>
+            この人が生きているという情報を入手した
+            <% elsif @note.status == Note::STATUS_BELIEVED_MISSING %>
+            この人を行方不明と判断した理由がある
+            <% elsif @note.status == Note::STATUS_BELIEVED_DEAD %>
+            この人物が死亡したという情報を入手した
+            <% end %>
+          </span>
+        </div>
+
+        <div>
+          <span class="label"> 行方不明者の現在のメール アドレス: </span>
+          <span class="field">
+          <%= @note.email_of_found_person %>
+          </span>
+        </div>
+        <div>
+          <span class="label"> 行方不明者の現在の電話番号: </span>
+          <span class="field">
+          <%= @note.phone_of_found_person %>
+          </span>
+        </div>
+
+        <div>
+          <span class="label">最後に見かけた場所:</span>
+          <span class="field"><%= @note.last_known_location %></span>
+        </div>
+        <div class="end-multi-columns"></div>
+      </div>
+      <hr />
+
+      <%= link_to "<< この人に関するメモに戻る ",
+        :action => :note_list,
+        :person_record_id => @person_id,
+        :family_name => @query_family,
+        :given_name => @query_given,
+        :name => reencode_for_mobile(@query),
+        :role => @action%><br />
+      <%= link_to "<< 最初のページに戻る ", :action => :index %><br />
+    </div>
+  </div>
+</div>
