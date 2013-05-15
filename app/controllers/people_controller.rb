@@ -65,13 +65,14 @@ class PeopleController < ApplicationController
   # === Raise
   def search_results
     # 検索条件を保持
+    params[:name] = URI.unescape(params[:name]) unless params[:name].blank?
     @query = params[:name]
     @query_family = ""
     @query_given  = ""
     @action = action_name
     if params[:role]
       if params[:name].present?
-        @person = Person.find_for_seek(params)
+        @person = Kaminari.paginate_array(Person.find_for_seek(params)).page(params[:page]).per(10)
       else
         flash.now[:error] = I18n.t("activerecord.errors.messages.seek_blank")
       end
