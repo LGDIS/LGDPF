@@ -37,10 +37,14 @@ describe PhotoUrlUploader do
       context "original:240x320" do
         subject { @uploader1.mobile_small }
         it { should have_dimensions(120, 160) }
+        its(:to_s) { should =~ /\.jpg$/  }
+        it { MIME::Types.type_for(subject.to_s)[0].should == "image/jpeg" }
       end
       context "original:715x536" do
         subject { @uploader2.mobile_small }
         it { should have_dimensions(160, 120) }
+        its(:to_s) { should =~ /\.jpg$/  }
+        it { MIME::Types.type_for(subject.to_s)[0].should == "image/jpeg" }
       end
     end
   end
@@ -56,10 +60,14 @@ describe PhotoUrlUploader do
       context "original:240x320" do
         subject { @uploader1.mobile_medium }
         it { should have_dimensions(173, 230) }
+        its(:to_s) { should =~ /\.jpg$/  }
+        it { MIME::Types.type_for(subject.to_s)[0].should == "image/jpeg" }
       end
       context "original:715x536" do
         subject { @uploader2.mobile_medium }
         it { should have_dimensions(230, 172) }
+        its(:to_s) { should =~ /\.jpg$/  }
+        it { MIME::Types.type_for(subject.to_s)[0].should == "image/jpeg" }
       end
     end
   end
@@ -75,10 +83,14 @@ describe PhotoUrlUploader do
       context "original:240x320" do
         subject { @uploader1.mobile_large }
         it { should have_dimensions(240, 320) }
+        its(:to_s) { should =~ /\.jpg$/  }
+        it { MIME::Types.type_for(subject.to_s)[0].should == "image/jpeg" }
       end
       context "original:715x536" do
         subject { @uploader2.mobile_large }
         it { should have_dimensions(480, 360) }
+        its(:to_s) { should =~ /\.jpg$/  }
+        it { MIME::Types.type_for(subject.to_s)[0].should == "image/jpeg" }
       end
     end
   end

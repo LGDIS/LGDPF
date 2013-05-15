@@ -75,6 +75,7 @@ group :test do
   # Rspec-2 meta-gem that depends on the other components.
   gem 'rspec'
   gem 'rspec-html-matchers'
+  gem 'mime-types'
 
   # factory_girl is a fixtures replacement with a straightforward
   # definition syntax, support for multiple build strategies (saved

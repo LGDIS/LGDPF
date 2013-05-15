@@ -179,6 +179,7 @@ DEPENDENCIES
   jpmobile
   jpmobile-terminfo
   jquery-rails
+  mime-types
   pg
   pg_power
   rails (= 3.2.11)

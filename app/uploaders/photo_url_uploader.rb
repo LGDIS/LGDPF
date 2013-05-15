@@ -43,14 +43,26 @@ class PhotoUrlUploader < CarrierWave::Uploader::Base
 
   version :mobile_small do
     process :resize_to_limit => [160, 160]
+    process :convert         => 'jpg'
+    def full_filename (for_file = model.logo.file)
+      super.chomp(File.extname(super)) + '.jpg'
+    end     
   end
 
   version :mobile_medium do
     process :resize_to_limit => [230, 230]
+    process :convert         => 'jpg'
+    def full_filename (for_file = model.logo.file)
+      super.chomp(File.extname(super)) + '.jpg'
+    end     
   end
 
   version :mobile_large do
     process :resize_to_limit => [480, 480]
+    process :convert         => 'jpg'
+    def full_filename (for_file = model.logo.file)
+      super.chomp(File.extname(super)) + '.jpg'
+    end     
   end
 
   # Add a white list of extensions which are allowed to be uploaded.
