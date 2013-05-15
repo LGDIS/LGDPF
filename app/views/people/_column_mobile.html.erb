@@ -262,81 +262,29 @@
     <div class="end-multi-columns"></div>
   </div>
 
-
-
   <div class="profile section">
     <h3>プロフィール</h3>
     <div class="hint">
       この人のプロフィールURLを入力してください。
     </div>
-    <table class="fields">
-
-
-      <tr id="profile_entry1" style="display:none">
-        <td valign="middle">
-          <div style="width:16px;height:16px"
-               id="profile_icon1"></div>
-        </td>
-        <td>
-          <input type="hidden" id="profile_website_index1" />
-          <input type="text" id="profile_url1"
-                 name="profile_url1" size="30" />
-        </td>
-        <td>
-          <a href="javascript:remove_profile_entry(1)"
-             >削除</a>
-        </td>
-      </tr>
-
-      <tr id="profile_entry2" style="display:none">
-        <td valign="middle">
-          <div style="width:16px;height:16px"
-               id="profile_icon2"></div>
-        </td>
-        <td>
-          <input type="hidden" id="profile_website_index2" />
-          <input type="text" id="profile_url2"
-                 name="profile_url2" size="30" />
-        </td>
-        <td>
-          <a href="javascript:remove_profile_entry(2)"
-             >削除</a>
-        </td>
-      </tr>
-
-      <tr id="profile_entry3" style="display:none">
-        <td valign="middle">
-          <div style="width:16px;height:16px"
-               id="profile_icon3"></div>
-        </td>
-        <td>
-          <input type="hidden" id="profile_website_index3" />
-          <input type="text" id="profile_url3"
-                 name="profile_url3" size="30" />
-        </td>
-        <td>
-          <a href="javascript:remove_profile_entry(3)"
-             >削除</a>
-        </td>
-      </tr>
-
-      <tr id="add_profile_entry">
-        <td colspan="3">
-          <select id="add_profile_entry_select"
-                  onchange="add_profile_entry(this)">
-            <option>プロフィールサイトを選んでください</option>
-
-            <option>Facebook</option>
-
-            <option>Twitter</option>
-
-            <option>LinkedIn</option>
-
-            <option>その他</option>
-          </select>
-        </td>
-      </tr>
-    </table>
+    <div class="field">
+      <span class="label">URL:</span>
+      <span class="value">
+        <input type="hidden" id="profile_website_index1" />
+        <input type="text" id="profile_url1"
+               name="profile_url1" size="30" />
+      </span>
+      <span class="value">
+        <input type="hidden" id="profile_website_index2" />
+        <input type="text" id="profile_url2"
+               name="profile_url2" size="30" />
+      </span>
+      <span class="value">
+        <input type="hidden" id="profile_website_index3" />
+        <input type="text" id="profile_url3"
+               name="profile_url3" size="30" />
+      </span>
+    </div>
   </div>
 
   <div class="expiry section">
@@ -392,10 +340,7 @@
     <div class="field">
       <span class="label">
         <label for="person_author_name" style="color: #f00;" id="author_name_original">
-          あなたの名前（必須）:
-        </label>
-        <label for="person_author_name" class="mandatory" id="author_name_clone" style="display: none">
-          元の情報提供者の名前（必須）:
+          情報提供者の名前（必須）:
         </label>
       </span>
       <span class="value">
@@ -405,11 +350,8 @@
     </div>
     <div class="field">
       <span class="label">
-        <label for="person_author_phone" id="author_phone_original">
-          あなたの電話番号:
-        </label>
         <label for="person_author_phone"
-               id="author_phone_clone" style="display: none">
+               id="author_phone_clone">
           情報提供者の電話番号:
         </label>
       </span>
@@ -420,11 +362,8 @@
     </div>
     <div class="field">
       <span class="label">
-        <label for="person_author_email" id="author_email_original">
-          あなたのメール アドレス:
-        </label>
         <label for="person_author_email"
-               id="author_email_clone" style="display: none">
+               id="author_email_clone">
           情報提供者のメールアドレス:
         </label>
       </span>
@@ -433,7 +372,7 @@
           :class => "medium-text-input" %>
       </span>
     </div>
-    <div class="field" id="source_url_row" style="display: none">
+    <div class="field" id="source_url_row">
       <span class="label">
         <label for="person_source_url">元の記録の URL:</label>
       </span>
@@ -442,7 +381,7 @@
           :class => "medium-text-input" %>
       </span>
     </div>
-    <div class="field" id="source_date_row" style="display: none">
+    <div class="field" id="source_date_row">
       <span class="label">
         <label for="person_source_date">
           情報元の投稿日:
@@ -454,7 +393,7 @@
           :class => "medium-text-input" %>
       </span>
     </div>
-    <div class="field" id="source_name_row" style="display: none">
+    <div class="field" id="source_name_row">
       <span class="label">
         <label for="person_source_name">
           情報元のサイト名:
