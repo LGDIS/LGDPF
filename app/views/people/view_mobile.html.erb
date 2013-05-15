@@ -37,13 +37,8 @@
       @person_photo_mobile = @person.photo_url_url(:mobile_large)
     end 
   end 
-  @person_photo_mobile_tag = image_tag(@person_photo_mobile, :class => "photo", :style => "width: 100%; height: auto;")
 -%>
-                    <% if @person.source_url.present? %>
-                      <%= link_to @person_photo_mobile_tag, @person.source_url, :target => ["_blank"]  %>
-                    <% else %>
-                      <%= @person_photo_mobile_tag %>
-                    <% end %>
+                      <%= link_to '写真', @person_photo_mobile %>
                     </span>
                   </div>
                   <div class="end-multi-columns"></div>

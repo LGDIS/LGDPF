@@ -37,80 +37,58 @@ describe "people/view_mobile.html.erb" do
 
   context "with person(photo_url = nil)" do
     let(:mock_photo_url) { nil }
-    it { should_not have_tag('img', class:'photo') }
+    it { should_not have_tag(:a, text:'写真') }
   end
 
 
   context "with person(photo_url != nil)" do
-    it { should have_tag('img', class:'photo') }
+    it { should have_tag(:a, text:'写真') }
     context "with request that respond to mobile.display" do
       context "and mobile.display.width = 120" do
         let(:mock_request_mobile_display) { 120 }
-        it { should have_tag('img', with: { src:mock_person.photo_url_url(:mobile_small),
-                                            style:"width: 100%; height: auto;",
-                                            class:'photo'} ) }
+        it { should have_tag(:a, with: { href:mock_person.photo_url_url(:mobile_small) }) }
       end
       context "and mobile.display.width = 174" do
         let(:mock_request_mobile_display) { 174 }
-        it { should have_tag('img', with: { src:mock_person.photo_url_url(:mobile_small),
-                                            style:"width: 100%; height: auto;",
-                                            class:'photo'} ) }
+        it { should have_tag(:a, with: { href:mock_person.photo_url_url(:mobile_small) }) }
       end
       context "and mobile.display.width = 175" do
         let(:mock_request_mobile_display) { 175 }
-        it { should have_tag('img', with: { src:mock_person.photo_url_url(:mobile_medium),
-                                            style:"width: 100%; height: auto;",
-                                            class:'photo'} ) }
+        it { should have_tag(:a, with: { href:mock_person.photo_url_url(:mobile_medium) }) }
       end
       context "and mobile.display.width = 249" do
         let(:mock_request_mobile_display) { 249 }
-        it { should have_tag('img', with: { src:mock_person.photo_url_url(:mobile_medium),
-                                            style:"width: 100%; height: auto;",
-                                            class:'photo'} ) }
+        it { should have_tag(:a, with: { href:mock_person.photo_url_url(:mobile_medium) }) }
       end
       context "and mobile.display.width = 250" do
         let(:mock_request_mobile_display) { 250 }
-        it { should have_tag('img', with: { src:mock_person.photo_url_url(:mobile_large),
-                                            style:"width: 100%; height: auto;",
-                                            class:'photo'} ) }
+        it { should have_tag(:a, with: { href:mock_person.photo_url_url(:mobile_large) }) }
       end
       context "and mobile.display.width = 499" do
         let(:mock_request_mobile_display) { 499 }
-        it { should have_tag('img', with: { src:mock_person.photo_url_url(:mobile_large),
-                                            style:"width: 100%; height: auto;",
-                                            class:'photo'} ) }
+        it { should have_tag(:a, with: { href:mock_person.photo_url_url(:mobile_large) }) }
       end
       context "and mobile.display.width = 500" do
         let(:mock_request_mobile_display) { 500 }
-        it { should have_tag('img', with: { src:mock_person.photo_url_url(:mobile_medium),
-                                            style:"width: 100%; height: auto;",
-                                            class:'photo'} ) }
+        it { should have_tag(:a, with: { href:mock_person.photo_url_url(:mobile_medium) }) }
       end
       context "and mobile.display.width = 1000" do
         let(:mock_request_mobile_display) { 1000 }
-        it { should have_tag('img', with: { src:mock_person.photo_url_url(:mobile_medium),
-                                            style:"width: 100%; height: auto;",
-                                            class:'photo'} ) }
+        it { should have_tag(:a, with: { href:mock_person.photo_url_url(:mobile_medium) }) }
       end
       context "and mobile.display.width = nil" do
         let(:mock_request_mobile_display) { nil }
-        it { should have_tag('img', with: { src:mock_person.photo_url_url(:mobile_medium),
-                                            style:"width: 100%; height: auto;",
-                                            class:'photo'} ) }
+        it { should have_tag(:a, with: { href:mock_person.photo_url_url(:mobile_medium) }) }
       end
 
       context "with request that only respond to mobile.display" do
         let(:mock_request_mobile) { mock(Object, display:false, default_charset:'utf-8') }
-        it { should have_tag('img', with: { src:mock_person.photo_url_url(:mobile_medium),
-                                            style:"width: 100%; height: auto;",
-                                            class:'photo'} ) }
+        it { should have_tag(:a, with: { href:mock_person.photo_url_url(:mobile_medium) }) }
       end
 
       context "with request that not respond to mobile.display" do
         let(:mock_request_mobile) { nil }
-        it { should have_tag('img', with: { src:mock_person.photo_url_url(:mobile_medium),
-                                            style:"width: 100%; height: auto;",
-                                            class:'photo'} ) }
+        it { should have_tag(:a, with: { href:mock_person.photo_url_url(:mobile_medium) }) }
       end
 
     end
