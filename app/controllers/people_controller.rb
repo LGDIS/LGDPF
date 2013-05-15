@@ -65,7 +65,7 @@ class PeopleController < ApplicationController
   # === Raise
   def search_results
     # 検索条件を保持
-    params[:name] = URI.unescape(params[:name])
+    params[:name] = URI.unescape(params[:name]) unless params[:name].blank?
     @query = params[:name]
     @query_family = ""
     @query_given  = ""
