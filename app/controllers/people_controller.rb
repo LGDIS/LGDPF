@@ -71,7 +71,7 @@ class PeopleController < ApplicationController
     @action = action_name
     if params[:role]
       if params[:name].present?
-        @person = Person.find_for_seek(params)
+        @person = Kaminari.paginate_array(Person.find_for_seek(params)).page(params[:page]).per(10)
       else
         flash.now[:error] = I18n.t("activerecord.errors.messages.seek_blank")
       end
@@ -583,7 +583,7 @@ class PeopleController < ApplicationController
     @action = action_name
     # 安否情報を検索
     @person_id = params[:person_record_id]
-    @notes = Note.find_all_by_person_record_id(params[:person_record_id])
+    @notes = Kaminari.paginate_array(Note.find_all_by_person_record_id(params[:person_record_id])).page(params[:page]).per(10)
   end
 
   # 安否情報詳細画面画面

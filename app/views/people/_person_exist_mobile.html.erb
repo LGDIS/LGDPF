@@ -13,8 +13,10 @@
 <br />
 <hr />
 <div class='searchResults'>
+  <%- params[:name] = reencode_for_mobile(params[:name]) unless params[:name].blank? %>
+  <%= paginate @person, window: 3 %>
   <% @person.each do |person| %>
-    <a class="result-link" href="<%= URI.encode(people_view_path(person) + '?family_name=' + @query_family + '&given_name=' + @query_given + '&name=' + @query + '&role=' + @action) %>">
+    <a class="result-link" href="<%= URI.encode(people_view_path(person) + '?family_name=' + @query_family + '&given_name=' + @query_given + '&name=' + reencode_for_mobile(@query) + '&role=' + @action) %>">
       <%= create_result_data_title(person) %><br />
       <%= create_address(person) %><br />
     </a>

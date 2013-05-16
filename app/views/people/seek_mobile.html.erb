@@ -8,7 +8,7 @@
         <div class="">その人の名字か名前、または名字・名前の一部を入力してください。</div>
         <%= text_field_tag :name, params[:name],
           :class => "long-text-input", :size => '40' %>
-        <%= submit_tag "この人を探す" %>
+        <%= submit_tag "この人を探す", :name => nil %>
       </div>
     </div>
   <% end %>
