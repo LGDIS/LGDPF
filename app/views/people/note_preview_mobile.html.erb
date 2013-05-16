@@ -52,9 +52,25 @@
         </div>
         <div class="end-multi-columns"></div>
       </div>
+<%- if @note.photo_url? -%>
+<%-
+  @note_photo_mobile = @note.photo_url_url(:mobile_medium)
+  if request.mobile.display && request.mobile.display.width
+    if request.mobile.display.width < 175
+      @note_photo_mobile = @note.photo_url_url(:mobile_small)
+    elsif request.mobile.display.width < 250
+      @note_photo_mobile = @note.photo_url_url(:mobile_medium)
+    elsif request.mobile.display.width < 500
+      @note_photo_mobile = @note.photo_url_url(:mobile_large)
+    end
+  end
+-%>
+                      <%= link_to '写真', @note_photo_mobile %>
+<%- end %>
       <hr />
 
       <%= link_to "<< この人に関するメモに戻る ",
+        :id => params[:id],
         :action => :note_list,
         :person_record_id => @person_id,
         :family_name => @query_family,
