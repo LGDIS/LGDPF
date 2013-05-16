@@ -3,6 +3,9 @@
   <h2>メモはまだありません</h2>
 <% else %>
   <h2>この人に関するメモ</h2>
+
+<%- params[:name] = reencode_for_mobile(params[:name]) unless params[:name].blank? %>
+<%= paginate @notes, window: 3 %>
 <% @notes.each do |note| %>
   <div class="view note">
     <div class="source">

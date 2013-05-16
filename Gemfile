@@ -70,6 +70,8 @@ gem 'devise_ldap_authenticatable'
 # hide and restore records without actually deleting them.
 gem 'acts_as_paranoid'
 
+gem 'kaminari'
+
 group :test do
   # Rspec-2 meta-gem that depends on the other components.
   gem 'rspec'
