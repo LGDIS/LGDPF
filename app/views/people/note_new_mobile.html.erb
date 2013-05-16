@@ -2,7 +2,7 @@
 
 <div class="container">
   <div class="content" role="main">
-    <%= form_tag({:action => :update_note_preview, :id => @person, :family_name => @query_famiry, :given_name => @query_given, :name => @query, :role => @action}) do %>
+    <%= form_tag({:action => :update_note_preview, :id => @person, :family_name => @query_famiry, :given_name => @query_given, :name => reencode_for_mobile(@query), :role => @action}) do %>
       <div class="view">
 
       <div class="column right">
