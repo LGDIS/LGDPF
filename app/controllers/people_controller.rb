@@ -21,7 +21,7 @@ class PeopleController < ApplicationController
   def layout_selector
     case params[:action]
     when "index", "new", "person_create", "complete", "view", "seek", "search_results",
-         "note_list", "note_new", "update_note_preview", "update_note"
+         "note_list", "note_new", "update_note_preview", "update_note", "note_preview"
       request.mobile? ? 'mobile' : 'application'
     else
       'application'
