@@ -78,3 +78,16 @@ div.terms_of_service textarea.terms_message{
 .footer.right{
   text-align: right;
 }
+
+.searchResults .resultItem {
+  padding: 5px;
+  cursor: pointer;
+}
+
+div.searchResults a.result-link {
+  padding: 0px;
+}
+
+.resultItem:hover {
+  background: #cdf;
+}
