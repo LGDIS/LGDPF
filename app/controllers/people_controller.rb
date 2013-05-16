@@ -8,6 +8,7 @@ class EmailBlankError < StandardError; end
 
 class PeopleController < ApplicationController
 
+  include PersonHelper
   include Jpmobile::ViewSelector # モバイル時のView自動振り分け
   layout :layout_selector
 
@@ -708,7 +709,7 @@ class PeopleController < ApplicationController
           session[:action] = action_name
           subscribe_email_note
         else
-          redirect_to :action => :view, :id => @person
+          redirect_to action: :view, id: @person, name: reencode_for_mobile(params[:name]), role: params[:role]
         end
       end
     end
