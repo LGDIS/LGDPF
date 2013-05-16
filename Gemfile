@@ -59,6 +59,7 @@ gem 'dalli'
 
 # jpmobile is Rails plugin for Japanese mobile-phones.
 gem 'jpmobile'
+gem 'jpmobile-terminfo'
 
 # Devise is Flexible authentication solution for Rails with Warden.
 gem 'devise'
@@ -70,9 +71,13 @@ gem 'devise_ldap_authenticatable'
 # hide and restore records without actually deleting them.
 gem 'acts_as_paranoid'
 
+gem 'kaminari'
+
 group :test do
   # Rspec-2 meta-gem that depends on the other components.
   gem 'rspec'
+  gem 'rspec-html-matchers'
+  gem 'mime-types'
 
   # factory_girl is a fixtures replacement with a straightforward
   # definition syntax, support for multiple build strategies (saved

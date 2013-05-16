@@ -8,6 +8,7 @@ class EmailBlankError < StandardError; end
 
 class PeopleController < ApplicationController
 
+  include PersonHelper
   include Jpmobile::ViewSelector # モバイル時のView自動振り分け
   layout :layout_selector
 
@@ -21,7 +22,7 @@ class PeopleController < ApplicationController
   def layout_selector
     case params[:action]
     when "index", "new", "person_create", "complete", "view", "seek", "search_results",
-         "note_list", "note_new", "update_note_preview", "update_note"
+         "note_list", "note_new", "update_note_preview", "update_note", "note_preview"
       request.mobile? ? 'mobile' : 'application'
     else
       'application'
@@ -71,7 +72,7 @@ class PeopleController < ApplicationController
     @action = action_name
     if params[:role]
       if params[:name].present?
-        @person = Person.find_for_seek(params)
+        @person = Kaminari.paginate_array(Person.find_for_seek(params)).page(params[:page]).per(10)
       else
         flash.now[:error] = I18n.t("activerecord.errors.messages.seek_blank")
       end
@@ -516,7 +517,7 @@ class PeopleController < ApplicationController
     session[:action] = action_name
 
     # 検索画面に戻る用
-    @action = params[:role].present? ? params[:role] : false
+    @action = params[:role].present? ? params[:role] : nil
     @query = params[:name]
     @query_family = params[:family_name]
     @query_given  = params[:given_name]
@@ -548,7 +549,7 @@ class PeopleController < ApplicationController
     session[:action] = action_name
 
     # 検索画面に戻る用
-    @action = params[:role].present? ? params[:role] : false
+    @action = params[:role].present? ? params[:role] : nil
     @query = params[:name]
     @query_family = params[:family_name]
     @query_given  = params[:given_name]
@@ -583,7 +584,7 @@ class PeopleController < ApplicationController
     @action = action_name
     # 安否情報を検索
     @person_id = params[:person_record_id]
-    @notes = Note.find_all_by_person_record_id(params[:person_record_id])
+    @notes = Kaminari.paginate_array(Note.find_all_by_person_record_id(params[:person_record_id])).page(params[:page]).per(10)
   end
 
   # 安否情報詳細画面画面
@@ -708,7 +709,8 @@ class PeopleController < ApplicationController
           session[:action] = action_name
           subscribe_email_note
         else
-          redirect_to :action => :view, :id => @person
+          name = params[:name].blank? ? nil : reencode_for_mobile(params[:name])
+          redirect_to action: :view, id: @person, name: name, role: params[:role]
         end
       end
     end
