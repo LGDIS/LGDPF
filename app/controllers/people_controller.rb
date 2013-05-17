@@ -523,7 +523,7 @@ class PeopleController < ApplicationController
     @query_given  = params[:given_name]
 
     @dup_flag = Person.check_dup(params[:id])  # 重複の有無
-    @dup_people = Person.duplication(params[:id]) # personと重複するperson
+    @dup_people = Person.with_deleted.duplication(params[:id]) # personと重複するperson
     @subscribe = false
     # 重複メモを表示するか
     if params[:duplication].present?
