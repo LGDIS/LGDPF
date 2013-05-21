@@ -12,9 +12,15 @@ Lgdpf::Application.routes.draw do
   match "person"                            => "people#create",             :via => :post
   match "person/create"                     => "people#person_create",      :via => :post
   match "people/view/:id"                   => "people#view",               :via => :get, :as => "people_view"
+  match "people/note_new/:id"               => "people#note_new",           :via => :get, :as => "note_new"
+  match "people/note_list/:id"              => "people#note_list",          :via => :get, :as => "note_list"
+  match "people/note_preview/:id"           => "people#note_preview",       :via => :get, :as => "people_note_preview"
   match "people/update/:id/preview"         => "people#update_preview",     :via => :get
   match "people/update/:id/preview"         => "people#update_preview",     :via => :post
+  match "people/update/:id/note_preview"    => "people#update_note_preview", :via => :get
+  match "people/update/:id/note_preview"    => "people#update_note_preview", :via => :post
   match "people/update/:id"                 => "people#update",             :via => :post
+  match "people/update_note/:id"            => "people#update_note",        :via => :post
   match "people/create"                     => "people#create",             :via => :get
   match "people/provide"                    => "people#provide",            :via => :get
   match "people/provide"                    => "people#provide",            :via => :post

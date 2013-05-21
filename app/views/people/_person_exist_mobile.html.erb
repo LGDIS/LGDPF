@@ -11,19 +11,16 @@
 情報を表示するには、下に表示されている名前を選択してください。
 
 <br />
-
+<hr />
 <div class='searchResults'>
+  <%- params[:name] = reencode_for_mobile(params[:name]) unless params[:name].blank? %>
+  <%= paginate @person, window: 3 %>
   <% @person.each do |person| %>
-    <a class="result-link" href="<%= URI.encode(people_view_path(person) + '?family_name=' + @query_family + '&given_name=' + @query_given + '&name=' + @query + '&role=' + @action) %>">
-      <div class="resultItem">
-        <span class='resultData'>
-          <%= check_box_tag "dup", person.id, false, {:style => "display:none; float:left;",
-            :class => 'duplicate-checkbox', :onclick => 'check_dup(this);'} %>
-          <span class='resultDataTitle'><%= create_result_data_title(person) %></span>
-          <div><%= create_address(person) %></div>
-        </span>
-      </div>
+    <a class="result-link" href="<%= URI.encode(people_view_path(person) + '?family_name=' + @query_family + '&given_name=' + @query_given + '&name=' + reencode_for_mobile(@query) + '&role=' + @action) %>">
+      <%= create_result_data_title(person) %><br />
+      <%= create_address(person) %><br />
     </a>
+    <hr />
   <% end %>
 </div>
 

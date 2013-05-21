@@ -197,12 +197,42 @@ ja:
       person:
         given_name: 名
         family_name: 姓
+        alternate_names: よみがな
+        home_postal_code: 郵便番号
+        home_state: 都道府県
+        home_city: 市区町村
+        home_street: 町名
+        home_neighborhood: 近隣の場所
+        injury_condition: 災害等による負傷の内容
+        allergy_cause: アレルギーの詳細
+        pregnancy: 妊婦である
+        baby: 乳幼児である
+        upper_care_level_three: 要介護者である
+        elderly_alone: 一人暮らし高齢者（６５歳以上）である
+        elderly_couple: 高齢者世帯（夫婦共に６５歳以上）である
+        bedridden_elderly: 寝たきり高齢者である
+        elderly_dementia: 認知症高齢者である
+        rehabilitation_certificate: 療育手帳保持者である
+        physical_disability_certificate: 身体障害者手帳保持者である
+        refuge_status: 避難状況
+        shelter_name: 指定避難所等
+        refuge_reason: 避難理由
+        shelter_entry_date: 避難所入所年月日
+        shelter_leave_date: 避難所退所年月日
+        next_place: 避難所を退所した後どこへ行ったか
+        next_place_phone: 避難所を退所した後の電話番号
+        family_well: 家族も無事ですか？
         author_name: あなたの名前
         author_email: あなたのメールアドレス
         author_phone: あなたの電話番号
+        source_url: 元の記録の URL
+        source_date: 情報元の投稿日
+        source_name: 情報元のサイト名
         photo_url: アップロードした写真
+        sex: 性別
         age: 年齢
         date_of_birth: 生年月日
+        home_country: 出身国
         source_date: 情報元の投稿日
         shelter_entry_date: 入所年月日
         shelter_leave_date: 退所年月日
@@ -213,9 +243,13 @@ ja:
         author_phone: あなたの電話番号
         photo_url: アップロードした写真
         text: メッセージ
+        last_known_location: 最後に見かけた場所
+        email_of_found_person: 見つかった人のメールアドレス
+        phone_of_found_person: 見つかった人の電話番号
         author_made_contact: この人があなた本人である場合は、[この人と災害発生後にコンタクト取れましたか？] で [はい] を選択してください。
     errors:
       messages:
+        too_long: は%{count}文字以内で入力してください。
         blank: を入力してください。
         invalid: の入力形式が不正です。
         seek_blank: その人の名字か名前、または名字・名前の一部を入力してください。

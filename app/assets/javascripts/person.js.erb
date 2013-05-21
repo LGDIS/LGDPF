@@ -463,3 +463,27 @@ function toggleClickableMap(map_id) {
   }
 }
 
+function on_result_item_click(event, elem) {
+  if (event.button == 0) {  // left button
+    // Makes the whole result item div clickable.
+    try {
+      var pid = elem.getAttribute('data-url');
+      var status = elem.getAttribute('data-status');
+      var match = pid.match(/\d(?=\?)/);
+      if (match) { pid = decodeURIComponent(match[1]); }
+    } catch(err) {
+      if (window['console']) { console.log(err); }
+    }
+      location.href = elem.getAttribute("data-url");
+  }
+}
+
+function on_dup_click(event, elem) {
+  // Stops event propagation to suppress firing onclick of div.resultItem.
+  if (event.stopPropagation) {
+    event.stopPropagation();
+  } else {  // IE
+    event.cancelBubble = true;
+  }
+  check_dup(elem);
+}

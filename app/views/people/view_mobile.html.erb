@@ -26,11 +26,19 @@
                 <div class="photo section">
                   <div class="field">
                     <span>
-                    <% if @person.source_url.present? %>
-                      <%= link_to image_tag(@person.photo_url, :class => "photo", :style => "width: 50px; height: auto;"), @person.source_url, :target => ["_blank"]  %>
-                    <% else %>
-                      <%= image_tag(@person.photo_url, :class => "photo", :style => "width: 50px; height: auto;") %>
-                    <% end %>
+<%-
+  @person_photo_mobile = @person.photo_url_url(:mobile_medium)
+  if request.mobile.display && request.mobile.display.width
+    if request.mobile.display.width < 175
+      @person_photo_mobile = @person.photo_url_url(:mobile_small)
+    elsif request.mobile.display.width < 250
+      @person_photo_mobile = @person.photo_url_url(:mobile_medium)
+    elsif request.mobile.display.width < 500
+      @person_photo_mobile = @person.photo_url_url(:mobile_large)
+    end 
+  end 
+-%>
+                      <%= link_to '写真', @person_photo_mobile %>
                     </span>
                   </div>
                   <div class="end-multi-columns"></div>
@@ -207,13 +215,34 @@
 
           </div>
           <hr />
+
           <% if @action.present? %>
-            <div><%= link_to "<< 結果一覧に戻る ",
-                :action => @action,
+          <div><%= link_to ">> 安否情報一覧",
+              :action => :note_list,
+              :person_record_id => @person.id,
+              :name => reencode_for_mobile(@query),
+              :role => @action%></div>
+          <% else %>
+            <div><%= link_to ">> 安否情報一覧 ", note_list_path(@person) %></div>
+          <% end %>
+          <% if @action.present? %>
+            <div><%= link_to ">> 安否情報登録 ",
+                :action => :note_new,
+                :id => @person,
                 :family_name => @query_family,
                 :given_name => @query_given,
-                :name => @query,
-                :role => @action %></div>
+                :name => reencode_for_mobile(@query),
+                :role => @action%></div>
+          <% else %>
+            <div><%= link_to ">> 安否情報登録 ", note_new_path(@person) %></div>
+          <% end %>
+          <% if @action.present? %>
+            <div><%= link_to "<< 結果一覧に戻る ",
+                :action => :search_results,
+                :family_name => @query_family,
+                :given_name => @query_given,
+                :name => reencode_for_mobile(@query),
+                :role => @action%></div>
           <% end %>
           <div><%= link_to "<< 最初のページに戻る ", :action => :index %></div>
           

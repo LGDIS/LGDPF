@@ -1,0 +1,53 @@
+<hr />
+<% if @notes.blank? %>
+  <h2>メモはまだありません</h2>
+<% else %>
+  <h2>この人に関するメモ</h2>
+
+<%- params[:name] = reencode_for_mobile(params[:name]) unless params[:name].blank? %>
+<%= paginate @notes, window: 3 %>
+<% @notes.each do |note| %>
+  <div class="view note">
+    <div class="source">
+      投稿者:<span class="author"><a href="<%= URI.encode(people_note_preview_path(note) + "?name=" + reencode_for_mobile(@query)) %>"><%= note.author_name %></a></span>
+      日付:<span class="date"><%= note.entry_date.strftime("%Y/%m/%d") %></span>
+      時刻:<span class="time"><%= note.entry_date.strftime("%H:%M:%S") %></span>
+      <div class="contents" id="769-contents">
+        <span name="note_text">
+        <span><%= note.text %></span>
+        </span>
+        <div class="status">
+          <span class="label">状況:</span>
+          <span class="field believed_missing">
+            <% if note.status    == Note::STATUS_UNSPECIFIED %>
+            指定なし
+            <% elsif note.status == Note::STATUS_INFORMATION_SOUGHT %>
+            情報を探している
+            <% elsif note.status == Note::STATUS_IS_NOTE_AUTHOR %>
+            私が本人である
+            <% elsif note.status == Note::STATUS_BELIEVED_ALIVE %>
+            この人が生きているという情報を入手した
+            <% elsif note.status == Note::STATUS_BELIEVED_MISSING %>
+            この人を行方不明と判断した理由がある
+            <% elsif note.status == Note::STATUS_BELIEVED_DEAD %>
+            この人物が死亡したという情報を入手した
+            <% end %>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr />
+<% end %>
+<% end %>
+
+<% if @query.present? %>
+  <%= link_to "<< 対象者詳細に戻る ",
+    :action => :view,
+    :id => @person_id,
+    :family_name => @query_family,
+    :given_name => @query_given,
+    :name => reencode_for_mobile(@query),
+    :role => @action%><br/>
+<% end %>
+<%= link_to "<< 最初のページに戻る ", :action => :index %><br />
