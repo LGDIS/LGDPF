@@ -127,7 +127,7 @@ form {
 
 input {
   font-family: arial, sans-serif;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .mandatory {
@@ -215,6 +215,10 @@ input {
 
 .fields-table .medium-text-input {
   width: 140px;
+}
+
+.fields-table .medium-text-input-photo {
+  width: 220px;
 }
 
 .fields-table .short-text-input {
@@ -517,7 +521,7 @@ label.option {
   display: block;
   float: left;
   text-align: right;
-  width: 70px;
+  width: 90px;
 }
 
 .create .fields-table .photo .value {
