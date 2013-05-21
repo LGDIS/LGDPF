@@ -73,6 +73,7 @@ class Person < ActiveRecord::Base
   validates :home_state,                      :length => {:maximum => 500}
   validates :home_city,                       :length => {:maximum => 500}
   validates :home_street,                     :length => {:maximum => 500}
+  validates :home_neighborhood,               :length => {:maximum => 500}
   validates :shelter_name,                    :length => {:maximum => 20}
   validates :refuge_status,                   :length => {:maximum => 1}
   validates :next_place,                      :length => {:maximum => 100}
