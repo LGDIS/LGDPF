@@ -30,10 +30,8 @@
 
 
 
-   <%#= form_tag({:action => "new"}, {:method => :post ,:name=> "back_form" }) do %>
 
-
-<form action="/people/new/" method="post" name="back_form" >
+<form action="<%= people_new_path %>" method="post" name="back_form" >
       <% unless @from_seek %>
 	    <%= hidden_field_tag "family_name", @person.family_name %>
 	    <%= hidden_field_tag "given_name", @person.given_name %>
@@ -115,6 +113,4 @@
 <%= hidden_field_tag  "history_back" ,"true" %>
 
 
-
 </form>
-   <%# end %>
