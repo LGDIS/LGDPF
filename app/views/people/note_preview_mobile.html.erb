@@ -69,14 +69,19 @@
 <%- end %>
       <hr />
 
-      <%= link_to "<< この人に関するメモに戻る ",
-        :id => params[:id],
-        :action => :note_list,
-        :person_record_id => @person_id,
-        :family_name => @query_family,
-        :given_name => @query_given,
-        :name => reencode_for_mobile(@query),
-        :role => @action%><br />
+      <% if @query.present? %>
+        <%= link_to "<< この人に関するメモに戻る ",
+          :id => @person_id,
+          :action => :note_list,
+          :person_record_id => @person_id,
+          :family_name => @query_family,
+          :given_name => @query_given,
+          :name => reencode_for_mobile(@query),
+          :role => @action%>
+      <% else %>
+        <%= link_to "<< この人に関するメモに戻る ", note_list_path(@person_id) %>
+      <% end %>
+      <br />
       <%= link_to "<< 最初のページに戻る ", :action => :index %><br />
     </div>
   </div>

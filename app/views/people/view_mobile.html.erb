@@ -216,16 +216,16 @@
           </div>
           <hr />
 
-          <% if @action.present? %>
+          <% if @query.present? %>
           <div><%= link_to ">> 安否情報一覧",
               :action => :note_list,
-              :person_record_id => @person.id,
+              :id => @person,
               :name => reencode_for_mobile(@query),
               :role => @action%></div>
           <% else %>
             <div><%= link_to ">> 安否情報一覧 ", note_list_path(@person) %></div>
           <% end %>
-          <% if @action.present? %>
+          <% if @query.present? %>
             <div><%= link_to ">> 安否情報登録 ",
                 :action => :note_new,
                 :id => @person,
@@ -236,7 +236,7 @@
           <% else %>
             <div><%= link_to ">> 安否情報登録 ", note_new_path(@person) %></div>
           <% end %>
-          <% if @action.present? %>
+          <% if @query.present? %>
             <div><%= link_to "<< 結果一覧に戻る ",
                 :action => :search_results,
                 :family_name => @query_family,

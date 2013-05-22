@@ -9,7 +9,11 @@
 <% @notes.each do |note| %>
   <div class="view note">
     <div class="source">
+    <% if @query.present? %>
       投稿者:<span class="author"><a href="<%= URI.encode(people_note_preview_path(note) + "?name=" + reencode_for_mobile(@query)) %>"><%= note.author_name %></a></span>
+    <% else %>
+      投稿者:<span class="author"><a href="<%= URI.encode(people_note_preview_path(note)) %>"><%= note.author_name %></a></span>
+    <% end %>
       日付:<span class="date"><%= note.entry_date.strftime("%Y/%m/%d") %></span>
       時刻:<span class="time"><%= note.entry_date.strftime("%H:%M:%S") %></span>
       <div class="contents" id="769-contents">
@@ -48,6 +52,9 @@
     :family_name => @query_family,
     :given_name => @query_given,
     :name => reencode_for_mobile(@query),
-    :role => @action%><br/>
+    :role => @action%>
+<% else %>
+    <%= link_to "<< 対象者詳細に戻る ", people_view_path(@person) %>
 <% end %>
+<br/>
 <%= link_to "<< 最初のページに戻る ", :action => :index %><br />

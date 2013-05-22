@@ -244,37 +244,25 @@ class PeopleController < ApplicationController
   # === Return
   # === Raise
   def new
-
-
-
-#    @person = Person.new
-
-
     @params = params
 
-    if !params[:person].nil?
-        @person = Person.new(params[:person])
-        @note = Note.new(params[:note])
+    if params[:person].present?
+      @person = Person.new(params[:person])
+      @note = Note.new(params[:note])
     else
-        @person = Person.new
-        @note = Note.new
-        @person.family_name = params[:family_name]
-        @person.given_name = params[:given_name]
+      @person = Person.new
+      @note = Note.new
+      @person.family_name = params[:family_name]
+      @person.given_name = params[:given_name]
     end
 
-#    @note = Note.new
-
-    if !params[:kana].nil?
-        @kana = params[:kana]
+    if params[:kana].present?
+      @kana = params[:kana]
     else
-        @kana = {:family_name => "", :given_name => ""}
+      @kana = {:family_name => "", :given_name => ""}
     end
 
-    if params[:subscribe].nil?
-    @subscribe = false
-    else
-    @subscribe = params[:subscribe]
-    end
+    @subscribe = params[:subscribe].nil? ? false : params[:subscribe]
 
     @clone_clone_input = true
     @error_message =  I18n.t("activerecord.errors.messages.profile_invalid")
@@ -618,8 +606,8 @@ class PeopleController < ApplicationController
     @query_given  = ""
     @action = action_name
     # 安否情報を検索
-    @person_id = params[:person_record_id]
-    @notes = Kaminari.paginate_array(Note.find_all_by_person_record_id(params[:person_record_id])).page(params[:page]).per(10)
+    @person_id = params[:id]
+    @notes = Kaminari.paginate_array(Note.find_all_by_person_record_id(params[:id])).page(params[:page]).per(10)
   end
 
   # 安否情報詳細画面画面
@@ -704,6 +692,8 @@ class PeopleController < ApplicationController
 
     @note = Note.new(params[:note])
     @note.last_known_location  = params[:clickable_map][:location_field]
+    @note.person_record_id = @person.id
+    @note.photo_url        = session[:photo_note]
     # 入力値チェック
     @note.invalid?
 
@@ -726,9 +716,6 @@ class PeopleController < ApplicationController
     end
 
     Note.transaction do
-      @note = Note.new(params[:note])
-      @note.person_record_id = @person.id
-      @note.photo_url        = session[:photo_note]
       if @note.save!
         # 新着メールを送るアドレスを抽出
         to = Person.subscribe_email_address(@person, @note)

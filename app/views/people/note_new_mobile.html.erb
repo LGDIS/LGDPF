@@ -21,13 +21,15 @@
             </div>
           <% end %>
 
-          <% if @action.present? %>
+          <% if @query.present? %>
             <div><%= link_to "<< 対象者詳細に戻る ",
                 :action => :view,
                 :family_name => @query_family,
                 :given_name => @query_given,
                 :name => reencode_for_mobile(@query),
                 :role => @action %></div>
+          <% else %>
+            <%= link_to "<< 対象者詳細に戻る ", people_view_path(@person) %>
           <% end %>
           <div><%= link_to "<< 最初のページに戻る ", :action => :index %></div>
 
