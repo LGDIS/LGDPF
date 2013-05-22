@@ -244,12 +244,38 @@ class PeopleController < ApplicationController
   # === Return
   # === Raise
   def new
-    @person = Person.new
-    @person.family_name = params[:family_name]
-    @person.given_name = params[:given_name]
-    @note = Note.new
-    @kana = {:family_name => "", :given_name => ""}
+
+
+
+#    @person = Person.new
+
+
+    @params = params
+
+    if !params[:person].nil?
+        @person = Person.new(params[:person])
+        @note = Note.new(params[:note])
+    else
+        @person = Person.new
+        @note = Note.new
+        @person.family_name = params[:family_name]
+        @person.given_name = params[:given_name]
+    end
+
+#    @note = Note.new
+
+    if !params[:kana].nil?
+        @kana = params[:kana]
+    else
+        @kana = {:family_name => "", :given_name => ""}
+    end
+
+    if params[:subscribe].nil?
     @subscribe = false
+    else
+    @subscribe = params[:subscribe]
+    end
+
     @clone_clone_input = true
     @error_message =  I18n.t("activerecord.errors.messages.profile_invalid")
     # 遷移元確認フラグ
@@ -281,6 +307,7 @@ class PeopleController < ApplicationController
     @error_message = I18n.t("activerecord.errors.messages.profile_invalid")
 
     @person = Person.new(params[:person])
+    @params = params
 
     # 入力値をDBに格納できる形式に加工する
     # Person
@@ -444,11 +471,18 @@ class PeopleController < ApplicationController
   # === Raise
   def create
 
+
     # 遷移元確認フラグ
     if params[:note].blank?
       @from_seek = true
     end
-    @kana      = params[:kana]
+
+    @params = params
+
+    if params[:kana].present?
+      @kana = params[:kana]
+    end
+
     @clone_clone_input = params[:clone][:clone_input] == "no" ? true : false
     @subscribe = params[:subscribe] == "true" ? true : false
     @consent   = params[:consent]   == "true" ? true : false
@@ -456,6 +490,7 @@ class PeopleController < ApplicationController
     # Person, Noteの登録
     Person.transaction do
       # Personの登録
+
       @person = Person.new(params[:person])
       @person.photo_url = session[:photo_person]
 
@@ -487,7 +522,7 @@ class PeopleController < ApplicationController
         raise ConsentError
       end
     end
-   
+
     if @subscribe
       session[:person_id] = [@person.id]
       session[:note_id]   = [@note.try(:id)]
@@ -638,7 +673,7 @@ class PeopleController < ApplicationController
     else
       @notes = Note.no_duplication(@person.id)
     end
-    
+
     @note = Note.new(params[:note])
     @note.last_known_location  = params[:clickable_map][:location_field]
     # 入力値チェック
@@ -854,7 +889,7 @@ class PeopleController < ApplicationController
           Note.transaction do
             session[:note_id].each do |note_id|
               note = Note.find_by_id(note_id)
-             
+
               parent_person = Person.find_by_id(note.person_record_id)
               note.author_email = params[:note][:author_email]
               # 親Personに重複するアドレスがあるか
@@ -952,7 +987,7 @@ class PeopleController < ApplicationController
   def subscribe_email_note
     @person = Person.find(session[:person_id].first)  # ウォッチする避難者
     @note = Note.find_by_id(session[:note_id].first)
-    
+
     Note.transaction do
       session[:note_id].each do |note_id|
         note = Note.find_by_id(note_id)
@@ -969,17 +1004,17 @@ class PeopleController < ApplicationController
           ).size > 0
           note.email_flag = false
         end
-        
+
         note.save!
       end
     end
-    
+
     session[:note_id].each do |note_id|
       note = Note.find_by_id(note_id)
       parent_person = Person.find_by_id(note.person_record_id)
       LgdpfMailer.send_new_information(parent_person, note).deliver
     end
-    
+
     redirect_to :action => :complete,
       :id => @person,
       :complete => {:key => "subscribe_email"}
@@ -1243,5 +1278,5 @@ class PeopleController < ApplicationController
     return urls.join("\n")
   end
 
-  
+
 end

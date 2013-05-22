@@ -14,12 +14,107 @@
           <% end %>
 
           <%= submit_tag "はい", :name => "ok" %>
-          <input type="button" value="いいえ" onclick="history.go(-1);" />
+
         <% end %>
-      </div>
+
+        <input type="button" onclick="document.back_form.submit();" value="いいえ" >
+
+        </div>
       <br/><br/>
 
     </div>
   </div>
 </div>
 <p><%= link_to "<< 最初のページに戻る ", :action => :index %></p>
+
+
+
+
+   <%#= form_tag({:action => "new"}, {:method => :post ,:name=> "back_form" }) do %>
+
+
+<form action="/people/new/" method="post" name="back_form" >
+      <% unless @from_seek %>
+	    <%= hidden_field_tag "family_name", @person.family_name %>
+	    <%= hidden_field_tag "given_name", @person.given_name %>
+      <% end %>
+
+
+
+
+<%= hidden_field_tag  "person[family_name]" , @person.family_name %>
+<%= hidden_field_tag  "person[given_name]" , @person.given_name %>
+<%= hidden_field_tag  "person[sex]" , @person.sex %>
+<%= hidden_field_tag  "person[date_of_birth]" , @person.date_of_birth %>
+<%= hidden_field_tag  "person[age]" , @person.age %>
+<%= hidden_field_tag  "person[home_country]" , @person.home_country %>
+<%= hidden_field_tag  "person[injury_condition]" , @person.injury_condition %>
+<%= hidden_field_tag  "person[allergy_cause]" , @person.allergy_cause %>
+<%= hidden_field_tag  "person[pregnancy]" , @person.pregnancy %>
+<%= hidden_field_tag  "person[baby]" , @person.baby %>
+<%= hidden_field_tag  "person[upper_care_level_three]" , @person.upper_care_level_three %>
+<%= hidden_field_tag  "person[elderly_alone]" , @person.elderly_alone %>
+<%= hidden_field_tag  "person[elderly_couple]" , @person.elderly_couple %>
+<%= hidden_field_tag  "person[bedridden_elderly]" , @person.bedridden_elderly %>
+<%= hidden_field_tag  "person[elderly_dementia]" , @person.elderly_dementia %>
+<%= hidden_field_tag  "person[rehabilitation_certificate]" , @person.rehabilitation_certificate %>
+<%= hidden_field_tag  "person[physical_disability_certificate]" , @person.physical_disability_certificate %>
+<%= hidden_field_tag  "person[home_postal_code]" , @person.home_postal_code %>
+<%= hidden_field_tag  "person[home_state]" , @person.home_state %>
+<%= hidden_field_tag  "person[home_city]" , @person.home_city %>
+<%= hidden_field_tag  "person[home_street]" , @person.home_street %>
+<%= hidden_field_tag  "person[home_neighborhood]" , @person.home_neighborhood %>
+<%= hidden_field_tag  "person[refuge_status]" , @person.refuge_status %>
+<%= hidden_field_tag  "person[shelter_name]" , @person.shelter_name %>
+<%= hidden_field_tag  "person[refuge_reason]" , @person.refuge_reason %>
+<%= hidden_field_tag  "person[shelter_entry_date]" , @person.shelter_entry_date %>
+<%= hidden_field_tag  "person[shelter_leave_date]" , @person.shelter_leave_date %>
+<%= hidden_field_tag  "person[next_place]" , @person.next_place %>
+<%= hidden_field_tag  "person[next_place_phone]" , @person.next_place_phone %>
+<%= hidden_field_tag  "person[family_well]" , @person.family_well %>
+<%= hidden_field_tag  "person[description]" , @person.description %>
+<%= hidden_field_tag  "person[remote_photo_url_url]" , @person.remote_photo_url_url %>
+<%= hidden_field_tag  "person[expiry_date]" , @expiry_date %>
+
+<%= hidden_field_tag  "person[public_flag]" , @person.public_flag %>
+<%= hidden_field_tag  "person[author_name]" , @person.author_name %>
+<%= hidden_field_tag  "person[author_phone]" , @person.author_phone %>
+<%= hidden_field_tag  "person[author_email]" , @person.author_email %>
+<%= hidden_field_tag  "person[source_url]" , @person.source_url %>
+<%= hidden_field_tag  "person[source_date]" , @person.source_date %>
+<%= hidden_field_tag  "person[source_name]" , @person.source_name %>
+
+<%= hidden_field_tag  "kana[family_name]" ,@params[:kana][:family_name] %>
+<%= hidden_field_tag  "kana[given_name]" ,@params[:kana][:given_name] %>
+<%= hidden_field_tag  "person_photo_input" ,@params[:person_photo_input] %>
+<%= hidden_field_tag  "profile_url1" ,@params[:profile_url1] %>
+<%= hidden_field_tag  "profile_url2" ,@params[:profile_url2] %>
+<%= hidden_field_tag  "profile_url3" ,@params[:profile_url3] %>
+<%= hidden_field_tag  "clone[clone_input" ,@params[:clone][:clone_input] %>
+
+
+<% if !@params[:note].nil? %>
+
+<%= hidden_field_tag  "note[status]" ,@params[:note][:status] %>
+<%= hidden_field_tag  "note[text]" ,@params[:note][:text] %>
+<%= hidden_field_tag  "note[remote_photo_url_url]" ,@params[:note][:remote_photo_url_url] %>
+<%= hidden_field_tag  "note[author_made_contact]" ,@params[:note][:author_made_contact] %>
+<%= hidden_field_tag  "note[phone_of_found_person]" ,@params[:note][:phone_of_found_person] %>
+<%= hidden_field_tag  "note[email_of_found_person]" ,@params[:note][:email_of_found_person] %>
+
+<%= hidden_field_tag  "note[last_known_location]" ,@params[:clickable_map][:location_field]  %>
+<%= hidden_field_tag  "clickable_map[location_field]" ,@params[:clickable_map][:location_field] %>
+<%= hidden_field_tag  "clickable_map[note_photo_input]" ,@params[:clickable_map][:note_photo_input] %>
+
+<% end %>
+
+
+<%= hidden_field_tag  "subscribe" ,@params[:subscribe] %>
+
+
+<%= hidden_field_tag  "history_back" ,"true" %>
+
+
+
+</form>
+   <%# end %>
