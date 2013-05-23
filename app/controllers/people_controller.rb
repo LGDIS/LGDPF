@@ -685,6 +685,8 @@ class PeopleController < ApplicationController
   # === Raise
   def update_note_preview
     @person = Person.find_by_id(params[:id])
+    @query = params[:name]
+    @action = params[:role]
 
     @consent     = params[:consent]   == "true" ? true : false
     @subscribe   = params[:subscribe] == "true" ? true : false

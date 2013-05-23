@@ -95,6 +95,9 @@
       <div class="end-multi-columns"></div>
     </div>
 
+    <%= hidden_field_tag "name", @query %>
+    <%= hidden_field_tag "action", @action %>
+
   <div class="submit">
     <%= submit_tag "この記録を登録", :onclick =>"return validate_fields()", :name => "complete" %>
   </div>
