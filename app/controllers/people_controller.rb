@@ -536,7 +536,13 @@ class PeopleController < ApplicationController
   # === Raise
   def view
     @person = Person.find(params[:id])
-    @note = Note.new
+
+    if params[:note].present? then
+      @note = Note.new(params[:note])
+    else
+      @note = Note.new
+    end
+
     session[:action] = action_name
 
     # 検索画面に戻る用
@@ -547,7 +553,13 @@ class PeopleController < ApplicationController
 
     @dup_flag = Person.check_dup(params[:id])  # 重複の有無
     @dup_people = Person.with_deleted.duplication(params[:id]) # personと重複するperson
-    @subscribe = false
+
+    if params[:subscribe].present? and params[:subscribe] == "true" then
+      @subscribe = true
+    else
+      @subscribe = false
+    end
+
     # 重複メモを表示するか
     if params[:duplication].present?
       @notes = Note.where(:person_record_id => @person.id).order("entry_date ASC")

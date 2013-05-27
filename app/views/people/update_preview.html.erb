@@ -10,7 +10,7 @@
             <%= render :partial => "note_preview" %>
 
           <%= submit_tag "はい", :name => "ok" %>
-          <input type="button" value="いいえ" onclick="history.go(-1);" />
+          <input type="button" value="いいえ" onclick="javascript:document.back_form.submit();" />
         <% end %>
       </div>
       <br/><br/>
@@ -19,3 +19,27 @@
   </div>
 </div>
 <p><%= link_to "<< 最初のページに戻る ", :action => :index %></p>
+
+      <form action="<%= people_view_path %>" method="get" name="back_form" >
+        <%= hidden_field :note, :status %>
+        <%= hidden_field :note, :text %>
+        <%= hidden_field :note, :last_known_location %>
+
+        <% if @note.photo_url.present? %>
+            <%= hidden_field :note, :photo_url, :value => @note.photo_url %>
+        <% end %>
+
+        <%= hidden_field :note, :author_made_contact %>
+
+        <% if @note.author_made_contact == true %>
+            <%= hidden_field :note, :phone_of_found_person %>
+            <%= hidden_field :note, :email_of_found_person %>
+        <% end %>
+
+        <%= hidden_field :clone, :clone_input, :value => @clone_clone_input %>
+        <%= hidden_field :note, :author_name %>
+        <%= hidden_field :note, :author_phone %>
+        <%= hidden_field :note, :author_email %>
+        <%= hidden_field_tag :subscribe, @subscribe %>
+
+      </form>
