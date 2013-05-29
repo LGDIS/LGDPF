@@ -124,7 +124,7 @@ class PeopleController < ApplicationController
     @person3 = Person.find_by_id(params[:id3]) unless params[:id3].blank?
     @note = Note.new
     @subscribe = false
-    session[:action] = action_name
+    session[:action] = action_name # action_name = multiviews
   end
 
   # 重複安否情報登録のプレビュー画面
@@ -151,7 +151,6 @@ class PeopleController < ApplicationController
   rescue ActiveRecord::RecordInvalid
     render :action => "multiviews"
   end
-
 
   # 重複した避難者をまとめる
   # === Args
@@ -181,6 +180,7 @@ class PeopleController < ApplicationController
     end
 
     # 新着情報
+    # 重複したID
     session[:person_id] = dup_ids
 
     # [親id, [重複id1(,重複id2)]]を作成する
@@ -227,6 +227,7 @@ class PeopleController < ApplicationController
     else
       redirect_to :action => :view, :id => @person
     end
+
   rescue Net::SMTPFatalError
     flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
     render :action => :duplication_preview
@@ -648,9 +649,10 @@ class PeopleController < ApplicationController
       redirect_to :action => "extend_days", :id => @person
       return
     elsif params[:subscribe_email].present?
-      session[:person_id] = [@person.id]
-      session[:note_id] = []
-      session[:action] = "view"
+      # この方の新着情報をメールで受け取るから遷移
+      session[:person_id] = [@person.id] # person.id をセッションに登録する。
+      session[:note_id] = [] # noteは関係ないので、セッションに登録しない。
+      session[:action] = "view" # 詳細画面かどうかの判定のために仕様
       redirect_to :action => "subscribe_email"
       return
     elsif params[:delete].present?
@@ -811,7 +813,7 @@ class PeopleController < ApplicationController
         if @subscribe
           session[:person_id] = [@person.id]
           session[:note_id] = [@note.id]
-          session[:action] = action_name
+          session[:action] = action_name # action_name には、updateが入る。
           redirect_to :action => :subscribe_email
         else
           redirect_to :action => :view, :id => @person
@@ -826,7 +828,6 @@ class PeopleController < ApplicationController
   rescue ConsentError
     flash.now[:error] = I18n.t("activerecord.errors.messages.disagree")
     render :action => :update_preview
-
   end
 
   # 避難者情報保持期間延長画面
@@ -861,19 +862,30 @@ class PeopleController < ApplicationController
   # === Return
   # === Raise
   def subscribe_email
+
     @person = Person.find(session[:person_id].first)  # ウォッチする避難者
-    @note = Note.find_by_id(session[:note_id].first)
+    @note = Note.find_by_id(session[:note_id].first)  # Noteオブジェクト
 
     # アップデートを受け取るボタン押下
     if params[:success].present?
-      if verify_recaptcha(:model => @person)
-        if session[:action] == ("new" || "view") # personで新着受取チェック
+
+      if verify_recaptcha(:model => @person) # 画面認証成功判定
+
+        if session[:action] == "new" # personで新着受取チェック
+
+          # テキストボックスのメールアドレスが空の場合エラーを発生させる。
           if params[:person][:author_email].blank?
             raise EmailBlankError
           end
+
+          # E-mail の受取設定を許可にする。
           @person.email_flag = true
+
+          # テキストボックスのメールアドレスをpersonに登録する。
           @person.author_email = params[:person][:author_email]
+
           # author_emailに重複がある場合は受取フラグを消す
+          # ノートに登録されている同じメールアドレスを受け取り無効にする。
           if  Note.where(
               :person_record_id => @person.id,
               :author_email     => @person.author_email,
@@ -881,44 +893,94 @@ class PeopleController < ApplicationController
             ).size > 0
             @person.email_flag = false
           end
+
+          # personにデータを保存する。
           @person.save!
-        else  # noteで新着受取チェック
+
+          # メールの送信処理
+          LgdpfMailer.send_new_information(@person, nil, nil).deliver
+
+        elsif session[:action] == "view" # noteで新着受取チェック
+
+          # テキストボックスのメールアドレスが空の場合エラーを発生させる。
           if params[:note][:author_email].blank?
             raise EmailBlankError
           end
 
-          Note.transaction do
-            session[:note_id].each do |note_id|
-              note = Note.find_by_id(note_id)
+          # Subscriptionへ登録する。
+          @subscription = Subscription.new
+          @subscription.author_email = params[:note][:author_email]
+          @subscription.person_record_id = @person.id
 
-              parent_person = Person.find_by_id(note.person_record_id)
+          # Personと同じメールアドレスの場合は、再度Personで受け取れるようにする。
+          if @person.email_flag == false && @person.author_email == @subscription.author_email
+            @person.email_flag = true
+            @person.save!
+            LgdpfMailer.send_new_information(@person, nil, nil).deliver
+          # 他にemail_flagがtrueのものがない場合、登録
+          elsif (@person.email_flag == false || @subscription.author_email != @person.author_email) &&
+              Note.where(
+              :person_record_id => @person.id,
+              :author_email     => @subscription.author_email,
+              :email_flag       => true
+            ).size == 0 &&
+            Subscription.where(:person_record_id => @person.id, :author_email => @subscription.author_email).size == 0
+            @subscription.save!
+            # view専用のメールを呼び出す。
+            LgdpfMailer.send_new_information(@person, nil, @subscription).deliver
+          end
+
+        else  # noteで新着受取チェック
+
+          # テキストボックスのメールアドレスが空の場合エラーを発生させる。
+          if params[:note][:author_email].blank?
+            raise EmailBlankError
+          end
+
+          # ノートに複数データを登録する。
+          ActiveRecord::Base.transaction do
+            session[:note_id].each do |note_id|
+              note = Note.find_by_id(note_id) # session[:note_id]に登録されているNoteオブジェクトを取りだす。
+
+              parent_person = Person.find_by_id(note.person_record_id) # ノートが登録されているPersonオブジェクトを取りだす。
+
+              # テキストボックスのメールアドレスをノートに登録する。
               note.author_email = params[:note][:author_email]
+
+              note.email_flag = true
+             
+              # Personのアドレスと一致した場合は、Personのemail_flagをtrueにする。
+              if parent_person.email_flag == false && parent_person.author_email ==  note.author_email
+                parent_person.email_flag = true
+                parent_person.save!
+
               # 親Personに重複するアドレスがあるか
               # 紐付くNoteに重複するアドレスがあるか
-              note.email_flag = true
-              if parent_person.author_email ==  note.author_email ||
+              elsif parent_person.author_email ==  note.author_email ||
                   Note.where(
                   :person_record_id => parent_person.id,
                   :author_email => note.author_email,
                   :email_flag => true
-                ).size > 0
+                ).size > 0 ||
+                Subscription.where(:person_record_id => parent_person.id, :author_email => note.author_email).size > 0
                 note.email_flag = false
               end
 
+              # ノートにデータを保存する
               note.save!
+
             end
           end
-        end
 
-        if session[:action] == ("new" || "view")
-          LgdpfMailer.send_new_information(@person, nil).deliver
-        else
+          # noteに登録する
           session[:note_id].each do |note_id|
             note = Note.find_by_id(note_id)
             parent_person = Person.find_by_id(note.person_record_id)
-            LgdpfMailer.send_new_information(parent_person, note).deliver
+            LgdpfMailer.send_new_information(parent_person, note, nil).deliver
           end
         end
+
+        # 
         redirect_to :action => :complete,
           :id => @person,
           :complete => {:key => "subscribe_email"}
@@ -962,7 +1024,7 @@ class PeopleController < ApplicationController
     end
     @person.save!
 
-    LgdpfMailer.send_new_information(@person, nil).deliver
+    LgdpfMailer.send_new_information(@person, nil, nil).deliver
 
     redirect_to :action => :complete,
       :id => @person,
@@ -989,31 +1051,46 @@ class PeopleController < ApplicationController
     @person = Person.find(session[:person_id].first)  # ウォッチする避難者
     @note = Note.find_by_id(session[:note_id].first)
 
-    Note.transaction do
+    # ノートに複数データを登録する。
+    ActiveRecord::Base.transaction do
       session[:note_id].each do |note_id|
-        note = Note.find_by_id(note_id)
-        parent_person = Person.find_by_id(note.person_record_id)
+        note = Note.find_by_id(note_id) # session[:note_id]に登録されているNoteオブジェクトを取りだす。
+
+        parent_person = Person.find_by_id(note.person_record_id) # ノートが登録されているPersonオブジェクトを取りだす。
+
+        # テキストボックスのメールアドレスをノートに登録する。
         note.author_email = params[:note][:author_email]
+
+        note.email_flag = true
+
+        # Personのアドレスと一致した場合は、Personのemail_flagをtrueにする。
+        if parent_person.email_flag = false && parent_person.author_email ==  note.author_email
+          parent_person.email_flag = true
+          parent_person.save!
+
         # 親Personに重複するアドレスがあるか
         # 紐付くNoteに重複するアドレスがあるか
-        note.email_flag = true
-        if parent_person.author_email ==  note.author_email ||
+        elsif parent_person.author_email ==  note.author_email ||
           Note.where(
             :person_record_id => parent_person.id,
             :author_email => note.author_email,
             :email_flag => true
-          ).size > 0
+          ).size > 0 ||
+          Subscription.where(:person_record_id => parent_person.id, :author_email => note.author_email).size > 0
           note.email_flag = false
         end
 
+        # ノートにデータを保存する
         note.save!
+
       end
     end
 
+    # noteに登録する
     session[:note_id].each do |note_id|
       note = Note.find_by_id(note_id)
       parent_person = Person.find_by_id(note.person_record_id)
-      LgdpfMailer.send_new_information(parent_person, note).deliver
+      LgdpfMailer.send_new_information(parent_person, note, nil).deliver
     end
 
     redirect_to :action => :complete,
@@ -1041,6 +1118,10 @@ class PeopleController < ApplicationController
       @note = Note.find(params[:note_id])
       @note.email_flag = false
       @note.save!
+    elsif params[:subscription_id].present?
+      # subscriptionへの新着メールを停止する
+      @subscription = Subscription.find(params[:subscription_id])
+      @subscription.destroy
     else
       # personへの新着メールを停止する
       @person.email_flag = false

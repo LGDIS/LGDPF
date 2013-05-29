@@ -247,6 +247,8 @@ ja:
         email_of_found_person: 見つかった人のメールアドレス
         phone_of_found_person: 見つかった人の電話番号
         author_made_contact: この人があなた本人である場合は、[この人と災害発生後にコンタクト取れましたか？] で [はい] を選択してください。
+      subscription:
+        email: あなたのメールアドレス
     errors:
       messages:
         too_long: は%{count}文字以内で入力してください。

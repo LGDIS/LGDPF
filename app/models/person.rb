@@ -128,8 +128,8 @@ class Person < ActiveRecord::Base
     self.injury_flag = self.injury_condition.present? ? INJURY_FLAG_ON : INJURY_FLAG_OFF  # 負傷の有無
     self.allergy_flag = self.allergy_cause.present? ? ALLERGY_FLAG_ON : ALLERGY_FLAG_OFF    # アレルギーの有無
 
-    split_city = I18n.t("target_municipality").split(//n)[0..-2].join
-    split_municipality = I18n.t("target_municipality").split(//n).pop
+    split_city = I18n.t("target_municipality").split(//u)[0..-2].join
+    split_municipality = I18n.t("target_municipality").split(//u).pop
     regexp_city = /^(#{split_city})#{split_municipality}?$/
     if self.home_state.present? && self.home_city.present?    # 市内・市外区分
       if self.home_state =~ /^(宮城)県?$/ && self.home_city =~ regexp_city
@@ -220,7 +220,6 @@ class Person < ActiveRecord::Base
     return people
   end
 
-
   # 新着メールを受け取るメールアドレスを抽出
   # === Args
   # _person_ :: Person
@@ -230,17 +229,29 @@ class Person < ActiveRecord::Base
   # === Raise
   def self.subscribe_email_address(person, new_note)
     to = []
+
     # 送信可能なnoteを抽出する (重複無し、受取フラグ有)
+    # where(:person_record_id => person.id, :email_flag => true) -> この避難者の受取フラグがtrueのものを抽出
+    # where("author_email <> ?","") -> author_email が空でないものを抽出。
+    # select("DISTINCT author_email, id") -> メールアドレスが重複した行を除外する。
     notes = Note.where(:person_record_id => person.id, :email_flag => true).where("author_email <> ?","").select("DISTINCT author_email, id")
-    
+
+    subscriptions = Subscription.where(:person_record_id => person.id)
+
     # Personが紐付くNoteのemailと重複するか判定
     # 受取フラグ有のpersonに送信する
     if person.email_flag == true
       to << [person, new_note, person]
     end
+
     # 受取フラグ有のnoteに送信する
     notes.each do |note|
       to << [person, new_note, note]
+    end
+
+    # Subscriptions に送信する。
+    subscriptions.each do |subscription|
+      to << [person, new_note, subscription]
     end
 
     return to

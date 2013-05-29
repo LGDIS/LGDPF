@@ -6,11 +6,12 @@ describe LgdpfMailer do
     @person = FactoryGirl.create(:person, :author_email => "person@test.com", :email_flag => true)
     @note   = FactoryGirl.create(:note, :person_record_id => @person.id,
       :author_email => "note@test.com", :email_flag => true)
+    @subscription = FactoryGirl.create(:subscription, :author_email => "subscription@test.com", :person_record_id => @person.id)
   end
   describe '#send_new_information' do
     context 'Personの登録の場合' do
       it '新着情報の受け取りを開始したことを通知するメールが送信されること' do
-        mail = LgdpfMailer.send_new_information(@person, nil)
+        mail = LgdpfMailer.send_new_information(@person, nil, nil)
         mail.deliver
         mail.subject.should == "[パーソンファインダー]" + @person.full_name + "さんについての新着情報を受け取るように設定しました"
         mail.from[0].should == SETTINGS["mail"]["sender"]
@@ -21,11 +22,21 @@ describe LgdpfMailer do
 
     context 'Noteの登録の場合' do
       it '新着情報の受け取りを開始したことを通知するメールが送信されること' do
-        mail = LgdpfMailer.send_new_information(@person, @note)
+        mail = LgdpfMailer.send_new_information(@person, @note, nil)
         mail.deliver
         mail.subject.should == "[パーソンファインダー]" + @person.full_name + "さんについての新着情報を受け取るように設定しました"
         mail.from[0].should == SETTINGS["mail"]["sender"]
         mail.to[0].should == @note.author_email
+        ActionMailer::Base.deliveries.size.should == 1
+      end
+    end
+    context 'Subscriptionの登録の場合' do
+      it '新着情報の受け取りを開始したことを通知するメールが送信されること' do
+        mail = LgdpfMailer.send_new_information(@person, nil, @subscription)
+        mail.deliver
+        mail.subject.should == "[パーソンファインダー]" + @person.full_name + "さんについての新着情報を受け取るように設定しました"
+        mail.from[0].should == SETTINGS["mail"]["sender"]
+        mail.to[0].should == @subscription.author_email
         ActionMailer::Base.deliveries.size.should == 1
       end
     end
@@ -53,6 +64,17 @@ describe LgdpfMailer do
         mail.subject.should == "[パーソンファインダー]" + @person.full_name + "さんについての新着情報"
         mail.from[0].should == SETTINGS["mail"]["sender"]
         mail.to[0].should == @note.author_email
+        ActionMailer::Base.deliveries.size.should == 1
+      end
+    end
+
+    context 'Subscriptionに送信する場合' do
+      it '新着情報が送信されること' do
+        mail = LgdpfMailer.send_add_note([@person, @new_note, @subscription])
+        mail.deliver
+        mail.subject.should == "[パーソンファインダー]" + @person.full_name + "さんについての新着情報"
+        mail.from[0].should == SETTINGS["mail"]["sender"]
+        mail.to[0].should == @subscription.author_email
         ActionMailer::Base.deliveries.size.should == 1
       end
     end

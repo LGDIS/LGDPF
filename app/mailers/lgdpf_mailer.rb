@@ -1,31 +1,54 @@
 # -*- coding:utf-8 -*-
 class LgdpfMailer < Jpmobile::Mailer::Base
+
+  # メールのfrom名設定
   default from: SETTINGS["mail"]["sender"]
 
   # 新着情報を受け取るように設定したことを確認するメールを送信する
   # === Args
-  # _person_ :: 新着情報をウォッチする避難者
+  # _person_       :: 新着情報をウォッチする避難者
+  # _note_         :: 新着情報をウォッチするノート
+  # _subscription_ :: 新着情報をウォッチする購読情報
   # === Return
   # === Raise
-  def send_new_information(person, note)
+  def send_new_information(person, note, subscription)
+
     # ユニークキーの設定
     aal = ApiActionLog.create
+
     @person = person
+
+    # この情報元のURL作成
     @view_path = SETTINGS["mail"]["host"] + "/people/view/" + @person.id.to_s
-    @unsubscribe_email_path = SETTINGS["mail"]["host"] + "/person/unsubscribe_email?id=" + @person.id.to_s + "&token=" + aal.unique_key
-    subject = person.full_name + "さんについての新着情報を受け取るように設定しました"
-    if note.blank?
-      address = @person.author_email
-      email_flag = @person.email_flag
-    else
+
+    # 購読解除URLの作成
+    # 送信先の決定
+    if note.present? 
+      note_id = note.id
+      @unsubscribe_email_path = SETTINGS["mail"]["host"] + "/person/unsubscribe_email?id=" + @person.id.to_s +
+        "&note_id=" + note_id.to_s + "&token=" + aal.unique_key
       address = note.author_email
       email_flag = note.email_flag
+    elsif subscription.present?
+      subscription_id = subscription.id
+      @unsubscribe_email_path = SETTINGS["mail"]["host"] + "/person/unsubscribe_email?id=" + @person.id.to_s +
+        "&subscription_id=" + subscription_id.to_s + "&token=" + aal.unique_key
+      address = subscription.author_email
+      email_flag = true
+    else
+      @unsubscribe_email_path = SETTINGS["mail"]["host"] + "/person/unsubscribe_email?id=" + @person.id.to_s + "&token=" + aal.unique_key
+      address = @person.author_email
+      email_flag = @person.email_flag
     end
+
+    # 題名
+    subject = @person.full_name + "さんについての新着情報を受け取るように設定しました"
 
     # 受信フラグがtrueの場合にメールを送信する
     if email_flag
       mail(:to => address, :subject => subject)
     end
+
   end
 
   # 新着情報
@@ -37,21 +60,42 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   # === Return
   # === Raise
   def send_add_note(target)
+
+    # ユニークキーの設定
     aal = ApiActionLog.create
+
+    # Personオブジェクト
     @person = target[0]
+
+    # Noteオブジェクト
     @note = target[1]
+
+    # Person or Note or Subscription オブジェクト
     record_type = target[2]
+
     @note_const = Constant.get_const(Note.table_name)
+
+    # この情報元のURL作成
     @view_path = SETTINGS["mail"]["host"] + "/people/view/" + @person.id.to_s
+
     # Noteに送る場合
     if record_type.is_a? Note
       note_id = record_type.id
+      @unsubscribe_email_path = SETTINGS["mail"]["host"] + "/person/unsubscribe_email?id=" + @person.id.to_s +
+        "&note_id=" + note_id.to_s + "&token=" + aal.unique_key
+    elsif record_type.is_a? Subscription
+      subscription_id = record_type.id
+      @unsubscribe_email_path = SETTINGS["mail"]["host"] + "/person/unsubscribe_email?id=" + @person.id.to_s +
+        "&subscription_id=" + subscription_id.to_s + "&token=" + aal.unique_key
+    else
+      @unsubscribe_email_path = SETTINGS["mail"]["host"] + "/person/unsubscribe_email?id=" + @person.id.to_s + "&token=" + aal.unique_key
     end
-    @unsubscribe_email_path = SETTINGS["mail"]["host"] + "/person/unsubscribe_email?id=" + @person.id.to_s +
-      "&note_id=" + note_id.to_s + "&token=" + aal.unique_key
     address = record_type.author_email
+
+    # 題名
     subject = @person.full_name + "さんについての新着情報"
 
+    # メールを送信する
     mail(:to => address, :subject => subject)
   end
 
@@ -101,10 +145,8 @@ class LgdpfMailer < Jpmobile::Mailer::Base
 
     subject = "「" + person.full_name + "」さんに関するメモを無効にしますか? "
 
-    # 受信フラグがtrueの場合にメールを送信する
-    if @person.email_flag
-      mail(:to => @person.author_email, :subject => subject)
-    end
+    # 受取フラグに関係なく、メールを送信する。
+    mail(:to => @person.author_email, :subject => subject)
   end
 
   # 安否情報登録無効にしたことを確認するメールを送信する
@@ -117,10 +159,8 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     @view_path = SETTINGS["mail"]["host"] + "/people/view/" + @person.id.to_s
     subject = "「" + person.full_name + "」さんに関するメモが無効になりました "
 
-    # 受信フラグがtrueの場合にメールを送信する
-    if @person.email_flag
-      mail(:to => @person.author_email, :subject => subject)
-    end
+    # 受取フラグに関係なく、メールを送信する。
+    mail(:to => @person.author_email, :subject => subject)
   end
 
   # 安否情報登録有効申請
@@ -134,10 +174,8 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     @valid_path = SETTINGS["mail"]["host"] + "/person/note_valid?id=" + @person.id.to_s + "&token=" + aal.unique_key
     subject = "「" + person.full_name + "」さんに関するメモを有効にしますか? "
 
-    # 受信フラグがtrueの場合にメールを送信する
-    if @person.email_flag
-      mail(:to => @person.author_email, :subject => subject)
-    end
+    # 受取フラグに関係なく、メールを送信する。
+    mail(:to => @person.author_email, :subject => subject)
   end
 
   # 安否情報登録有効にしたことを確認するメールを送信する
@@ -150,10 +188,8 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     @view_path = SETTINGS["mail"]["host"] + "/people/view/" + @person.id.to_s
     subject = "「" + person.full_name + "」さんに関するメモが有効になりました "
 
-    # 受信フラグがtrueの場合にメールを送信する
-    if @person.email_flag
-      mail(:to => @person.author_email, :subject => subject)
-    end
+    # 受取フラグに関係なく、メールを送信する。
+    mail(:to => @person.author_email, :subject => subject)
   end
 
   # ActionMailer::Base#mailメソッド
