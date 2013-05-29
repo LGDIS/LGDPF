@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 development:
-  version: "v1.0.0.b"
+  version: "v1.0.0"
   # 動作種別(0=通常モード, 1=災害訓練モード, 2=通信試験モード)
   run_mode: 0
   # 画面のHeaderに表示するバナーの設定
@@ -28,7 +28,7 @@ development:
     host: localhost:3000
 
 test:
-  version: "v1.0.0.b"
+  version: "v1.0.0"
   # 動作種別(0=通常モード, 1=災害訓練モード, 2=通信試験モード)
   run_mode: 0
   # 画面のHeaderに表示するバナーの設定
@@ -56,7 +56,7 @@ test:
     host: localhost:3000
 
 production:
-  version: "v1.0.0.b"
+  version: "v1.0.0"
   # 動作種別(0=通常モード, 1=災害訓練モード, 2=通信試験モード)
   run_mode: 0
   # 画面のHeaderに表示するバナーの設定
