@@ -228,6 +228,9 @@ class PeopleController < ApplicationController
       redirect_to :action => :view, :id => @person
     end
 
+  rescue Net::SMTPAuthenticationError, Net::SMTPServerBusy
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_trouble")
+    render :action => :duplication_preview
   rescue Net::SMTPFatalError
     flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
     render :action => :duplication_preview
@@ -758,6 +761,9 @@ class PeopleController < ApplicationController
   rescue EmailBlankError
     flash.now[:error] = I18n.t("activerecord.errors.messages.email_blank")
     render :action => :note_new
+  rescue Net::SMTPAuthenticationError, Net::SMTPServerBusy
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_trouble")
+    render :action => :note_new
   rescue Net::SMTPFatalError
     flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
     render :action => :note_new
@@ -821,6 +827,9 @@ class PeopleController < ApplicationController
       end
     end
   rescue ActiveRecord::RecordInvalid
+    render :action => :update_preview
+  rescue Net::SMTPAuthenticationError, Net::SMTPServerBusy
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_trouble")
     render :action => :update_preview
   rescue Net::SMTPFatalError
     flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
@@ -979,8 +988,7 @@ class PeopleController < ApplicationController
             LgdpfMailer.send_new_information(parent_person, note, nil).deliver
           end
         end
-
-        # 
+ 
         redirect_to :action => :complete,
           :id => @person,
           :complete => {:key => "subscribe_email"}
@@ -991,6 +999,9 @@ class PeopleController < ApplicationController
     end
   rescue EmailBlankError
     flash.now[:error] = I18n.t("activerecord.errors.messages.email_blank")
+    render :action => :subscribe_email
+  rescue Net::SMTPAuthenticationError, Net::SMTPServerBusy
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_trouble")
     render :action => :subscribe_email
   rescue Net::SMTPFatalError
     flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
@@ -1030,6 +1041,9 @@ class PeopleController < ApplicationController
       :id => @person,
       :complete => {:key => "subscribe_email"}
 
+  rescue Net::SMTPAuthenticationError, Net::SMTPServerBusy
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_trouble")
+    render :action => :new
   rescue Net::SMTPFatalError
     flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
     render :action => :new
@@ -1097,6 +1111,9 @@ class PeopleController < ApplicationController
       :id => @person,
       :complete => {:key => "subscribe_email"}
 
+  rescue Net::SMTPAuthenticationError, Net::SMTPServerBusy
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_trouble")
+    render :action => :note_new
   rescue Net::SMTPFatalError
     flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
     render :action => :note_new
@@ -1149,6 +1166,9 @@ class PeopleController < ApplicationController
           :complete => {:key => "delete"}
       end
     end
+  rescue Net::SMTPAuthenticationError, Net::SMTPServerBusy
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_trouble")
+    render :action => :delete
   rescue Net::SMTPFatalError
     flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
     render :action => :delete
@@ -1176,6 +1196,9 @@ class PeopleController < ApplicationController
         redirect_to :action => :view, :id => @person
       end
     end
+  rescue Net::SMTPAuthenticationError, Net::SMTPServerBusy
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_trouble")
+    render :action => :restore
   rescue Net::SMTPFatalError
     flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
     render :action => :restore
@@ -1197,6 +1220,9 @@ class PeopleController < ApplicationController
           :complete => {:key => "note_invalid_apply"}
       end
     end
+  rescue Net::SMTPAuthenticationError, Net::SMTPServerBusy
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_trouble")
+    render :action => :note_invalid_apply
   rescue Net::SMTPFatalError
     flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
     render :action => :note_invalid_apply
@@ -1217,6 +1243,9 @@ class PeopleController < ApplicationController
         redirect_to :action => :view, :id => @person
       end
     end
+  rescue Net::SMTPAuthenticationError, Net::SMTPServerBusy
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_trouble")
+    render :action => :note_invalid
   rescue Net::SMTPFatalError
     flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
     render :action => :note_invalid
@@ -1238,6 +1267,9 @@ class PeopleController < ApplicationController
           :complete => {:key => "note_valid_apply"}
       end
     end
+  rescue Net::SMTPAuthenticationError, Net::SMTPServerBusy
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_trouble")
+    render :action => :note_valid_apply
   rescue Net::SMTPFatalError
     flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
     render :action => :note_valid_apply
@@ -1255,6 +1287,9 @@ class PeopleController < ApplicationController
       LgdpfMailer.send_note_valid(@person).deliver
       redirect_to :action => :view, :id => @person
     end
+  rescue Net::SMTPAuthenticationError, Net::SMTPServerBusy
+    flash.now[:error] = I18n.t("activerecord.errors.messages.email_trouble")
+    render :action => :note_valid
   rescue Net::SMTPFatalError
     flash.now[:error] = I18n.t("activerecord.errors.messages.email_invalid")
     render :action => :note_valid

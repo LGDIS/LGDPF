@@ -4,6 +4,12 @@ class LgdpfMailer < Jpmobile::Mailer::Base
   # メールのfrom名設定
   default from: SETTINGS["mail"]["sender"]
 
+  # 再送信試行回数
+  RESENDMAIL_COUNT = 10
+
+  # 再送信までの待ち時間（秒）
+  WAIT_TIME_RESENDING = 1
+
   # 新着情報を受け取るように設定したことを確認するメールを送信する
   # === Args
   # _person_       :: 新着情報をウォッチする避難者
@@ -46,7 +52,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
 
     # 受信フラグがtrueの場合にメールを送信する
     if email_flag
-      mail(:to => address, :subject => subject)
+      send_mail(address, subject)
     end
 
   end
@@ -96,7 +102,8 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     subject = @person.full_name + "さんについての新着情報"
 
     # メールを送信する
-    mail(:to => address, :subject => subject)
+    send_mail(address, subject)
+
   end
 
   # 避難者のレコードが削除されたことを通知するメールを送信する
@@ -111,10 +118,8 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     @restore_path = SETTINGS["mail"]["host"] + "/person/restore?id=" + @person.id.to_s + "&token=" + aal.unique_key
     subject = person.full_name + "さんの削除の通知"
 
-    # 受信フラグがtrueの場合にメールを送信する
-    if @person.email_flag
-      mail(:to => @person.author_email, :subject => subject)
-    end
+    # 受取フラグに関係なく、メールを送信する。
+    send_mail(@person.author_email, subject)
   end
 
   # 削除されたレコードが復元したことを通知するメールを送信する
@@ -127,10 +132,8 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     @view_path = SETTINGS["mail"]["host"] + "/people/view/" + @person.id.to_s
     subject = person.full_name + "さんの記録の復元の通知"
 
-    # 受信フラグがtrueの場合にメールを送信する
-    if @person.email_flag
-      mail(:to => @person.author_email, :subject => subject)
-    end
+    # 受取フラグに関係なく、メールを送信する。
+    send_mail(@person.author_email, subject)
   end
 
   # 安否情報登録無効申請
@@ -146,7 +149,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     subject = "「" + person.full_name + "」さんに関するメモを無効にしますか? "
 
     # 受取フラグに関係なく、メールを送信する。
-    mail(:to => @person.author_email, :subject => subject)
+    send_mail(@person.author_email, subject)
   end
 
   # 安否情報登録無効にしたことを確認するメールを送信する
@@ -160,7 +163,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     subject = "「" + person.full_name + "」さんに関するメモが無効になりました "
 
     # 受取フラグに関係なく、メールを送信する。
-    mail(:to => @person.author_email, :subject => subject)
+    send_mail(@person.author_email, subject)
   end
 
   # 安否情報登録有効申請
@@ -175,7 +178,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     subject = "「" + person.full_name + "」さんに関するメモを有効にしますか? "
 
     # 受取フラグに関係なく、メールを送信する。
-    mail(:to => @person.author_email, :subject => subject)
+    send_mail(@person.author_email, subject)
   end
 
   # 安否情報登録有効にしたことを確認するメールを送信する
@@ -189,7 +192,7 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     subject = "「" + person.full_name + "」さんに関するメモが有効になりました "
 
     # 受取フラグに関係なく、メールを送信する。
-    mail(:to => @person.author_email, :subject => subject)
+    send_mail(@person.author_email, subject)
   end
 
   # ActionMailer::Base#mailメソッド
@@ -205,4 +208,31 @@ class LgdpfMailer < Jpmobile::Mailer::Base
     end
     super
   end
+
+  private
+
+  # メールを送信する
+  # === Args
+  # _address_ :: 送信先メールアドレス
+  # _subject_ :: 題名
+  # === Return
+  # === Raise
+  def send_mail(address, subject)
+    retry_count = 0
+    begin
+      mail(:to => address, :subject => subject)
+    rescue Net::SMTPAuthenticationError, Net::SMTPServerBusy => e
+      sleep WAIT_TIME_RESENDING
+      retry_count += 1
+      Rails.logger.info("---------------------------")
+      Rails.logger.info(e.message)
+      Rails.logger.info("---------------------------")
+      if retry_count < RESENDMAIL_COUNT
+        retry
+      else
+        raise
+      end
+    end
+  end
+
 end

@@ -12,7 +12,6 @@
           <% if @person.notes_disabled %>
             <div class="mandatory">
               作成者がこの記録に関するメモを無効にしました。
-              <%= submit_tag "この記録へのメモの書き込みを許可する", :name => "note_valid_apply" %>
             </div>
           <% else %>
             <div class="create">
