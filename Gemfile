@@ -92,7 +92,7 @@ end
 platforms :mri_20 do
   # Iconv is a wrapper class for the UNIX 95 iconv() function family,
   # which translates string between various encoding systems.
-  gem "iconv"
+  gem 'iconv'
 end
 
 # Load Local Gemfile
