@@ -259,7 +259,7 @@
       </span>
       <span class="value">
         <%= text_field :person, :home_postal_code, :value => @person.home_postal_code,
-          :class => "short-text-input" %>
+          :class => "short-text-input", :maxlength => "7" %>
       </span>
     </div>
     <div class="field">
@@ -369,7 +369,7 @@
       </span>
       <span class="value">
         <%= text_field :person, :next_place_phone, :value => @person.next_place_phone,
-          :class => "medium-text-input" %>
+          :class => "medium-text-input", :maxlength => "11" %>
       </span>
     </div>
     <div class="field">
@@ -579,7 +579,7 @@
       </span>
       <span class="value">
         <%= text_field :person, :author_phone, :value => @person.author_phone,
-          :class => "medium-text-input" %>
+          :class => "medium-text-input", :maxlength => "11" %>
       </span>
     </div>
     <div class="field">

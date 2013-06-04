@@ -102,7 +102,7 @@
         <label for="note_phone_of_found_person"> 電話番号: </label>
       </span>
       <span class="value">
-        <%= text_field :note, :phone_of_found_person, :class => "medium-text-input" %>
+        <%= text_field :note, :phone_of_found_person, :class => "medium-text-input", :maxlength => "11" %>
       </span>
     </div>
     <div class="field">
@@ -142,7 +142,7 @@
         </span>
         <span class="value">
           <%= text_field :note, :author_phone, :value => @note.author_phone,
-            :class => "medium-text-input" %>
+            :class => "medium-text-input", :maxlength => "11" %>
         </span>
       </div>
       <div class="field">
