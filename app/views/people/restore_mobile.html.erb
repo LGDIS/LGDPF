@@ -1,0 +1,17 @@
+<%= error_messages_for(@person) %>
+<div class="container">
+  <div class="content" role="main">
+    <div>
+      <h2>この記録を復元してもよろしいですか？</h2>
+      <%= form_tag :action => :restore, :id => @person do %>
+        <br/>
+        <%= hidden_field :complete, :key, :value => "restore" %>
+        <%= submit_tag 'はい、この記録を復元します。' %>
+      <% end %>
+    </div>
+    <br/><br/>
+
+  </div>
+</div>
+
+<p><%= link_to "<< 最初のページに戻る ", :action => :index %></p>

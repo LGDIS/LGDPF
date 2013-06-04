@@ -11,6 +11,8 @@ class PeopleController < ApplicationController
   include PersonHelper
   include Jpmobile::ViewSelector # モバイル時のView自動振り分け
   layout :layout_selector
+  before_filter :people_exist, :only => ["view"] # Peopleの存在確認
+  before_filter :access_control # モバイルからのアクセス制御
 
   # レイアウトの選択処理
   # 各画面で使用するレイアウトを決定する
@@ -22,7 +24,7 @@ class PeopleController < ApplicationController
   def layout_selector
     case params[:action]
     when "index", "new", "person_create", "complete", "view", "seek", "search_results",
-         "note_list", "note_new", "update_note_preview", "update_note", "note_preview"
+         "note_list", "note_new", "update_note_preview", "note_preview"
       request.mobile? ? 'mobile' : 'application'
     else
       'application'
@@ -539,7 +541,6 @@ class PeopleController < ApplicationController
   # === Return
   # === Raise
   def view
-    @person = Person.find(params[:id])
 
     if params[:note].present? then
       @note = Note.new(params[:note])
@@ -626,7 +627,7 @@ class PeopleController < ApplicationController
     @notes = Kaminari.paginate_array(Note.find_all_by_person_record_id(params[:id])).page(params[:page]).per(10)
   end
 
-  # 安否情報詳細画面画面
+  # 安否情報詳細画面（モバイル）
   # === Args
   # _id_ :: 安否情報一覧で選択されたNote.id
   # === Return
@@ -1185,10 +1186,16 @@ class PeopleController < ApplicationController
     @person = Person.with_deleted.find(params[:id])
     if params[:complete].present?
       # POST
-      if verify_recaptcha(:model => @person)
+      if request.mobile?
         @person.recover
         LgdpfMailer.send_restore_notice(@person).deliver
         redirect_to :action => :view, :id => @person
+      else
+        if verify_recaptcha(:model => @person)
+          @person.recover
+          LgdpfMailer.send_restore_notice(@person).deliver
+          redirect_to :action => :view, :id => @person
+        end
       end
     else
       # GET
@@ -1395,5 +1402,39 @@ class PeopleController < ApplicationController
     return urls.join("\n")
   end
 
+  # PC,モバイルからのアクセスを制限する。
+  # === Args
+  # _action_ :: 画面識別子
+  # === Return
+  # === Raise
+  def access_control
+    if request.mobile?
+      case params[:action]
+      when "provide", "multiviews", "duplication_preview", "dup_merge", "new_preview",
+           "create", "update_preview", "update", "extend_days", "subscribe_email",
+           "delete", "note_invalid_apply",  "note_invalid", "note_valid_apply", "spam",
+           "spam_cancel", "personal_info"
+        render "errors/mobile_access"
+      end
+    else
+      case params[:action]
+      when "person_create", "search_results", "subscribe_email_person", "subscribe_email_note",
+           "note_list", "note_new", "update_note_preview", "note_preview"
+        render "errors/pc_access"
+      end
+    end
+  end
+
+  # Peopleの存在確認
+  # === Args
+  # _id_ :: Person.id
+  # === Return
+  # === Raise
+  def people_exist
+    @person = Person.find_by_id(params[:id])
+    if @person.blank?
+      render "errors/people_not_found"
+    end
+  end
 
 end
