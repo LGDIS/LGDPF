@@ -71,6 +71,8 @@ gem 'devise_ldap_authenticatable'
 # hide and restore records without actually deleting them.
 gem 'acts_as_paranoid'
 
+# A Scope & Engine based, clean, powerful, customizable and sophisticated
+# paginator for modern web app frameworks and ORMs.
 gem 'kaminari'
 
 group :test do
