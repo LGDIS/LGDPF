@@ -71,6 +71,8 @@ gem 'devise_ldap_authenticatable'
 # hide and restore records without actually deleting them.
 gem 'acts_as_paranoid'
 
+# A Scope & Engine based, clean, powerful, customizable and sophisticated
+# paginator for modern web app frameworks and ORMs.
 gem 'kaminari'
 
 group :test do
@@ -87,9 +89,11 @@ group :test do
   gem 'factory_girl_rails'
 end
 
-# Iconv is a wrapper class for the UNIX 95 iconv() function family,
-# which translates string between various encoding systems.
-gem "iconv"
+platforms :mri_20 do
+  # Iconv is a wrapper class for the UNIX 95 iconv() function family,
+  # which translates string between various encoding systems.
+  gem 'iconv'
+end
 
 # Load Local Gemfile
 local_gemfile = File.join(File.dirname(__FILE__), "Gemfile.local")

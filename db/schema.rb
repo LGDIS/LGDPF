@@ -11,13 +11,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130215072024) do
+ActiveRecord::Schema.define(:version => 20130521073112) do
 
 
 
   create_table "api_action_logs", :force => true do |t|
     t.string   "unique_key"
     t.datetime "entry_date"
+  end
+
+  create_table "cities", :force => true do |t|
+    t.string   "code"
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "constants", :force => true do |t|
@@ -111,13 +118,94 @@ ActiveRecord::Schema.define(:version => 20130215072024) do
     t.boolean  "link_flag",                                      :default => false
     t.boolean  "notes_disabled",                                 :default => false
     t.boolean  "email_flag",                                     :default => false
+    t.boolean  "export_flag",                                    :default => false
     t.datetime "deleted_at"
     t.datetime "created_at",                                                        :null => false
     t.datetime "updated_at",                                                        :null => false
   end
 
+  create_table "sessions", :force => true do |t|
+    t.string   "session_id", :null => false
+    t.text     "data"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
+  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
+  create_table "shelters", :force => true do |t|
+    t.string   "name"
+    t.string   "name_kana"
+    t.string   "area"
+    t.string   "address"
+    t.string   "phone"
+    t.string   "fax"
+    t.string   "e_mail"
+    t.string   "person_responsible"
+    t.string   "shelter_type"
+    t.string   "shelter_type_detail"
+    t.string   "shelter_sort"
+    t.datetime "opened_at"
+    t.datetime "closed_at"
+    t.integer  "capacity"
+    t.string   "status"
+    t.integer  "head_count"
+    t.integer  "head_count_voluntary"
+    t.integer  "households"
+    t.integer  "households_voluntary"
+    t.datetime "checked_at"
+    t.string   "shelter_code"
+    t.string   "manager_code"
+    t.string   "manager_name"
+    t.string   "manager_another_name"
+    t.datetime "reported_at"
+    t.string   "building_damage_info"
+    t.string   "electric_infra_damage_info"
+    t.string   "communication_infra_damage_info"
+    t.string   "other_damage_info"
+    t.string   "usable_flag"
+    t.string   "openable_flag"
+    t.integer  "injury_count"
+    t.integer  "upper_care_level_three_count"
+    t.integer  "elderly_alone_count"
+    t.integer  "elderly_couple_count"
+    t.integer  "bedridden_elderly_count"
+    t.integer  "elderly_dementia_count"
+    t.integer  "rehabilitation_certificate_count"
+    t.integer  "physical_disability_certificate_count"
+    t.string   "note"
+    t.datetime "deleted_at"
+    t.string   "created_by"
+    t.string   "updated_by"
+    t.datetime "created_at",                                           :null => false
+    t.datetime "updated_at",                                           :null => false
+    t.integer  "record_mode",                           :default => 0, :null => false
+  end
+
+  add_index "shelters", ["name", "record_mode"], :name => "index_shelters_on_name_and_record_mode", :unique => true, :where => "(deleted_at IS NULL)"
+  add_index "shelters", ["shelter_code"], :name => "index_shelters_on_shelter_code", :unique => true, :where => "(deleted_at IS NULL)"
+
+  create_table "streets", :force => true do |t|
+    t.string   "code"
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "subscriptions", :force => true do |t|
+    t.integer  "person_record_id"
+    t.string   "author_email",     :limit => 500
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+  end
+
   set_column_comment 'api_action_logs', 'unique_key', 'ユニークキー'
   set_column_comment 'api_action_logs', 'entry_date', '作成日時'
+
+  set_column_comment 'cities', 'id', 'ID'
+  set_column_comment 'cities', 'code', '市区町村コード'
+  set_column_comment 'cities', 'name', '市区町村名'
 
   set_column_comment 'country_codes', 'name', '国名'
   set_column_comment 'country_codes', 'code', '国別コード'
@@ -196,8 +284,68 @@ ActiveRecord::Schema.define(:version => 20130215072024) do
   set_column_comment 'people', 'link_flag', 'この対象者情報を LGDPF/LGDPM 以外の安否確認システムとの間で連携することを、対象者情報の作成者が許容する場合を True とするフラグ'
   set_column_comment 'people', 'notes_disabled', 'メモ無効フラグ'
   set_column_comment 'people', 'email_flag', 'この対象者に関連する情報に変化が生じた場合にメッセージを送る事を、対象者情報の作成者が希望する場合を True とするフラグ'
+  set_column_comment 'people', 'export_flag', 'この対象者に関連する情報を連携した場合を True とするフラグ'
   set_column_comment 'people', 'deleted_at', 'この対象者情報の削除日時'
   set_column_comment 'people', 'created_at', 'このレコードの作成日時'
   set_column_comment 'people', 'updated_at', 'このレコードの更新日時'
+
+  set_table_comment 'shelters', '避難所情報'
+  set_column_comment 'shelters', 'name', '避難所名'
+  set_column_comment 'shelters', 'name_kana', '避難所名かな'
+  set_column_comment 'shelters', 'area', '避難所の地区'
+  set_column_comment 'shelters', 'address', '避難所の住所'
+  set_column_comment 'shelters', 'phone', '避難所の電話番号'
+  set_column_comment 'shelters', 'fax', '避難所のFAX番号'
+  set_column_comment 'shelters', 'e_mail', '避難所のメールアドレス'
+  set_column_comment 'shelters', 'person_responsible', '避難所の担当者名'
+  set_column_comment 'shelters', 'shelter_type', '避難所種別'
+  set_column_comment 'shelters', 'shelter_type_detail', '避難所種別では表現しきれない情報'
+  set_column_comment 'shelters', 'shelter_sort', '避難所区分'
+  set_column_comment 'shelters', 'opened_at', '開設日時'
+  set_column_comment 'shelters', 'closed_at', '閉鎖日時'
+  set_column_comment 'shelters', 'capacity', '最大の収容人数'
+  set_column_comment 'shelters', 'status', '避難所状況'
+  set_column_comment 'shelters', 'head_count', '人数（自主避難人数を含む）'
+  set_column_comment 'shelters', 'head_count_voluntary', '自主避難人数'
+  set_column_comment 'shelters', 'households', '世帯数（自主避難世帯数を含む）'
+  set_column_comment 'shelters', 'households_voluntary', '自主避難世帯数'
+  set_column_comment 'shelters', 'checked_at', '避難所状況確認日時'
+  set_column_comment 'shelters', 'shelter_code', '避難所識別番号'
+  set_column_comment 'shelters', 'manager_code', '管理者（職員番号）'
+  set_column_comment 'shelters', 'manager_name', '管理者（名称）'
+  set_column_comment 'shelters', 'manager_another_name', '管理者（別名）'
+  set_column_comment 'shelters', 'reported_at', '報告日時'
+  set_column_comment 'shelters', 'building_damage_info', '建物被害状況'
+  set_column_comment 'shelters', 'electric_infra_damage_info', '電力被害状況'
+  set_column_comment 'shelters', 'communication_infra_damage_info', '通信手段被害状況'
+  set_column_comment 'shelters', 'other_damage_info', 'その他の被害'
+  set_column_comment 'shelters', 'usable_flag', '使用可否'
+  set_column_comment 'shelters', 'openable_flag', '開設の可否'
+  set_column_comment 'shelters', 'injury_count', '負傷_計'
+  set_column_comment 'shelters', 'upper_care_level_three_count', '要介護度3以上_計'
+  set_column_comment 'shelters', 'elderly_alone_count', '一人暮らし高齢者（65歳以上）_計'
+  set_column_comment 'shelters', 'elderly_couple_count', '高齢者世帯（夫婦共に65歳以上）_計'
+  set_column_comment 'shelters', 'bedridden_elderly_count', '寝たきり高齢者_計'
+  set_column_comment 'shelters', 'elderly_dementia_count', '認知症高齢者_計'
+  set_column_comment 'shelters', 'rehabilitation_certificate_count', '療育手帳所持者_計'
+  set_column_comment 'shelters', 'physical_disability_certificate_count', '身体障害者手帳所持者_計'
+  set_column_comment 'shelters', 'note', '備考'
+  set_column_comment 'shelters', 'deleted_at', '削除日時'
+  set_column_comment 'shelters', 'created_by', '登録者'
+  set_column_comment 'shelters', 'updated_by', '更新者'
+  set_column_comment 'shelters', 'created_at', '登録日時'
+  set_column_comment 'shelters', 'updated_at', '更新日時'
+  set_column_comment 'shelters', 'record_mode', '記録種別'
+
+  set_column_comment 'streets', 'id', 'ID'
+  set_column_comment 'streets', 'code', '町名コード'
+  set_column_comment 'streets', 'name', '町名'
+
+  set_table_comment 'subscriptions', '購読情報'
+  set_column_comment 'subscriptions', 'id', 'このレコードのプライマリ ID'
+  set_column_comment 'subscriptions', 'person_record_id', 'この購読情報が紐づく対象者情報への外部キー'
+  set_column_comment 'subscriptions', 'author_email', 'この購読情報が紐づく対象者の現在の電子メールアドレス'
+  set_column_comment 'subscriptions', 'created_at', '登録日時'
+  set_column_comment 'subscriptions', 'updated_at', '更新日時'
 
 end
