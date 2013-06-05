@@ -78,8 +78,6 @@
     
     <li><a href="#method-i-expiry_date">#expiry_date</a>
     
-    <li><a href="#method-i-get_cache">#get_cache</a>
-    
     <li><a href="#method-i-init">#init</a>
     
     <li><a href="#method-i-terms_of_service">#terms_of_service</a>
@@ -109,7 +107,13 @@
   
     <li><a href="./Batches/ExportGooglePersonFinder.html">Batches::ExportGooglePersonFinder</a>
   
+    <li><a href="./Batches/ImportShelters.html">Batches::ImportShelters</a>
+  
     <li><a href="./Batches/PeopleDestroy.html">Batches::PeopleDestroy</a>
+  
+    <li><a href="./FileSizeValidator.html">FileSizeValidator</a>
+  
+    <li><a href="./FileSizeValidator/Helper.html">FileSizeValidator::Helper</a>
   
     <li><a href="./ActiveResourceController.html">ActiveResourceController</a>
   
@@ -118,6 +122,8 @@
     <li><a href="./ApplicationController.html">ApplicationController</a>
   
     <li><a href="./ApplicationHelper.html">ApplicationHelper</a>
+  
+    <li><a href="./City.html">City</a>
   
     <li><a href="./ConsentError.html">ConsentError</a>
   
@@ -135,9 +141,17 @@
   
     <li><a href="./PeopleController.html">PeopleController</a>
   
+    <li><a href="./Person.html">Person</a>
+  
     <li><a href="./PersonHelper.html">PersonHelper</a>
   
     <li><a href="./PhotoUrlUploader.html">PhotoUrlUploader</a>
+  
+    <li><a href="./Shelter.html">Shelter</a>
+  
+    <li><a href="./Street.html">Street</a>
+  
+    <li><a href="./Subscription.html">Subscription</a>
   
     <li><a href="./TimeValidator.html">TimeValidator</a>
   
@@ -189,9 +203,6 @@
 <dl class="rdoc-list note-list"><dt><em>term</em> 
 <dd>
 <p>ユーザ入力値</p>
-</dd><dt><em>state</em> 
-<dd>
-<p>都道府県</p>
 </dd></dl>
 
 <h4 id="method-i-autocomplete_city-label-Return">Return</h4>
@@ -203,13 +214,11 @@
 
           
           <div class="method-source-code" id="autocomplete_city-source">
-            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 85</span>
+            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 69</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">autocomplete_city</span>
-  <span class="ruby-ivar">@city</span> = <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">cache</span>.<span class="ruby-identifier">read</span>(<span class="ruby-string">&quot;city&quot;</span>)
-  <span class="ruby-ivar">@city</span>.<span class="ruby-identifier">delete_if</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">key</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">!~</span> <span class="ruby-node">%r#{params[&quot;term&quot;]}/</span>}
-
+  <span class="ruby-ivar">@city</span> = <span class="ruby-constant">City</span>.<span class="ruby-identifier">hash_for_table</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;term&quot;</span>])
   <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> (<span class="ruby-ivar">@city</span>.<span class="ruby-identifier">present?</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@city</span>.<span class="ruby-identifier">values</span>.<span class="ruby-identifier">to_json</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>) }
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@city</span>.<span class="ruby-identifier">values</span>.<span class="ruby-identifier">to_json</span> }
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- autocomplete_city-source -->
@@ -239,9 +248,6 @@
 <dl class="rdoc-list note-list"><dt><em>term</em> 
 <dd>
 <p>ユーザ入力値</p>
-</dd><dt><em>state</em> 
-<dd>
-<p>都道府県</p>
 </dd></dl>
 
 <h4 id="method-i-autocomplete_street-label-Return">Return</h4>
@@ -253,13 +259,11 @@
 
           
           <div class="method-source-code" id="autocomplete_street-source">
-            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 101</span>
+            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 82</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">autocomplete_street</span>
-  <span class="ruby-ivar">@street</span> = <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">cache</span>.<span class="ruby-identifier">read</span>(<span class="ruby-string">&quot;street&quot;</span>)
-  <span class="ruby-ivar">@street</span>.<span class="ruby-identifier">delete_if</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">key</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">!~</span> <span class="ruby-node">%r#{params[&quot;term&quot;]}/</span>}
-
+  <span class="ruby-ivar">@street</span> = <span class="ruby-constant">Street</span>.<span class="ruby-identifier">hash_for_table</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;term&quot;</span>])
   <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> (<span class="ruby-ivar">@street</span>.<span class="ruby-identifier">present?</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@street</span>.<span class="ruby-identifier">values</span>.<span class="ruby-identifier">to_json</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>) }
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@street</span>.<span class="ruby-identifier">values</span>.<span class="ruby-identifier">to_json</span> }
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- autocomplete_street-source -->
@@ -294,10 +298,10 @@
 
           
           <div class="method-source-code" id="cancel_personal_info-source">
-            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 43</span>
+            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 44</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">cancel_personal_info</span>
   <span class="ruby-comment"># submitボタン押下</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:commit</span>].<span class="ruby-identifier">present?</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:complete</span>].<span class="ruby-identifier">present?</span>
     <span class="ruby-identifier">session</span>[<span class="ruby-value">:pi_view</span>] = <span class="ruby-keyword">false</span>  <span class="ruby-comment"># 個人情報表示を無効にする</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
@@ -339,7 +343,7 @@
 
           
           <div class="method-source-code" id="expiry_date-source">
-            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 27</span>
+            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 28</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">expiry_date</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:token</span>].<span class="ruby-identifier">present?</span>
     <span class="ruby-identifier">aal</span> = <span class="ruby-constant">ApiActionLog</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:unique_key</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:token</span>])
@@ -358,55 +362,6 @@
 
         
       </div><!-- expiry_date-method -->
-
-    
-      <div id="method-i-get_cache" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">get_cache</span><span
-            class="method-args">(key_name)</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>memcacheされた値を取得・加工</p>
-
-<h3 id="method-i-get_cache-label-Args">Args</h3>
-<dl class="rdoc-list note-list"><dt><em>key_name</em> 
-<dd>
-<p>キャッシュされているハッシュのキー名</p>
-</dd></dl>
-
-<h3 id="method-i-get_cache-label-Return">Return</h3>
-<dl class="rdoc-list note-list"><dt><em>constant_list</em> 
-<dd>
-<p>{code =&gt; name}</p>
-</dd></dl>
-
-<h4 id="method-i-get_cache-label-Raise">Raise</h4>
-          
-
-          
-          <div class="method-source-code" id="get_cache-source">
-            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 68</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_cache</span>(<span class="ruby-identifier">key_name</span>)
-  <span class="ruby-identifier">constant_list</span> = {}
-  <span class="ruby-identifier">constant</span> = <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">cache</span>.<span class="ruby-identifier">read</span>(<span class="ruby-identifier">key_name</span>)
-  <span class="ruby-identifier">constant</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">constant_list</span>[<span class="ruby-identifier">c</span>[<span class="ruby-value">0</span>]] = <span class="ruby-identifier">c</span>[<span class="ruby-value">1</span>][<span class="ruby-string">&quot;name&quot;</span>]
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">return</span> <span class="ruby-identifier">constant_list</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- get_cache-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- get_cache-method -->
 
     
       <div id="method-i-init" class="method-detail ">
@@ -437,10 +392,11 @@
   <span class="ruby-ivar">@person_const</span> = <span class="ruby-constant">Constant</span>.<span class="ruby-identifier">get_const</span>(<span class="ruby-constant">Person</span>.<span class="ruby-identifier">table_name</span>)
   <span class="ruby-ivar">@note_const</span>   = <span class="ruby-constant">Constant</span>.<span class="ruby-identifier">get_const</span>(<span class="ruby-constant">Note</span>.<span class="ruby-identifier">table_name</span>)
   <span class="ruby-ivar">@country_code</span> = <span class="ruby-constant">CountryCode</span>.<span class="ruby-identifier">hash_for_selectbox</span>
-  <span class="ruby-comment"># memcacheからマスタを取得</span>
-  <span class="ruby-comment"># @area = get_cache(&quot;area&quot;)</span>
-  <span class="ruby-comment"># @address = Rails.cache.read(&quot;address&quot;)</span>
-  <span class="ruby-comment"># @shelter = get_cache(&quot;shelter&quot;)</span>
+  <span class="ruby-ivar">@shelter</span>      = <span class="ruby-constant">Shelter</span>.<span class="ruby-identifier">hash_for_selectbox</span>
+  <span class="ruby-comment"># 通常/訓練/試験モードごとの通知文(全画面)</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-constant">CURRENT_IS_NORMAL_MODE</span>
+    <span class="ruby-ivar">@run_mode_announce</span> = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-node">&quot;announce.header.run_mode_#{CURRENT_RUN_MODE}&quot;</span>)
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- init-source -->
           
@@ -474,7 +430,7 @@
 
           
           <div class="method-source-code" id="terms_of_service-source">
-            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 55</span>
+            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 56</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">terms_of_service</span>
   <span class="ruby-identifier">f</span> = <span class="ruby-identifier">open</span>(<span class="ruby-node">&quot;#{Rails.root}/config/terms_message.txt&quot;</span>)
   <span class="ruby-ivar">@terms_message</span> =  <span class="ruby-identifier">f</span>.<span class="ruby-identifier">read</span>
@@ -499,7 +455,7 @@
 
 <footer id="validator-badges">
   <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
-  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.2.
   <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
 </footer>
 

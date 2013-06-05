@@ -72,6 +72,8 @@
     
     <li><a href="#method-i-parse_br">#parse_br</a>
     
+    <li><a href="#method-i-reencode_for_mobile">#reencode_for_mobile</a>
+    
     <li><a href="#method-i-url_name">#url_name</a>
     
   </ul>
@@ -99,7 +101,13 @@
   
     <li><a href="./Batches/ExportGooglePersonFinder.html">Batches::ExportGooglePersonFinder</a>
   
+    <li><a href="./Batches/ImportShelters.html">Batches::ImportShelters</a>
+  
     <li><a href="./Batches/PeopleDestroy.html">Batches::PeopleDestroy</a>
+  
+    <li><a href="./FileSizeValidator.html">FileSizeValidator</a>
+  
+    <li><a href="./FileSizeValidator/Helper.html">FileSizeValidator::Helper</a>
   
     <li><a href="./ActiveResourceController.html">ActiveResourceController</a>
   
@@ -108,6 +116,8 @@
     <li><a href="./ApplicationController.html">ApplicationController</a>
   
     <li><a href="./ApplicationHelper.html">ApplicationHelper</a>
+  
+    <li><a href="./City.html">City</a>
   
     <li><a href="./ConsentError.html">ConsentError</a>
   
@@ -125,9 +135,17 @@
   
     <li><a href="./PeopleController.html">PeopleController</a>
   
+    <li><a href="./Person.html">Person</a>
+  
     <li><a href="./PersonHelper.html">PersonHelper</a>
   
     <li><a href="./PhotoUrlUploader.html">PhotoUrlUploader</a>
+  
+    <li><a href="./Shelter.html">Shelter</a>
+  
+    <li><a href="./Street.html">Street</a>
+  
+    <li><a href="./Subscription.html">Subscription</a>
   
     <li><a href="./TimeValidator.html">TimeValidator</a>
   
@@ -178,7 +196,7 @@
 <h2 id="method-i-create_address-label-Args">Args</h2>
 <dl class="rdoc-list note-list"><dt>_person 
 <dd>
-<p>Person</p>
+<p><a href="Person.html">Person</a></p>
 </dd></dl>
 
 <h2 id="method-i-create_address-label-Return">Return</h2>
@@ -238,7 +256,7 @@
 <h2 id="method-i-create_result_data_title-label-Args">Args</h2>
 <dl class="rdoc-list note-list"><dt><em>person</em> 
 <dd>
-<p>Person</p>
+<p><a href="Person.html">Person</a></p>
 </dd></dl>
 
 <h2 id="method-i-create_result_data_title-label-Return">Return</h2>
@@ -290,11 +308,11 @@
           <div class="method-source-code" id="icon_image_tag-source">
             <pre><span class="ruby-comment"># File app/helpers/person_helper.rb, line 56</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">icon_image_tag</span>(<span class="ruby-identifier">url</span>)
-  <span class="ruby-keyword">if</span>  <span class="ruby-identifier">url</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r^http:\/\/(www\.)?(facebook)\.com\/*/</span>
+  <span class="ruby-keyword">if</span>  <span class="ruby-identifier">url</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^http:\/\/(www\.)?(facebook)\.com\/*/</span>
     <span class="ruby-identifier">tag</span> = <span class="ruby-string">&quot;&lt;img class='icon' src='/assets/facebook-16x16.png' alt='Facebook-16x16' /&gt;&quot;</span>
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">url</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r^http:\/\/(www\.)?(twitter)\.com\/*/</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">url</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^http:\/\/(www\.)?(twitter)\.com\/*/</span>
     <span class="ruby-identifier">tag</span> = <span class="ruby-string">&quot;&lt;img class='icon' src='/assets/twitter-16x16.png' alt='Twitter-16x16' /&gt;&quot;</span>
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">url</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r^http:\/\/(www\.)?(linkedin)\.com\/*/</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">url</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^http:\/\/(www\.)?(linkedin)\.com\/*/</span>
     <span class="ruby-identifier">tag</span> = <span class="ruby-string">&quot;&lt;img class='icon' src='/assets/linkedin-16x16.png' alt='Linkedin-16x16' /&gt;&quot;</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">return</span> <span class="ruby-identifier">tag</span>
@@ -334,7 +352,7 @@
             <pre><span class="ruby-comment"># File app/helpers/person_helper.rb, line 48</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_br</span>(<span class="ruby-identifier">str</span>)
   <span class="ruby-identifier">str</span> = <span class="ruby-identifier">html_escape</span>(<span class="ruby-identifier">str</span>)
-  <span class="ruby-keyword">return</span> <span class="ruby-identifier">str</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">%r(\r\n|\r|\n)/</span>, <span class="ruby-string">&quot;&lt;br /&gt;&quot;</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">str</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/(\r\n|\r|\n)/</span>, <span class="ruby-string">&quot;&lt;br /&gt;&quot;</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- parse_br-source -->
           
@@ -344,6 +362,44 @@
 
         
       </div><!-- parse_br-method -->
+
+    
+      <div id="method-i-reencode_for_mobile" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">reencode_for_mobile</span><span
+            class="method-args">(str)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>モバイルに対応した形式に変換する</p>
+
+<h3 id="method-i-reencode_for_mobile-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>str</em> 
+<dd>
+<p>文字</p>
+</dd></dl>
+          
+
+          
+          <div class="method-source-code" id="reencode_for_mobile-source">
+            <pre><span class="ruby-comment"># File app/helpers/person_helper.rb, line 86</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reencode_for_mobile</span>(<span class="ruby-identifier">str</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">mobile?</span>
+    <span class="ruby-identifier">request</span>.<span class="ruby-identifier">mobile</span>.<span class="ruby-identifier">to_external</span>(<span class="ruby-identifier">str</span>, <span class="ruby-string">&quot;application/xhtml+xml&quot;</span>, <span class="ruby-identifier">request</span>.<span class="ruby-identifier">mobile</span>.<span class="ruby-identifier">default_charset</span>)[<span class="ruby-value">0</span>]
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- reencode_for_mobile-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- reencode_for_mobile-method -->
 
     
       <div id="method-i-url_name" class="method-detail ">
@@ -370,11 +426,11 @@
           <div class="method-source-code" id="url_name-source">
             <pre><span class="ruby-comment"># File app/helpers/person_helper.rb, line 70</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">url_name</span>(<span class="ruby-identifier">url</span>)
-  <span class="ruby-keyword">if</span>  <span class="ruby-identifier">url</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r^http:\/\/(www\.)?(facebook)\.com\/*/</span>
+  <span class="ruby-keyword">if</span>  <span class="ruby-identifier">url</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^http:\/\/(www\.)?(facebook)\.com\/*/</span>
     <span class="ruby-identifier">name</span> = <span class="ruby-string">&quot;Facebook&quot;</span>
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">url</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r^http:\/\/(www\.)?(twitter)\.com\/*/</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">url</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^http:\/\/(www\.)?(twitter)\.com\/*/</span>
     <span class="ruby-identifier">name</span> = <span class="ruby-string">&quot;Twitter&quot;</span>
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">url</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r^http:\/\/(www\.)?(linkedin)\.com\/*/</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">url</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^http:\/\/(www\.)?(linkedin)\.com\/*/</span>
     <span class="ruby-identifier">name</span> = <span class="ruby-string">&quot;Linkedin&quot;</span>
   <span class="ruby-keyword">else</span>
     <span class="ruby-identifier">name</span> = <span class="ruby-identifier">url</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&quot;/&quot;</span>)[<span class="ruby-value">2</span>]
@@ -400,7 +456,7 @@
 
 <footer id="validator-badges">
   <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
-  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.2.
   <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
 </footer>
 

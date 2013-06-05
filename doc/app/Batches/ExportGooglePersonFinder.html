@@ -78,6 +78,8 @@
     
     <li><a href="#method-c-sex_parse_for_gpf">::sex_parse_for_gpf</a>
     
+    <li><a href="#method-c-status_parse_for_gpf">::status_parse_for_gpf</a>
+    
   </ul>
 </nav>
 
@@ -103,7 +105,13 @@
   
     <li><a href="../Batches/ExportGooglePersonFinder.html">Batches::ExportGooglePersonFinder</a>
   
+    <li><a href="../Batches/ImportShelters.html">Batches::ImportShelters</a>
+  
     <li><a href="../Batches/PeopleDestroy.html">Batches::PeopleDestroy</a>
+  
+    <li><a href="../FileSizeValidator.html">FileSizeValidator</a>
+  
+    <li><a href="../FileSizeValidator/Helper.html">FileSizeValidator::Helper</a>
   
     <li><a href="../ActiveResourceController.html">ActiveResourceController</a>
   
@@ -112,6 +120,8 @@
     <li><a href="../ApplicationController.html">ApplicationController</a>
   
     <li><a href="../ApplicationHelper.html">ApplicationHelper</a>
+  
+    <li><a href="../City.html">City</a>
   
     <li><a href="../ConsentError.html">ConsentError</a>
   
@@ -129,9 +139,17 @@
   
     <li><a href="../PeopleController.html">PeopleController</a>
   
+    <li><a href="../Person.html">Person</a>
+  
     <li><a href="../PersonHelper.html">PersonHelper</a>
   
     <li><a href="../PhotoUrlUploader.html">PhotoUrlUploader</a>
+  
+    <li><a href="../Shelter.html">Shelter</a>
+  
+    <li><a href="../Street.html">Street</a>
+  
+    <li><a href="../Subscription.html">Subscription</a>
   
     <li><a href="../TimeValidator.html">TimeValidator</a>
   
@@ -157,6 +175,24 @@
     
 
     
+    <!-- Constants -->
+    <section id="constants-list" class="section">
+      <h3 class="section-header">Constants</h3>
+      <dl>
+      
+        <dt id="LOCKFILENAME">LOCKFILENAME
+        
+        <dd class="description"><p>定数 同時実行を禁止するためのロックファイル</p>
+        
+      
+        <dt id="WORK_DIR">WORK_DIR
+        
+        <dd class="description"><p>作業用一時ディレクトリ。処理中のみ存在する。</p>
+        
+      
+      </dl>
+    </section>
+    
 
     
 
@@ -170,7 +206,7 @@
         
         <div class="method-heading">
           <span class="method-name">create_pfif</span><span
-            class="method-args">()</span>
+            class="method-args">(target_records)</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
         
@@ -180,6 +216,10 @@
           <p>GooglePersonFinderへアップロードするデータの作成処理</p>
 
 <h4 id="method-c-create_pfif-label-Args">Args</h4>
+<dl class="rdoc-list note-list"><dt><em>target_records</em> 
+<dd>
+<p>エクスポートするレコード</p>
+</dd></dl>
 
 <h4 id="method-c-create_pfif-label-Return">Return</h4>
 
@@ -190,17 +230,22 @@
 
           
           <div class="method-source-code" id="create_pfif-source">
-            <pre><span class="ruby-comment"># File lib/batches/export_google_person_finder.rb, line 49</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create_pfif</span>
+            <pre><span class="ruby-comment"># File lib/batches/export_google_person_finder.rb, line 72</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create_pfif</span>(<span class="ruby-identifier">target_records</span>)
   <span class="ruby-identifier">doc</span> =  <span class="ruby-constant">REXML</span><span class="ruby-operator">::</span><span class="ruby-constant">Document</span>.<span class="ruby-identifier">new</span>
   <span class="ruby-identifier">doc</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">REXML</span><span class="ruby-operator">::</span><span class="ruby-constant">XMLDecl</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">'1.0'</span>, <span class="ruby-string">'UTF-8'</span>)
   <span class="ruby-identifier">doc</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:pfif&quot;</span>).<span class="ruby-identifier">add_namespace</span>(<span class="ruby-string">&quot;pfif&quot;</span>, <span class="ruby-string">&quot;http://zesty.ca/pfif/1.4&quot;</span>)
 
   <span class="ruby-comment"># export対象を抽出する</span>
-  <span class="ruby-identifier">people</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find_for_export_gpf</span>
-  <span class="ruby-identifier">people</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">person</span><span class="ruby-operator">|</span>
+  <span class="ruby-comment"># Google(作)のデータはcurl実行時に権限なしでskipされるが</span>
+  <span class="ruby-comment"># LGDPFで追加したNoteを同期するために、PFIF作成時にskipしていない</span>
+  <span class="ruby-identifier">target_records</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">person</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">node_person</span> = <span class="ruby-identifier">doc</span>.<span class="ruby-identifier">root</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:person&quot;</span>)
-    <span class="ruby-identifier">node_person</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:person_record_id&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{@settings[&quot;gpf&quot;][&quot;domain&quot;]}/person.#{person.id}&quot;</span>)  <span class="ruby-comment"># LGDPFはドメイン名に変えるかも</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">person_record_id</span>.<span class="ruby-identifier">blank?</span>
+      <span class="ruby-identifier">node_person</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:person_record_id&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{API_KEY[&quot;google_person_finder&quot;][&quot;registered_domain&quot;]}/person.#{person.id}&quot;</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">node_person</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:person_record_id&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{person.person_record_id}&quot;</span>)
+    <span class="ruby-keyword">end</span>
     <span class="ruby-identifier">node_person</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:entry_date&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{person.entry_date.utc.xmlschema}&quot;</span>)
     <span class="ruby-identifier">node_person</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:expiry_date&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{person.expiry_date.utc.xmlschema}&quot;</span>)
     <span class="ruby-identifier">node_person</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:author_name&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{person.author_name}&quot;</span>)
@@ -223,31 +268,54 @@
     <span class="ruby-identifier">node_person</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:home_state&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{person.home_state}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">home_state</span>.<span class="ruby-identifier">present?</span>
     <span class="ruby-identifier">node_person</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:home_postal_code&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{person.home_postal_code}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">home_postal_code</span>.<span class="ruby-identifier">present?</span>
     <span class="ruby-identifier">node_person</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:home_country&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{person.home_country}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">home_country</span>.<span class="ruby-identifier">present?</span>
-    <span class="ruby-identifier">node_person</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:photo_url&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{@settings[&quot;lgdpf&quot;][Rails.env][&quot;site&quot;]}#{person.photo_url}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">photo_url</span>.<span class="ruby-identifier">present?</span>
+    <span class="ruby-identifier">node_person</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:photo_url&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{SETTINGS[&quot;mail&quot;][&quot;host&quot;]}#{person.photo_url}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">photo_url</span>.<span class="ruby-identifier">present?</span>
     <span class="ruby-identifier">node_person</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:profile_urls&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{person.profile_urls}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">profile_urls</span>.<span class="ruby-identifier">present?</span>
 
     <span class="ruby-identifier">notes</span> = <span class="ruby-constant">Note</span>.<span class="ruby-identifier">find_all_by_person_record_id</span>(<span class="ruby-identifier">person</span>.<span class="ruby-identifier">id</span>)
     <span class="ruby-identifier">notes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">note</span><span class="ruby-operator">|</span>
       <span class="ruby-identifier">node_note</span> = <span class="ruby-identifier">node_person</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:note&quot;</span>)
-      <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:note_record_id&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{@settings[&quot;gpf&quot;][&quot;domain&quot;]}/note.#{note.id}&quot;</span>)
-      <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:person_record_id&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{@settings[&quot;gpf&quot;][&quot;domain&quot;]}/person.#{note.person_record_id}&quot;</span>)
-      <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:linked_person_record_id&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{@settings[&quot;gpf&quot;][&quot;domain&quot;]}/person.#{note.linked_person_record_id}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">note</span>.<span class="ruby-identifier">linked_person_record_id</span>.<span class="ruby-identifier">present?</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">note</span>.<span class="ruby-identifier">note_record_id</span>.<span class="ruby-identifier">blank?</span>
+        <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:note_record_id&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{API_KEY[&quot;google_person_finder&quot;][&quot;registered_domain&quot;]}/note.#{note.id}&quot;</span>)
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:note_record_id&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{note.note_record_id}&quot;</span>)
+      <span class="ruby-keyword">end</span>
+
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">note</span>.<span class="ruby-identifier">person_record_id</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^\d+$/</span>
+        <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:person_record_id&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{API_KEY[&quot;google_person_finder&quot;][&quot;registered_domain&quot;]}/person.#{note.person_record_id}&quot;</span>)
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:person_record_id&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{note.person_record_id}&quot;</span>)
+      <span class="ruby-keyword">end</span>
+
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">note</span>.<span class="ruby-identifier">linked_person_record_id</span>.<span class="ruby-identifier">present?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">note</span>.<span class="ruby-identifier">linked_person_record_id</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^\d+$/</span>
+        <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:linked_person_record_id&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{API_KEY[&quot;google_person_finder&quot;][&quot;registered_domain&quot;]}/person.#{note.linked_person_record_id}&quot;</span>)
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:linked_person_record_id&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{note.linked_person_record_id}&quot;</span>)
+      <span class="ruby-keyword">end</span>
       <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:entry_date&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{note.entry_date.utc.xmlschema}&quot;</span>)
       <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:author_name&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{note.author_name}&quot;</span>)
       <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:author_email&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{note.author_email}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">note</span>.<span class="ruby-identifier">author_email</span>.<span class="ruby-identifier">present?</span>
       <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:author_phone&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{note.author_phone}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">note</span>.<span class="ruby-identifier">author_phone</span>.<span class="ruby-identifier">present?</span>
       <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:source_date&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{note.source_date.utc.xmlschema}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">note</span>.<span class="ruby-identifier">source_date</span>.<span class="ruby-identifier">present?</span>
       <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:author_made_contact&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{note.author_made_contact}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">note</span>.<span class="ruby-identifier">author_made_contact</span>.<span class="ruby-identifier">present?</span>
-      <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:status&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{note.status}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">note</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">present?</span>
+      <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:status&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{status_parse_for_gpf(note.status)}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">note</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">present?</span>
       <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:email_of_found_person&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{note.email_of_found_person}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">note</span>.<span class="ruby-identifier">email_of_found_person</span>.<span class="ruby-identifier">present?</span>
       <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:phone_of_found_person&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{note.phone_of_found_person}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">note</span>.<span class="ruby-identifier">phone_of_found_person</span>.<span class="ruby-identifier">present?</span>
       <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:last_known_location&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{note.last_known_location}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">note</span>.<span class="ruby-identifier">last_known_location</span>.<span class="ruby-identifier">present?</span>
       <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:text&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{note.text}&quot;</span>)
-      <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:photo_url&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{@settings[&quot;lgdpf&quot;][Rails.env][&quot;site&quot;]}#{note.photo_url}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">note</span>.<span class="ruby-identifier">photo_url</span>.<span class="ruby-identifier">present?</span>
+      <span class="ruby-identifier">node_note</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-string">&quot;pfif:photo_url&quot;</span>).<span class="ruby-identifier">add_text</span>(<span class="ruby-node">&quot;#{SETTINGS[&quot;mail&quot;][&quot;host&quot;]}#{note.photo_url}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">note</span>.<span class="ruby-identifier">photo_url</span>.<span class="ruby-identifier">present?</span>
+
+      <span class="ruby-comment"># GooglePersonFinderに送ったnote_record_idを保持する</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">note</span>.<span class="ruby-identifier">note_record_id</span>.<span class="ruby-identifier">blank?</span>
+        <span class="ruby-identifier">note</span>.<span class="ruby-identifier">note_record_id</span> = <span class="ruby-node">&quot;#{API_KEY[&quot;google_person_finder&quot;][&quot;registered_domain&quot;]}/note.#{note.id}&quot;</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">note</span>.<span class="ruby-identifier">save</span>
     <span class="ruby-keyword">end</span>
 
-    <span class="ruby-comment"># 公開フラグを消す</span>
-    <span class="ruby-identifier">person</span>.<span class="ruby-identifier">public_flag</span> = <span class="ruby-constant">Person</span><span class="ruby-operator">::</span><span class="ruby-constant">PUBLIC_FLAG_OFF</span>
+    <span class="ruby-comment"># GooglePersonFinderに送ったperson_record_idを保持する</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">person_record_id</span>.<span class="ruby-identifier">blank?</span>
+      <span class="ruby-identifier">person</span>.<span class="ruby-identifier">person_record_id</span> = <span class="ruby-node">&quot;#{API_KEY[&quot;google_person_finder&quot;][&quot;registered_domain&quot;]}/person.#{person.id}&quot;</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">person</span>.<span class="ruby-identifier">export_flag</span> = <span class="ruby-keyword">true</span>
     <span class="ruby-identifier">person</span>.<span class="ruby-identifier">save</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">return</span> <span class="ruby-identifier">doc</span>.<span class="ruby-identifier">to_s</span>
@@ -290,7 +358,7 @@
 
           
           <div class="method-source-code" id="date_parse_for_gpf-source">
-            <pre><span class="ruby-comment"># File lib/batches/export_google_person_finder.rb, line 117</span>
+            <pre><span class="ruby-comment"># File lib/batches/export_google_person_finder.rb, line 168</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">date_parse_for_gpf</span>(<span class="ruby-identifier">date</span>)
   <span class="ruby-identifier">date</span>.<span class="ruby-identifier">blank?</span> <span class="ruby-operator">?</span> <span class="ruby-string">&quot;&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">date</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -315,42 +383,55 @@
 
         <div class="method-description">
           
-          
+          <p>GoogePersonFinderへ未連携データのアップロード処理</p>
+
+<h3 id="method-c-execute-label-Args">Args</h3>
+
+<h3 id="method-c-execute-label-Return">Return</h3>
+
+<h3 id="method-c-execute-label-Raise">Raise</h3>
           
 
           
           <div class="method-source-code" id="execute-source">
-            <pre><span class="ruby-comment"># File lib/batches/export_google_person_finder.rb, line 11</span>
+            <pre><span class="ruby-comment"># File lib/batches/export_google_person_finder.rb, line 26</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">execute</span>
-  <span class="ruby-comment"># 2重起動防止</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-string">&quot;tmp/ExportGooglePersonFinder&quot;</span>)
-    <span class="ruby-identifier">p</span> <span class="ruby-string">&quot;他の人がこのバッチを起動中です。&quot;</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot; #{Time.now.to_s} ===== START ===== &quot;</span>
+
+  <span class="ruby-comment"># 通常モード(訓練/試験モード以外)であれば処理を行う</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-constant">CURRENT_IS_NORMAL_MODE</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot; #{Time.now.to_s} process exit for communication/test mode.&quot;</span>
   <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">f</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-string">&quot;tmp/ExportGooglePersonFinder&quot;</span>, <span class="ruby-string">&quot;w&quot;</span>)
-    
-    <span class="ruby-identifier">p</span> <span class="ruby-node">&quot; #{Time.now.to_s} ===== START ===== &quot;</span>
 
-    <span class="ruby-comment"># APIキーの読み込み</span>
-    <span class="ruby-ivar">@settings</span> = <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">load_file</span>(<span class="ruby-node">&quot;#{Rails.root}/config/settings.yml&quot;</span>)
+    <span class="ruby-comment"># 2重起動防止</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-constant">LOCKFILENAME</span>)
+      <span class="ruby-identifier">raise</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&quot;errors.messages.dual_boot&quot;</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-keyword">begin</span>
+        <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-constant">LOCKFILENAME</span>, <span class="ruby-string">&quot;w&quot;</span>).<span class="ruby-identifier">close</span>
+        <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">mkdir</span>(<span class="ruby-constant">WORK_DIR</span>) <span class="ruby-comment"># 作業用ディレクトリ</span>
+        <span class="ruby-identifier">export_record_size</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:public_flag</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Person</span><span class="ruby-operator">::</span><span class="ruby-constant">PUBLIC_FLAG_ON</span>).<span class="ruby-identifier">size</span>
 
-    <span class="ruby-comment"># アップロード対象のレコードがなくなるまで</span>
-    <span class="ruby-keyword">while</span> <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find_for_export_gpf</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-      <span class="ruby-comment"># 書き込み専用でファイルを開く（新規作成）</span>
-      <span class="ruby-identifier">file_name</span> = <span class="ruby-node">&quot;tmp/lgdpf#{Time.now.utc.xmlschema.gsub(&quot;:&quot;,&quot;&quot;)}.xml&quot;</span>
-      <span class="ruby-identifier">output_file</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">file_name</span>, <span class="ruby-string">&quot;w&quot;</span>)
-      <span class="ruby-identifier">output_file</span>.<span class="ruby-identifier">write</span>(<span class="ruby-identifier">create_pfif</span>)    <span class="ruby-comment"># ファイルにデータ書き込み</span>
+        <span class="ruby-comment"># アップロード対象のレコードがなくなるまで</span>
+        <span class="ruby-keyword">while</span> <span class="ruby-identifier">export_record_size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+          <span class="ruby-identifier">target_records</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find_for_export_gpf</span>
+          <span class="ruby-identifier">export_record_size</span> <span class="ruby-operator">-=</span> <span class="ruby-identifier">target_records</span>.<span class="ruby-identifier">size</span>
+          <span class="ruby-identifier">tmp_file</span> = <span class="ruby-node">&quot;#{WORK_DIR}/lgdpf#{Time.now.utc.xmlschema.gsub(&quot;:&quot;,&quot;&quot;)}.xml&quot;</span>
+          <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">tmp_file</span>, <span class="ruby-string">&quot;w&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">output_file</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">output_file</span>.<span class="ruby-identifier">write</span>(<span class="ruby-identifier">create_pfif</span>(<span class="ruby-identifier">target_records</span>))
+          <span class="ruby-keyword">end</span>
 
-      <span class="ruby-comment"># GooglePersonFinderにexport</span>
-      <span class="ruby-identifier">puts</span> <span class="ruby-node">%xcurl -X POST -H 'Content-type: application/xml' --data-binary @#{file_name} https://www.google.org/personfinder/#{@settings[&quot;gpf&quot;][&quot;repository&quot;]}/api/write?key=#{@settings[&quot;gpf&quot;][&quot;api_key&quot;]} `</span>
+          <span class="ruby-comment"># GooglePersonFinderにexport</span>
+          <span class="ruby-identifier">puts</span> <span class="ruby-node">%xcurl -X POST -H 'Content-type: application/xml' --data-binary @#{tmp_file} https://www.google.org/personfinder/#{API_KEY[&quot;google_person_finder&quot;][&quot;repository&quot;]}/api/write?key=#{API_KEY[&quot;google_person_finder&quot;][&quot;api_key&quot;]} `</span>
+        <span class="ruby-keyword">end</span>
 
-      <span class="ruby-identifier">output_file</span>.<span class="ruby-identifier">close</span>
-      <span class="ruby-constant">File</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">file_name</span>)  <span class="ruby-comment"># 送信済みXMLファイルの削除</span>
+      <span class="ruby-keyword">ensure</span>
+        <span class="ruby-constant">Person</span>.<span class="ruby-identifier">update_all</span>(<span class="ruby-value">:export_flag</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">false</span>)
+        <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">rm_r</span>(<span class="ruby-constant">WORK_DIR</span>)
+        <span class="ruby-constant">File</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-constant">LOCKFILENAME</span>)
+      <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">end</span>
-    
-
-    <span class="ruby-identifier">p</span> <span class="ruby-node">&quot; #{Time.now.to_s} =====  END  ===== &quot;</span>
-    <span class="ruby-identifier">f</span>.<span class="ruby-identifier">close</span>
-    <span class="ruby-constant">File</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-string">&quot;tmp/ExportGooglePersonFinder&quot;</span>)  <span class="ruby-comment"># lockファイルの削除</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot; #{Time.now.to_s} =====  END  ===== &quot;</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- execute-source -->
@@ -391,7 +472,7 @@
 
           
           <div class="method-source-code" id="sex_parse_for_gpf-source">
-            <pre><span class="ruby-comment"># File lib/batches/export_google_person_finder.rb, line 127</span>
+            <pre><span class="ruby-comment"># File lib/batches/export_google_person_finder.rb, line 178</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">sex_parse_for_gpf</span>(<span class="ruby-identifier">sex</span>)
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">sex</span>
   <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;1&quot;</span> <span class="ruby-keyword">then</span>
@@ -414,6 +495,62 @@
       </div><!-- sex_parse_for_gpf-method -->
 
     
+      <div id="method-c-status_parse_for_gpf" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">status_parse_for_gpf</span><span
+            class="method-args">(status)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>状況をGooglePersonFinderの形式に変換する</p>
+
+<h3 id="method-c-status_parse_for_gpf-label-Args">Args</h3>
+<dl class="rdoc-list note-list"><dt><em>status</em> 
+<dd>
+<p>Note.status</p>
+</dd></dl>
+
+<h3 id="method-c-status_parse_for_gpf-label-Return">Return</h3>
+
+<p>“information_sought” | “is_note_author” | “believed_alive” |
+“believed_missing” | “believed_dead”</p>
+
+<h3 id="method-c-status_parse_for_gpf-label-Raise">Raise</h3>
+          
+
+          
+          <div class="method-source-code" id="status_parse_for_gpf-source">
+            <pre><span class="ruby-comment"># File lib/batches/export_google_person_finder.rb, line 197</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">status_parse_for_gpf</span>(<span class="ruby-identifier">status</span>)
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">status</span>.<span class="ruby-identifier">to_i</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">Note</span><span class="ruby-operator">::</span><span class="ruby-constant">STATUS_INFORMATION_SOUGHT</span>  <span class="ruby-comment"># 情報を探している</span>
+    <span class="ruby-string">&quot;information_sought&quot;</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">Note</span><span class="ruby-operator">::</span><span class="ruby-constant">STATUS_IS_NOTE_AUTHOR</span>      <span class="ruby-comment"># 私が本人である</span>
+    <span class="ruby-string">&quot;is_note_author&quot;</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">Note</span><span class="ruby-operator">::</span><span class="ruby-constant">STATUS_BELIEVED_ALIVE</span>      <span class="ruby-comment"># この人が生きているという情報を入手した</span>
+    <span class="ruby-string">&quot;believed_alive&quot;</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">Note</span><span class="ruby-operator">::</span><span class="ruby-constant">STATUS_BELIEVED_MISSING</span>    <span class="ruby-comment"># この人を行方不明と判断した理由がある</span>
+    <span class="ruby-string">&quot;believed_missing&quot;</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">Note</span><span class="ruby-operator">::</span><span class="ruby-constant">STATUS_BELIEVED_DEAD</span>       <span class="ruby-comment"># この人物が死亡したという情報を入手した</span>
+    <span class="ruby-string">&quot;believed_dead&quot;</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">nil</span> <span class="ruby-comment"># 指定無し</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- status_parse_for_gpf-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- status_parse_for_gpf-method -->
+
+    
     </section><!-- public-class-method-details -->
   
   </section><!-- 5Buntitled-5D -->
@@ -423,7 +560,7 @@
 
 <footer id="validator-badges">
   <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
-  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.2.
   <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
 </footer>
 

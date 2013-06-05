@@ -107,7 +107,13 @@
   
     <li><a href="./Batches/ExportGooglePersonFinder.html">Batches::ExportGooglePersonFinder</a>
   
+    <li><a href="./Batches/ImportShelters.html">Batches::ImportShelters</a>
+  
     <li><a href="./Batches/PeopleDestroy.html">Batches::PeopleDestroy</a>
+  
+    <li><a href="./FileSizeValidator.html">FileSizeValidator</a>
+  
+    <li><a href="./FileSizeValidator/Helper.html">FileSizeValidator::Helper</a>
   
     <li><a href="./ActiveResourceController.html">ActiveResourceController</a>
   
@@ -116,6 +122,8 @@
     <li><a href="./ApplicationController.html">ApplicationController</a>
   
     <li><a href="./ApplicationHelper.html">ApplicationHelper</a>
+  
+    <li><a href="./City.html">City</a>
   
     <li><a href="./ConsentError.html">ConsentError</a>
   
@@ -133,9 +141,17 @@
   
     <li><a href="./PeopleController.html">PeopleController</a>
   
+    <li><a href="./Person.html">Person</a>
+  
     <li><a href="./PersonHelper.html">PersonHelper</a>
   
     <li><a href="./PhotoUrlUploader.html">PhotoUrlUploader</a>
+  
+    <li><a href="./Shelter.html">Shelter</a>
+  
+    <li><a href="./Street.html">Street</a>
+  
+    <li><a href="./Subscription.html">Subscription</a>
   
     <li><a href="./TimeValidator.html">TimeValidator</a>
   
@@ -166,29 +182,39 @@
       <h3 class="section-header">Constants</h3>
       <dl>
       
+        <dt id="MAX_PHOTO_SIZE">MAX_PHOTO_SIZE
+        
+        <dd class="description"><p>写真の最大サイズ</p>
+        
+      
         <dt id="STATUS_BELIEVED_ALIVE">STATUS_BELIEVED_ALIVE
         
-        <dd class="description">
+        <dd class="description"><p>この人が生きているという情報を入手した</p>
+        
+      
+        <dt id="STATUS_BELIEVED_DEAD">STATUS_BELIEVED_DEAD
+        
+        <dd class="description"><p>この人物が死亡したという情報を入手した</p>
         
       
         <dt id="STATUS_BELIEVED_MISSING">STATUS_BELIEVED_MISSING
         
-        <dd class="description">
+        <dd class="description"><p>この人を行方不明と判断した理由がある</p>
         
       
         <dt id="STATUS_INFORMATION_SOUGHT">STATUS_INFORMATION_SOUGHT
         
-        <dd class="description">
+        <dd class="description"><p>情報を探している</p>
         
       
         <dt id="STATUS_IS_NOTE_AUTHOR">STATUS_IS_NOTE_AUTHOR
         
-        <dd class="description">
+        <dd class="description"><p>私が本人である</p>
         
       
         <dt id="STATUS_UNSPECIFIED">STATUS_UNSPECIFIED
         
-        <dd class="description"><p>–<strong>–</strong>– 定数 –<strong>–</strong>– 状況</p>
+        <dd class="description"><p>状況 指定なし</p>
         
       
       </dl>
@@ -231,7 +257,7 @@
 
           
           <div class="method-source-code" id="check_for_author_email-source">
-            <pre><span class="ruby-comment"># File app/models/note.rb, line 96</span>
+            <pre><span class="ruby-comment"># File app/models/note.rb, line 110</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">check_for_author_email</span>(<span class="ruby-identifier">person</span>)
   <span class="ruby-identifier">dup</span> = <span class="ruby-identifier">where</span>(<span class="ruby-value">:person_record_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">id</span>, <span class="ruby-value">:author_email</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">author_email</span>).<span class="ruby-identifier">all</span>
   <span class="ruby-keyword">return</span> <span class="ruby-identifier">dup</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
@@ -274,7 +300,7 @@
 
           
           <div class="method-source-code" id="duplication-source">
-            <pre><span class="ruby-comment"># File app/models/note.rb, line 74</span>
+            <pre><span class="ruby-comment"># File app/models/note.rb, line 88</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">duplication</span>(<span class="ruby-identifier">pid</span>)
   <span class="ruby-identifier">find</span>(<span class="ruby-value">:all</span>, <span class="ruby-value">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-string">&quot;linked_person_record_id IS NOT NULL AND person_record_id = ?&quot;</span>, <span class="ruby-identifier">pid</span>])
 <span class="ruby-keyword">end</span></pre>
@@ -319,12 +345,12 @@
 
           
           <div class="method-source-code" id="exec_insert_note-source">
-            <pre><span class="ruby-comment"># File app/models/note.rb, line 108</span>
+            <pre><span class="ruby-comment"># File app/models/note.rb, line 122</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">exec_insert_note</span>(<span class="ruby-identifier">note</span>, <span class="ruby-identifier">e</span>)
   <span class="ruby-identifier">note</span>.<span class="ruby-identifier">note_record_id</span>         = <span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:note_record_id&quot;</span>].<span class="ruby-identifier">try</span>(<span class="ruby-value">:text</span>)
-  <span class="ruby-identifier">person_record</span>               = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find_by_person_record_id</span>(<span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:person_record_id&quot;</span>].<span class="ruby-identifier">try</span>(<span class="ruby-value">:text</span>))
+  <span class="ruby-identifier">person_record</span>               = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">with_deleted</span>.<span class="ruby-identifier">find_by_person_record_id</span>(<span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:person_record_id&quot;</span>].<span class="ruby-identifier">try</span>(<span class="ruby-value">:text</span>))
   <span class="ruby-identifier">note</span>.<span class="ruby-identifier">person_record_id</span>       = <span class="ruby-identifier">person_record</span>.<span class="ruby-identifier">id</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">person_record</span>.<span class="ruby-identifier">present?</span>
-  <span class="ruby-identifier">linked_person_record</span>        = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find_by_person_record_id</span>(<span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:linked_person_record_id&quot;</span>].<span class="ruby-identifier">text</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:linked_person_record_id&quot;</span>].<span class="ruby-identifier">present?</span>
+  <span class="ruby-identifier">linked_person_record</span>        = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">with_deleted</span>.<span class="ruby-identifier">find_by_person_record_id</span>(<span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:linked_person_record_id&quot;</span>].<span class="ruby-identifier">text</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:linked_person_record_id&quot;</span>].<span class="ruby-identifier">present?</span>
   <span class="ruby-identifier">note</span>.<span class="ruby-identifier">linked_person_record_id</span>       = <span class="ruby-identifier">linked_person_record</span>.<span class="ruby-identifier">id</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">linked_person_record</span>.<span class="ruby-identifier">present?</span>
   <span class="ruby-identifier">entry_date</span>                  = <span class="ruby-identifier">e</span>.<span class="ruby-identifier">elements</span>[<span class="ruby-string">&quot;pfif:entry_date&quot;</span>].<span class="ruby-identifier">try</span>(<span class="ruby-value">:text</span>)
   <span class="ruby-identifier">note</span>.<span class="ruby-identifier">entry_date</span>             = <span class="ruby-identifier">entry_date</span>.<span class="ruby-identifier">to_time</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">entry_date</span>.<span class="ruby-identifier">present?</span>
@@ -351,6 +377,8 @@
     <span class="ruby-identifier">status</span> = <span class="ruby-constant">STATUS_BELIEVED_ALIVE</span>
   <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;believed_missing&quot;</span>       <span class="ruby-comment"># この人を行方不明と判断した理由がある</span>
     <span class="ruby-identifier">status</span> = <span class="ruby-constant">STATUS_BELIEVED_MISSING</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;believed_dead&quot;</span>          <span class="ruby-comment"># この人物が死亡したという情報を入手した</span>
+    <span class="ruby-identifier">status</span> = <span class="ruby-constant">STATUS_BELIEVED_DEAD</span>
   <span class="ruby-keyword">else</span>
     <span class="ruby-identifier">status</span> = <span class="ruby-constant">STATUS_UNSPECIFIED</span> <span class="ruby-comment"># 指定無し</span>
   <span class="ruby-keyword">end</span>
@@ -401,7 +429,7 @@
 
           
           <div class="method-source-code" id="no_duplication-source">
-            <pre><span class="ruby-comment"># File app/models/note.rb, line 84</span>
+            <pre><span class="ruby-comment"># File app/models/note.rb, line 98</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">no_duplication</span>(<span class="ruby-identifier">pid</span>)
   <span class="ruby-identifier">find</span>(<span class="ruby-value">:all</span>, 
     <span class="ruby-value">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-string">&quot;linked_person_record_id IS NULL AND person_record_id = ?&quot;</span>, <span class="ruby-identifier">pid</span>],
@@ -436,9 +464,11 @@
           
           <p>statusとauthor_made_contactの相互validation</p>
 <ul><li>
-<p>status = 3                  : 状況「私が本人である」</p>
+<p>status = <a
+href="Note.html#STATUS_IS_NOTE_AUTHOR">STATUS_IS_NOTE_AUTHOR</a> :
+状況「私が本人である」</p>
 </li><li>
-<p>author_made_contact = false : 連絡の有無「いいえ」</p>
+<p>author_made_contact = false    : 連絡の有無「いいえ」</p>
 </li></ul>
 
 <h3 id="method-i-note_author_valid-label-Args">Args</h3>
@@ -452,7 +482,7 @@
 
           
           <div class="method-source-code" id="note_author_valid-source">
-            <pre><span class="ruby-comment"># File app/models/note.rb, line 62</span>
+            <pre><span class="ruby-comment"># File app/models/note.rb, line 76</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">note_author_valid</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-constant">STATUS_IS_NOTE_AUTHOR</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">author_made_contact</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
     <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:author_made_contact</span>, <span class="ruby-string">&quot;&quot;</span>)
@@ -490,7 +520,7 @@
 
           
           <div class="method-source-code" id="set_attributes-source">
-            <pre><span class="ruby-comment"># File app/models/note.rb, line 50</span>
+            <pre><span class="ruby-comment"># File app/models/note.rb, line 64</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_attributes</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">entry_date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">source_date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">source_date</span>.<span class="ruby-identifier">blank?</span>
@@ -514,7 +544,7 @@
 
 <footer id="validator-badges">
   <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
-  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.2.
   <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
 </footer>
 

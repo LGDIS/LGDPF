@@ -40,6 +40,9 @@
     <a href="Batches/ExportGooglePersonFinder.html">Batches::ExportGooglePersonFinder</a>
   </li>
     <li class="class">
+    <a href="Batches/ImportShelters.html">Batches::ImportShelters</a>
+  </li>
+    <li class="class">
     <a href="Batches/PeopleDestroy.html">Batches::PeopleDestroy</a>
 
     <img class="toc-toggle" src="images/transparent.png" alt="" title="toggle headings">
@@ -47,6 +50,12 @@
       <li><a href="Batches/PeopleDestroy.html#label-%E3%83%90%E3%83%83%E3%83%81%E3%81%AE%E5%AE%9F%E8%A1%8C%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89">バッチの実行コマンド</a>
       <li><a href="Batches/PeopleDestroy.html#label-options">options</a>
     </ul>
+  </li>
+    <li class="class">
+    <a href="FileSizeValidator.html">FileSizeValidator</a>
+  </li>
+    <li class="class">
+    <a href="FileSizeValidator/Helper.html">FileSizeValidator::Helper</a>
   </li>
     <li class="class">
     <a href="ActiveResourceController.html">ActiveResourceController</a>
@@ -59,6 +68,9 @@
   </li>
     <li class="module">
     <a href="ApplicationHelper.html">ApplicationHelper</a>
+  </li>
+    <li class="class">
+    <a href="City.html">City</a>
   </li>
     <li class="class">
     <a href="ConsentError.html">ConsentError</a>
@@ -84,11 +96,23 @@
     <li class="class">
     <a href="PeopleController.html">PeopleController</a>
   </li>
+    <li class="class">
+    <a href="Person.html">Person</a>
+  </li>
     <li class="module">
     <a href="PersonHelper.html">PersonHelper</a>
   </li>
     <li class="class">
     <a href="PhotoUrlUploader.html">PhotoUrlUploader</a>
+  </li>
+    <li class="class">
+    <a href="Shelter.html">Shelter</a>
+  </li>
+    <li class="class">
+    <a href="Street.html">Street</a>
+  </li>
+    <li class="class">
+    <a href="Subscription.html">Subscription</a>
   </li>
     <li class="class">
     <a href="TimeValidator.html">TimeValidator</a>
@@ -99,33 +123,63 @@
 <h2 id="methods">Methods</h2>
 <ul>
   
+    <li class="method"><a href="Person.html#method-c-check_dup">::check_dup &mdash; Person</a>
+  
     <li class="method"><a href="Note.html#method-c-check_for_author_email">::check_for_author_email &mdash; Note</a>
   
     <li class="method"><a href="Batches/ExportGooglePersonFinder.html#method-c-create_pfif">::create_pfif &mdash; Batches::ExportGooglePersonFinder</a>
+  
+    <li class="method"><a href="Batches/ImportShelters.html#method-c-csv_option">::csv_option &mdash; Batches::ImportShelters</a>
   
     <li class="method"><a href="Batches/ExportGooglePersonFinder.html#method-c-date_parse_for_gpf">::date_parse_for_gpf &mdash; Batches::ExportGooglePersonFinder</a>
   
     <li class="method"><a href="Note.html#method-c-duplication">::duplication &mdash; Note</a>
   
+    <li class="method"><a href="Person.html#method-c-duplication">::duplication &mdash; Person</a>
+  
     <li class="method"><a href="Note.html#method-c-exec_insert_note">::exec_insert_note &mdash; Note</a>
+  
+    <li class="method"><a href="Person.html#method-c-exec_insert_person">::exec_insert_person &mdash; Person</a>
+  
+    <li class="method"><a href="Batches/ImportShelters.html#method-c-execute">::execute &mdash; Batches::ImportShelters</a>
   
     <li class="method"><a href="Batches/PeopleDestroy.html#method-c-execute">::execute &mdash; Batches::PeopleDestroy</a>
   
     <li class="method"><a href="Batches/ExportGooglePersonFinder.html#method-c-execute">::execute &mdash; Batches::ExportGooglePersonFinder</a>
   
+    <li class="method"><a href="Person.html#method-c-find_for_export_gpf">::find_for_export_gpf &mdash; Person</a>
+  
+    <li class="method"><a href="Person.html#method-c-find_for_provide">::find_for_provide &mdash; Person</a>
+  
+    <li class="method"><a href="Person.html#method-c-find_for_seek">::find_for_seek &mdash; Person</a>
+  
     <li class="method"><a href="Constant.html#method-c-get_const">::get_const &mdash; Constant</a>
   
     <li class="method"><a href="CountryCode.html#method-c-hash_for_selectbox">::hash_for_selectbox &mdash; CountryCode</a>
   
+    <li class="method"><a href="Shelter.html#method-c-hash_for_selectbox">::hash_for_selectbox &mdash; Shelter</a>
+  
+    <li class="method"><a href="Street.html#method-c-hash_for_table">::hash_for_table &mdash; Street</a>
+  
+    <li class="method"><a href="City.html#method-c-hash_for_table">::hash_for_table &mdash; City</a>
+  
+    <li class="method"><a href="FileSizeValidator.html#method-c-new">::new &mdash; FileSizeValidator</a>
+  
     <li class="method"><a href="Note.html#method-c-no_duplication">::no_duplication &mdash; Note</a>
   
     <li class="method"><a href="Batches/ExportGooglePersonFinder.html#method-c-sex_parse_for_gpf">::sex_parse_for_gpf &mdash; Batches::ExportGooglePersonFinder</a>
+  
+    <li class="method"><a href="Batches/ExportGooglePersonFinder.html#method-c-status_parse_for_gpf">::status_parse_for_gpf &mdash; Batches::ExportGooglePersonFinder</a>
+  
+    <li class="method"><a href="Person.html#method-c-subscribe_email_address">::subscribe_email_address &mdash; Person</a>
   
     <li class="method"><a href="ApplicationController.html#method-i-autocomplete_city">#autocomplete_city &mdash; ApplicationController</a>
   
     <li class="method"><a href="ApplicationController.html#method-i-autocomplete_street">#autocomplete_street &mdash; ApplicationController</a>
   
     <li class="method"><a href="ApplicationController.html#method-i-cancel_personal_info">#cancel_personal_info &mdash; ApplicationController</a>
+  
+    <li class="method"><a href="FileSizeValidator.html#method-i-check_validity-21">#check_validity! &mdash; FileSizeValidator</a>
   
     <li class="method"><a href="PeopleController.html#method-i-complete">#complete &mdash; PeopleController</a>
   
@@ -139,13 +193,19 @@
   
     <li class="method"><a href="PeopleController.html#method-i-dup_merge">#dup_merge &mdash; PeopleController</a>
   
+    <li class="method"><a href="PeopleController.html#method-i-duplication_preview">#duplication_preview &mdash; PeopleController</a>
+  
     <li class="method"><a href="ApplicationHelper.html#method-i-error_messages_for">#error_messages_for &mdash; ApplicationHelper</a>
   
     <li class="method"><a href="ApplicationController.html#method-i-expiry_date">#expiry_date &mdash; ApplicationController</a>
   
     <li class="method"><a href="PeopleController.html#method-i-extend_days">#extend_days &mdash; PeopleController</a>
   
-    <li class="method"><a href="ApplicationController.html#method-i-get_cache">#get_cache &mdash; ApplicationController</a>
+    <li class="method"><a href="PhotoUrlUploader.html#method-i-extension_white_list">#extension_white_list &mdash; PhotoUrlUploader</a>
+  
+    <li class="method"><a href="PhotoUrlUploader.html#method-i-full_filename">#full_filename &mdash; PhotoUrlUploader</a>
+  
+    <li class="method"><a href="FileSizeValidator.html#method-i-help">#help &mdash; FileSizeValidator</a>
   
     <li class="method"><a href="PersonHelper.html#method-i-icon_image_tag">#icon_image_tag &mdash; PersonHelper</a>
   
@@ -153,15 +213,27 @@
   
     <li class="method"><a href="ApplicationController.html#method-i-init">#init &mdash; ApplicationController</a>
   
+    <li class="method"><a href="PeopleController.html#method-i-layout_selector">#layout_selector &mdash; PeopleController</a>
+  
+    <li class="method"><a href="LgdpfMailer.html#method-i-mail">#mail &mdash; LgdpfMailer</a>
+  
     <li class="method"><a href="PeopleController.html#method-i-multiviews">#multiviews &mdash; PeopleController</a>
   
     <li class="method"><a href="PeopleController.html#method-i-new">#new &mdash; PeopleController</a>
+  
+    <li class="method"><a href="PeopleController.html#method-i-new_preview">#new_preview &mdash; PeopleController</a>
   
     <li class="method"><a href="Note.html#method-i-note_author_valid">#note_author_valid &mdash; Note</a>
   
     <li class="method"><a href="PeopleController.html#method-i-note_invalid">#note_invalid &mdash; PeopleController</a>
   
     <li class="method"><a href="PeopleController.html#method-i-note_invalid_apply">#note_invalid_apply &mdash; PeopleController</a>
+  
+    <li class="method"><a href="PeopleController.html#method-i-note_list">#note_list &mdash; PeopleController</a>
+  
+    <li class="method"><a href="PeopleController.html#method-i-note_new">#note_new &mdash; PeopleController</a>
+  
+    <li class="method"><a href="PeopleController.html#method-i-note_preview">#note_preview &mdash; PeopleController</a>
   
     <li class="method"><a href="PeopleController.html#method-i-note_valid">#note_valid &mdash; PeopleController</a>
   
@@ -181,11 +253,17 @@
   
     <li class="method"><a href="ActiveResourceController.html#method-i-people_update">#people_update &mdash; ActiveResourceController</a>
   
+    <li class="method"><a href="PeopleController.html#method-i-person_create">#person_create &mdash; PeopleController</a>
+  
     <li class="method"><a href="PeopleController.html#method-i-personal_info">#personal_info &mdash; PeopleController</a>
   
     <li class="method"><a href="PeopleController.html#method-i-provide">#provide &mdash; PeopleController</a>
   
+    <li class="method"><a href="PersonHelper.html#method-i-reencode_for_mobile">#reencode_for_mobile &mdash; PersonHelper</a>
+  
     <li class="method"><a href="PeopleController.html#method-i-restore">#restore &mdash; PeopleController</a>
+  
+    <li class="method"><a href="PeopleController.html#method-i-search_results">#search_results &mdash; PeopleController</a>
   
     <li class="method"><a href="PeopleController.html#method-i-seek">#seek &mdash; PeopleController</a>
   
@@ -205,9 +283,11 @@
   
     <li class="method"><a href="LgdpfMailer.html#method-i-send_restore_notice">#send_restore_notice &mdash; LgdpfMailer</a>
   
+    <li class="method"><a href="ApiActionLog.html#method-i-set_attributes">#set_attributes &mdash; ApiActionLog</a>
+  
     <li class="method"><a href="Note.html#method-i-set_attributes">#set_attributes &mdash; Note</a>
   
-    <li class="method"><a href="ApiActionLog.html#method-i-set_attributes">#set_attributes &mdash; ApiActionLog</a>
+    <li class="method"><a href="Person.html#method-i-set_attributes">#set_attributes &mdash; Person</a>
   
     <li class="method"><a href="PeopleController.html#method-i-spam">#spam &mdash; PeopleController</a>
   
@@ -217,17 +297,29 @@
   
     <li class="method"><a href="PeopleController.html#method-i-subscribe_email">#subscribe_email &mdash; PeopleController</a>
   
+    <li class="method"><a href="PeopleController.html#method-i-subscribe_email_note">#subscribe_email_note &mdash; PeopleController</a>
+  
+    <li class="method"><a href="PeopleController.html#method-i-subscribe_email_person">#subscribe_email_person &mdash; PeopleController</a>
+  
     <li class="method"><a href="ApplicationController.html#method-i-terms_of_service">#terms_of_service &mdash; ApplicationController</a>
   
     <li class="method"><a href="PeopleController.html#method-i-unsubscribe_email">#unsubscribe_email &mdash; PeopleController</a>
   
     <li class="method"><a href="PeopleController.html#method-i-update">#update &mdash; PeopleController</a>
   
+    <li class="method"><a href="PeopleController.html#method-i-update_note_preview">#update_note_preview &mdash; PeopleController</a>
+  
+    <li class="method"><a href="PeopleController.html#method-i-update_preview">#update_preview &mdash; PeopleController</a>
+  
     <li class="method"><a href="PersonHelper.html#method-i-url_name">#url_name &mdash; PersonHelper</a>
   
-    <li class="method"><a href="DateValidator.html#method-i-validate_each">#validate_each &mdash; DateValidator</a>
+    <li class="method"><a href="Person.html#method-i-url_validater">#url_validater &mdash; Person</a>
   
     <li class="method"><a href="TimeValidator.html#method-i-validate_each">#validate_each &mdash; TimeValidator</a>
+  
+    <li class="method"><a href="FileSizeValidator.html#method-i-validate_each">#validate_each &mdash; FileSizeValidator</a>
+  
+    <li class="method"><a href="DateValidator.html#method-i-validate_each">#validate_each &mdash; DateValidator</a>
   
     <li class="method"><a href="PeopleController.html#method-i-view">#view &mdash; PeopleController</a>
   
@@ -236,7 +328,7 @@
 
 <footer id="validator-badges">
   <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
-  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.2.
   <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
 </footer>
 
