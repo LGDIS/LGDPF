@@ -172,40 +172,21 @@ class PeopleController < ApplicationController
     @subscribe = params[:subscribe] == "true" ? true : false
     @consent = params[:consent] == "true" ? true :false
     @note = Note.new(params[:note])  # saveしてはいけない(再表示用)
+    @step = params[:step].to_i # 二重登録防止用遷移変数
 
     # 重複可能性のあるperson_record_id
-    save_format = []
-    if params[:person3][:id].present?
-      dup_ids = [@person.id, @person2.id, @person3.id]
-    else
-      dup_ids = [@person.id, @person2.id]
-    end
+    dup_ids = [@person.id, @person2.id]
+    dup_ids << @person3.id if params[:person3][:id].present? # 重複したデータが3つの場合、3つ目のidを追加
 
     # 新着情報
     # 重複したID
     session[:person_id] = dup_ids
 
     # [親id, [重複id1(,重複id2)]]を作成する
+    save_format = []
     dup_ids.each_with_index do |id, i|
       tmp = dup_ids.dup
       save_format << [tmp.delete_at(i), tmp]
-    end
-
-    # 重複Noteの登録
-    session[:note_id] = []
-    Note.transaction do
-      save_format.each do |row|
-        # 紐付くNoteを作成
-        note = Note.new(params[:note])
-        note.person_record_id = row[0]
-        row[1].each do |dup_id|
-          # 重複idを設定
-          note_cp = note.dup
-          note_cp.linked_person_record_id = dup_id
-          note_cp.save!
-          session[:note_id] << note_cp.id
-        end
-      end
     end
 
     # 利用規約のチェック判定
@@ -213,16 +194,44 @@ class PeopleController < ApplicationController
       raise ConsentError
     end
 
-    # 重複するPerson全てにメールを送信する
-    session[:person_id].each do |person_id|
-      person = Person.find_by_id(person_id)
-      # 新着メールを送るアドレスを抽出
-      to = Person.subscribe_email_address(person, Note.find_by_id(session[:note_id].first))
-      # Personに新着メールを送信する
-      to.each do |address|
-        LgdpfMailer.send_add_note(address).deliver
+    # 重複Noteの登録
+    if @step == 0
+      session[:note_id] = []
+      Note.transaction do
+        save_format.each do |row|
+          # 紐付くNoteを作成
+          note = Note.new(params[:note])
+          note.person_record_id = row[0]
+          row[1].each do |dup_id|
+            # 重複idを設定
+            note_cp = note.dup
+            note_cp.linked_person_record_id = dup_id
+            note_cp.save!
+            session[:note_id] << note_cp.id
+          end
+        end
       end
     end
+
+    @step = 1
+
+    # 重複するPerson全てにメールを送信する
+    if @step == 1
+      session[:person_id].each do |person_id|
+        person = Person.find_by_id(person_id)
+        # 新着メールを送るアドレスを抽出
+        to = Person.subscribe_email_address(person, Note.find_by_id(session[:note_id].first))
+        # Personに新着メールを送信する
+        to.each do |address|
+          LgdpfMailer.send_add_note(address).deliver
+        end
+      end
+    end
+
+    @step = 2
+
+    # 重複用のメールリスト作成
+    create_dup_mail_list(*session[:person_id])
 
     if @subscribe
       redirect_to :action => :subscribe_email
@@ -557,7 +566,7 @@ class PeopleController < ApplicationController
     @query_given  = params[:given_name]
 
     @dup_flag = Person.check_dup(params[:id])  # 重複の有無
-    @dup_people = Person.with_deleted.duplication(params[:id]) # personと重複するperson
+    @dup_people = Person.with_deleted.duplication(params[:id]).uniq # personと重複するperson
 
     if params[:subscribe].present? and params[:subscribe] == "true" then
       @subscribe = true
@@ -1402,6 +1411,42 @@ class PeopleController < ApplicationController
     return urls.join("\n")
   end
 
+  # 重複用のメールリスト作成
+  # === Args
+  # _dup_ids_ :: 重複したPerson.id
+  # === Return
+  # === Raise
+  def create_dup_mail_list(*dup_ids)
+    mail_lists = []
+    dup_ids.each do |person_id|
+      person = Person.find_by_id_and_email_flag(person_id, true)
+      if person
+        mail_lists << person.author_email unless mail_lists.include?(person.author_email)
+      end
+      notes = Note.where(:person_record_id => person_id, :email_flag => true)
+      notes.each do |note|
+        mail_lists << note.author_email unless mail_lists.include?(note.author_email)
+      end
+      subscriptions = Subscription.where(:person_record_id => person_id)
+      subscriptions.each do |subscription|
+        mail_lists << subscription.author_email unless mail_lists.include?(subscription.author_email)
+      end
+    end
+
+    # subscriptionに登録されていないものを登録する。
+    Subscription.transaction do
+      dup_ids.each do |person_id|
+        mail_lists.each do |mail_list|
+          if Person.where(:id => person_id, :email_flag => true, :author_email => mail_list).size == 0 &&
+          Note.where(:person_record_id => person_id, :email_flag => true, :author_email => mail_list).size == 0 &&
+          Subscription.where(:person_record_id => person_id, :author_email => mail_list).size == 0
+            @subscription = Subscription.create!(:author_email => mail_list, :person_record_id => person_id)
+          end
+        end
+      end
+    end
+  end
+
   # PC,モバイルからのアクセスを制限する。
   # === Args
   # _action_ :: 画面識別子
@@ -1412,7 +1457,7 @@ class PeopleController < ApplicationController
       case params[:action]
       when "provide", "multiviews", "duplication_preview", "dup_merge", "new_preview",
            "create", "update_preview", "update", "extend_days", "subscribe_email",
-           "delete", "note_invalid_apply",  "note_invalid", "note_valid_apply", "spam",
+           "delete", "note_invalid_apply", "note_invalid", "note_valid_apply", "spam",
            "spam_cancel", "personal_info"
         render "errors/mobile_access"
       end
