@@ -230,8 +230,17 @@ class PeopleController < ApplicationController
 
     @step = 2
 
+    # 重複したPersonオブジェクトを取得
+    dup_people = Person.with_deleted.duplication(@person.id).uniq
+
+    # 重複しているPersonのIDを取得
+    dup_person_ids = [@person.id]
+    dup_people.each do |dup_person|
+      dup_person_ids << dup_person.id
+    end
+
     # 重複用のメールリスト作成
-    create_dup_mail_list(*session[:person_id])
+    create_dup_mail_list(*dup_person_ids)
 
     if @subscribe
       redirect_to :action => :subscribe_email
