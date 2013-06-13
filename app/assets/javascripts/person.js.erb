@@ -61,8 +61,8 @@ function set_dup_mode(enable, init) {
   }
   if (!init) {
     checked_ids = {};
-    $('#dup_count').innerHTML = '0';
-    $('#dup_go').disabled = true;
+    $('#dup_count').text(0);
+    $('#dup_go').attr("disabled", "disabled");
   }
   return false;
 }
