@@ -6,7 +6,7 @@ require 'csv'
 
 class Batches::ImportShelters
 
-  FILE_PREFIX = "_xA9z94_"
+  FILE_PREFIX = "ExportShelters_"
 
   def self.execute
     remote_uri = SETTINGS["shelter_source"]["uri"]
