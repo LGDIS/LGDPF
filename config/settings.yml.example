@@ -10,7 +10,7 @@ development:
     description:
   # sheltersテーブルの同期元情報
   shelter_source:
-    uri: http://localhost:3000/exportdata/
+    uri: http://localhost:3000/public/plugin_assets/lgdis/privates/
     timeout: 60
     basic_auth:
       username:
@@ -66,7 +66,7 @@ production:
     description:
   # sheltersテーブルの同期元情報
   shelter_source:
-    uri: https://redmine.example.com/exportdata/
+    uri: http://localhost:3000/public/plugin_assets/lgdis/privates/
     timeout: 60
     basic_auth:
       username:
