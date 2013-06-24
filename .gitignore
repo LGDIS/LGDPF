@@ -18,3 +18,6 @@ config/api_key.yml
 config/terms_message.txt
 config/unicorn.rb
 public/assets/*
+public/upload/note/photo_url/*
+public/upload/person/photo_url/*
+public/upload/tmp/*
