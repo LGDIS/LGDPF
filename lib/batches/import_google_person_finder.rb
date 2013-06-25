@@ -65,8 +65,8 @@ class Batches::ImportGooglePersonFinder
         if doc.elements["feed/entry/pfif:person"].present?
           puts " #{Time.now.to_s} ===== Person #{skip}th ====="
           skip = skip + MAX_RESULTS
-          split_city = I18n.t("target_municipality").split(//n)[0..-2].join
-          split_municipality = I18n.t("target_municipality").split(//n).pop
+          split_city = I18n.t("target_municipality").split(//u)[0..-2].join
+          split_municipality = I18n.t("target_municipality").split(//u).pop
           regexp_city = /^(#{split_city})#{split_municipality}?$/
           doc.elements.each("feed/entry/pfif:person") do |e|
             # ××市以外のデータは取り込まない
