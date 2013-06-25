@@ -95,6 +95,8 @@ platforms :mri_20 do
   gem 'iconv'
 end
 
+gem 'rake', '10.0.4' 
+
 # Load Local Gemfile
 local_gemfile = File.join(File.dirname(__FILE__), "Gemfile.local")
 if File.exists?(local_gemfile)
