@@ -51,6 +51,7 @@ class Batches::ImportShelters
     {
       :encoding => "UTF-8",
       :headers => :first_row,
+      :return_headers => false,
       :quote_char => '"',
       :force_quotes => true,
     }
