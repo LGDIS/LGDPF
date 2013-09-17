@@ -21,3 +21,4 @@ public/assets/*
 public/uploads/note/photo_url/*
 public/uploads/person/photo_url/*
 public/uploads/tmp/*
+lib/batches/*.csv
