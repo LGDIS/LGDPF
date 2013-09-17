@@ -8,12 +8,15 @@ class Street < ActiveRecord::Base
   # ==== Return
   # 町名ハッシュオブジェクト {:code=>:name, :code=>:name}
   # ==== Raise
-  def self.hash_for_table(term)
+  def self.hash_for_table(city, term)
     streets_list = {}
-    streets = Street.where("name LIKE '%#{term}%'").order(:code)
-    streets.each do |street|
-      streets_list[street.code] = {} unless streets_list[street.code]
-      streets_list[street.code] = street.name
+    city_id = City.where(:name => city).first
+    if city_id.present?
+      streets = Street.where("code LIKE '#{city_id.code}%'").where("name LIKE '%#{term}%'").order(:code)
+      streets.each do |street|
+        streets_list[street.code] = {} unless streets_list[street.code]
+        streets_list[street.code] = street.name
+      end
     end
     return streets_list
   end

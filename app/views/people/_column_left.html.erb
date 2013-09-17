@@ -22,7 +22,8 @@
           url: <%= raw "\"#{autocomplete_street_path}\"" %>,
           dataType: "json",
           data: {
-            term: request.term
+            term: request.term,
+            city: $('#person_home_city').val()
           },
           success: function(data) {
             response(data);

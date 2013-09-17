@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 class ApplicationController < ActionController::Base
-  before_filter :init, :expiry_date, :cancel_personal_info
+  before_filter :expiry_date, :cancel_personal_info
+  before_filter :init, :except => [:autocomplete_city, :autocomplete_street]
 
   protect_from_forgery
 
@@ -76,12 +77,13 @@ class ApplicationController < ActionController::Base
 
   # オートコンプリート町名取得処理
   # ==== Args
+  # _city_ :: 市町村名
   # _term_ :: ユーザ入力値
   # ==== Return
   # 町名jsonオブジェクト
   # ==== Raise
   def autocomplete_street
-    @street = Street.hash_for_table(params["term"])
+    @street = Street.hash_for_table(params["city"], params["term"])
     respond_to do |format|
       format.json { render :json => @street.values.to_json }
     end
